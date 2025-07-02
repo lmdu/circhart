@@ -1,0 +1,30 @@
+import sys
+import multiprocessing
+from pathlib import Path
+
+from PySide6.QtGui import *
+from PySide6.QtCore import *
+from PySide6.QtWidgets import *
+
+from config import *
+from window import *
+
+if __name__ == "__main__":
+	multiprocessing.freeze_support()
+
+	QCoreApplication.setOrganizationName("DuLab")
+	QCoreApplication.setOrganizationDomain("big.cdu.edu.cn")
+	QCoreApplication.setApplicationName("Circhart")
+	QCoreApplication.setApplicationVersion(CIRCHART_VERSION)
+	QSettings.setDefaultFormat(QSettings.IniFormat)
+
+	app = CirchartApplication(sys.argv)
+	win = CirchartMainWindow()
+	app.osx_open_with.connect(win.do_open_project)
+
+	args = app.arguments()
+	if len(args) > 1:
+		if Path(args[1]).is_file():
+			win.do_open_project(args[1])
+
+	sys.exit(app.exec())

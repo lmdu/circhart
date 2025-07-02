@@ -1,0 +1,13 @@
+[project]
+name = "circhart"
+version = "0.1.0"
+description = "A user-friendly graphical tool for generating circle genome plot"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pyside6-essentials>=6.9.1",
+]
+
+[[tool.uv.index]]
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
+default = true
