@@ -1,5 +1,0 @@
-QToolBar {
-	background-color: #fafafa;
-	border-bottom: 1px solid #e0e0e0;
-	min-height: 36px;
-}

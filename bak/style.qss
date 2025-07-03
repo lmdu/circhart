@@ -1,0 +1,16 @@
+QToolBar {
+	background-color: #F7F8FA;
+	border-bottom: 1px solid #E2E4E8;
+	min-height: 32px;
+}
+
+QDockWidget {
+	background-color: #F7F8FA;
+	padding: 0;
+	margin: 0;
+}
+
+QCollapsible {
+	border: 1px solid #e2e4eb;
+	background-color: #F7F8FA;
+}

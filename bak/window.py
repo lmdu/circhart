@@ -4,6 +4,8 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
+from superqt import QCollapsible
+
 from config import *
 
 __all__ = [
@@ -80,6 +82,15 @@ class CirchartMainWindow(QMainWindow):
 		self.sidebar = QDockWidget("", self)
 		self.sidebar.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
 		self.addDockWidget(Qt.RightDockWidgetArea, self.sidebar)
+
+		self.collapse = QCollapsible("Advanced settings")
+		self.collapse.addWidget(QLabel("test for me"))
+		for i in range(10):
+			self.collapse.addWidget(QPushButton("button {}".format(i)))
+
+		self.sidebar.setWidget(self.collapse)
+
+
 
 	def do_open_project(self):
 		pass
