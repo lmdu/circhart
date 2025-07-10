@@ -63,6 +63,7 @@ dependencies = [
     { name = "pyconify" },
     { name = "pyside6-essentials" },
     { name = "pywebview" },
+    { name = "qt-parameters" },
     { name = "superqt" },
 ]
 
@@ -74,6 +75,7 @@ requires-dist = [
     { name = "pyconify", specifier = ">=0.2.1" },
     { name = "pyside6-essentials", specifier = ">=6.9.1" },
     { name = "pywebview", specifier = ">=5.4" },
+    { name = "qt-parameters", specifier = ">=1.1.3" },
     { name = "superqt", specifier = ">=0.7.5" },
 ]
 
@@ -489,6 +491,28 @@ dependencies = [
 sdist = { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/7a/c7/645f3b0bb190bf58c5cea9cfbcaa337ce3b54531ad207d3748676eb8cdc9/pywebview-5.4.tar.gz", hash = "sha256:b5e2c6c7502aaf72a9ae6034daf83785f5fad874fac7fa82bf4fcf854f1f083a", size = 466398, upload-time = "2025-01-27T21:59:05.762Z" }
 wheels = [
     { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/4c/5a/7af3b9f8fb51d544b31f2f6c12635eac77d1e9a99f72dd12c9364062d59d/pywebview-5.4-py3-none-any.whl", hash = "sha256:0559c47db543556498dd38604a2a0479896c320f86c9b23499b8e580b58b699d", size = 475504, upload-time = "2025-01-27T21:59:02.459Z" },
+]
+
+[[package]]
+name = "qt-material-icons"
+version = "0.2.0"
+source = { registry = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" }
+sdist = { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/9b/6a/03670a80bba974c93b2b93f0efe905f8a26ca4d9d5e176a2216fb7949dcb/qt_material_icons-0.2.0.tar.gz", hash = "sha256:4711082ceb3a91743df00a0f366df3c94adbd149bdfa73973e6a8dd0ac5c8603", size = 17474283, upload-time = "2024-10-04T22:38:30.009Z" }
+wheels = [
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/32/1a/e729db8a654f7da5644f1b06c55b9e1f770d2f4744f2deee86b9f9d59c13/qt_material_icons-0.2.0-py3-none-any.whl", hash = "sha256:bdc14af68e7576b1b0847eb37b53fd68962cab9e2469c8a22a06a860b8deb604", size = 17925867, upload-time = "2024-10-04T22:38:25.992Z" },
+]
+
+[[package]]
+name = "qt-parameters"
+version = "1.1.3"
+source = { registry = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" }
+dependencies = [
+    { name = "qt-material-icons" },
+    { name = "qtpy" },
+]
+sdist = { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/fa/98/9423183717c49171f038f15fe0b65eda14805df83151a01cad69a570cc7d/qt_parameters-1.1.3.tar.gz", hash = "sha256:b59c1a4fbf06eeedc0dad1d1f117bf22fd8a2165602989b22e56a42d9fea738b", size = 25491, upload-time = "2025-07-03T22:31:09.015Z" }
+wheels = [
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/4e/28/5fa2ea95d1ffc3f93667d6e347fa4199d54d758bd6c66ddfb5ac8a88da8e/qt_parameters-1.1.3-py3-none-any.whl", hash = "sha256:eec207bb6a07b2c732147fc97b2ad958b62eacda3efd1fb54b7e89a61de1d1e1", size = 28911, upload-time = "2025-07-03T22:31:07.983Z" },
 ]
 
 [[package]]

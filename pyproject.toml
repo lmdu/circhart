@@ -11,6 +11,7 @@ dependencies = [
     "pyconify>=0.2.1",
     "pyside6-essentials>=6.9.1",
     "pywebview>=5.4",
+    "qt-parameters>=1.1.3",
     "superqt>=0.7.5",
 ]
 

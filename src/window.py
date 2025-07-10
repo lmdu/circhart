@@ -4,7 +4,7 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
-from superqt import QCollapsible
+#from superqt import QCollapsible
 
 from config import *
 
@@ -18,7 +18,8 @@ class CirchartApplication(QApplication):
 
 	def __init__(self, argv):
 		super().__init__(argv)
-		self.load_style()
+		#self.load_style()
+		#self.setStyle(QStyleFactory.create('windowsvista'))
 
 	def event(self, event):
 		if sys.platform == 'darwin':
@@ -62,6 +63,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.close
 		)
 
+		self.circos_act = QAction("&Check Circos Dependencies", self,
+			triggered = self.do_circos_dependency_check
+		)
+
 	def create_menus(self):
 		self.file_menu = self.menuBar().addMenu("&File")
 		self.file_menu.addAction(self.open_act)
@@ -69,6 +74,12 @@ class CirchartMainWindow(QMainWindow):
 		self.file_menu.addAction(self.quit_act)
 
 		self.edit_menu = self.menuBar().addMenu("&Edit")
+
+		self.tool_menu = self.menuBar().addMenu("&Tools")
+		self.tool_menu.addAction(self.circos_act)
+
+
+		self.help_menu = self.menuBar().addMenu("&Help")
 
 
 	def create_toolbar(self):
@@ -83,14 +94,17 @@ class CirchartMainWindow(QMainWindow):
 		self.sidebar.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
 		self.addDockWidget(Qt.RightDockWidgetArea, self.sidebar)
 
-		self.collapse = QCollapsible("Advanced settings")
-		self.collapse.addWidget(QLabel("test for me"))
-		for i in range(10):
-			self.collapse.addWidget(QPushButton("button {}".format(i)))
+		#self.collapse = QCollapsible("Advanced settings")
+		#self.collapse.addWidget(QLabel("test for me"))
+		#for i in range(10):
+		#	self.collapse.addWidget(QPushButton("button {}".format(i)))
 
-		self.sidebar.setWidget(self.collapse)
+		#self.sidebar.setWidget(self.collapse)
 
 
 
 	def do_open_project(self):
+		pass
+
+	def do_circos_dependency_check(self):
 		pass
