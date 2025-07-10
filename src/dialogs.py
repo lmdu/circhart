@@ -2,6 +2,7 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
+from config import *
 from widgets import *
 
 __all__ = [
@@ -12,70 +13,72 @@ class CirchartCircosDependencyDialog(QDialog):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 
-		self.setWindowTitle("Circos Dependencies")
+		self.setWindowTitle("Circos Perl Dependencies")
+		self.resize(QSize(400, 300))
 
-		self.progress = CirchartSpinnerWidget(self)
-		self.progress.hide()
-		spacer = CirchartSpacerWidget(self)
-		self.update_btn = QPushButton("Refresh", self)
-		self.package_manager = RNASuitePackageTreeView(self)
-		self.update_btn.clicked.connect(self.on_update_status)
-		self.status_info = RNASuitePackageInstallMessage(self)
-		self.package_manager.error.connect(self.on_error_occurred)
-		self.package_manager.message.connect(self.on_update_message)
-		self.package_manager.started.connect(self.on_install_started)
-		self.package_manager.stopped.connect(self.on_install_stopped)
+		self.spinner = CirchartSpinnerWidget(self)
+		self.updator = QPushButton("Refresh", self)
+		self.updator.clicked.connect(self.spinner.start)
+		self.tree = QTreeWidget(self)
+		self.tree.setHeaderLabels(['Module', 'Version', 'Status'])
+		self.tree.setIconSize(QSize(12, 12))
+		self.tree.setRootIsDecorated(False)
+		self.tree.header().setStretchLastSection(False)
+		self.tree.header().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+		self.tree.header().setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+		self.tree.header().setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
 
+		self.create_layout()
+		self.create_process()
+
+	def create_layout(self):
 		self.layout = QVBoxLayout()
 		self.setLayout(self.layout)
 		top_layout = QHBoxLayout()
-		top_layout.addWidget(self.progress)
-		top_layout.addWidget(spacer)
-		top_layout.addWidget(self.update_btn)
+		top_layout.addWidget(self.spinner)
+		top_layout.addWidget(CirchartSpacerWidget(self))
+		top_layout.addWidget(self.updator)
 		self.layout.addLayout(top_layout)
-		self.layout.addWidget(self.package_manager)
-		self.layout.addWidget(self.status_info)
+		self.layout.addWidget(self.tree)
 
-	def closeEvent(self, event):
-		if self.package_manager.task_running():
-			info = (
-				"Are you sure you want to close the package manager?\n"
-				"Closing the manager will stop the current package installation"
-			)
-			btn = QMessageBox.question(self, "Warnning", info)
-
-			if btn == QMessageBox.Yes:
-				self.package_manager.stop_task()
-				event.accept()
-			else:
-				event.ignore()
-				return
-
-		event.accept()
+	def create_process(self):
+		self.process = QProcess(self)
+		self.process.setProgram(CIRCOS_COMMAND)
+		self.process.setArguments(["-modules"])
+		self.updator.clicked.connect(self.process.start)
+		self.process.errorOccurred.connect(self.on_error_occurred)
+		self.process.errorOccurred.connect(self.spinner.stop)
+		self.process.finished.connect(self.on_update_finished)
+		self.process.finished.connect(self.spinner.stop)
+		self.process.start()
 
 	@Slot()
-	def on_error_occurred(self, error):
+	def on_error_occurred(self):
+		error = self.process.errorString()
 		QMessageBox.critical(self, "Error", error)
 
-	@Slot()
-	def on_update_message(self, text):
-		self.status_info.insertPlainText(text)
-		scroll_bar = self.status_info.verticalScrollBar()
-		scroll_bar.setValue(scroll_bar.maximum())
+	@Slot(int, QProcess.ExitStatus)
+	def on_update_finished(self, code, status):
+		if status == QProcess.ExitStatus.NormalExit:
+			output = self.process.readAllStandardOutput()
+			result = output.data().decode()
+			
+			items = []
+			for line in result.strip().split('\n'):
+				cols = line.strip().split()
 
-	@Slot()
-	def on_update_status(self):
-		if self.package_manager.task_running():
-			return QMessageBox.warning(self, "Warnning", "A package installation is running")
+				if cols and cols[0] == 'ok':
+					item = QTreeWidgetItem([cols[2], cols[1], cols[0]])
+					item.setIcon(0, QIcon('icons/ok.svg'))
+					items.append(item)
 
-		self.package_manager.update_version()
+				elif cols and cols[0] == 'missing':
+					item = QTreeWidgetItem([cols[1], '', cols[0]])
+					item.setIcon(0, QIcon('icons/no.svg'))
+					items.append(item)
 
-	@Slot()
-	def on_install_started(self):
-		self.progress.show()
-		self.progress.start()
+			self.tree.clear()
+			self.tree.addTopLevelItems(items)
 
-	@Slot()
-	def on_install_stopped(self):
-		self.progress.hide()
-		self.progress.stop()
+
+

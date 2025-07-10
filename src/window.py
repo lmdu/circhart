@@ -7,6 +7,8 @@ from PySide6.QtWidgets import *
 #from superqt import QCollapsible
 
 from config import *
+from dialogs import *
+from widgets import *
 
 __all__ = [
 	'CirchartApplication',
@@ -107,4 +109,5 @@ class CirchartMainWindow(QMainWindow):
 		pass
 
 	def do_circos_dependency_check(self):
-		pass
+		dlg = CirchartCircosDependencyDialog(self)
+		dlg.exec()

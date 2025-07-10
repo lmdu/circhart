@@ -1,3 +1,5 @@
+import math
+
 from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
@@ -34,7 +36,7 @@ class CirchartSpinnerWidget(QWidget):
 		self._timer.timeout.connect(self.rotate)
 		self.updateSize()
 		self.updateTimer()
-		#self.setVisible(False)
+		self.setVisible(False)
 		# END initialize()
 
 		self.setAttribute(Qt.WA_TranslucentBackground)
@@ -74,7 +76,7 @@ class CirchartSpinnerWidget(QWidget):
 
 	def start(self):
 		self._isSpinning = True
-		#self.setVisible(True)
+		self.setVisible(True)
 
 		if not self._timer.isActive():
 			self._timer.start()
@@ -82,7 +84,7 @@ class CirchartSpinnerWidget(QWidget):
 
 	def stop(self):
 		self._isSpinning = False
-		#self.setVisible(False)
+		self.setVisible(False)
 
 		if self._timer.isActive():
 			self._timer.stop()
