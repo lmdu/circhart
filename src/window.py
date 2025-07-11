@@ -20,7 +20,7 @@ class CirchartApplication(QApplication):
 
 	def __init__(self, argv):
 		super().__init__(argv)
-		#self.load_style()
+		self.load_style()
 		#self.setStyle(QStyleFactory.create('windowsvista'))
 
 	def event(self, event):
