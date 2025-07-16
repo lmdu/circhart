@@ -68,10 +68,6 @@ QTreeWidget {
 	border: 1px solid #c2c2c2;
 }
 
-QHeaderView {
-	border-bottom: 5px solid red;
-}
-
 QHeaderView::section {
 	background: #ffffff;
 	border-style: none;
@@ -81,4 +77,20 @@ QHeaderView::section {
 QHeaderView::section:horizontal:middle {
 	border-left: 1px solid #e6e6e6;
 	border-right: 1px solid #e6e6e6;
+}
+
+QTreeView {
+	border: none;
+}
+
+QTableView {
+	border: none;
+}
+
+QGraphicsView {
+	border: none;
+}
+
+QStackedWidget {
+	border: none;
 }

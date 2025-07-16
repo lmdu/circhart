@@ -1,3 +1,4 @@
+import os
 import sys
 import multiprocessing
 from pathlib import Path
@@ -12,10 +13,14 @@ from window import *
 if __name__ == "__main__":
 	multiprocessing.freeze_support()
 
-	QCoreApplication.setOrganizationName("DuLab")
-	QCoreApplication.setOrganizationDomain("big.cdu.edu.cn")
-	QCoreApplication.setApplicationName("Circhart")
-	QCoreApplication.setApplicationVersion(CIRCHART_VERSION)
+	if os.name == 'nt':
+		import ctypes
+		ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(APP_ID)
+
+	QCoreApplication.setOrganizationName(APP_ORG_NAME)
+	QCoreApplication.setOrganizationDomain(APP_ORG_DOMAIN)
+	QCoreApplication.setApplicationName(APP_NAME)
+	QCoreApplication.setApplicationVersion(APP_VERSION)
 	QSettings.setDefaultFormat(QSettings.IniFormat)
 
 	app = CirchartApplication(sys.argv)

@@ -4,9 +4,13 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
+from models import *
+
 __all__ = [
 	'CirchartSpacerWidget',
 	'CirchartSpinnerWidget',
+	'CirchartDataTreeWidget',
+	'CirchartDataTableWidget',
 ]
 
 class CirchartSpacerWidget(QWidget):
@@ -125,3 +129,53 @@ class CirchartSpinnerWidget(QWidget):
 			resultAlpha = min(1.0, max(0.0, resultAlpha))
 			color.setAlphaF(resultAlpha)
 		return color
+
+class CirchartDataTreeWidget(QTreeView):
+	show_table = Signal(str)
+
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self.setRootIsDecorated(False)
+		self.create_model()
+		self.clicked.connect(self.on_row_clicked)
+
+	def sizeHint(self):
+		return QSize(200, 300)
+
+	def create_model(self):
+		self._model = CirchartDataTreeModel(self)
+		self.setModel(self._model)
+		self.header().setStretchLastSection(False)
+		self.header().setSectionResizeMode(0, QHeaderView.Stretch)
+		self.header().setSectionResizeMode(1, QHeaderView.ResizeToContents)
+
+	def has_data(self, name):
+		return True if self._model.get_data(name) else False
+
+	def add_data(self, *args):
+		self._model.add_data(*args)
+
+	def update_tree(self):
+		self._model.update_model()
+
+	def on_row_clicked(self, index):
+		table = self._model.get_data_table(index)
+		self.show_table.emit(table)
+
+
+class CirchartDataTableWidget(QTableView):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.verticalHeader().hide()
+
+		self.create_model()
+
+	def create_model(self):
+		self._model = CirchartDataTableModel(self)
+		self.setModel(self._model)
+
+	def change_table(self, table):
+		self._model.change_table(table)
+		self._model.update_model()
+

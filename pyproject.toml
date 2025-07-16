@@ -5,10 +5,12 @@ description = "A user-friendly graphical tool for generating circle genome plot"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
+    "apsw>=3.50.2.0",
     "cmap>=0.6.1",
     "iconify>=0.0.103",
     "pint>=0.24.4",
     "pyconify>=0.2.1",
+    "pyfastx>=2.2.0",
     "pyside6-essentials>=6.9.1",
     "pywebview>=5.4",
     "qt-parameters>=1.1.3",

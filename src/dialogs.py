@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
@@ -6,8 +8,48 @@ from config import *
 from widgets import *
 
 __all__ = [
+	'CirchartSelectDataTagDialog',
 	'CirchartCircosDependencyDialog',
 ]
+
+class CirchartSelectDataTagDialog(QDialog):
+	def __init__(self, parent=None, file=None):
+		super().__init__(parent)
+
+		self.tag_select = QComboBox(self)
+		self.tag_select.addItems([
+			'Genome Fasta File',
+			'Karyotype Data',
+			'Plot Data'
+		])
+
+		self.btn_box = QDialogButtonBox(
+			QDialogButtonBox.StandardButton.Cancel |
+			QDialogButtonBox.StandardButton.Ok
+		)
+		self.btn_box.accepted.connect(self.accept)
+		self.btn_box.rejected.connect(self.reject)
+
+		layout = QVBoxLayout()
+		layout.addWidget(QLabel("Import <b>{}</b> as:".format(file), self))
+		layout.addWidget(self.tag_select)
+		layout.addWidget(self.btn_box)
+		self.setLayout(layout)
+
+	def sizeHint(self):
+		return QSize(300, 0)
+
+	def get_tag(self):
+		tags = ['genome', 'karyotype', 'plotdata']
+		return tags[self.tag_select.currentIndex()]
+
+	@classmethod
+	def select(cls, parent, file):
+		file = Path(file).name
+		dlg = cls(parent, file)
+
+		if dlg.exec() == QDialog.Accepted:
+			return dlg.get_tag()
 
 class CirchartCircosDependencyDialog(QDialog):
 	def __init__(self, parent=None):
