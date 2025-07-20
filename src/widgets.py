@@ -132,7 +132,7 @@ class CirchartSpinnerWidget(QWidget):
 		return color
 
 class CirchartDataTreeWidget(QTreeView):
-	show_table = Signal(str)
+	show_table = Signal(str, int)
 
 	def __init__(self, parent=None):
 		super().__init__(parent)
@@ -142,7 +142,7 @@ class CirchartDataTreeWidget(QTreeView):
 		self.clicked.connect(self.on_row_clicked)
 
 	def sizeHint(self):
-		return QSize(200, 300)
+		return QSize(250, 300)
 
 	def create_model(self):
 		self._model = CirchartDataTreeModel(self)
@@ -161,27 +161,40 @@ class CirchartDataTreeWidget(QTreeView):
 		self._model.update_model()
 
 	def on_row_clicked(self, index):
-		table = self._model.get_data_table(index)
-		self.show_table.emit(table)
+		rowid = self._model.get_id(index)
+		table = self._model.get_value(index.row(), 1)
+		self.show_table.emit(table, rowid)
 
 
 class CirchartDataTableWidget(QTableView):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 		self.verticalHeader().hide()
+		self._model = None
 
-		self.create_model()
+	def create_model(self, table):
+		match table:
+			case 'karyotype':
+				if type(self._model) != CirchartGenomeTableModel:
+					self._model = CirchartGenomeTableModel(self)
+			
+			case _:
+				if type(self._model) != CirchartDataTableModel:
+					self._model = CirchartDataTableModel(self)
 
-	def create_model(self):
-		self._model = CirchartDataTableModel(self)
 		self.setModel(self._model)
 
-	def change_table(self, table):
+	def change_table(self, table, index=None):
+		self.create_model(table)
+
+		if index is not None:
+			table = "{}_{}".format(table, index)
+
 		self._model.change_table(table)
 		self._model.update_model()
 
 class CirchartCheckTableWidget(CirchartDataTableWidget):
-	def create_model(self):
+	def create_model(self, table):
 		self._model = CirchartDataTableModel(self, True, True)
 		self.setModel(self._model)
 

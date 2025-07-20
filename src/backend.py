@@ -61,7 +61,7 @@ class DataTable(SqlTable):
 
 class GenomeTable(SqlTable):
 	_index = True
-	chrom = str
+	chromosome = str
 	length = int
 
 class KaryotypeTable(SqlTable):
@@ -328,6 +328,14 @@ class SqlControl:
 
 		SqlBase.create_table(table, fields)
 		SqlBase.insert_rows(sql, data)
+
+	@staticmethod
+	def get_datas_by_type(type):
+		sql = SqlQuery('data')\
+			.select()\
+			.where('type=?')
+
+		return SqlBase.get_dicts(sql, type)
 
 
 

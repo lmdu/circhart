@@ -6,6 +6,7 @@ from backend import *
 __all__ = [
 	'CirchartDataTreeModel',
 	'CirchartDataTableModel',
+	'CirchartGenomeTableModel',
 ]
 
 class CirchartBaseTableModel(QAbstractTableModel):
@@ -264,9 +265,10 @@ class CirchartBaseTableModel(QAbstractTableModel):
 class CirchartDataTableModel(CirchartBaseTableModel):
 	def change_table(self, table):
 		self.set_table(table)
-		fields = SqlBase.get_fields(table)
+		fields = [field.capitalize() for field in SqlBase.get_fields(table)]
 		self.set_headers(fields)
 
+class CirchartGenomeTableModel(CirchartDataTableModel):
 	def data(self, index, role=Qt.DisplayRole):
 		if not index.isValid():
 			return None
@@ -275,6 +277,9 @@ class CirchartDataTableModel(CirchartBaseTableModel):
 		col = index.column()
 
 		if role == Qt.DisplayRole:
+			if col == 7:
+				return None
+
 			return self.get_value(row, col)
 
 		elif role == Qt.CheckStateRole:
@@ -285,46 +290,16 @@ class CirchartDataTableModel(CirchartBaseTableModel):
 				else:
 					return Qt.Unchecked
 
-class CirchartGenomeTableModel(CirchartDataTableModel):
-	def change_
+		elif role == Qt.BackgroundRole:
+			if col == 7:
+				r, g, b = self.get_value(row, col).split(',')
+				return QColor(int(r), int(g), int(b))
 
 
 class CirchartDataTreeModel(CirchartBaseTableModel):
 	_table = 'data'
 	_fields = ['name', 'type']
 	_headers = ['Name', 'Type']
-
-	@classmethod
-	def add_data(cls, name, type, path, rows, columns):
-		sql = SqlQuery(cls._table)\
-			.insert(4)
-
-		rowid = SqlBase.insert_row(sql, None, name, type, path)
-
-		table = "{}{}".format(type, rowid)
-		CirchartDataTableModel.add_data(table, rows, columns)
-
-	def get_data(self, name):
-		sql = SqlQuery(self._table)\
-			.select()\
-			.where('name=?')\
-			.first()
-
-		return SqlBase.get_row(sql, name)
-
-	@classmethod
-	def get_datas(cls, type):
-		sql = SqlQuery(cls._table)\
-			.select()\
-			.where('type=?')
-
-		return SqlBase.get_dicts(sql, type)
-
-	def get_data_table(self, index):
-		rowid = self.get_id(index)
-		rowtb = self.get_value(index.row(), 1)
-		return "{}_{}".format(rowtb, rowid)
-
 
 	
 

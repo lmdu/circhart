@@ -132,9 +132,6 @@ class CirchartKaryotypePrepareDialog(QDialog):
 		self.setWindowTitle("Prepare Karyotype Data")
 		self.resize(QSize(500, 400))
 
-		self.genome_names = []
-		self.genome_tables = []
-
 		self.select = QComboBox(self)
 		self.select.currentIndexChanged.connect(self.change_genome)
 		self.table = CirchartCheckTableWidget(self)
@@ -161,18 +158,20 @@ class CirchartKaryotypePrepareDialog(QDialog):
 		self.set_data()
 
 	def set_data(self):
-		for g in CirchartDataTreeModel.get_datas('genome'):
-			self.genome_names.append(g.name)
-			self.genome_tables.append('genome_{}'.format(g.id))
+		self.genome_ids = []
+		genome_names = []
+		for g in SqlControl.get_datas_by_type('genome'):
+			self.genome_ids.append(g.id)
+			genome_names.append(g.name)
 
-		self.select.addItems(self.genome_names)
+		if genome_names:
+			self.select.addItems(genome_names)
 
-		if self.genome_names:
-			self.table.change_table(self.genome_tables[0])
+		if self.genome_ids:
+			self.table.change_table('genome', self.genome_ids[0])
 
 	def change_genome(self, index):
-		table = self.genome_tables[index]
-		self.table.change_table(table)
+		self.table.change_table('genome', self.genome_ids[index])
 
 	@classmethod
 	def make_karyotype(cls, parent):
