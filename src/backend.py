@@ -1,7 +1,14 @@
 import apsw
 import threading
 
-__all__ = ['SqlTable', 'SqlQuery', 'SqlBase']
+__all__ = [
+	'SqlTable',
+	'SqlQuery',
+	'SqlBase',
+	'KaryotypeTable',
+	'GenomeTable',
+	'SqlControl',
+]
 
 from utils import *
 
@@ -14,6 +21,9 @@ class SqlTable:
 	@classmethod
 	def tables(cls):
 		for sc in cls.__subclasses__():
+			if sc._index:
+				continue
+
 			table = sc.__name__.replace('Table', '').lower()
 			fields = ['id INTEGER PRIMARY KEY']
 			fields.extend([
@@ -25,18 +35,44 @@ class SqlTable:
 			yield table, fields
 
 	@classmethod
-	def table(cls, columns):
+	def table(cls, index=None):
 		fields = ['id INTEGER PRIMARY KEY']
 
-		for f, t in columns:
-			fields.append("{} {}".format(f, cls.types[t]))
+		table = cls.__name__.replace('Table', '').lower()
 
-		return fields
+		if index is not None:
+			table = "{}_{}".format(table, index)
+
+		for attr in cls.__dict__:
+			if not attr.startswith('_'):
+				fields.append("{} {}".format(attr, cls.types[getattr(cls, attr)]))
+
+		return table, fields
+
+	@classmethod
+	def fields(cls):
+		return [attr for attr in cls.__dict__ if not attr.startswith('_')]
 
 class DataTable(SqlTable):
+	_index = False
 	name = str
 	type = str
 	path = str
+
+class GenomeTable(SqlTable):
+	_index = True
+	chrom = str
+	length = int
+
+class KaryotypeTable(SqlTable):
+	_index = True
+	type = str
+	parent = str
+	uid = str
+	label = str
+	start = int
+	end = int
+	color = str
 
 class SqlQuery:
 	def __init__(self, table):
@@ -175,7 +211,7 @@ class SqlQuery:
 		if self._offset:
 			self.__add("OFFSET {}".format(self._offset))
 
-		return ''.join(self._querys)	
+		return ''.join(self._querys)
 
 class DataBackend:
 	conn = None
@@ -213,8 +249,7 @@ class DataBackend:
 			sql = SqlQuery(table).create(*fields)
 			self.query(sql)
 
-	def create_table(self, table, columns):
-		fields = SqlTable.table(columns)
+	def create_table(self, table, fields):
 		sql = SqlQuery(table).create(*fields)
 		self.query(sql)
 
@@ -271,4 +306,39 @@ class DataBackend:
 		return [col[0] for col in res.description]
 
 SqlBase = DataBackend()
+
+class SqlControl:
+	@staticmethod
+	def add_data(name, type, path, data):
+		sql = SqlQuery('data')\
+			.insert('name', 'type', 'path')
+
+		rowid = SqlBase.insert_row(sql, name, type, path)
+
+		match type:
+			case 'genome':
+				table, fields = GenomeTable.table(rowid)
+				sql = SqlQuery(table)\
+					.insert(*GenomeTable.fields())
+
+			case 'karyotype':
+				table, fields = KaryotypeTable.table(rowid)
+				sql = SqlQuery(table)\
+					.insert(*KaryotypeTable.fields())
+
+		SqlBase.create_table(table, fields)
+		SqlBase.insert_rows(sql, data)
+
+
+
+
+
+
+
+
+
+
+
+
+
 	

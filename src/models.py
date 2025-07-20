@@ -11,12 +11,15 @@ __all__ = [
 class CirchartBaseTableModel(QAbstractTableModel):
 	row_count = Signal(int)
 	col_count = Signal(int)
+	sel_count = Signal(int)
 	_headers = []
 	_fields = []
 	_table = None
 
-	def __init__(self, parent=None):
+	def __init__(self, parent=None, checkable=False, sortable=False):
 		super().__init__(parent)
+		self.checkable = checkable
+		self.sortable = sortable
 
 		self.displays = []
 		self.selected = []
@@ -26,6 +29,9 @@ class CirchartBaseTableModel(QAbstractTableModel):
 		self.read_size = 200
 
 		self.cache_data = {}
+
+		self.order_by = None
+		self.order_asc = True
 
 	def rowCount(self, parent=QModelIndex()):
 		if parent.isValid():
@@ -48,6 +54,69 @@ class CirchartBaseTableModel(QAbstractTableModel):
 
 		if role == Qt.DisplayRole:
 			return self.get_value(row, col)
+
+		elif role == Qt.CheckStateRole:
+			if col == 0 and self.checkable:
+				if self.displays[row] in self.selected:
+					return Qt.Checked
+
+				else:
+					return Qt.Unchecked
+
+	def setData(self, index, value, role):
+		if not index.isValid():
+			return False
+
+		row = index.row()
+		col = index.column()
+
+		if role == Qt.CheckStateRole and col == 0:
+			rowid = self.displays[row]
+
+			if Qt.CheckState(value) == Qt.Checked:
+				if rowid not in self.selected:
+					self.selected.append(rowid)
+
+			else:
+				if rowid in self.selected:
+					self.selected.remove(rowid)
+
+			self.dataChanged.emit(index, index)
+			self.sel_count.emit(len(self.selected))
+
+			return True
+
+		return False
+
+	def flags(self, index):
+		flags = Qt.ItemIsEnabled | Qt.ItemIsSelectable
+
+		if index.column() == 0:
+			flags |= Qt.ItemIsUserCheckable
+
+		return flags
+
+	def sort(self, column, order):
+		if self._table is None:
+			return
+
+		if self._fields:
+			self.order_by = self._fields[column]
+
+		else:
+			fields = SqlBase.get_fields(self._table)
+			self.order_by = fields[column]
+
+		if order == Qt.SortOrder.DescendingOrder:
+			self.order_asc = False
+		
+		elif order == Qt.AscendingOrder:
+			self.order_asc = True
+
+		else:
+			self.order_by = None
+
+		self.update_model()
 
 	def headerData(self, section, orientation, role=Qt.DisplayRole):
 		if orientation == Qt.Horizontal and role == Qt.DisplayRole:
@@ -93,10 +162,15 @@ class CirchartBaseTableModel(QAbstractTableModel):
 	def read_sql(self):
 		remain_count = self.total_count - self.read_count
 		fetch_count = min(self.read_size, remain_count)
-		return SqlQuery(self._table)\
+		sql = SqlQuery(self._table)\
 			.select('id')\
 			.limit(fetch_count)\
 			.offset(self.read_count)
+
+		if self.order_by:
+			sql = sql.orderby(self.order_by, asc=self.order_asc)
+
+		return sql
 
 	@property
 	def get_sql(self):
@@ -156,17 +230,79 @@ class CirchartBaseTableModel(QAbstractTableModel):
 			row_id = self.displays.index(data_id)
 			self.update_cache(row_id)
 
+	def get_selected_rows(self):
+		if not self.selected:
+			return
+
+		select_count = len(self.selected)
+		extract_once = 100
+
+		if select_count == self.total_count:
+			sql = SqlQuery(self._table).select()
+
+			rows = []
+
+			for row in SqlBase.query(sql):
+				rows.append(row)
+
+				if len(rows) == extract_once:
+					yield rows
+
+			if rows:
+				yield rows
+
+		else:
+			for i in range(0, select_count, extract_once):
+				ids = self.selected[i:i+extract_once]
+
+				sql = SqlQuery(self._table)\
+					.select()\
+					.where('id IN ({})'.format(','.join(['?']*len(ids))))
+
+				yield SqlBase.get_rows(sql, *ids)
+
+class CirchartDataTableModel(CirchartBaseTableModel):
+	def change_table(self, table):
+		self.set_table(table)
+		fields = SqlBase.get_fields(table)
+		self.set_headers(fields)
+
+	def data(self, index, role=Qt.DisplayRole):
+		if not index.isValid():
+			return None
+
+		row = index.row()
+		col = index.column()
+
+		if role == Qt.DisplayRole:
+			return self.get_value(row, col)
+
+		elif role == Qt.CheckStateRole:
+			if col == 0 and self.checkable:
+				if self.displays[row] in self.selected:
+					return Qt.Checked
+
+				else:
+					return Qt.Unchecked
+
+class CirchartGenomeTableModel(CirchartDataTableModel):
+	def change_
+
+
 class CirchartDataTreeModel(CirchartBaseTableModel):
 	_table = 'data'
 	_fields = ['name', 'type']
 	_headers = ['Name', 'Type']
 
 	@classmethod
-	def add_data(cls, name, type, path):
+	def add_data(cls, name, type, path, rows, columns):
 		sql = SqlQuery(cls._table)\
 			.insert(4)
 
-		return SqlBase.insert_row(sql, None, name, type, path)
+		rowid = SqlBase.insert_row(sql, None, name, type, path)
+
+		table = "{}{}".format(type, rowid)
+		CirchartDataTableModel.add_data(table, rows, columns)
 
 	def get_data(self, name):
 		sql = SqlQuery(self._table)\
@@ -176,32 +312,19 @@ class CirchartDataTreeModel(CirchartBaseTableModel):
 
 		return SqlBase.get_row(sql, name)
 
-	def get_datas(self, tag):
-		sql = SqlQuery(self._table)\
+	@classmethod
+	def get_datas(cls, type):
+		sql = SqlQuery(cls._table)\
 			.select()\
-			.where('tag=?')\
+			.where('type=?')
 
-		return SqlBase.get_rows(sql, tag)
+		return SqlBase.get_dicts(sql, type)
 
 	def get_data_table(self, index):
 		rowid = self.get_id(index)
 		rowtb = self.get_value(index.row(), 1)
-		return "{}{}".format(rowtb, rowid)
+		return "{}_{}".format(rowtb, rowid)
 
-class CirchartDataTableModel(CirchartBaseTableModel):
-	@staticmethod
-	def add_data(table, rows, columns):
-		SqlBase.create_table(table, columns)
-
-		sql = SqlQuery(table)\
-			.insert(len(rows[0]))
-
-		SqlBase.insert_rows(sql, rows)
-
-	def change_table(self, table):
-		self.set_table(table)
-		fields = SqlBase.get_fields(table)
-		self.set_headers(fields)
 
 	
 

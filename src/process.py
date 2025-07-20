@@ -47,7 +47,7 @@ class CirchartBaseProcess(multiprocessing.Process):
 class CirchartImportFastaProcess(CirchartBaseProcess):
 	def do(self):
 		fa = pyfastx.Fasta(self.params.fasta)
-		seqs = [(None, seq.name, len(seq)) for seq in fa]
+		seqs = [(seq.name, len(seq)) for seq in fa]
 		self.send('result', seqs)
 
 

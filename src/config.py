@@ -16,6 +16,7 @@ __all__ = [
 	'APP_ORG_NAME',
 	'APP_ORG_DOMAIN',
 	'CIRCOS_COMMAND',
+	'CIRCOS_PATH',
 ]
 
 ROOT_PATH = Path(__file__).parent
@@ -40,9 +41,11 @@ APP_ORG_DOMAIN = "big.cdu.edu.cn"
 
 APP_ID = "{}.{}.{}.{}".format(APP_ORG_NAME, APP_NAME, APP_NAME, APP_VERSION)
 
+CIRCOS_PATH = ROOT_PATH / 'circos'
+
 if os.name == 'nt':
-	CIRCOS_COMMAND = str(ROOT_PATH / 'circos' / 'bin' / 'circos.exe')
+	CIRCOS_COMMAND = CIRCOS_PATH / 'bin' / 'circos.exe'
 else:
-	CIRCOS_COMMAND = str(ROOT_PATH / 'circos' / 'bin' / 'circos')
+	CIRCOS_COMMAND = CIRCOS_PATH / 'bin' / 'circos'
 
 

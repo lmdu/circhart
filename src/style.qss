@@ -41,6 +41,21 @@ QToolBar {
 	border-bottom: 1px solid #d5d5d5;
 }
 
+QToolButton {
+	
+}
+
+QToolButton:hover {
+	background: #f7f7f7;
+	border-color: #a9adb5;
+}
+
+QToolButton:pressed {
+	color: #066fd1;
+	background: rgba(6,111,209, 0.04);
+	border-color: #066fd1;
+}
+
 QPushButton {
 	background: #ffffff;
 	color: #374151;

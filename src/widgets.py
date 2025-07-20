@@ -11,6 +11,7 @@ __all__ = [
 	'CirchartSpinnerWidget',
 	'CirchartDataTreeWidget',
 	'CirchartDataTableWidget',
+	'CirchartCheckTableWidget',
 ]
 
 class CirchartSpacerWidget(QWidget):
@@ -178,4 +179,15 @@ class CirchartDataTableWidget(QTableView):
 	def change_table(self, table):
 		self._model.change_table(table)
 		self._model.update_model()
+
+class CirchartCheckTableWidget(CirchartDataTableWidget):
+	def create_model(self):
+		self._model = CirchartDataTableModel(self, True, True)
+		self.setModel(self._model)
+
+	def get_selected(self):
+		return self._model.get_selected_rows()
+
+	def is_selected(self):
+		return True if self._model.selected else False
 

@@ -60,10 +60,11 @@ class CirchartMainWindow(QMainWindow):
 
 
 		self.create_sidebar()
-		self.create_toolbar()
-		self.create_statusbar()
 		self.create_actions()
+		self.create_toolbar()
 		self.create_menus()
+		self.create_statusbar()
+		
 		
 		
 
@@ -103,6 +104,14 @@ class CirchartMainWindow(QMainWindow):
 
 		self.import_pdata_act = QAction("&Import Plot Data...", self,
 			triggered = self.do_import_plot_data
+		)
+
+		self.zoom_in_act = QAction(QIcon("icons/zoomin.svg"), "&Zoom In", self,
+			triggered = self.do_zoom_in
+		)
+
+		self.zoom_out_act = QAction(QIcon("icons/zoomout.svg"), "&Zoom Out", self,
+			triggered = self.do_zoom_out
 		)
 
 
@@ -161,6 +170,8 @@ class CirchartMainWindow(QMainWindow):
 		self.file_menu.addAction(self.quit_act)
 
 		self.edit_menu = self.menuBar().addMenu("&Edit")
+		self.edit_menu.addAction(self.zoom_in_act)
+		self.edit_menu.addAction(self.zoom_out_act)
 
 		self.view_menu = self.menuBar().addMenu("&View")
 		self.view_menu.addAction(self.toolbar_act)
@@ -188,9 +199,14 @@ class CirchartMainWindow(QMainWindow):
 	def create_toolbar(self):
 		self.tool_bar = self.addToolBar('Show Tool Bar')
 		self.tool_bar.setMovable(False)
+		self.tool_bar.setFloatable(False)
+		self.tool_bar.setIconSize(QSize(20, 20))
+		self.tool_bar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
 		
 		self.toolbar_act = self.tool_bar.toggleViewAction()
-		self.tool_bar.addAction(self.toolbar_act)
+		self.tool_bar.addAction(self.zoom_in_act)
+		self.tool_bar.addAction(self.zoom_out_act)
+
 
 		self.tool_bar.addWidget(CirchartSpacerWidget(self))
 		self.wait_spinner = CirchartSpinnerWidget(self)
@@ -276,8 +292,14 @@ class CirchartMainWindow(QMainWindow):
 	def do_import_plot_data(self):
 		pass
 
-	def do_prepare_karyotype_data(self):
+	def do_zoom_in(self):
+		print('zoom in')
+
+	def do_zoom_out(self):
 		pass
+
+	def do_prepare_karyotype_data(self):
+		CirchartKaryotypePrepareDialog.make_karyotype(self)
 
 	def do_prepare_track_data(self):
 		pass

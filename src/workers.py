@@ -95,10 +95,12 @@ class CirchartImportGenomeWorker(CirchartProcessWorker):
 	def save_result(self, res):
 		qf = QFileInfo(self.params['fasta'])
 		name = qf.completeBaseName()
-		rowid = CirchartDataTreeModel.add_data(name, 'genome', self.params['fasta'])
-		table = 'genome{}'.format(rowid)
-		columns = [('sequence', str), ('length', int)]
-		CirchartDataTableModel.add_data(table, res, columns)
+		SqlControl.add_data(name, 'genome', self.params['fasta'], res)
 		self.signals.success.emit()
+
+
+
+
+
 
 

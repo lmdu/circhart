@@ -6,10 +6,13 @@ from PySide6.QtWidgets import *
 
 from config import *
 from widgets import *
+from models import *
+from backend import *
 
 __all__ = [
 	'CirchartSelectDataTagDialog',
 	'CirchartCircosDependencyDialog',
+	'CirchartKaryotypePrepareDialog',
 ]
 
 class CirchartSelectDataTagDialog(QDialog):
@@ -121,6 +124,122 @@ class CirchartCircosDependencyDialog(QDialog):
 
 			self.tree.clear()
 			self.tree.addTopLevelItems(items)
+
+class CirchartKaryotypePrepareDialog(QDialog):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self.setWindowTitle("Prepare Karyotype Data")
+		self.resize(QSize(500, 400))
+
+		self.genome_names = []
+		self.genome_tables = []
+
+		self.select = QComboBox(self)
+		self.select.currentIndexChanged.connect(self.change_genome)
+		self.table = CirchartCheckTableWidget(self)
+		self.table.setSortingEnabled(True)
+		self.input = QLineEdit(self)
+
+		self.btn_box = QDialogButtonBox(
+			QDialogButtonBox.StandardButton.Cancel |
+			QDialogButtonBox.StandardButton.Ok
+		)
+		self.btn_box.accepted.connect(self.accept)
+		self.btn_box.rejected.connect(self.reject)
+
+		layout = QVBoxLayout()
+		layout.addWidget(QLabel("Select a genome:", self))
+		layout.addWidget(self.select)
+		layout.addWidget(QLabel("Select chromosomes:", self))
+		layout.addWidget(self.table)
+		layout.addWidget(QLabel("Specify a short and uniq chromosome id prefix:", self))
+		layout.addWidget(self.input)
+		layout.addWidget(self.btn_box)
+		self.setLayout(layout)
+
+		self.set_data()
+
+	def set_data(self):
+		for g in CirchartDataTreeModel.get_datas('genome'):
+			self.genome_names.append(g.name)
+			self.genome_tables.append('genome_{}'.format(g.id))
+
+		self.select.addItems(self.genome_names)
+
+		if self.genome_names:
+			self.table.change_table(self.genome_tables[0])
+
+	def change_genome(self, index):
+		table = self.genome_tables[index]
+		self.table.change_table(table)
+
+	@classmethod
+	def make_karyotype(cls, parent):
+		dlg = cls(parent)
+
+		if dlg.exec() == QDialog.Accepted:
+			if not dlg.table.is_selected():
+				return QMessageBox.critical(parent, "Error",
+					"Please select some chromosomes")
+
+			prefix = dlg.input.text().strip()
+			if not prefix:
+				return QMessageBox.critical(parent, "Error",
+					"Please specify a short and uniq chromosome id prefix")
+
+			#get chr colors from circos
+			color_file = CIRCOS_PATH / 'etc' / 'colors.ucsc.conf'
+
+			circos_colors = {}
+			with open(str(color_file)) as fh:
+				for line in fh:
+					if line.startswith('chr'):
+						cols = line.strip().split('=')
+						if ',' in cols[1]:
+							circos_colors[cols[0].strip()] = cols[1].strip()
+
+			items = []
+			num = 0
+			for rows in dlg.table.get_selected():
+				for row in rows:
+					num += 1
+					chrid = '{}{}'.format(prefix, num)
+					label = row[1]
+					lenght = row[2]
+
+					if label.lower() in circos_colors:
+						color = circos_colors[label.lower()]
+
+					else:
+						temp_label = "chr{}".format(label).lower()
+
+						if temp_label in circos_colors:
+							color = circos_colors[temp_label]
+
+						else:
+							temp_label = "chr{}".format(num)
+							color = circos_colors.get(temp_label, circos_colors['chrUn'])
+
+					items.append(('chr', '-', chrid, label, 0, lenght, color))
+
+			kname = "{}_{}".format(dlg.select.currentText(), prefix)
+			SqlControl.add_data(kname, 'karyotype', '', items)
+
+			parent.data_tree.update_tree()
+
+
+			
+
+
+
+
+
+
+
+
+
+
 
 
 
