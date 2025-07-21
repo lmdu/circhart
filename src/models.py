@@ -6,7 +6,7 @@ from backend import *
 __all__ = [
 	'CirchartDataTreeModel',
 	'CirchartDataTableModel',
-	'CirchartGenomeTableModel',
+	'CirchartKaryotypeTableModel',
 ]
 
 class CirchartBaseTableModel(QAbstractTableModel):
@@ -33,6 +33,7 @@ class CirchartBaseTableModel(QAbstractTableModel):
 
 		self.order_by = None
 		self.order_asc = True
+		self.filters = {}
 
 	def rowCount(self, parent=QModelIndex()):
 		if parent.isValid():
@@ -153,6 +154,9 @@ class CirchartBaseTableModel(QAbstractTableModel):
 	def set_table(self, table):
 		self._table = table
 
+	def set_filter(self, **filters):
+		pass
+
 	@property
 	def count_sql(self):
 		return SqlQuery(self._table)\
@@ -268,7 +272,7 @@ class CirchartDataTableModel(CirchartBaseTableModel):
 		fields = [field.capitalize() for field in SqlBase.get_fields(table)]
 		self.set_headers(fields)
 
-class CirchartGenomeTableModel(CirchartDataTableModel):
+class CirchartKaryotypeTableModel(CirchartDataTableModel):
 	def data(self, index, role=Qt.DisplayRole):
 		if not index.isValid():
 			return None

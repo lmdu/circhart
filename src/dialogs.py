@@ -13,6 +13,7 @@ __all__ = [
 	'CirchartSelectDataTagDialog',
 	'CirchartCircosDependencyDialog',
 	'CirchartKaryotypePrepareDialog',
+	'CirchartCreateCircosPlotDialog',
 ]
 
 class CirchartSelectDataTagDialog(QDialog):
@@ -63,7 +64,7 @@ class CirchartCircosDependencyDialog(QDialog):
 
 		self.spinner = CirchartSpinnerWidget(self)
 		self.updator = QPushButton("Refresh", self)
-		self.updator.clicked.connect(self.spinner.start)
+		#self.updator.clicked.connect(self.spinner.start)
 		self.tree = QTreeWidget(self)
 		self.tree.setHeaderLabels(['Module', 'Version', 'Status'])
 		self.tree.setIconSize(QSize(12, 12))
@@ -88,9 +89,10 @@ class CirchartCircosDependencyDialog(QDialog):
 
 	def create_process(self):
 		self.process = QProcess(self)
-		self.process.setProgram(CIRCOS_COMMAND)
+		self.process.setProgram(str(CIRCOS_COMMAND))
 		self.process.setArguments(["-modules"])
 		self.updator.clicked.connect(self.process.start)
+		self.process.started.connect(self.spinner.start)
 		self.process.errorOccurred.connect(self.on_error_occurred)
 		self.process.errorOccurred.connect(self.spinner.stop)
 		self.process.finished.connect(self.on_update_finished)
@@ -160,15 +162,13 @@ class CirchartKaryotypePrepareDialog(QDialog):
 	def set_data(self):
 		self.genome_ids = []
 		genome_names = []
+
 		for g in SqlControl.get_datas_by_type('genome'):
 			self.genome_ids.append(g.id)
 			genome_names.append(g.name)
 
 		if genome_names:
 			self.select.addItems(genome_names)
-
-		if self.genome_ids:
-			self.table.change_table('genome', self.genome_ids[0])
 
 	def change_genome(self, index):
 		self.table.change_table('genome', self.genome_ids[index])
@@ -228,7 +228,62 @@ class CirchartKaryotypePrepareDialog(QDialog):
 			parent.data_tree.update_tree()
 
 
-			
+class CirchartCreateCircosPlotDialog(QDialog):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self.setWindowTitle("Create New Circos Plot")
+		self.resize(QSize(500, 400))
+
+		self.tree = QTreeWidget(self)
+		self.tree.setHeaderLabels(['ID', 'Name'])
+		self.tree.setRootIsDecorated(False)
+		#self.tree.hideColumn(0)
+		#self.tree.resizeColumnToContents(0)
+
+		self.btn_box = QDialogButtonBox(
+			QDialogButtonBox.StandardButton.Cancel |
+			QDialogButtonBox.StandardButton.Ok
+		)
+		self.btn_box.accepted.connect(self.accept)
+		self.btn_box.rejected.connect(self.reject)
+
+		layout = QVBoxLayout()
+		layout.addWidget(QLabel("Select karyotype data:", self))
+		layout.addWidget(self.tree)
+		layout.addWidget(self.btn_box)
+		self.setLayout(layout)
+
+		self.fill_karyotype_data()
+
+	def fill_karyotype_data(self):
+		for k in SqlControl.get_datas_by_type('karyotype'):
+			item = QTreeWidgetItem([str(k.id), k.name])
+			self.tree.addTopLevelItem(item)
+			item.setCheckState(0, Qt.Unchecked)
+
+	def get_selected_karyotype(self):
+		it = QTreeWidgetItemIterator(self.tree)
+
+		while it.value():
+			item = it.value()
+
+			if item.checkState(0) == Qt.Checked:
+				print(item.text(0))
+
+			it += 1
+
+	@classmethod
+	def creat_plot(cls, parent):
+		dlg = cls(parent)
+
+		if dlg.exec() == QDialog.Accepted:
+			dlg.get_selected_karyotype()
+
+
+
+
+
 
 
 

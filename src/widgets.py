@@ -175,14 +175,12 @@ class CirchartDataTableWidget(QTableView):
 	def create_model(self, table):
 		match table:
 			case 'karyotype':
-				if type(self._model) != CirchartGenomeTableModel:
-					self._model = CirchartGenomeTableModel(self)
+				if type(self._model) != CirchartKaryotypeTableModel:
+					self._model = CirchartKaryotypeTableModel(self)
 			
 			case _:
 				if type(self._model) != CirchartDataTableModel:
 					self._model = CirchartDataTableModel(self)
-
-		self.setModel(self._model)
 
 	def change_table(self, table, index=None):
 		self.create_model(table)
@@ -192,6 +190,7 @@ class CirchartDataTableWidget(QTableView):
 
 		self._model.change_table(table)
 		self._model.update_model()
+		self.setModel(self._model)
 
 class CirchartCheckTableWidget(CirchartDataTableWidget):
 	def create_model(self, table):

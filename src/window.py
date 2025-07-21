@@ -1,6 +1,7 @@
 import os
 import sys
 
+import qt_parameters as qtp
 from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
@@ -12,6 +13,7 @@ from dialogs import *
 from widgets import *
 from backend import *
 from workers import *
+from params import *
 
 __all__ = [
 	'CirchartApplication',
@@ -64,9 +66,7 @@ class CirchartMainWindow(QMainWindow):
 		self.create_toolbar()
 		self.create_menus()
 		self.create_statusbar()
-		
-		
-		
+		self.create_plot_panels()
 
 		self.setCentralWidget(self.stack_widget)
 		self.resize(QSize(800, 600))
@@ -133,6 +133,14 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_circos_dependency_check
 		)
 
+		self.new_circos_act = QAction("&Create Circos Plot", self,
+			triggered = self.do_create_circos_plot
+		)
+
+		self.add_track_act = QAction("&Add Circos Track", self,
+			triggered = self.do_add_circos_track
+		)
+
 		self.about_act = QAction("&About", self,
 			triggered = self.go_to_about,
 		)
@@ -177,14 +185,17 @@ class CirchartMainWindow(QMainWindow):
 		self.view_menu.addAction(self.toolbar_act)
 		self.view_menu.addAction(self.sidebar_act)
 
-		self.plot_menu = self.menuBar().addMenu("&Plot")
-		self.circos_menu = self.plot_menu.addMenu("&Circos Plot")
-		self.snail_menu = self.plot_menu.addMenu("&Snail Plot")
-
 		self.tool_menu = self.menuBar().addMenu("&Tools")
 		self.prepare_menu = self.tool_menu.addMenu("&Prepare Data")
 		self.prepare_menu.addAction(self.prepare_kdata_act)
 		self.prepare_menu.addAction(self.prepare_pdata_act)
+
+		self.plot_menu = self.menuBar().addMenu("&Plot")
+		self.circos_menu = self.plot_menu.addMenu("&Circos Plot")
+		self.circos_menu.addAction(self.new_circos_act)
+		self.circos_menu.addAction(self.add_track_act)
+
+		self.snail_menu = self.plot_menu.addMenu("&Snail Plot")
 
 		self.tool_menu.addSeparator()
 		self.tool_menu.addAction(self.check_circos_act)
@@ -216,12 +227,6 @@ class CirchartMainWindow(QMainWindow):
 		self.status_bar = self.statusBar()
 
 	def create_sidebar(self):
-		self.side_bar = QDockWidget("Plot", self)
-		self.side_bar.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-		self.addDockWidget(Qt.RightDockWidgetArea, self.side_bar)
-		self.sidebar_act = self.side_bar.toggleViewAction()
-		self.sidebar_act.setText("Show Side Bar")
-
 		self.data_dock = QDockWidget("Data", self)
 		self.data_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
 		self.addDockWidget(Qt.LeftDockWidgetArea, self.data_dock)
@@ -229,12 +234,29 @@ class CirchartMainWindow(QMainWindow):
 		self.datadock_act.setText("Show Data Panel")
 		self.data_dock.setWidget(self.data_tree)
 
+		self.plot_dock = QDockWidget("Plot", self)
+		self.plot_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+		self.addDockWidget(Qt.RightDockWidgetArea, self.plot_dock)
+		self.sidebar_act = self.plot_dock.toggleViewAction()
+		self.sidebar_act.setText("Show Plot Panel")
+
+		self.plot_stack = QStackedWidget(self)
+		self.plot_dock.setWidget(self.plot_stack)
+
+
 		#self.collapse = QCollapsible("Advanced settings")
 		#self.collapse.addWidget(QLabel("test for me"))
 		#for i in range(10):
 		#	self.collapse.addWidget(QPushButton("button {}".format(i)))
 
 		#self.sidebar.setWidget(self.collapse)
+
+	def create_plot_panels(self):
+		self.circos_panel = CirchartCircosParameter()
+		self.snail_panel = qtp.ParameterEditor()
+
+		self.plot_stack.addWidget(self.circos_panel)
+		self.plot_stack.addWidget(self.snail_panel)
 
 
 
@@ -307,6 +329,13 @@ class CirchartMainWindow(QMainWindow):
 	def do_circos_dependency_check(self):
 		dlg = CirchartCircosDependencyDialog(self)
 		dlg.exec()
+
+	def do_create_circos_plot(self):
+		CirchartCreateCircosPlotDialog.creat_plot(self)
+
+
+	def do_add_circos_track(self):
+		pass
 
 	def go_to_about(self):
 		QMessageBox.about(self, "About", APP_DESCRIPTION)

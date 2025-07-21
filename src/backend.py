@@ -280,16 +280,18 @@ class DataBackend:
 
 	def get_dict(self, sql, *args):
 		res = self.query(sql, args)
-		fields = [col[0] for col in res.description]
 
 		for row in res:
+			fields = [col[0] for col in res.description]
 			return AttrDict(zip(fields, row))
 
 	def get_dicts(self, sql, *args):
 		res = self.query(sql, args)
-		fields = [col[0] for col in res.description]
+		fields = None
 
 		for row in res:
+			if fields is None:
+				fields = [col[0] for col in res.description]
 			yield AttrDict(zip(fields, row))
 
 	def has_table(self, table):
