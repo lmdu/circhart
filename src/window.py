@@ -331,7 +331,10 @@ class CirchartMainWindow(QMainWindow):
 		dlg.exec()
 
 	def do_create_circos_plot(self):
-		CirchartCreateCircosPlotDialog.creat_plot(self)
+		karyotypes = CirchartCreateCircosPlotDialog.create_plot(self)
+
+		if karyotypes:
+			self.circos_panel.new_circos_plot(karyotypes)
 
 
 	def do_add_circos_track(self):

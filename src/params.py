@@ -9,6 +9,12 @@ __all__ = [
 	'CirchartCircosParameter',
 ]
 
+class HiddenParameter(ParameterWidget):
+	def __init__(self, name):
+		super().__init__(name)
+		self.set_label(None)
+		self.hide()
+
 class SwitchParameter(ParameterWidget):
 	def _init_ui(self):
 		self.switch = QToggleSwitch()
@@ -31,24 +37,36 @@ class CirchartCircosParameter(ParameterEditor):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 
-		self.create_ideogram_form()
+	def create_karyotype_param(self, value):
+		param = HiddenParameter('karyotype')
+		param.set_value(value)
+		self.add_parameter(param)
 
 	def create_ideogram_form(self):
 		form = ParameterForm('ideogram')
 		box = self.add_form(form)
 		box.set_title("Ideogram")
-		box.set_box_style(CollapsibleBox.Style.BUTTON)
+		box.set_box_style(CollapsibleBox.Style.SIMPLE)
 		box.set_collapsed(True)
 
 		param = SwitchParameter('show')
+		param.set_value('yes')
 		form.add_parameter(param)
 
 		param = FloatParameter('spacing')
+		param.set_default(0.005)
 		form.add_parameter(param)
 
-		print(self.values())
+	def new_circos_plot(self, karyotype):
+		self.clear()
+		self.create_karyotype_param(karyotype)
+		self.create_ideogram_form()
 
+		
 
+class CirchartSnailParameter(ParameterEditor):
+	def __init__(self, parent=None):
+		super().__init__(parent)
 
 
 

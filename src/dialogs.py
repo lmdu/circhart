@@ -265,20 +265,23 @@ class CirchartCreateCircosPlotDialog(QDialog):
 	def get_selected_karyotype(self):
 		it = QTreeWidgetItemIterator(self.tree)
 
+		karyotypes = []
 		while it.value():
 			item = it.value()
 
 			if item.checkState(0) == Qt.Checked:
-				print(item.text(0))
+				karyotypes.append(int(item.text(0)))
 
 			it += 1
 
+		return karyotypes
+
 	@classmethod
-	def creat_plot(cls, parent):
+	def create_plot(cls, parent):
 		dlg = cls(parent)
 
 		if dlg.exec() == QDialog.Accepted:
-			dlg.get_selected_karyotype()
+			return dlg.get_selected_karyotype()
 
 
 
