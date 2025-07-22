@@ -19,6 +19,7 @@ class CirchartWorkerSignals(QObject):
 	error = Signal(str)
 	result = Signal(object)
 	toggle = Signal(bool)
+	message = Signal(str)
 	started = Signal()
 	stopped = Signal()
 	success = Signal()
@@ -29,6 +30,9 @@ class CirchartBaseWorker(QRunnable):
 		super().__init__()
 		self.signals = CirchartWorkerSignals()
 
+	def preprocess(self):
+		pass
+
 	def process(self):
 		pass
 
@@ -36,6 +40,7 @@ class CirchartBaseWorker(QRunnable):
 		try:
 			self.signals.toggle.emit(True)
 			self.signals.started.emit()
+			self.preprocess()
 			self.process()
 			self.signals.stopped.emit()
 			self.signals.success.emit()
@@ -99,6 +104,21 @@ class CirchartImportGenomeWorker(CirchartProcessWorker):
 		self.signals.success.emit()
 
 
+class CirchartCircosPlotWorker(CirchartProcessWorker):
+	processor = CirchartCircosPlotProcess
+
+	def make_tempdir(self):
+		self.tempdir = QTemporaryDir()
+
+		if not self.tempdir.isValid():
+			riase Exception("Could not create temporary directory")
+
+		return self.tempdir.path()
+
+	def preprocess(self):
+		self.tempdir = QTemporaryDir()
+
+		for index in self.params['karyotype']:
 
 
 

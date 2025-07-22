@@ -233,12 +233,13 @@ class CirchartCreateCircosPlotDialog(QDialog):
 		super().__init__(parent)
 
 		self.setWindowTitle("Create New Circos Plot")
-		self.resize(QSize(500, 400))
+		self.resize(QSize(400, 300))
 
 		self.tree = QTreeWidget(self)
 		self.tree.setHeaderLabels(['ID', 'Name'])
 		self.tree.setRootIsDecorated(False)
-		#self.tree.hideColumn(0)
+		self.input = QLineEdit(self)
+		self.tree.hideColumn(0)
 		#self.tree.resizeColumnToContents(0)
 
 		self.btn_box = QDialogButtonBox(
@@ -251,6 +252,8 @@ class CirchartCreateCircosPlotDialog(QDialog):
 		layout = QVBoxLayout()
 		layout.addWidget(QLabel("Select karyotype data:", self))
 		layout.addWidget(self.tree)
+		layout.addWidget(QLabel("Specify circos plot name:", self))
+		layout.addWidget(self.input)
 		layout.addWidget(self.btn_box)
 		self.setLayout(layout)
 
@@ -260,7 +263,7 @@ class CirchartCreateCircosPlotDialog(QDialog):
 		for k in SqlControl.get_datas_by_type('karyotype'):
 			item = QTreeWidgetItem([str(k.id), k.name])
 			self.tree.addTopLevelItem(item)
-			item.setCheckState(0, Qt.Unchecked)
+			item.setCheckState(1, Qt.Unchecked)
 
 	def get_selected_karyotype(self):
 		it = QTreeWidgetItemIterator(self.tree)
@@ -269,7 +272,7 @@ class CirchartCreateCircosPlotDialog(QDialog):
 		while it.value():
 			item = it.value()
 
-			if item.checkState(0) == Qt.Checked:
+			if item.checkState(1) == Qt.Checked:
 				karyotypes.append(int(item.text(0)))
 
 			it += 1
@@ -281,7 +284,10 @@ class CirchartCreateCircosPlotDialog(QDialog):
 		dlg = cls(parent)
 
 		if dlg.exec() == QDialog.Accepted:
-			return dlg.get_selected_karyotype()
+			return {
+				'plot_name': dlg.input.text(),
+				'karyotype': dlg.get_selected_karyotype()
+			}
 
 
 

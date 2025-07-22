@@ -37,6 +37,10 @@ class CirchartCircosParameter(ParameterEditor):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 
+	def create_name_widget(self, name):
+		label = QLabel(name, self)
+		self.add_widget(label)
+
 	def create_karyotype_param(self, value):
 		param = HiddenParameter('karyotype')
 		param.set_value(value)
@@ -57,9 +61,10 @@ class CirchartCircosParameter(ParameterEditor):
 		param.set_default(0.005)
 		form.add_parameter(param)
 
-	def new_circos_plot(self, karyotype):
+	def new_circos_plot(self, param):
 		self.clear()
-		self.create_karyotype_param(karyotype)
+		self.create_name_widget(param['plot_name'])
+		self.create_karyotype_param(param['karyotype'])
 		self.create_ideogram_form()
 
 		

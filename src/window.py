@@ -53,8 +53,10 @@ class CirchartMainWindow(QMainWindow):
 		self.plot_view = QGraphicsView(self)
 		self.data_table = CirchartDataTableWidget(self)
 		self.data_tree = CirchartDataTreeWidget(self)
-		self.data_tree.show_table.connect(self.data_table.change_table)
+		self.data_tree.show_data.connect(self.data_table.change_table)
 		self.data_tree.clicked.connect(self.show_data_table)
+		self.plot_tree = CirchartPlotTreeWidget(self)
+
 
 		self.stack_widget = QStackedWidget(self)
 		self.stack_widget.addWidget(self.plot_view)
@@ -141,6 +143,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_add_circos_track
 		)
 
+		self.update_circos_act = QAction("&Update Circos Plot", self,
+			triggered = self.do_update_circos_plot
+		)
+
 		self.about_act = QAction("&About", self,
 			triggered = self.go_to_about,
 		)
@@ -183,7 +189,9 @@ class CirchartMainWindow(QMainWindow):
 
 		self.view_menu = self.menuBar().addMenu("&View")
 		self.view_menu.addAction(self.toolbar_act)
-		self.view_menu.addAction(self.sidebar_act)
+		self.view_menu.addAction(self.data_dock_act)
+		self.view_menu.addAction(self.plot_dock_act)
+		self.view_menu.addAction(self.param_dock_act)
 
 		self.tool_menu = self.menuBar().addMenu("&Tools")
 		self.prepare_menu = self.tool_menu.addMenu("&Prepare Data")
@@ -194,6 +202,8 @@ class CirchartMainWindow(QMainWindow):
 		self.circos_menu = self.plot_menu.addMenu("&Circos Plot")
 		self.circos_menu.addAction(self.new_circos_act)
 		self.circos_menu.addAction(self.add_track_act)
+		self.circos_menu.addSeparator()
+		self.circos_menu.addAction(self.update_circos_act)
 
 		self.snail_menu = self.plot_menu.addMenu("&Snail Plot")
 
@@ -230,18 +240,26 @@ class CirchartMainWindow(QMainWindow):
 		self.data_dock = QDockWidget("Data", self)
 		self.data_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
 		self.addDockWidget(Qt.LeftDockWidgetArea, self.data_dock)
-		self.datadock_act = self.data_dock.toggleViewAction()
-		self.datadock_act.setText("Show Data Panel")
+		self.data_dock_act = self.data_dock.toggleViewAction()
+		self.data_dock_act.setText("Show Data Panel")
 		self.data_dock.setWidget(self.data_tree)
 
 		self.plot_dock = QDockWidget("Plot", self)
 		self.plot_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
-		self.addDockWidget(Qt.RightDockWidgetArea, self.plot_dock)
-		self.sidebar_act = self.plot_dock.toggleViewAction()
-		self.sidebar_act.setText("Show Plot Panel")
+		self.addDockWidget(Qt.LeftDockWidgetArea, self.plot_dock)
+		self.plot_dock_act = self.plot_dock.toggleViewAction()
+		self.plot_dock_act.setText("Show Plot Panel")
+		self.plot_dock.setWidget(self.plot_tree)
 
-		self.plot_stack = QStackedWidget(self)
-		self.plot_dock.setWidget(self.plot_stack)
+
+		self.param_dock = QDockWidget("Paramter", self)
+		self.param_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
+		self.addDockWidget(Qt.RightDockWidgetArea, self.param_dock)
+		self.param_dock_act = self.param_dock.toggleViewAction()
+		self.param_dock_act.setText("Show Paramter Panel")
+
+		self.param_stack = QStackedWidget(self)
+		self.param_dock.setWidget(self.param_stack)
 
 
 		#self.collapse = QCollapsible("Advanced settings")
@@ -255,8 +273,8 @@ class CirchartMainWindow(QMainWindow):
 		self.circos_panel = CirchartCircosParameter()
 		self.snail_panel = qtp.ParameterEditor()
 
-		self.plot_stack.addWidget(self.circos_panel)
-		self.plot_stack.addWidget(self.snail_panel)
+		self.param_stack.addWidget(self.circos_panel)
+		self.param_stack.addWidget(self.snail_panel)
 
 
 
@@ -331,13 +349,18 @@ class CirchartMainWindow(QMainWindow):
 		dlg.exec()
 
 	def do_create_circos_plot(self):
-		karyotypes = CirchartCreateCircosPlotDialog.create_plot(self)
+		params = CirchartCreateCircosPlotDialog.create_plot(self)
 
-		if karyotypes:
-			self.circos_panel.new_circos_plot(karyotypes)
+		if params:
+			params['plot_id'] = SqlControl.add_plot(params['plot_name'], 'circos')
+			self.plot_tree.update_tree()
+			self.circos_panel.new_circos_plot(params)
 
 
 	def do_add_circos_track(self):
+		pass
+
+	def do_update_circos_plot(self):
 		pass
 
 	def go_to_about(self):

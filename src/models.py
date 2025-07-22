@@ -5,6 +5,7 @@ from backend import *
 
 __all__ = [
 	'CirchartDataTreeModel',
+	'CirchartPlotTreeModel',
 	'CirchartDataTableModel',
 	'CirchartKaryotypeTableModel',
 ]
@@ -302,6 +303,11 @@ class CirchartKaryotypeTableModel(CirchartDataTableModel):
 
 class CirchartDataTreeModel(CirchartBaseTableModel):
 	_table = 'data'
+	_fields = ['name', 'type']
+	_headers = ['Name', 'Type']
+
+class CirchartPlotTreeModel(CirchartBaseTableModel):
+	_table = 'plot'
 	_fields = ['name', 'type']
 	_headers = ['Name', 'Type']
 

@@ -59,6 +59,13 @@ class DataTable(SqlTable):
 	type = str
 	path = str
 
+class PlotTable(SqlTable):
+	_index = False
+	name = str
+	type = str
+	param = str
+	svg = str
+
 class GenomeTable(SqlTable):
 	_index = True
 	chromosome = str
@@ -338,6 +345,21 @@ class SqlControl:
 			.where('type=?')
 
 		return SqlBase.get_dicts(sql, type)
+
+	@staticmethod
+	def get_data_content(type, index):
+		sql = SqlQuery('{}_{}'.format(type, index))\
+			.select()
+
+		return SqlBase.get_rows(sql)
+
+	@staticmethod
+	def add_plot(name, type):
+		sql = SqlQuery('plot')\
+			.insert('name', 'type')
+
+		rowid = SqlBase.insert_row(sql, name, type)
+		return rowid
 
 
 

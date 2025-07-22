@@ -10,6 +10,7 @@ __all__ = [
 	'CirchartSpacerWidget',
 	'CirchartSpinnerWidget',
 	'CirchartDataTreeWidget',
+	'CirchartPlotTreeWidget',
 	'CirchartDataTableWidget',
 	'CirchartCheckTableWidget',
 ]
@@ -131,40 +132,56 @@ class CirchartSpinnerWidget(QWidget):
 			color.setAlphaF(resultAlpha)
 		return color
 
-class CirchartDataTreeWidget(QTreeView):
-	show_table = Signal(str, int)
-
+class CirchartIOTreeWidget(QTreeView):
 	def __init__(self, parent=None):
 		super().__init__(parent)
-
 		self.setRootIsDecorated(False)
-		self.create_model()
 		self.clicked.connect(self.on_row_clicked)
 
+		self.create_model()
+		self.set_header_width()
+
 	def sizeHint(self):
-		return QSize(250, 300)
+		return QSize(200, 300)
 
 	def create_model(self):
-		self._model = CirchartDataTreeModel(self)
-		self.setModel(self._model)
+		pass
+
+	def set_header_width(self):
 		self.header().setStretchLastSection(False)
 		self.header().setSectionResizeMode(0, QHeaderView.Stretch)
 		self.header().setSectionResizeMode(1, QHeaderView.ResizeToContents)
 
-	def has_data(self, name):
-		return True if self._model.get_data(name) else False
-
-	def add_data(self, *args):
-		self._model.add_data(*args)
-
 	def update_tree(self):
 		self._model.update_model()
+
+	def emit_signal(self, table, rowid):
+		pass
 
 	def on_row_clicked(self, index):
 		rowid = self._model.get_id(index)
 		table = self._model.get_value(index.row(), 1)
-		self.show_table.emit(table, rowid)
+		self.emit_signal(table, rowid)
 
+class CirchartDataTreeWidget(CirchartIOTreeWidget):
+	show_data = Signal(str, int)
+
+	def create_model(self):
+		self._model = CirchartDataTreeModel(self)
+		self.setModel(self._model)
+
+	def emit_signal(self, table, rowid):
+		self.show_data.emit(table, rowid)
+
+class CirchartPlotTreeWidget(CirchartIOTreeWidget):
+	show_plot = Signal(str, int)
+
+	def create_model(self):
+		self._model = CirchartPlotTreeModel(self)
+		self.setModel(self._model)
+
+	def emit_signal(self, table, rowid):
+		self.show_plot.emit(table, rowid)
 
 class CirchartDataTableWidget(QTableView):
 	def __init__(self, parent=None):
