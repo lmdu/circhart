@@ -116,7 +116,7 @@ class CirchartCircosPlotWorker(CirchartProcessWorker):
 		return self.tempdir.path()
 
 	def preprocess(self):
-		self.tempdir = QTemporaryDir()
+		workdir = self.make_tempdir()
 
 		for index in self.params['karyotype']:
 
