@@ -28,8 +28,9 @@ class CirchartWorkerSignals(QObject):
 	finished = Signal()
 
 class CirchartBaseWorker(QRunnable):
-	def __init__(self):
+	def __init__(self, params):
 		super().__init__()
+		self.params = params
 		self.signals = CirchartWorkerSignals()
 
 	def preprocess(self):
@@ -65,8 +66,7 @@ class CirchartProcessWorker(CirchartBaseWorker):
 	processor = None
 
 	def __init__(self, params):
-		super().__init__()
-		self.params = params
+		super().__init__(params)
 		self.queue = multiprocessing.Queue()
 
 	def save_result(self, res):
@@ -76,6 +76,9 @@ class CirchartProcessWorker(CirchartBaseWorker):
 		match res['action']:
 			case 'error':
 				self.signals.error.emit(res['message'])
+
+			case 'message':
+				self.signals.message.emit(res['message'])
 
 			case 'result':
 				self.save_result(res['message'])
@@ -106,12 +109,12 @@ class CirchartImportGenomeWorker(CirchartProcessWorker):
 		self.signals.success.emit()
 
 
-class CirchartCircosPlotWorker(CirchartProcessWorker):
+class CirchartCircosPlotWorker(CirchartBaseWorker):
 	processor = CirchartCircosPlotProcess
 
 	def make_tempdir(self):
 		self.tempdir = QTemporaryDir()
-		self.tempdir.setAutoRemove(False)
+		#self.tempdir.setAutoRemove(False)
 
 		if not self.tempdir.isValid():
 			raise Exception("Could not create temporary directory")
@@ -126,6 +129,21 @@ class CirchartCircosPlotWorker(CirchartProcessWorker):
 			outfile = "{}{}.txt".format('karyotype', index)
 			data = SqlControl.get_data_content('karyotype', index)
 			save_circos_data(workdir, outfile, data)
+
+	def process(self):
+		self.runner = QProcess(self)
+		self.runner.setProgram(str(CIRCOS_COMMAND))
+		self.runner.setArguments(["-modules"])
+		self.updator.clicked.connect(self.runner.start)
+		self.runner.started.connect(self.spinner.start)
+		self.runner.errorOccurred.connect(self.on_error_occurred)
+		self.runner.errorOccurred.connect(self.spinner.stop)
+		self.runner.finished.connect(self.on_update_finished)
+		self.runner.finished.connect(self.spinner.stop)
+		self.runner.start()
+
+	def save_result(self, res):
+		pass
 
 
 
