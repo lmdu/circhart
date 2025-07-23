@@ -1,3 +1,4 @@
+import os
 import time
 import traceback
 import multiprocessing
@@ -6,9 +7,11 @@ import pyfastx
 
 from config import *
 from utils import *
+from params import *
 
 __all__ = [
-	'CirchartImportFastaProcess'
+	'CirchartImportFastaProcess',
+	'CirchartCircosPlotProcess',
 ]
 
 class CirchartBaseProcess(multiprocessing.Process):
@@ -23,12 +26,16 @@ class CirchartBaseProcess(multiprocessing.Process):
 			'message': message
 		})
 
+	def before(self):
+		pass
+
 	def do(self):
 		pass
 
 	def run(self):
 		try:
 			self.send('started')
+			self.before()
 			self.do()
 
 		except:
@@ -50,10 +57,13 @@ class CirchartImportFastaProcess(CirchartBaseProcess):
 		seqs = [(seq.name, len(seq)) for seq in fa]
 		self.send('result', seqs)
 
+class CirchartCircosPlotProcess(CirchartBaseProcess):
+	def before(self):
+		self.workdir = self.params.pop('workdir')
+		confile = os.path.join(self.workdir, 'plot.conf')
+		configer = CirchartCircosConfiger(self.params)
+		configer.save_to_file(confile)
 
-
-
-
-
-
+	def do(self):
+		pass
 

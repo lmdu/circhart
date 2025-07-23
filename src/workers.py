@@ -1,3 +1,4 @@
+import os
 import traceback
 import multiprocessing
 
@@ -13,6 +14,7 @@ from backend import *
 
 __all__ = [
 	'CirchartImportGenomeWorker',
+	'CirchartCircosPlotWorker',
 ]
 
 class CirchartWorkerSignals(QObject):
@@ -109,16 +111,23 @@ class CirchartCircosPlotWorker(CirchartProcessWorker):
 
 	def make_tempdir(self):
 		self.tempdir = QTemporaryDir()
+		self.tempdir.setAutoRemove(False)
 
 		if not self.tempdir.isValid():
-			riase Exception("Could not create temporary directory")
+			raise Exception("Could not create temporary directory")
 
 		return self.tempdir.path()
 
 	def preprocess(self):
 		workdir = self.make_tempdir()
+		self.params['workdir'] = workdir
 
 		for index in self.params['karyotype']:
+			outfile = "{}{}.txt".format('karyotype', index)
+			data = SqlControl.get_data_content('karyotype', index)
+			save_circos_data(workdir, outfile, data)
+
+
 
 
 

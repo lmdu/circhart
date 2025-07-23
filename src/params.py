@@ -1,3 +1,6 @@
+import re
+
+import yattag
 from superqt import *
 from qt_parameters import *
 
@@ -7,6 +10,7 @@ from PySide6.QtWidgets import *
 
 __all__ = [
 	'CirchartCircosParameter',
+	'CirchartCircosConfiger',
 ]
 
 class HiddenParameter(ParameterWidget):
@@ -66,13 +70,65 @@ class CirchartCircosParameter(ParameterEditor):
 		self.create_name_widget(param['plot_name'])
 		self.create_karyotype_param(param['karyotype'])
 		self.create_ideogram_form()
+		return self.values()
 
-		
+class CirchartCircosConfiger(yattag.SimpleDoc):
+	def __init__(self, params):
+		super().__init__(stag_end='>')
+
+		self.params = params
+		self.parse()
+
+	def option(self, name, value, unit=''):
+		line = "{} = {}{}".format(name, value, unit)
+		self.asis(line)
+		self.nl()
+
+	def include(self, confile):
+		self.stag('include', confile)
+		#self.nl()
+
+	def parse(self):
+		tag = self.tag
+		option = self.option
+		include = self.include
+
+		#karyotype
+		kfiles = ['karyotype{}.txt'.format(i) \
+			for i in self.params['karyotype']]
+		option('karyotype', ','.join(kfiles))
+
+		#ideogram
+		ps = self.params['ideogram']
+		with tag('ideogram'):
+			for k, v in ps.items():
+				if k == 'spacing':
+					with tag('spacing'):
+						option('default', v)
+				else:
+					option(k, v)
+
+		with tag('image'):
+			include('image')
+
+		include('colors_fonts_patterns')
+		include('housekeeping')
+
+	def save_to_file(self, file):
+		content = yattag.indent(self.getvalue(),
+			indentation = ' ',
+			newline = '\n',
+			indent_text = True
+		)
+
+		content = re.sub(r'\<include (.*)\>', r'<<include etc/\1.conf>>', content)
+
+		with open(file, 'w') as fw:
+			fw.write(content)
 
 class CirchartSnailParameter(ParameterEditor):
 	def __init__(self, parent=None):
 		super().__init__(parent)
-
 
 
 

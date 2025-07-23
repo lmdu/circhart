@@ -348,8 +348,12 @@ class SqlControl:
 
 	@staticmethod
 	def get_data_content(type, index):
-		sql = SqlQuery('{}_{}'.format(type, index))\
-			.select()
+		table = '{}_{}'.format(type, index)
+		fields = SqlBase.get_fields(table)
+		fields = fields[1:]
+
+		sql = SqlQuery(table)\
+			.select(*fields)
 
 		return SqlBase.get_rows(sql)
 

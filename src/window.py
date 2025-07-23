@@ -315,13 +315,18 @@ class CirchartMainWindow(QMainWindow):
 			return
 
 		worker = CirchartImportGenomeWorker({'fasta': gfile})
-		worker.signals.error.connect(self.show_error_message)
 		worker.signals.success.connect(self.data_tree.update_tree)
+		self.submit_new_worker(worker)
+
+	def submit_new_worker(self, worker):
+		if self.wait_spinner.running:
+			return QMessageBox.warning(self, "Warning", "A task is already running")
+
+		worker.signals.error.connect(self.show_error_message)
 		worker.signals.started.connect(self.wait_spinner.start)
 		worker.signals.finished.connect(self.wait_spinner.stop)
 		worker.signals.toggle.connect(self.wait_action.setVisible)
 		QThreadPool.globalInstance().start(worker)
-
 
 	def do_import_genome_annot(self):
 		pass
@@ -353,8 +358,11 @@ class CirchartMainWindow(QMainWindow):
 
 		if params:
 			params['plot_id'] = SqlControl.add_plot(params['plot_name'], 'circos')
-			self.plot_tree.update_tree()
-			self.circos_panel.new_circos_plot(params)
+			params = self.circos_panel.new_circos_plot(params)
+
+			worker = CirchartCircosPlotWorker(params)
+			worker.signals.success.connect(self.plot_tree.update_tree)
+			self.submit_new_worker(worker)
 
 
 	def do_add_circos_track(self):
