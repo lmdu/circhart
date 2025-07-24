@@ -228,13 +228,62 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 	def __init__(self, parent):
 		super().__init__(parent)
 
-		self.scene = QGraphicsScene(self)
-		self.setScene(self.scene)
+		self.setScene(QGraphicsScene(self))
+		self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
+		self.setDragMode(QGraphicsView.ScrollHandDrag)
+		self.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
+
+		self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+		self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+		self.setRenderHints(QPainter.Antialiasing | QPainter.SmoothPixmapTransform)
+
+		#self.create_plot()
+
+	def wheelEvent(self, event):
+		if event.angleDelta().y() > 0:
+			self.scale(1.15, 1.15)
+
+		else:
+			self.scale(1.0/1.15, 1.0/1.15)
+
+		event.accept()
+
+	def fit_view(self):
+		view_rect = self.viewport().rect()
+		svg_rect = self.svg_item.boundingRect()
+
+		x_ratio = view_rect.width() / svg_rect.width()
+		y_ratio = view_rect.height() / svg_rect.height()
+		m_ratio = min(x_ratio, y_ratio) * 0.95
+
+		self.resetTransform()
+		self.scale(m_ratio, m_ratio)
+		self.centerOn(self.svg_item)
+
+	def load_svg(self, svg_str):
+		self.scene().clear()
+		self.resetTransform()
+		svg_data = QByteArray(svg_str.encode())
+		self.svg_item = QGraphicsSvgItem()
+		self.svg_item.renderer().load(svg_data)
+		self.svg_item.setElementId("")
+		self.svg_item.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
+		self.scene().addItem(self.svg_item)
+		#self.fit_view()
+		self.fitInView(self.svg_item, Qt.KeepAspectRatio)
 
 	def show_plot(self, plotid):
 		svg_str = SqlControl.get_svg(plotid)
-		svg_data = QByteArray(svg_str.encode('utf-8'))
-		svg_render = QSvgRenderer(svg_data)
-		svg_item = QGraphicsSvgItem()
-		svg_item.setSharedRenderer(svg_render)
-		self.scene.addItem(svg_item)
+		self.load_svg(svg_str)
+
+	def create_plot(self):
+		with open('test/circos.svg') as fh:
+			svg_str = fh.read()
+
+		self.load_svg(svg_str)
+
+
+
+
+

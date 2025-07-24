@@ -134,6 +134,16 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 		configer = CirchartCircosConfiger(self.params)
 		configer.save_to_file(confile)
 
+	def process_error(self):
+		error_data = self.runner.readAllStandardError()
+		error_str = error_data.data().decode()
+
+		if error_str:
+			self.signals.error.emit(error_str)
+
+			if APP_DEBUG:
+				print(error_str)
+
 	def process(self):
 		parent = QObject()
 		self.runner = self.processor(parent, self.tempdir.path())
@@ -141,7 +151,7 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 		self.runner.finished.connect(loop.quit)
 		self.runner.finished.connect(self.save_result)
 		self.runner.errorOccurred.connect(loop.quit)
-		self.runner.errorOccurred.connect(self.signals.error.emit)
+		self.runner.readyReadStandardError.connect(self.process_error)
 		self.runner.start()
 		loop.exec()
 

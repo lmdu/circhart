@@ -70,6 +70,18 @@ class CirchartCircosParameter(ParameterEditor):
 		param.set_default(0.005)
 		form.add_parameter(param)
 
+		param = FloatParameter('radius')
+		param.set_default(0.95)
+		form.add_parameter(param)
+
+		param = IntParameter('thickness')
+		param.set_default(10)
+		form.add_parameter(param)
+
+		param = SwitchParameter('fill')
+		param.set_default('yes')
+		form.add_parameter(param)
+
 	def new_circos_plot(self, param):
 		self.clear()
 		self.create_name_widget(param['plot_name'])
@@ -110,7 +122,14 @@ class CirchartCircosConfiger(yattag.SimpleDoc):
 			for k, v in ps.items():
 				if k == 'spacing':
 					with tag('spacing'):
-						option('default', v)
+						option('default', v, 'r')
+
+				elif k == 'radius':
+					option(k, v, 'r')
+
+				elif k == 'thickness':
+					option(k, v, 'p')
+
 				else:
 					option(k, v)
 
