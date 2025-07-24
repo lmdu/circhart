@@ -1,9 +1,12 @@
 import os
 import csv
+import json
 
 __all__ = [
 	'AttrDict',
 	'save_circos_data',
+	'dict_to_str',
+	'str_to_dict',
 ]
 
 class AttrDict(dict):
@@ -23,4 +26,10 @@ def save_circos_data(workdir, filename, data):
 		writer = csv.writer(fw, delimiter=' ', quoting=csv.QUOTE_NONE)
 		writer.writerows(data)
 
+
+def dict_to_str(obj):
+	return json.dumps(obj)
+
+def str_to_dict(obj):
+	return json.loads(obj)
 

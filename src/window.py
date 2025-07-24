@@ -50,7 +50,7 @@ class CirchartMainWindow(QMainWindow):
 		self.setWindowTitle("{} v{}".format(APP_NAME, APP_VERSION))
 		self.setWindowIcon(QIcon('icons/logo.svg'))
 
-		self.plot_view = QGraphicsView(self)
+		self.plot_view = CirchartGraphicsViewWidget(self)
 		self.data_table = CirchartDataTableWidget(self)
 		self.data_tree = CirchartDataTreeWidget(self)
 		self.data_tree.show_data.connect(self.data_table.change_table)
@@ -362,6 +362,7 @@ class CirchartMainWindow(QMainWindow):
 
 			worker = CirchartCircosPlotWorker(params)
 			worker.signals.success.connect(self.plot_tree.update_tree)
+			worker.signals.result.connect(self.show_svg_plot)
 			self.submit_new_worker(worker)
 
 
@@ -390,6 +391,12 @@ class CirchartMainWindow(QMainWindow):
 	def show_data_table(self):
 		if self.stack_widget.currentIndex() != 1:
 			self.stack_widget.setCurrentIndex(1)
+
+	def show_svg_plot(self, plot_id):
+		if self.stack_widget.currentIndex() != 0:
+			self.stack_widget.setCurrentIndex(0)
+
+		self.plot_view.show_plot(plot_id)
 
 
 

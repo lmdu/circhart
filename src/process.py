@@ -5,6 +5,8 @@ import multiprocessing
 
 import pyfastx
 
+from PySide6.QtCore import *
+
 from config import *
 from utils import *
 from params import *
@@ -57,13 +59,12 @@ class CirchartImportFastaProcess(CirchartBaseProcess):
 		seqs = [(seq.name, len(seq)) for seq in fa]
 		self.send('result', seqs)
 
-class CirchartCircosPlotProcess(CirchartBaseProcess):
-	def before(self):
-		self.workdir = self.params.pop('workdir')
-		confile = os.path.join(self.workdir, 'plot.conf')
-		configer = CirchartCircosConfiger(self.params)
-		configer.save_to_file(confile)
+class CirchartCircosPlotProcess(QProcess):
+	def __init__(self, parent, workdir):
+		super().__init__(parent)
+		self.setProgram(CIRCOS_COMMAND)
+		self.setArguments(['-conf', 'plot.conf'])
+		self.setWorkingDirectory(workdir)
 
-	def do(self):
-		pass
+		
 

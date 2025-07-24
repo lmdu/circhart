@@ -9,6 +9,7 @@ from PySide6.QtCore import *
 from config import *
 from utils import *
 from models import *
+from params import *
 from process import *
 from backend import *
 
@@ -88,8 +89,8 @@ class CirchartProcessWorker(CirchartBaseWorker):
 				self.queue.close()
 
 	def process(self):
-		proc = self.processor(self.queue, self.params)
-		proc.start()
+		self.runner = self.processor(self.queue, self.params)
+		self.runner.start()
 
 		while True:
 			try:
@@ -114,7 +115,7 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 
 	def make_tempdir(self):
 		self.tempdir = QTemporaryDir()
-		#self.tempdir.setAutoRemove(False)
+		self.tempdir.setAutoRemove(False)
 
 		if not self.tempdir.isValid():
 			raise Exception("Could not create temporary directory")
@@ -123,27 +124,40 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 
 	def preprocess(self):
 		workdir = self.make_tempdir()
-		self.params['workdir'] = workdir
 
 		for index in self.params['karyotype']:
 			outfile = "{}{}.txt".format('karyotype', index)
 			data = SqlControl.get_data_content('karyotype', index)
 			save_circos_data(workdir, outfile, data)
 
-	def process(self):
-		self.runner = QProcess(self)
-		self.runner.setProgram(str(CIRCOS_COMMAND))
-		self.runner.setArguments(["-modules"])
-		self.updator.clicked.connect(self.runner.start)
-		self.runner.started.connect(self.spinner.start)
-		self.runner.errorOccurred.connect(self.on_error_occurred)
-		self.runner.errorOccurred.connect(self.spinner.stop)
-		self.runner.finished.connect(self.on_update_finished)
-		self.runner.finished.connect(self.spinner.stop)
-		self.runner.start()
+		confile = os.path.join(workdir, 'plot.conf')
+		configer = CirchartCircosConfiger(self.params)
+		configer.save_to_file(confile)
 
-	def save_result(self, res):
-		pass
+	def process(self):
+		parent = QObject()
+		self.runner = self.processor(parent, self.tempdir.path())
+		loop = QEventLoop()
+		self.runner.finished.connect(loop.quit)
+		self.runner.finished.connect(self.save_result)
+		self.runner.errorOccurred.connect(loop.quit)
+		self.runner.errorOccurred.connect(self.signals.error.emit)
+		self.runner.start()
+		loop.exec()
+
+	def save_result(self):
+		svg_file = os.path.join(self.tempdir.path(), 'circos.svg')
+
+		if os.path.isfile(svg_file):
+			with open(svg_file) as fh:
+				content = fh.read()
+
+			params = dict_to_str(self.params)
+			plotid = self.params['plotid']
+			SqlControl.update_plot(params, content, plotid)
+
+			self.signals.result.emit(plotid)
+		
 
 
 

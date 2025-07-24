@@ -1,10 +1,13 @@
 import math
 
+from PySide6.QtSvg import *
 from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
+from PySide6.QtSvgWidgets import *
 
 from models import *
+from backend import *
 
 __all__ = [
 	'CirchartSpacerWidget',
@@ -13,6 +16,7 @@ __all__ = [
 	'CirchartPlotTreeWidget',
 	'CirchartDataTableWidget',
 	'CirchartCheckTableWidget',
+	'CirchartGraphicsViewWidget',
 ]
 
 class CirchartSpacerWidget(QWidget):
@@ -220,3 +224,17 @@ class CirchartCheckTableWidget(CirchartDataTableWidget):
 	def is_selected(self):
 		return True if self._model.selected else False
 
+class CirchartGraphicsViewWidget(QGraphicsView):
+	def __init__(self, parent):
+		super().__init__(parent)
+
+		self.scene = QGraphicsScene(self)
+		self.setScene(self.scene)
+
+	def show_plot(self, plotid):
+		svg_str = SqlControl.get_svg(plotid)
+		svg_data = QByteArray(svg_str.encode('utf-8'))
+		svg_render = QSvgRenderer(svg_data)
+		svg_item = QGraphicsSvgItem()
+		svg_item.setSharedRenderer(svg_render)
+		self.scene.addItem(svg_item)

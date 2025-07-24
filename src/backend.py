@@ -365,6 +365,23 @@ class SqlControl:
 		rowid = SqlBase.insert_row(sql, name, type)
 		return rowid
 
+	@staticmethod
+	def update_plot(param, svg, pid):
+		sql = SqlQuery('plot')\
+			.update('param', 'svg')\
+			.where('id=?')
+
+		SqlBase.update_row(sql, param, svg, pid)
+
+	@staticmethod
+	def get_svg(pid):
+		sql = SqlQuery('plot')\
+			.select('svg')\
+			.where('id=?')
+
+		return SqlBase.get_one(sql, pid)
+
+
 
 
 

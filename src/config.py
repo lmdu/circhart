@@ -44,8 +44,8 @@ APP_ID = "{}.{}.{}.{}".format(APP_ORG_NAME, APP_NAME, APP_NAME, APP_VERSION)
 CIRCOS_PATH = ROOT_PATH / 'circos'
 
 if os.name == 'nt':
-	CIRCOS_COMMAND = CIRCOS_PATH / 'bin' / 'circos.exe'
+	CIRCOS_COMMAND = str(CIRCOS_PATH / 'bin' / 'circos.exe')
 else:
-	CIRCOS_COMMAND = CIRCOS_PATH / 'bin' / 'circos'
+	CIRCOS_COMMAND = str(CIRCOS_PATH / 'bin' / 'circos')
 
 
