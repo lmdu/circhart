@@ -13,11 +13,137 @@ __all__ = [
 	'CirchartCircosConfiger',
 ]
 
+class CirchartParameterMixin:
+	_default = 0
+
+	def __init__(self, key, parent=None):
+		super().__init__(parent)
+		self.key = key
+
+	def set_min(self, value):
+		self.setMinimum(value)
+
+	def set_max(self, value):
+		self.setMaximum(value)
+
+	def set_step(self, value):
+		self.setSingleStep(value)
+
+	def get_value(self):
+		return self.value()
+
+	def set_value(self, value):
+		self.setValue(value)
+
+	def set_default(self, default):
+		self._default = default
+		self.set_value(default)
+
+	def restore_default(self):
+		self.set_value(self._default)
+
+	def get_param(self):
+		return {self.key: self.get_value()}
+
+class CirchartIntegerParameter(CirchartParameterMixin, QSpinBox):
+	pass
+
+class CirchartFloatParameter(CirchartParameterMixin, QDoubleSpinBox):
+	pass
+
+class CirchartColorParameter(CirchartParameterMixin, QPushButton):
+	pass
+
+
+
+
+class CirchartParameterAccordion(QWidget):
+	def __init__(self, key, parent=None):
+		super().__init__(parent)
+		self.key = key
+
+		self.box = QWidget(self)
+		self.box.setVisible(True)
+
+		self.header = QToolButton(self)
+		self.header.toggled.connect(self.on_checked)
+		self.header.toggled.connect(self.box.setVisible)
+		self.expand_icon = QIcon('icons/down.svg')
+		self.collapse_icon = QIcon('icons/right.svg')
+		self.header.setIcon(self.collapse_icon)
+		self.header.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
+
+		self.set_layout()
+
+		self.set_title(self.key.replace('_', ' ').title())
+
+	def set_title(self, text):
+		self.header.setText(text)
+
+	def set_layout(self):
+		main_layout = QVBoxLayout()
+		main_layout.setContentsMargins(0, 0, 0, 0)
+		main_layout.addWidget(self.header)
+		main_layout.addWidget(self.box)
+
+		self.form_layout = QFormLayout()
+		self.box.setLayout(self.form_layout)
+
+		self.setLayout(main_layout)
+
+	def on_checked(self.checked):
+		if checked:
+			self.header.setIcon(self.expand_icon)
+		else:
+			self.header.setIcon(self.collapse_icon)
+
+class CirchartParameterManager(QScrollArea):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self.setFrameStyle(QFrame.NoFrame)
+		self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+		self.setWidgetResizable(True)
+
+		self.main_widget = QWidget(self)
+		self.main_layout = QVBoxLayout()
+		self.main_layout.setContentsMargins(0, 0, 2, 0)
+		self.main_widget.setLayout(self.main_layout)
+		self.setWidget(self.main_widget)
+
+		self.accordions = {}
+
+		self.create_parameters()
+
+	def sizeHint(self):
+		return QSize(200, 0)
+
+	def add_accordion(self, name, accordion):
+		self.accordions[name] = accordion
+		self.main_layout.addWidget(accordion)
+
+	def create_parameters(self):
+		pass
+
+
+
+class CirchartCircosParamterManager(CirchartParameterManager):
+
+
+
+
+
+
 class HiddenParameter(ParameterWidget):
 	def __init__(self, name):
 		super().__init__(name)
 		self.set_label(None)
 		self.hide()
+
+class SingleColorParameter(ParameterWidget):
+	def _init_ui(self):
+		self.button = QPushButton()
+
 
 class SwitchParameter(ParameterWidget):
 	def _init_ui(self):
@@ -75,12 +201,24 @@ class CirchartCircosParameter(ParameterEditor):
 		form.add_parameter(param)
 
 		param = IntParameter('thickness')
-		param.set_default(10)
+		param.set_default(30)
 		form.add_parameter(param)
 
 		param = SwitchParameter('fill')
 		param.set_default('yes')
 		form.add_parameter(param)
+
+		param = IntParameter('stroke_thickness')
+		param.set_default(1)
+		form.add_parameter(param)
+
+		param = ColorParameter('stroke_color')
+		param.set_color_min(0)
+		param.set_color_max(255)
+		param.set_decimals(0)
+		param.set_default(QColor(0, 0,0 ))
+		form.add_parameter(param)
+
 
 	def new_circos_plot(self, param):
 		self.clear()

@@ -353,24 +353,28 @@ class CirchartMainWindow(QMainWindow):
 		dlg = CirchartCircosDependencyDialog(self)
 		dlg.exec()
 
+	def draw_circos_plot(self, params):
+		worker = CirchartCircosPlotWorker(params)
+		worker.signals.success.connect(self.plot_tree.update_tree)
+		worker.signals.result.connect(self.show_svg_plot)
+		self.submit_new_worker(worker)
+
 	def do_create_circos_plot(self):
 		params = CirchartCreateCircosPlotDialog.create_plot(self)
 
 		if params:
 			params['plot_id'] = SqlControl.add_plot(params['plot_name'], 'circos')
 			params = self.circos_panel.new_circos_plot(params)
-
-			worker = CirchartCircosPlotWorker(params)
-			worker.signals.success.connect(self.plot_tree.update_tree)
-			worker.signals.result.connect(self.show_svg_plot)
-			self.submit_new_worker(worker)
+			self.draw_circos_plot(params)
 
 
 	def do_add_circos_track(self):
 		pass
 
 	def do_update_circos_plot(self):
-		pass
+		params = self.circos_panel.values()
+		self.draw_circos_plot(params)
+
 
 	def go_to_about(self):
 		QMessageBox.about(self, "About", APP_DESCRIPTION)
