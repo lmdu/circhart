@@ -270,7 +270,7 @@ class CirchartMainWindow(QMainWindow):
 		#self.sidebar.setWidget(self.collapse)
 
 	def create_plot_panels(self):
-		self.circos_panel = CirchartCircosParameter()
+		self.circos_panel = CirchartCircosParameterManager(self)
 		self.snail_panel = qtp.ParameterEditor()
 
 		self.param_stack.addWidget(self.circos_panel)

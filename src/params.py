@@ -11,6 +11,7 @@ from PySide6.QtWidgets import *
 __all__ = [
 	'CirchartCircosParameter',
 	'CirchartCircosConfiger',
+	'CirchartCircosParameterManager'
 ]
 
 class CirchartParameterMixin:
@@ -20,6 +21,11 @@ class CirchartParameterMixin:
 		super().__init__(parent)
 		self.key = key
 
+		self._init_widget()
+
+	def _init_widget(self):
+		pass
+
 	def set_min(self, value):
 		self.setMinimum(value)
 
@@ -28,6 +34,9 @@ class CirchartParameterMixin:
 
 	def set_step(self, value):
 		self.setSingleStep(value)
+
+	def set_decimals(self, value):
+		self.setDecimals(value)
 
 	def get_value(self):
 		return self.value()
@@ -39,11 +48,20 @@ class CirchartParameterMixin:
 		self._default = default
 		self.set_value(default)
 
-	def restore_default(self):
+	def reset_default(self):
 		self.set_value(self._default)
 
 	def get_param(self):
 		return {self.key: self.get_value()}
+
+class CirchartHiddenParameter(CirchartParameterMixin, QWidget):
+	_value = None
+
+	def set_value(self, value):
+		self._value = value
+
+	def get_value(self):
+		return self._value
 
 class CirchartIntegerParameter(CirchartParameterMixin, QSpinBox):
 	pass
@@ -51,11 +69,40 @@ class CirchartIntegerParameter(CirchartParameterMixin, QSpinBox):
 class CirchartFloatParameter(CirchartParameterMixin, QDoubleSpinBox):
 	pass
 
+class CirchartStringParameter(CirchartParameterMixin, QLineEdit):
+	def get_value(self):
+		return self.text()
+
+	def set_value(self, value):
+		self.setText(value)
+
 class CirchartColorParameter(CirchartParameterMixin, QPushButton):
-	pass
+	def _init_widget(self):
+		self.setFocusPolicy(Qt.NoFocus)
+		self.clicked.connect(self._on_pick_color)
+		self.setMaximumWidth(self.sizeHint().height())
 
+	def _on_pick_color(self):
+		color = QColorDialog.getColor(self.get_color())
 
+		if color.isValid():
+			self.set_color(color)
 
+	def get_color(self):
+		return self.palette().color()
+
+	def set_color(self, color):
+		self.setPalette(QPalette(color))
+
+	def set_value(self, value):
+		r, g, b = value.split(',')
+		color = QColor(int(r), int(g), int(b))
+		self.set_color(color)
+
+	def get_value(self, value):
+		color = self.get_color()
+		rgb = [str(color.red()), str(color.green()), str(color.blue())]
+		return ','.join(rgb)
 
 class CirchartParameterAccordion(QWidget):
 	def __init__(self, key, parent=None):
@@ -91,11 +138,17 @@ class CirchartParameterAccordion(QWidget):
 
 		self.setLayout(main_layout)
 
-	def on_checked(self.checked):
+	def on_checked(self, checked):
 		if checked:
 			self.header.setIcon(self.expand_icon)
 		else:
 			self.header.setIcon(self.collapse_icon)
+
+	def add_parameter(self, param, label=None):
+		if label is None:
+			label = param.key.replace('_', ' ').title()
+
+		self.form_layout.addRow(label, param)
 
 class CirchartParameterManager(QScrollArea):
 	def __init__(self, parent=None):
@@ -111,23 +164,69 @@ class CirchartParameterManager(QScrollArea):
 		self.main_widget.setLayout(self.main_layout)
 		self.setWidget(self.main_widget)
 
-		self.accordions = {}
-
-		self.create_parameters()
-
 	def sizeHint(self):
 		return QSize(200, 0)
 
-	def add_accordion(self, name, accordion):
-		self.accordions[name] = accordion
-		self.main_layout.addWidget(accordion)
+	def add_widget(self, param):
+		self.main_layout.addWidget(param)
 
-	def create_parameters(self):
-		pass
+class CirchartCircosParameterManager(CirchartParameterManager):
+	def create_name_widget(self, name):
+		label = QLabel(name, self)
+		self.add_widget(label)
+
+	def create_plotid_param(self, value):
+		param = CirchartHiddenParameter('plotid', self)
+		param.set_value(value)
+		self.add_widget(param)
+
+	def create_karyotype_param(self, value):
+		param = CirchartHiddenParameter('karyotype', self)
+		param.set_value(value)
+		self.add_widget(param)
+
+	def create_ideogram_form(self):
+		form = CirchartParameterAccordion('ideogram', self)
+
+		param = CirchartFloatParameter('spacing')
+		param.set_decimals(5)
+		param.set_default(0.005)
+		form.add_parameter(param)
+
+		param = CirchartFloatParameter('radius')
+		param.set_decimals(5)
+		param.set_default(0.95)
+		form.add_parameter(param)
+
+		param = CirchartIntegerParameter('thickness')
+		param.set_min(0)
+		param.set_max(200)
+		param.set_default(30)
+		form.add_parameter(param)
+
+		#param = SwitchParameter('fill')
+		#param.set_default('yes')
+		#form.add_parameter(param)
+
+		param = CirchartIntegerParameter('stroke_thickness')
+		param.set_min(0)
+		param.set_max(20)
+		param.set_default(1)
+		form.add_parameter(param)
+
+		param = CirchartColorParameter('stroke_color')
+		param.set_default("0,0,0")
+		form.add_parameter(param)
+
+		self.add_widget(form)
 
 
+	def new_circos_plot(self, param):
+		self.create_name_widget(param['plot_name'])
+		self.create_plotid_param(param['plot_id'])
+		self.create_karyotype_param(param['karyotype'])
+		self.create_ideogram_form()
 
-class CirchartCircosParamterManager(CirchartParameterManager):
 
 
 
