@@ -201,6 +201,10 @@ class CirchartParameterAccordion(QWidget):
 		main_layout.addWidget(self.box)
 
 		self.form_layout = QFormLayout()
+		self.form_layout.setRowWrapPolicy(QFormLayout.DontWrapRows)
+		self.form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
+		self.form_layout.setFormAlignment(Qt.AlignHCenter | Qt.AlignTop)
+		self.form_layout.setLabelAlignment(Qt.AlignLeft)
 		self.box.setLayout(self.form_layout)
 
 		self.setLayout(main_layout)
@@ -235,6 +239,9 @@ class CirchartParameterManager(QScrollArea):
 		self.main_layout.setAlignment(Qt.AlignTop)
 		self.main_widget.setLayout(self.main_layout)
 		self.setWidget(self.main_widget)
+
+		w = CirchartIntegerParameter('dd', self)
+		self.main_layout.addWidget(w)
 
 	def sizeHint(self):
 		return QSize(200, 0)
