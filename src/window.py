@@ -27,7 +27,7 @@ class CirchartApplication(QApplication):
 		super().__init__(argv)
 
 		self.load_style()
-		#self.setStyle(QStyleFactory.create('windowsvista'))
+		self.setStyle(QStyleFactory.create('windowsvista'))
 
 	def event(self, event):
 		if sys.platform == 'darwin':
@@ -253,6 +253,7 @@ class CirchartMainWindow(QMainWindow):
 
 
 		self.param_dock = QDockWidget("Paramter", self)
+		self.param_dock.layout().setContentsMargins(0, 0, 0, 0)
 		self.param_dock.setAllowedAreas(Qt.LeftDockWidgetArea | Qt.RightDockWidgetArea)
 		self.addDockWidget(Qt.RightDockWidgetArea, self.param_dock)
 		self.param_dock_act = self.param_dock.toggleViewAction()
@@ -271,10 +272,10 @@ class CirchartMainWindow(QMainWindow):
 
 	def create_plot_panels(self):
 		self.circos_panel = CirchartCircosParameterManager(self)
-		self.snail_panel = qtp.ParameterEditor()
+		#self.snail_panel = qtp.ParameterEditor()
 
 		self.param_stack.addWidget(self.circos_panel)
-		self.param_stack.addWidget(self.snail_panel)
+		#self.param_stack.addWidget(self.snail_panel)
 
 
 

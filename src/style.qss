@@ -94,6 +94,11 @@ QHeaderView::section:horizontal:middle {
 	border-right: 1px solid #e6e6e6;
 }
 
+QStatusBar {
+	border-top: 1px solid #e8e8e8;
+	background: #fafafa;
+}
+
 QTreeView {
 	border: none;
 }
@@ -108,4 +113,45 @@ QGraphicsView {
 
 QStackedWidget {
 	border: none;
+	background: red;
 }
+
+QDockWidget {
+	border: 2px solid red;
+	background: none;
+}
+
+QMainWindow::separator {
+	width: 1px;
+	height: 1px;
+	background: #d6d6d6;
+}
+
+QMainWindow::separator:hover,
+QMainWindow::separator:pressed {
+	background: #a0a0a0;
+}
+
+/* custom widgets */
+CirchartAccordionHeader {
+	text-align: left;
+	border-left: none;
+	border-right: none;
+	border-radius: none;
+}
+
+CirchartEmptyWidget {
+	background-color: #fafafa;
+	border: 1px solid blue;
+}
+
+CirchartParameterAccordion {
+	background-color: #fafafa;
+}
+
+CirchartParameterManager {
+	border: none;
+	background: #fafafa;
+}
+
+

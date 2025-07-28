@@ -76,7 +76,56 @@ class CirchartStringParameter(CirchartParameterMixin, QLineEdit):
 	def set_value(self, value):
 		self.setText(value)
 
+class CirchartBoolParameter(CirchartParameterMixin, QCheckBox):
+	def _init_widget(self):
+		self.setFixedSize(60, 30)
+		self.stateChanged.connect(self.update)
+
+	def paintEvent(self, event):
+		painter = QPainter(self)
+		painter.setRenderHint(QPainter.Antialiasing)
+
+		bg_color = QColor("#4CAF50") if self.isChecked() else QColor("#CCCCCC")
+		knob_color = QColor("#FFFFFF")
+		border_color = QColor("#888888")
+		
+		rect = self.rect().adjusted(2, 2, -2, -2)
+		painter.setPen(QPen(border_color, 1))
+		painter.setBrush(bg_color)
+		painter.drawRoundedRect(rect, 10, 10)
+
+		knob_radius = 13
+		if self.isChecked():
+			knob_pos = QPoint(self.width() - knob_radius - 4, self.height() // 2)
+		else:
+			knob_pos = QPoint(knob_radius + 4, self.height() // 2)
+		
+		painter.setPen(Qt.NoPen)
+		painter.setBrush(knob_color)
+		painter.drawEllipse(knob_pos, knob_radius, knob_radius)
+
+		text = "ON" if self.isChecked() else "OFF"
+		text_color = QColor("#FFFFFF") if self.isChecked() else QColor("#666666")
+
+		painter.setPen(text_color)
+		painter.setFont(self.font())
+		text_rect = QRect(0, 0, self.width() - 20, self.height())
+
+		if self.isChecked():
+			painter.drawText(text_rect, Qt.AlignLeft | Qt.AlignVCenter, text)
+		else:
+			painter.drawText(text_rect, Qt.AlignRight | Qt.AlignVCenter, text)
+
+	def get_value(self):
+		return 'yes' if self.isChecked() else 'no'
+
+	def set_value(self, value):
+		value = True if value == 'yes' else False
+		self.setChecked(value)
+
 class CirchartColorParameter(CirchartParameterMixin, QPushButton):
+	_color = "255,255,255"
+
 	def _init_widget(self):
 		self.setFocusPolicy(Qt.NoFocus)
 		self.clicked.connect(self._on_pick_color)
@@ -86,43 +135,61 @@ class CirchartColorParameter(CirchartParameterMixin, QPushButton):
 		color = QColorDialog.getColor(self.get_color())
 
 		if color.isValid():
-			self.set_color(color)
+			r = color.red()
+			g = color.green()
+			b = color.blue()
+			self._color = "{},{},{}".format(r, g, b)
+			self.set_color()
 
 	def get_color(self):
-		return self.palette().color()
+		r, g, b = self._color.split(',')
+		color = QColor(int(r), int(g), int(b))
+		return color
 
-	def set_color(self, color):
-		self.setPalette(QPalette(color))
+	def set_color(self):
+		self.setStyleSheet("background-color:rgb({});".format(self._color))
 
 	def set_value(self, value):
-		r, g, b = value.split(',')
-		color = QColor(int(r), int(g), int(b))
-		self.set_color(color)
+		self._color = value
+		self.set_color()
 
-	def get_value(self, value):
-		color = self.get_color()
-		rgb = [str(color.red()), str(color.green()), str(color.blue())]
-		return ','.join(rgb)
+	def get_value(self):
+		return self._color
+
+class CirchartAccordionHeader(QPushButton):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self.setCheckable(True)
+		self.expand_icon = QIcon('icons/down.svg')
+		self.collapse_icon = QIcon('icons/right.svg')
+		self.setIcon(self.collapse_icon)
+		self.toggled.connect(self._on_clicked)
+
+	def _on_clicked(self, checked):
+		if checked:
+			self.setIcon(self.expand_icon)
+		else:
+			self.setIcon(self.collapse_icon)
+
+class CirchartEmptyWidget(QWidget):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.setVisible(False)
 
 class CirchartParameterAccordion(QWidget):
 	def __init__(self, key, parent=None):
 		super().__init__(parent)
 		self.key = key
 
-		self.box = QWidget(self)
-		self.box.setVisible(True)
-
-		self.header = QToolButton(self)
-		self.header.toggled.connect(self.on_checked)
+		self.box = CirchartEmptyWidget(self)
+		self.header = CirchartAccordionHeader(self)
 		self.header.toggled.connect(self.box.setVisible)
-		self.expand_icon = QIcon('icons/down.svg')
-		self.collapse_icon = QIcon('icons/right.svg')
-		self.header.setIcon(self.collapse_icon)
-		self.header.setToolButtonStyle(Qt.ToolButtonTextBesideIcon)
 
 		self.set_layout()
-
 		self.set_title(self.key.replace('_', ' ').title())
+
+		self.params = {}
 
 	def set_title(self, text):
 		self.header.setText(text)
@@ -138,17 +205,21 @@ class CirchartParameterAccordion(QWidget):
 
 		self.setLayout(main_layout)
 
-	def on_checked(self, checked):
-		if checked:
-			self.header.setIcon(self.expand_icon)
-		else:
-			self.header.setIcon(self.collapse_icon)
-
 	def add_parameter(self, param, label=None):
 		if label is None:
 			label = param.key.replace('_', ' ').title()
 
 		self.form_layout.addRow(label, param)
+		self.params[param.key] = param
+
+	def get_values(self):
+		values = {}
+
+		for k, p in self.params.items():
+			if isinstance(p, CirchartParameterMixin):
+				values.update(p.get_param())
+
+		return {self.key: values}
 
 class CirchartParameterManager(QScrollArea):
 	def __init__(self, parent=None):
@@ -158,9 +229,10 @@ class CirchartParameterManager(QScrollArea):
 		self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 		self.setWidgetResizable(True)
 
-		self.main_widget = QWidget(self)
+		self.main_widget = CirchartEmptyWidget(self)
 		self.main_layout = QVBoxLayout()
 		self.main_layout.setContentsMargins(0, 0, 2, 0)
+		self.main_layout.setAlignment(Qt.AlignTop)
 		self.main_widget.setLayout(self.main_layout)
 		self.setWidget(self.main_widget)
 
@@ -170,6 +242,21 @@ class CirchartParameterManager(QScrollArea):
 	def add_widget(self, param):
 		self.main_layout.addWidget(param)
 
+	def get_values(self):
+		values = {}
+
+		for i in range(self.main_layout.count()):
+			item = self.main_layout.itemAt(i)
+			widget = item.widget()
+
+			if isinstance(widget, CirchartParameterMixin):
+				values.update(widget.get_param())
+
+			elif isinstance(widget, CirchartParameterAccordion):
+				values.update(widget.get_values())
+
+		return values
+	
 class CirchartCircosParameterManager(CirchartParameterManager):
 	def create_name_widget(self, name):
 		label = QLabel(name, self)
@@ -188,34 +275,34 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 	def create_ideogram_form(self):
 		form = CirchartParameterAccordion('ideogram', self)
 
-		param = CirchartFloatParameter('spacing')
+		param = CirchartFloatParameter('spacing', self)
 		param.set_decimals(5)
 		param.set_default(0.005)
 		form.add_parameter(param)
 
-		param = CirchartFloatParameter('radius')
+		param = CirchartFloatParameter('radius', self)
 		param.set_decimals(5)
 		param.set_default(0.95)
 		form.add_parameter(param)
 
-		param = CirchartIntegerParameter('thickness')
+		param = CirchartIntegerParameter('thickness', self)
 		param.set_min(0)
 		param.set_max(200)
 		param.set_default(30)
 		form.add_parameter(param)
 
-		#param = SwitchParameter('fill')
-		#param.set_default('yes')
-		#form.add_parameter(param)
+		param = CirchartBoolParameter('fill', self)
+		param.set_default('yes')
+		form.add_parameter(param)
 
-		param = CirchartIntegerParameter('stroke_thickness')
+		param = CirchartIntegerParameter('stroke_thickness', self)
 		param.set_min(0)
 		param.set_max(20)
 		param.set_default(1)
 		form.add_parameter(param)
 
-		param = CirchartColorParameter('stroke_color')
-		param.set_default("0,0,0")
+		param = CirchartColorParameter('stroke_color', self)
+		param.set_default("255,255,255")
 		form.add_parameter(param)
 
 		self.add_widget(form)
@@ -226,10 +313,7 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		self.create_plotid_param(param['plot_id'])
 		self.create_karyotype_param(param['karyotype'])
 		self.create_ideogram_form()
-
-
-
-
+		return self.get_values()
 
 
 
