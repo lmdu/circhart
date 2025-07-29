@@ -13,6 +13,7 @@ __all__ = [
 	'CirchartSelectDataTagDialog',
 	'CirchartCircosDependencyDialog',
 	'CirchartKaryotypePrepareDialog',
+	'CirchartGCContentPrepareDialog',
 	'CirchartCreateCircosPlotDialog',
 ]
 
@@ -229,7 +230,7 @@ class CirchartKaryotypePrepareDialog(QDialog):
 
 			parent.data_tree.update_tree()
 
-class CirchartGcContentPrepareDialog(QDialog):
+class CirchartGCContentPrepareDialog(QDialog):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 
