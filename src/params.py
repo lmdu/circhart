@@ -205,6 +205,7 @@ class CirchartParameterAccordion(QWidget):
 		self.form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
 		self.form_layout.setFormAlignment(Qt.AlignHCenter | Qt.AlignTop)
 		self.form_layout.setLabelAlignment(Qt.AlignLeft)
+
 		self.box.setLayout(self.form_layout)
 
 		self.setLayout(main_layout)

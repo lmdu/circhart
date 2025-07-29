@@ -223,9 +223,18 @@ class CirchartKaryotypePrepareDialog(QDialog):
 					items.append(('chr', '-', chrid, label, 0, lenght, color))
 
 			kname = "{}_{}".format(dlg.select.currentText(), prefix)
-			SqlControl.add_data(kname, 'karyotype', '', items)
+			index = SqlControl.add_data(kname, 'karyotype', '')
+			SqlControl.create_karyotype_table(index)
+			SqlControl.add_karyotype_data(index, items)
 
 			parent.data_tree.update_tree()
+
+class CirchartGcContentPrepareDialog(QDialog):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self.setWindowTitle("Prepare GC Content")
+		self.resize(QSize(400, 300))
 
 
 class CirchartCreateCircosPlotDialog(QDialog):
@@ -235,7 +244,7 @@ class CirchartCreateCircosPlotDialog(QDialog):
 		self.setWindowTitle("Create New Circos Plot")
 		self.resize(QSize(400, 300))
 
-		self.tree = QTreeWidget(self)
+		self.tree = CirchartEmptyTreeWidget(self)
 		self.tree.setHeaderLabels(['ID', 'Name'])
 		self.tree.setRootIsDecorated(False)
 		self.input = QLineEdit(self)

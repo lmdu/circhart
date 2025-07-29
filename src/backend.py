@@ -68,7 +68,7 @@ class PlotTable(SqlTable):
 
 class GenomeTable(SqlTable):
 	_index = True
-	chromosome = str
+	chrom = str
 	length = int
 
 class KaryotypeTable(SqlTable):
@@ -80,6 +80,14 @@ class KaryotypeTable(SqlTable):
 	start = int
 	end = int
 	color = str
+
+class AnnotationTable(SqlTable):
+	_index = True
+	chrom = str
+	feature = str
+	start = int
+	end = int
+
 
 class SqlQuery:
 	def __init__(self, table):
@@ -306,7 +314,7 @@ class DataBackend:
 			.select('name')\
 			.where('type=?', 'name=?')\
 			.first()
-		res = self.get_one(sql, ('table', table))
+		res = self.get_one(sql, 'table', table)
 		return True if res else False
 
 	def get_fields(self, table):
@@ -318,24 +326,52 @@ SqlBase = DataBackend()
 
 class SqlControl:
 	@staticmethod
-	def add_data(name, type, path, data):
+	def add_data(name, type, path):
 		sql = SqlQuery('data')\
 			.insert('name', 'type', 'path')
 
-		rowid = SqlBase.insert_row(sql, name, type, path)
+		return SqlBase.insert_row(sql, name, type, path)
 
-		match type:
-			case 'genome':
-				table, fields = GenomeTable.table(rowid)
-				sql = SqlQuery(table)\
-					.insert(*GenomeTable.fields())
+	@staticmethod
+	def create_genome_table(index):
+		table, fields = GenomeTable.table(index)
 
-			case 'karyotype':
-				table, fields = KaryotypeTable.table(rowid)
-				sql = SqlQuery(table)\
-					.insert(*KaryotypeTable.fields())
+		if not SqlBase.has_table(table):
+			SqlBase.create_table(table, fields)
 
-		SqlBase.create_table(table, fields)
+	@staticmethod
+	def add_genome_data(index, data):
+		table, _ = GenomeTable.table(index)
+		sql = SqlQuery(table)\
+			.insert(*GenomeTable.fields())
+		SqlBase.insert_rows(sql, data)
+
+	@staticmethod
+	def create_karyotype_table(index):
+		table, fields = KaryotypeTable.table(index)
+
+		if not SqlBase.has_table(table):
+			SqlBase.create_table(table, fields)
+
+	@staticmethod
+	def add_karyotype_data(index, data):
+		table, _ = KaryotypeTable.table(index)
+		sql = SqlQuery(table)\
+			.insert(*KaryotypeTable.fields())
+		SqlBase.insert_rows(sql, data)
+
+	@staticmethod
+	def create_annotation_table(index):
+		table, fields = AnnotationTable.table(index)
+
+		if not SqlBase.has_table(table):
+			SqlBase.create_table(table, fields)
+
+	@staticmethod
+	def add_annotation_data(index, data):
+		table, _ = AnnotationTable.table(index)
+		sql = SqlQuery(table)\
+			.insert(*AnnotationTable.fields())
 		SqlBase.insert_rows(sql, data)
 
 	@staticmethod

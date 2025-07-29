@@ -1,4 +1,5 @@
 import os
+import gzip
 import time
 import traceback
 import multiprocessing
@@ -13,6 +14,7 @@ from params import *
 
 __all__ = [
 	'CirchartImportFastaProcess',
+	'CirchartImportAnnotationProcess',
 	'CirchartCircosPlotProcess',
 ]
 
@@ -56,8 +58,41 @@ class CirchartBaseProcess(multiprocessing.Process):
 class CirchartImportFastaProcess(CirchartBaseProcess):
 	def do(self):
 		fa = pyfastx.Fasta(self.params.fasta)
-		seqs = [(seq.name, len(seq)) for seq in fa]
-		self.send('result', seqs)
+
+		rows = []
+		for seq in fa:
+			rows.append((seq.name, len(seq)))
+
+			if len(rows) == 200:
+				self.send('result', rows)
+
+		if rows:
+			self.send('result', rows)
+
+class CirchartImportAnnotationProcess(CirchartBaseProcess):
+	def do(self):
+		if self.params.annotation.endswith('.gz'):
+			fp = gzip.open(self.params.annotation, 'rt')
+		else:
+			fp = open(self.params.annotation)
+
+		rows = []
+
+		with fp:
+			for line in fp:
+				if line.startswith('#'):
+					continue
+
+				cols = line.strip().split('\t')
+
+				if cols:
+					rows.append((cols[0], cols[2], int(cols[3]), int(cols[4])))
+
+				if len(rows) == 200:
+					self.send('result', rows)
+
+		if rows:
+			self.send('result', rows)
 
 class CirchartCircosPlotProcess(QProcess):
 	def __init__(self, parent, workdir):

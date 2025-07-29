@@ -97,7 +97,7 @@ class CirchartMainWindow(QMainWindow):
 		)
 
 		self.import_annot_act = QAction("&Import Genome Annotation...", self,
-			triggered = self.do_import_genome_annot
+			triggered = self.do_import_genome_annotation
 		)
 
 		self.import_kdata_act = QAction("&Import Karyotype Data...", self,
@@ -305,7 +305,7 @@ class CirchartMainWindow(QMainWindow):
 
 	def do_import_genome_file(self):
 		gfile, _ = QFileDialog.getOpenFileName(self, "Select Genome File",
-			filter=(
+			filter = (
 				"Fasta file (*.fa *.fas *.fna *.fasta "
 				"*.fa.gz *.fas.gz *.fna.gz *.fasta.gz);;"
 				"All files (*.*)"
@@ -329,8 +329,20 @@ class CirchartMainWindow(QMainWindow):
 		worker.signals.toggle.connect(self.wait_action.setVisible)
 		QThreadPool.globalInstance().start(worker)
 
-	def do_import_genome_annot(self):
-		pass
+	def do_import_genome_annotation(self):
+		afile, _ = QFileDialog.getOpenFileName(self, "Select Genome Annotation File",
+			filter = (
+				"GXF file (*.gff *.gtf *.gff.gz *.gtf.gz);;"
+				"All files (*.*)"
+			)
+		)
+
+		if not afile:
+			return
+
+		worker = CirchartImportAnnotationWorker({'annotation': afile})
+		worker.signals.success.connect(self.data_tree.update_tree)
+		self.submit_new_worker(worker)
 
 	def do_import_karyotype_data(self):
 		pass

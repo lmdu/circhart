@@ -14,10 +14,14 @@ __all__ = [
 	'CirchartSpinnerWidget',
 	'CirchartDataTreeWidget',
 	'CirchartPlotTreeWidget',
+	'CirchartEmptyTreeWidget',
 	'CirchartDataTableWidget',
 	'CirchartCheckTableWidget',
 	'CirchartGraphicsViewWidget',
 ]
+
+class CirchartEmptyTreeWidget(QTreeWidget):
+	pass
 
 class CirchartSpacerWidget(QWidget):
 	def __init__(self, parent=None):

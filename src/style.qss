@@ -132,13 +132,46 @@ QMainWindow::separator:pressed {
 	background: #a0a0a0;
 }
 
-/* custom widgets */
-CirchartFloatParameter,
-CirchartIntegerParameter {
-	padding-right: 15px;
+QLineEdit,
+QComboBox {
 	border: 1px solid #c2c2c2;
 	border-radius: 3px;
-	height: 20px;
+	height: 24px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+QComboBox::drop-down {
+	subcontrol-origin: padding;
+	subcontrol-position: top right;
+	width: 15px;
+	border: none;
+	background: none;
+}
+
+QComboBox::down-arrow {
+	image: url('icons/arrow.svg');
+	right: 5px;
+}
+
+/* custom widgets */
+CirchartCheckTableWidget {
+	border: 1px solid #c2c2c2;
+}
+
+CirchartEmptyTreeWidget {
+	border: 1px solid #c2c2c2;
+}
+
+CirchartFloatParameter,
+CirchartIntegerParameter {
+	padding-right: 17px;
+	padding-left: 17px;
+	border: 1px solid #c2c2c2;
+	border-radius: 3px;
+	height: 24px;
+	position: relative;
+	text-align: center;
 }
 
 CirchartFloatParameter:hover,
@@ -149,11 +182,16 @@ CirchartIntegerParameter:hover {
 CirchartFloatParameter::up-button,
 CirchartIntegerParameter::up-button {
 	subcontrol-origin: border;
-	subcontrol-position: top right;
+	subcontrol-position: center right;
 	width: 16px;
+	position: absolute;
+	right: 0;
+	top: 0;
+	bottom: 0;
 	border: 1px solid #c2c2c2;
 	background: #fafafa;
 	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
 }
 
 CirchartFloatParameter::up-button:hover,
@@ -170,12 +208,16 @@ CirchartIntegerParameter::up-button:pressed {
 CirchartFloatParameter::down-button,
 CirchartIntegerParameter::down-button {
 	subcontrol-origin: border;
-	subcontrol-position: bottom right;
+	subcontrol-position: center left;
 	width: 16px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
 	border: 1px solid #c2c2c2;
 	background: #fafafa;
-	border-top-width: 0;
-	border-bottom-right-radius: 3px;
+	border-top-left-radius: 3px;
+	border-bottom-left-radius: 3px;
 }
 
 CirchartFloatParameter::down-button:hover,
@@ -192,15 +234,15 @@ CirchartIntegerParameter::down-button:pressed {
 CirchartFloatParameter::up-arrow,
 CirchartIntegerParameter::up-arrow {
 	image: url('icons/plus.svg');
-	width: 7px;
-	height: 7px;
+	width: 12px;
+	height: 12px;
 }
 
 CirchartFloatParameter::down-arrow,
 CirchartIntegerParameter::down-arrow {
 	image: url('icons/minus.svg');
-	width: 7px;
-	height: 7px;
+	width: 12px;
+	height: 12px;
 } 
 
 
