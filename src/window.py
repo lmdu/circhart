@@ -127,8 +127,12 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_prepare_karyotype_data
 		)
 
-		self.prepare_pdata_act = QAction("&Prepare Plot Data", self,
-			triggered = self.do_prepare_track_data
+		self.prepare_gc_act = QAction("&Prepare GC Content Data", self,
+			triggered = self.do_prepare_gccontent_data
+		)
+
+		self.prepare_pdata_act = QAction("&Prepare Annotation Data", self,
+			triggered = self.do_prepare_annotation_data
 		)
 
 		self.check_circos_act = QAction("&Check Circos Dependencies", self,
@@ -196,6 +200,7 @@ class CirchartMainWindow(QMainWindow):
 		self.tool_menu = self.menuBar().addMenu("&Tools")
 		self.prepare_menu = self.tool_menu.addMenu("&Prepare Data")
 		self.prepare_menu.addAction(self.prepare_kdata_act)
+		self.prepare_menu.addAction(self.prepare_gc_act)
 		self.prepare_menu.addAction(self.prepare_pdata_act)
 
 		self.plot_menu = self.menuBar().addMenu("&Plot")
@@ -354,13 +359,29 @@ class CirchartMainWindow(QMainWindow):
 		print('zoom in')
 
 	def do_zoom_out(self):
-		pass
+		print('zoom out')
 
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.make_karyotype(self)
 
-	def do_prepare_track_data(self):
-		pass
+	def do_prepare_gccontent_data(self):
+		params = CirchartGCContentPrepareDialog.calculate_gc_content(self)
+
+		if params:
+			if not os.path.isfile(params['genome']):
+				return self.show_error_message('{} does not exist'.format(params['genome']))
+
+			worker = CirchartGCContentPrepareWorker(params)
+			worker.signals.success.connect(self.data_tree.update_tree)
+			self.submit_new_worker(worker)
+
+	def do_prepare_annotation_data(self):
+		params = CirchartAnnotationPrepareDialog.count_feature(self)
+
+		if params:
+			worker = CirchartAnnotationPrepareWorker(params)
+			worker.signals.success.connect(self.data_tree.update_tree)
+			self.submit_new_worker(worker)
 
 	def do_circos_dependency_check(self):
 		dlg = CirchartCircosDependencyDialog(self)

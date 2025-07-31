@@ -15,6 +15,7 @@ from params import *
 __all__ = [
 	'CirchartImportFastaProcess',
 	'CirchartImportAnnotationProcess',
+	'CirchartGCContentPrepareProcess',
 	'CirchartCircosPlotProcess',
 ]
 
@@ -30,7 +31,7 @@ class CirchartBaseProcess(multiprocessing.Process):
 			'message': message
 		})
 
-	def before(self):
+	def prerun(self):
 		pass
 
 	def do(self):
@@ -39,7 +40,7 @@ class CirchartBaseProcess(multiprocessing.Process):
 	def run(self):
 		try:
 			self.send('started')
-			self.before()
+			self.prerun()
 			self.do()
 
 		except:
@@ -90,9 +91,46 @@ class CirchartImportAnnotationProcess(CirchartBaseProcess):
 
 				if len(rows) == 200:
 					self.send('result', rows)
+					rows = []
 
 		if rows:
 			self.send('result', rows)
+
+class CirchartGCContentPrepareProcess(CirchartBaseProcess):
+	def do(self):
+		fa = pyfastx.Fasta(self.params.genome, uppercase=True)
+		wsize = self.params.window
+
+		rows = []
+		for chrom in self.params.axes:
+			chrid, size = self.params.axes[chrom]
+			seq = fa[chrom].seq
+
+			for i in range(0, size, wsize):
+				j = i + wsize
+
+				if j > size:
+					j = size
+
+				a = seq.count('A', i, j)
+				t = seq.count('T', i, j)
+				g = seq.count('G', i, j)
+				c = seq.count('C', i, j)
+
+				if g + c:
+					gc = (g + c) / (a + t + g + c)
+				else:
+					gc = 0
+
+				rows.append((chrid, i+1, j, gc))
+
+				if len(rows) == 200:
+					self.send('result', rows)
+					rows = []
+
+		if rows:
+			self.send('result', rows)
+
 
 class CirchartCircosPlotProcess(QProcess):
 	def __init__(self, parent, workdir):

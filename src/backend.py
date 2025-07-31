@@ -88,6 +88,13 @@ class AnnotationTable(SqlTable):
 	start = int
 	end = int
 
+class PlotDataTable(SqlTable):
+	_index = True
+	chrid = str
+	start = int
+	end = int
+	value = float
+
 
 class SqlQuery:
 	def __init__(self, table):
@@ -326,7 +333,7 @@ SqlBase = DataBackend()
 
 class SqlControl:
 	@staticmethod
-	def add_data(name, type, path):
+	def add_data(name, type, path=''):
 		sql = SqlQuery('data')\
 			.insert('name', 'type', 'path')
 
@@ -335,9 +342,7 @@ class SqlControl:
 	@staticmethod
 	def create_genome_table(index):
 		table, fields = GenomeTable.table(index)
-
-		if not SqlBase.has_table(table):
-			SqlBase.create_table(table, fields)
+		SqlBase.create_table(table, fields)
 
 	@staticmethod
 	def add_genome_data(index, data):
@@ -349,9 +354,7 @@ class SqlControl:
 	@staticmethod
 	def create_karyotype_table(index):
 		table, fields = KaryotypeTable.table(index)
-
-		if not SqlBase.has_table(table):
-			SqlBase.create_table(table, fields)
+		SqlBase.create_table(table, fields)
 
 	@staticmethod
 	def add_karyotype_data(index, data):
@@ -363,9 +366,7 @@ class SqlControl:
 	@staticmethod
 	def create_annotation_table(index):
 		table, fields = AnnotationTable.table(index)
-
-		if not SqlBase.has_table(table):
-			SqlBase.create_table(table, fields)
+		SqlBase.create_table(table, fields)
 
 	@staticmethod
 	def add_annotation_data(index, data):
@@ -373,6 +374,26 @@ class SqlControl:
 		sql = SqlQuery(table)\
 			.insert(*AnnotationTable.fields())
 		SqlBase.insert_rows(sql, data)
+
+	@staticmethod
+	def create_plot_data_table(index):
+		table, fields = PlotDataTable.table(index)
+		SqlBase.create_table(table, fields)
+
+	@staticmethod
+	def add_plot_data(index, data):
+		table, _ = PlotDataTable.table(index)
+		sql = SqlQuery(table)\
+			.insert(*PlotDataTable.fields())
+		SqlBase.insert_rows(sql, data)
+
+	@staticmethod
+	def get_data_by_id(did):
+		sql = SqlQuery('data')\
+			.select()\
+			.where('id=?')
+
+		return SqlBase.get_dict(sql, did)
 
 	@staticmethod
 	def get_datas_by_type(type):
@@ -392,6 +413,22 @@ class SqlControl:
 			.select(*fields)
 
 		return SqlBase.get_rows(sql)
+
+	@staticmethod
+	def get_data_objects(type, index):
+		table = '{}_{}'.format(type, index)
+		sql = SqlQuery(table)\
+			.select()
+
+		return SqlBase.get_dicts(sql)
+
+	@staticmethod
+	def get_annotation_features(index):
+		table = '{}_{}'.format('annotation', index)
+		sql = SqlQuery(table)\
+			.select("DISTINCT feature")
+
+		return SqlBase.get_column(sql)
 
 	@staticmethod
 	def add_plot(name, type):

@@ -10,24 +10,35 @@ from models import *
 from backend import *
 
 __all__ = [
-	'CirchartSelectDataTagDialog',
 	'CirchartCircosDependencyDialog',
 	'CirchartKaryotypePrepareDialog',
 	'CirchartGCContentPrepareDialog',
+	'CirchartAnnotationPrepareDialog',
 	'CirchartCreateCircosPlotDialog',
 ]
 
-class CirchartSelectDataTagDialog(QDialog):
-	def __init__(self, parent=None, file=None):
+class CirchartBaseDialog(QDialog):
+	_title = ""
+
+	def __init__(self, parent=None):
 		super().__init__(parent)
+		self.setWindowTitle(self._title)
 
-		self.tag_select = QComboBox(self)
-		self.tag_select.addItems([
-			'Genome Fasta File',
-			'Karyotype Data',
-			'Plot Data'
-		])
+		self.main_layout = QVBoxLayout()
+		self.setLayout(self.main_layout)
 
+		self.create_widgets()
+		self.create_buttons()
+		self.init_layouts()
+		self.init_widgets()
+
+	def sizeHint(self):
+		return QSize(400, 300)
+
+	def create_widgets(self):
+		pass
+
+	def create_buttons(self):
 		self.btn_box = QDialogButtonBox(
 			QDialogButtonBox.StandardButton.Cancel |
 			QDialogButtonBox.StandardButton.Ok
@@ -35,38 +46,20 @@ class CirchartSelectDataTagDialog(QDialog):
 		self.btn_box.accepted.connect(self.accept)
 		self.btn_box.rejected.connect(self.reject)
 
-		layout = QVBoxLayout()
-		layout.addWidget(QLabel("Import <b>{}</b> as:".format(file), self))
-		layout.addWidget(self.tag_select)
-		layout.addWidget(self.btn_box)
-		self.setLayout(layout)
+	def init_widgets(self):
+		pass
 
-	def sizeHint(self):
-		return QSize(300, 0)
+	def init_layouts(self):
+		pass
+		
 
-	def get_tag(self):
-		tags = ['genome', 'karyotype', 'plotdata']
-		return tags[self.tag_select.currentIndex()]
-
-	@classmethod
-	def select(cls, parent, file):
-		file = Path(file).name
-		dlg = cls(parent, file)
-
-		if dlg.exec() == QDialog.Accepted:
-			return dlg.get_tag()
-
-class CirchartCircosDependencyDialog(QDialog):
-	def __init__(self, parent=None):
-		super().__init__(parent)
-
-		self.setWindowTitle("Circos Perl Dependencies")
-		self.resize(QSize(400, 300))
-
+class CirchartCircosDependencyDialog(CirchartBaseDialog):
+	_title = "Circos Perl Dependencies"
+	
+	def create_widgets(self):
 		self.spinner = CirchartSpinnerWidget(self)
 		self.updator = QPushButton("Refresh", self)
-		#self.updator.clicked.connect(self.spinner.start)
-		self.tree = QTreeWidget(self)
+		self.tree = CirchartEmptyTreeWidget(self)
 		self.tree.setHeaderLabels(['Module', 'Version', 'Status'])
 		self.tree.setIconSize(QSize(12, 12))
 		self.tree.setRootIsDecorated(False)
@@ -75,20 +68,22 @@ class CirchartCircosDependencyDialog(QDialog):
 		self.tree.header().setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
 		self.tree.header().setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
 
-		self.create_layout()
-		self.create_process()
+	def create_buttons(self):
+		self.btn_box = QDialogButtonBox(
+			QDialogButtonBox.StandardButton.Ok
+		)
+		self.btn_box.accepted.connect(self.accept)
 
-	def create_layout(self):
-		self.layout = QVBoxLayout()
-		self.setLayout(self.layout)
+	def init_layouts(self):
 		top_layout = QHBoxLayout()
 		top_layout.addWidget(self.spinner)
 		top_layout.addWidget(CirchartSpacerWidget(self))
 		top_layout.addWidget(self.updator)
-		self.layout.addLayout(top_layout)
-		self.layout.addWidget(self.tree)
+		self.main_layout.addLayout(top_layout)
+		self.main_layout.addWidget(self.tree)
+		self.main_layout.addWidget(self.btn_box)
 
-	def create_process(self):
+	def init_widgets(self):
 		self.process = QProcess(self)
 		self.process.setProgram(str(CIRCOS_COMMAND))
 		self.process.setArguments(["-modules"])
@@ -128,39 +123,29 @@ class CirchartCircosDependencyDialog(QDialog):
 			self.tree.clear()
 			self.tree.addTopLevelItems(items)
 
-class CirchartKaryotypePrepareDialog(QDialog):
-	def __init__(self, parent=None):
-		super().__init__(parent)
+class CirchartKaryotypePrepareDialog(CirchartBaseDialog):
+	_title = "Prepare Karyotype Data"
 
-		self.setWindowTitle("Prepare Karyotype Data")
-		self.resize(QSize(500, 400))
+	def sizeHint(self):
+		return QSize(500, 400)
 
+	def create_widgets(self):
 		self.select = QComboBox(self)
 		self.select.currentIndexChanged.connect(self.change_genome)
 		self.table = CirchartCheckTableWidget(self)
 		self.table.setSortingEnabled(True)
 		self.input = QLineEdit(self)
+		
+	def init_layouts(self):
+		self.main_layout.addWidget(QLabel("Select a genome:", self))
+		self.main_layout.addWidget(self.select)
+		self.main_layout.addWidget(QLabel("Select chromosomes:", self))
+		self.main_layout.addWidget(self.table)
+		self.main_layout.addWidget(QLabel("Specify a short and uniq chromosome id prefix:", self))
+		self.main_layout.addWidget(self.input)
+		self.main_layout.addWidget(self.btn_box)
 
-		self.btn_box = QDialogButtonBox(
-			QDialogButtonBox.StandardButton.Cancel |
-			QDialogButtonBox.StandardButton.Ok
-		)
-		self.btn_box.accepted.connect(self.accept)
-		self.btn_box.rejected.connect(self.reject)
-
-		layout = QVBoxLayout()
-		layout.addWidget(QLabel("Select a genome:", self))
-		layout.addWidget(self.select)
-		layout.addWidget(QLabel("Select chromosomes:", self))
-		layout.addWidget(self.table)
-		layout.addWidget(QLabel("Specify a short and uniq chromosome id prefix:", self))
-		layout.addWidget(self.input)
-		layout.addWidget(self.btn_box)
-		self.setLayout(layout)
-
-		self.set_data()
-
-	def set_data(self):
+	def init_widgets(self):
 		self.genome_ids = []
 		genome_names = []
 
@@ -230,13 +215,113 @@ class CirchartKaryotypePrepareDialog(QDialog):
 
 			parent.data_tree.update_tree()
 
-class CirchartGCContentPrepareDialog(QDialog):
-	def __init__(self, parent=None):
-		super().__init__(parent)
+class CirchartGCContentPrepareDialog(CirchartBaseDialog):
+	_title = "Prepare GC Content Data"
 
-		self.setWindowTitle("Prepare GC Content")
-		self.resize(QSize(400, 300))
+	def sizeHint(self):
+		return QSize(400, 0)
+	
+	def create_widgets(self):
+		self.select_genome = QComboBox(self)
+		self.select_karyotype = QComboBox(self)
+		self.window_size = CirchartGenomeWindowSize(self)
 
+	def init_layouts(self):
+		self.main_layout.addWidget(QLabel("Select a genome:", self))
+		self.main_layout.addWidget(self.select_genome)
+		self.main_layout.addWidget(QLabel("Select a karyotype:", self))
+		self.main_layout.addWidget(self.select_karyotype)
+		self.main_layout.addWidget(QLabel("Window size:", self))
+		self.main_layout.addWidget(self.window_size)
+		self.main_layout.addWidget(self.btn_box)
+
+	def init_widgets(self):
+		genomes = SqlControl.get_datas_by_type('genome')
+
+		for g in genomes:
+			self.select_genome.addItem(g.name, g.path)
+
+		karyotypes = SqlControl.get_datas_by_type('karyotype')
+
+		for k in karyotypes:
+			self.select_karyotype.addItem(k.name, k.id)
+
+	@classmethod
+	def calculate_gc_content(cls, parent=None):
+		dlg = cls(parent)
+
+		if dlg.exec() == QDialog.Accepted:
+			genome_path = dlg.select_genome.currentData()
+			karyotype_id = dlg.select_karyotype.currentData()
+			window_size = dlg.window_size.get_value()
+
+			if genome_path and karyotype_id:
+				return {
+					'genome': genome_path,
+					'karyotype': karyotype_id,
+					'window': window_size
+				}
+
+class CirchartAnnotationPrepareDialog(CirchartBaseDialog):
+	_title = "Prepare Annotation Data"
+
+	def sizeHint(self):
+		return QSize(400, 0)
+
+	def create_widgets(self):
+		self.select_annotation = QComboBox(self)
+		self.select_karyotype = QComboBox(self)
+		self.select_feature = QComboBox(self)
+		self.select_valtype = QComboBox(self)
+		self.window_size = CirchartGenomeWindowSize(self)
+		self.select_annotation.currentIndexChanged.connect(self.on_annotation_changed)
+
+	def init_widgets(self):
+		annots = SqlControl.get_datas_by_type('annotation')
+
+		for a in annots:
+			self.select_annotation.addItem(a.name, a.id)
+
+		karyotypes = SqlControl.get_datas_by_type('karyotype')
+
+		for k in karyotypes:
+			self.select_karyotype.addItem(k.name, k.id)
+
+		self.select_valtype.addItems(["count", "coverage"])
+
+	def init_layouts(self):
+		self.main_layout.addWidget(QLabel("Select a karyotype:", self))
+		self.main_layout.addWidget(self.select_karyotype)
+		self.main_layout.addWidget(QLabel("Select an annotation:", self))
+		self.main_layout.addWidget(self.select_annotation)
+		self.main_layout.addWidget(QLabel("Select a feature:", self))
+		self.main_layout.addWidget(self.select_feature)
+		self.main_layout.addWidget(QLabel("Calculate value:", self))
+		self.main_layout.addWidget(self.select_valtype)
+		self.main_layout.addWidget(QLabel("Window size:", self))
+		self.main_layout.addWidget(self.window_size)
+		self.main_layout.addWidget(self.btn_box)
+
+	def on_annotation_changed(self, index):
+		annot_id = self.select_annotation.currentData()
+		features = SqlControl.get_annotation_features(annot_id)
+		self.select_feature.addItems(features)
+
+	@classmethod
+	def count_feature(cls, parent=None):
+		dlg = cls(parent)
+
+		if dlg.exec() == QDialog.Accepted:
+			annotation_id = dlg.select_genome.currentData()
+			karyotype_id = dlg.select_karyotype.currentData()
+			window_size = dlg.window_size.get_value()
+
+			if annotation_id and karyotype_id:
+				return {
+					'annotation': annotation_id,
+					'karyotype': karyotype_id,
+					'window': window_size
+				}
 
 class CirchartCreateCircosPlotDialog(QDialog):
 	def __init__(self, parent=None):

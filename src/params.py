@@ -64,10 +64,14 @@ class CirchartHiddenParameter(CirchartParameterMixin, QWidget):
 		return self._value
 
 class CirchartIntegerParameter(CirchartParameterMixin, QSpinBox):
-	pass
+	def _init_widget(self):
+		self.adjustSize()
+		self.setAlignment(Qt.AlignCenter)
 
 class CirchartFloatParameter(CirchartParameterMixin, QDoubleSpinBox):
-	pass
+	def _init_widget(self):
+		self.adjustSize()
+		self.setAlignment(Qt.AlignCenter)
 
 class CirchartStringParameter(CirchartParameterMixin, QLineEdit):
 	def get_value(self):

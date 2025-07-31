@@ -154,19 +154,9 @@ QComboBox::down-arrow {
 	right: 5px;
 }
 
-/* custom widgets */
-CirchartCheckTableWidget {
-	border: 1px solid #c2c2c2;
-}
+QSpinBox,
+QDoubleSpinBox {
 
-CirchartEmptyTreeWidget {
-	border: 1px solid #c2c2c2;
-}
-
-CirchartFloatParameter,
-CirchartIntegerParameter {
-	padding-right: 17px;
-	padding-left: 17px;
 	border: 1px solid #c2c2c2;
 	border-radius: 3px;
 	height: 24px;
@@ -174,13 +164,18 @@ CirchartIntegerParameter {
 	text-align: center;
 }
 
-CirchartFloatParameter:hover,
-CirchartIntegerParameter:hover {
+QSpinBox::lineEdit,
+QDoubleSpinBox::lineEdit {
+	text-align: center;
+}
+
+QSpinBox:hover,
+QDoubleSpinBox:hover {
 	border-color: #a9adb5;
 }
 
-CirchartFloatParameter::up-button,
-CirchartIntegerParameter::up-button {
+QSpinBox::up-button,
+QDoubleSpinBox::up-button {
 	subcontrol-origin: border;
 	subcontrol-position: center right;
 	width: 16px;
@@ -194,19 +189,19 @@ CirchartIntegerParameter::up-button {
 	border-bottom-right-radius: 3px;
 }
 
-CirchartFloatParameter::up-button:hover,
-CirchartIntegerParameter::up-button:hover {
+QSpinBox::up-button:hover,
+QDoubleSpinBox::up-button:hover {
 	border-color: #a9adb5;
 }
 
-CirchartFloatParameter::up-button:pressed,
-CirchartIntegerParameter::up-button:pressed {
+QSpinBox::up-button:pressed,
+QDoubleSpinBox::up-button:pressed {
 	background: rgba(6,111,209, 0.04);
 	border-color: #066fd1;
 }
 
-CirchartFloatParameter::down-button,
-CirchartIntegerParameter::down-button {
+QSpinBox::down-button,
+QDoubleSpinBox::down-button {
 	subcontrol-origin: border;
 	subcontrol-position: center left;
 	width: 16px;
@@ -220,31 +215,39 @@ CirchartIntegerParameter::down-button {
 	border-bottom-left-radius: 3px;
 }
 
-CirchartFloatParameter::down-button:hover,
-CirchartIntegerParameter::down-button:hover {
+QSpinBox::down-button:hover,
+QDoubleSpinBox::down-button:hover {
 	border-color: #a9adb5;
 }
 
-CirchartFloatParameter::down-button:pressed,
-CirchartIntegerParameter::down-button:pressed {
+QSpinBox::down-button:pressed,
+QDoubleSpinBox::down-button:pressed {
 	background: rgba(6,111,209, 0.04);
 	border-color: #066fd1;
 }
 
-CirchartFloatParameter::up-arrow,
-CirchartIntegerParameter::up-arrow {
+QSpinBox::up-arrow,
+QDoubleSpinBox::up-arrow {
 	image: url('icons/plus.svg');
 	width: 12px;
 	height: 12px;
 }
 
-CirchartFloatParameter::down-arrow,
-CirchartIntegerParameter::down-arrow {
+QSpinBox::down-arrow,
+QDoubleSpinBox::down-arrow {
 	image: url('icons/minus.svg');
 	width: 12px;
 	height: 12px;
 } 
 
+/* custom widgets */
+CirchartCheckTableWidget {
+	border: 1px solid #c2c2c2;
+}
+
+CirchartEmptyTreeWidget {
+	border: 1px solid #c2c2c2;
+}
 
 CirchartAccordionHeader {
 	text-align: left;

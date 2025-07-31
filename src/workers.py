@@ -16,6 +16,7 @@ from backend import *
 __all__ = [
 	'CirchartImportGenomeWorker',
 	'CirchartImportAnnotationWorker',
+	'CirchartGCContentPrepareWorker',
 	'CirchartCircosPlotWorker',
 ]
 
@@ -124,6 +125,23 @@ class CirchartImportAnnotationWorker(CirchartProcessWorker):
 
 	def save_result(self, res):
 		SqlControl.add_annotation_data(self.table_index, res)
+
+class CirchartGCContentPrepareWorker(CirchartProcessWorker):
+	processor = CirchartGCContentPrepareProcess
+
+	def preprocess(self):
+		data = SqlControl.get_data_by_id(self.params['karyotype'])
+		objs = SqlControl.get_data_objects('karyotype', self.params['karyotype'])
+
+		self.params['axes'] = {
+			obj.label: (obj.uid, obj.end)
+			for obj in objs if obj.type == 'chr'
+		}
+		self.table_index = SqlControl.add_data("{}_gc_content".format(data.name), 'plotdata')
+		SqlControl.create_plot_data_table(self.table_index)
+
+	def save_result(self, res):
+		SqlControl.add_plot_data(self.table_index, res)
 
 class CirchartCircosPlotWorker(CirchartBaseWorker):
 	processor = CirchartCircosPlotProcess

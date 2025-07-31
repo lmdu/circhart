@@ -18,6 +18,7 @@ __all__ = [
 	'CirchartDataTableWidget',
 	'CirchartCheckTableWidget',
 	'CirchartGraphicsViewWidget',
+	'CirchartGenomeWindowSize',
 ]
 
 class CirchartEmptyTreeWidget(QTreeWidget):
@@ -286,6 +287,34 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 			svg_str = fh.read()
 
 		self.load_svg(svg_str)
+
+class CirchartGenomeWindowSize(QWidget):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self.spin = QSpinBox(self)
+		self.spin.setValue(10)
+		self.spin.setMinimum(1)
+		self.spin.setMaximum(10000)
+		self.spin.setAlignment(Qt.AlignCenter)
+
+		self.unit = QComboBox(self)
+		self.unit.addItems(['BP', 'KB', 'MB'])
+		self.unit.setCurrentIndex(2)
+
+		layout = QHBoxLayout()
+		layout.setContentsMargins(0, 0, 0, 0)
+		layout.addWidget(self.spin)
+		layout.addWidget(self.unit)
+		self.setLayout(layout)
+
+	def get_value(self):
+		scales = [1, 1000, 1000000]
+		return self.spin.value() * scales[self.unit.currentIndex()]
+
+
+
+
 
 
 
