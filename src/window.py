@@ -131,8 +131,8 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_prepare_gccontent_data
 		)
 
-		self.prepare_pdata_act = QAction("&Prepare Annotation Data", self,
-			triggered = self.do_prepare_annotation_data
+		self.prepare_pdata_act = QAction("&Prepare Density Data", self,
+			triggered = self.do_prepare_density_data
 		)
 
 		self.check_circos_act = QAction("&Check Circos Dependencies", self,
@@ -375,8 +375,8 @@ class CirchartMainWindow(QMainWindow):
 			worker.signals.success.connect(self.data_tree.update_tree)
 			self.submit_new_worker(worker)
 
-	def do_prepare_annotation_data(self):
-		params = CirchartAnnotationPrepareDialog.count_feature(self)
+	def do_prepare_density_data(self):
+		params = CirchartDensityPrepareDialog.count_feature(self)
 
 		if params:
 			worker = CirchartAnnotationPrepareWorker(params)

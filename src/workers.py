@@ -17,6 +17,7 @@ __all__ = [
 	'CirchartImportGenomeWorker',
 	'CirchartImportAnnotationWorker',
 	'CirchartGCContentPrepareWorker',
+	'CirchartDensityPrepareWorker',
 	'CirchartCircosPlotWorker',
 ]
 
@@ -142,6 +143,21 @@ class CirchartGCContentPrepareWorker(CirchartProcessWorker):
 
 	def save_result(self, res):
 		SqlControl.add_plot_data(self.table_index, res)
+
+class CirchartDensityPrepareWorker(CirchartProcessWorker):
+	processor = CirchartDensityPrepareProcess
+
+	def preprocess(self):
+		data = SqlControl.get_data_by_id(self.params['karyotype'])
+		objs = SqlControl.get_data_objects('karyotype', self.params['karyotype'])
+
+		self.params['axes'] = {
+			obj.label: (obj.uid, obj.end)
+			for obj in objs if obj.type == 'chr'
+		}
+		data_name = "{}_{}_density".format(data.name, self.params['feature'])
+		self.table_index = SqlControl.add_data(data_name, 'plotdata')
+		SqlControl.create_plot_data_table(self.table_index)
 
 class CirchartCircosPlotWorker(CirchartBaseWorker):
 	processor = CirchartCircosPlotProcess

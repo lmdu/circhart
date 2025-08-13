@@ -131,6 +131,9 @@ class CirchartGCContentPrepareProcess(CirchartBaseProcess):
 		if rows:
 			self.send('result', rows)
 
+class CirchartDensityPrepareProcess(CirchartBaseProcess):
+	pass
+
 
 class CirchartCircosPlotProcess(QProcess):
 	def __init__(self, parent, workdir):

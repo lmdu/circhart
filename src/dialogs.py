@@ -13,7 +13,7 @@ __all__ = [
 	'CirchartCircosDependencyDialog',
 	'CirchartKaryotypePrepareDialog',
 	'CirchartGCContentPrepareDialog',
-	'CirchartAnnotationPrepareDialog',
+	'CirchartDensityPrepareDialog',
 	'CirchartCreateCircosPlotDialog',
 ]
 
@@ -262,8 +262,8 @@ class CirchartGCContentPrepareDialog(CirchartBaseDialog):
 					'window': window_size
 				}
 
-class CirchartAnnotationPrepareDialog(CirchartBaseDialog):
-	_title = "Prepare Annotation Data"
+class CirchartDensityPrepareDialog(CirchartBaseDialog):
+	_title = "Prepare Density Data"
 
 	def sizeHint(self):
 		return QSize(400, 0)
@@ -272,7 +272,6 @@ class CirchartAnnotationPrepareDialog(CirchartBaseDialog):
 		self.select_annotation = QComboBox(self)
 		self.select_karyotype = QComboBox(self)
 		self.select_feature = QComboBox(self)
-		self.select_valtype = QComboBox(self)
 		self.window_size = CirchartGenomeWindowSize(self)
 		self.select_annotation.currentIndexChanged.connect(self.on_annotation_changed)
 
@@ -287,8 +286,6 @@ class CirchartAnnotationPrepareDialog(CirchartBaseDialog):
 		for k in karyotypes:
 			self.select_karyotype.addItem(k.name, k.id)
 
-		self.select_valtype.addItems(["count", "coverage"])
-
 	def init_layouts(self):
 		self.main_layout.addWidget(QLabel("Select a karyotype:", self))
 		self.main_layout.addWidget(self.select_karyotype)
@@ -296,8 +293,6 @@ class CirchartAnnotationPrepareDialog(CirchartBaseDialog):
 		self.main_layout.addWidget(self.select_annotation)
 		self.main_layout.addWidget(QLabel("Select a feature:", self))
 		self.main_layout.addWidget(self.select_feature)
-		self.main_layout.addWidget(QLabel("Calculate value:", self))
-		self.main_layout.addWidget(self.select_valtype)
 		self.main_layout.addWidget(QLabel("Window size:", self))
 		self.main_layout.addWidget(self.window_size)
 		self.main_layout.addWidget(self.btn_box)
@@ -315,11 +310,13 @@ class CirchartAnnotationPrepareDialog(CirchartBaseDialog):
 			annotation_id = dlg.select_genome.currentData()
 			karyotype_id = dlg.select_karyotype.currentData()
 			window_size = dlg.window_size.get_value()
+			feature = dlg.select_feature.currentText()
 
 			if annotation_id and karyotype_id:
 				return {
 					'annotation': annotation_id,
 					'karyotype': karyotype_id,
+					'feature': feature,
 					'window': window_size
 				}
 
