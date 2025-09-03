@@ -16,6 +16,7 @@ __all__ = [
 	'CirchartImportFastaProcess',
 	'CirchartImportAnnotationProcess',
 	'CirchartGCContentPrepareProcess',
+	'CirchartDensityPrepareProcess',
 	'CirchartCircosPlotProcess',
 ]
 
@@ -132,7 +133,8 @@ class CirchartGCContentPrepareProcess(CirchartBaseProcess):
 			self.send('result', rows)
 
 class CirchartDensityPrepareProcess(CirchartBaseProcess):
-	pass
+	def do(self):
+		pass
 
 
 class CirchartCircosPlotProcess(QProcess):

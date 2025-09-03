@@ -159,6 +159,12 @@ class CirchartDensityPrepareWorker(CirchartProcessWorker):
 		self.table_index = SqlControl.add_data(data_name, 'plotdata')
 		SqlControl.create_plot_data_table(self.table_index)
 
+		pos = SqlControl.get_annotation_content(self.params['annotation'], self.params['feature'])
+		self.params['loci'] = [p for p in pos]
+
+	def save_result(self, res):
+		SqlControl.add_plot_data(self.table_index, res)
+
 class CirchartCircosPlotWorker(CirchartBaseWorker):
 	processor = CirchartCircosPlotProcess
 

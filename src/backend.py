@@ -431,6 +431,16 @@ class SqlControl:
 		return SqlBase.get_column(sql)
 
 	@staticmethod
+	def get_annotation_content(index, feature):
+		table = '{}_{}'.format('annotation', index)
+		sql = SqlQuery(table)\
+			.select('chrom', 'start', 'end')\
+			.where('feature=?')\
+			.orderby('chrom', 'start')
+
+		return SqlBase.get_rows(sql, feature)
+
+	@staticmethod
 	def add_plot(name, type):
 		sql = SqlQuery('plot')\
 			.insert('name', 'type')
