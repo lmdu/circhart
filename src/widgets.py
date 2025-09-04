@@ -295,7 +295,7 @@ class CirchartGenomeWindowSize(QWidget):
 		self.spin = QSpinBox(self)
 		self.spin.setValue(10)
 		self.spin.setMinimum(1)
-		self.spin.setMaximum(10000)
+		self.spin.setMaximum(1000000)
 		self.spin.setAlignment(Qt.AlignCenter)
 
 		self.unit = QComboBox(self)
