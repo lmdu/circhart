@@ -135,19 +135,23 @@ class CirchartGCContentPrepareProcess(CirchartBaseProcess):
 class CirchartDensityPrepareProcess(CirchartBaseProcess):
 	def do(self):
 		wsize = self.params.window
-		chrom = [None, None]
 
-		for locus in self.params['loci']:
-			if chrom[0] != locus[0]:
-				chrom = self.params.axes[locus[0]]
-				i = 1
-				j = wsize
+		for chrom, loci in self.params['loci'].items():
+			chrid, size = self.params.axes[chrom]
 
-				if j > chrom[1]:
-					j = chrom[1]
+			for i in range(0, size, wsize):
+				j = i + wsize
+				i += 1
+
+				if j > size:
+					j = size
+
+				for s, e in loci:
+					pass
+
+
 
 			
-
 
 
 

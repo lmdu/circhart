@@ -160,7 +160,13 @@ class CirchartDensityPrepareWorker(CirchartProcessWorker):
 		SqlControl.create_plot_data_table(self.table_index)
 
 		pos = SqlControl.get_annotation_content(self.params['annotation'], self.params['feature'])
-		self.params['loci'] = [p for p in pos]
+		self.params['loci'] = {}
+
+		for p in pos:
+			if p[0] not in self.params['loci']:
+				self.params['loci'][p[0]] = []
+
+			self.params['loci'][p[0]].append((p[1], p[2]))
 
 	def save_result(self, res):
 		SqlControl.add_plot_data(self.table_index, res)
