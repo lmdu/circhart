@@ -138,27 +138,43 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 
 		for chrom, loci in self.params['loci'].items():
 			chrid, size = self.params.axes[chrom]
+			loci = iter(loci)
+			rows = []
+			s = 0
+			e = 0
 
 			for i in range(0, size, wsize):
 				j = i + wsize
 				i += 1
+				c = 0
 
 				if j > size:
 					j = size
 
+				if s and e:
+					if i <= s <= j or i <= e <= j:
+						c += 1
+
+					elif s <= i <= j <= e:
+						c += 1
+
+					else:
+						rows.append((chrid, i, j, c))
+						continue
+
 				for s, e in loci:
-					pass
+					if i <= s <= j or i <= e <= j:
+						c += 1
 
+					elif s <= i <= j <= e:
+						c += 1
 
+					else:
+						break
 
-			
+				rows.append((chrid, i, j, c))
 
-
-
-
-
-
-
+			self.send('result', rows)
 
 class CirchartCircosPlotProcess(QProcess):
 	def __init__(self, parent, workdir):
