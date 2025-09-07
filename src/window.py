@@ -47,7 +47,7 @@ class CirchartMainWindow(QMainWindow):
 	def __init__(self):
 		super().__init__()
 
-		self.setWindowTitle("{} v{}".format(APP_NAME, APP_VERSION))
+		self.set_window_title()
 		self.setWindowIcon(QIcon('icons/logo.svg'))
 
 		self.plot_view = CirchartGraphicsViewWidget(self)
@@ -75,6 +75,13 @@ class CirchartMainWindow(QMainWindow):
 		self.show()
 
 		self.project_file = None
+
+	def set_window_title(self, pfile=None):
+		if pfile is None:
+			self.setWindowTitle("{} v{}".format(APP_NAME, APP_VERSION))
+
+		else:
+			self.setWindowTitle("{} v{} - {}".format(APP_NAME, APP_VERSION, pfile))
 
 	def create_actions(self):
 		self.open_project_act = QAction("&Open Project...", self,
@@ -286,8 +293,34 @@ class CirchartMainWindow(QMainWindow):
 
 
 
-	def do_open_project(self):
-		pass
+	def do_open_project(self, pfile=None):
+		if not pfile:
+			if self.project_file:
+				ret = QMessageBox.question(self, "Confirmation",
+					"A project file is already opened. Would you like to open a new project file?"
+				)
+
+				if ret == QMessageBox.No:
+					return
+
+			if SqlBase.has_data():
+				ret = QMessageBox.question(self, "Confirmation",
+					"Would you like to save previous results before opening new project file?"
+				)
+
+				if ret == QMessageBox.Yes:
+					self.do_saveas_project()
+
+			pfile, _ = QFileDialog.getOpenFileName(self, filter="Circhart Project File (*.cpf)")
+
+		if not pfile:
+			return
+
+		self.project_file = pfile
+		SqlBase.reconnect(pfile)
+		self.data_tree.update_tree()
+		self.plot_tree.update_tree()
+		self.set_window_title(pfile)
 
 	def do_close_project(self):
 		pass
@@ -300,12 +333,22 @@ class CirchartMainWindow(QMainWindow):
 				return
 
 			self.project_file = sfile
-			self.setWindowTitle("{} v{} - {}".format(APP_NAME, APP_VERSION, sfile))
+			self.set_window_title(sfile)
+			worker = CirchartProjectSaveWorker({'sfile': sfile})
+			worker.signals.success.connect(lambda: SqlBase.reconnect(sfile))
+			self.submit_new_worker(worker)
 
-
+		else:
+			SqlBase.save()
 
 	def do_saveas_project(self):
-		pass
+		sfile, _ = QFileDialog.getSaveFileName(self, filter="Circhart Project File (*.cpf)")
+
+		if not sfile:
+			return
+
+		worker = CirchartProjectSaveWorker({'sfile': sfile})
+		self.submit_new_worker(worker)
 
 	def do_import_data(self):
 		file, _ = QFileDialog.getOpenFileName(self, "Select Data File")

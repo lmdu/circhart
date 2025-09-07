@@ -30,6 +30,7 @@ class CirchartWorkerSignals(QObject):
 	started = Signal()
 	stopped = Signal()
 	success = Signal()
+	progress = Signal(int)
 	finished = Signal()
 
 class CirchartBaseWorker(QRunnable):
@@ -232,7 +233,20 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 		
 class CirchartProjectSaveWorker(CirchartBaseWorker):
 	def process(self):
-		pass
+		self.signals.message.emit("Saving to {}".format(self.params['sfile']))
+		progress = 0
+		SqlBase.commit()
+
+		with SqlBase.save_to_file(self.params['sfile']) as backup:
+			while not backup.done:
+				backup.step(10)
+				p = int((backup.pagecount - backup.remaining) / backup.pagecount * 100)
+
+				if p > progress:
+					self.signals.progress.emit(p)
+					progress = p
+
+		self.signals.message.emit("Successfully saved project to {}".format(self.params['sfile']))
 
 
 

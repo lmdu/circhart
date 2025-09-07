@@ -253,6 +253,11 @@ class DataBackend:
 		self.conn = apsw.Connection(file)
 		self.create_tables()
 
+	def reconnect(self, file):
+		_conn = self.conn
+		self.conn = apsw.Connection(file)
+		_conn.close()
+
 	@property
 	def cursor(self):
 		with self.lock:
@@ -324,10 +329,41 @@ class DataBackend:
 		res = self.get_one(sql, 'table', table)
 		return True if res else False
 
+	def has_data(self):
+		sql = SqlQuery('data')\
+			.select('1')\
+			.first()
+		res = self.get_one(sql)
+		return True if res else False
+
 	def get_fields(self, table):
 		sql = SqlQuery(table).select().first()
 		res = self.query(sql)
 		return [col[0] for col in res.description]
+
+	@property
+	def autocommit(self):
+		return self.conn.getautocommit()
+
+	def begin(self):
+		self.query("BEGIN")
+
+	def commit(self):
+		if not self.autocommit:
+			self.query("COMMIT")
+
+	def save(self):
+		if self.changed:
+			self.commit()
+			self.begin()
+
+	@property
+	def changed(self):
+		return self.conn.changes() > 0
+
+	def save_to_file(self, sfile):
+		target = apsw.Connection(sfile)
+		return target.backup('main', self.conn, 'main')
 
 SqlBase = DataBackend()
 
