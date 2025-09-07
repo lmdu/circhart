@@ -19,6 +19,7 @@ __all__ = [
 	'CirchartGCContentPrepareWorker',
 	'CirchartDensityPrepareWorker',
 	'CirchartCircosPlotWorker',
+	'CirchartProjectSaveWorker',
 ]
 
 class CirchartWorkerSignals(QObject):
@@ -229,6 +230,9 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 
 			self.signals.result.emit(plotid)
 		
+class CirchartProjectSaveWorker(CirchartBaseWorker):
+	def process(self):
+		pass
 
 
 

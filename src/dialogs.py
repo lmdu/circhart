@@ -307,7 +307,7 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 		dlg = cls(parent)
 
 		if dlg.exec() == QDialog.Accepted:
-			annotation_id = dlg.select_genome.currentData()
+			annotation_id = dlg.select_annotation.currentData()
 			karyotype_id = dlg.select_karyotype.currentData()
 			window_size = dlg.window_size.get_value()
 			feature = dlg.select_feature.currentText()

@@ -74,6 +74,8 @@ class CirchartMainWindow(QMainWindow):
 		self.resize(QSize(800, 600))
 		self.show()
 
+		self.project_file = None
+
 	def create_actions(self):
 		self.open_project_act = QAction("&Open Project...", self,
 			shortcut = QKeySequence.Open,
@@ -291,7 +293,16 @@ class CirchartMainWindow(QMainWindow):
 		pass
 
 	def do_save_project(self):
-		pass
+		if self.project_file is None:
+			sfile, _ = QFileDialog.getSaveFileName(self, filter="Circhart Project File (*.cpf)")
+
+			if not sfile:
+				return
+
+			self.project_file = sfile
+			self.setWindowTitle("{} v{} - {}".format(APP_NAME, APP_VERSION, sfile))
+
+
 
 	def do_saveas_project(self):
 		pass
