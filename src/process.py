@@ -137,6 +137,9 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 		wsize = self.params.window
 
 		for chrom, loci in self.params['loci'].items():
+			if chrom not in self.params.axes:
+				continue
+
 			chrid, size = self.params.axes[chrom]
 			loci = iter(loci)
 			rows = []

@@ -205,8 +205,9 @@ class CirchartParameterAccordion(QWidget):
 		main_layout.addWidget(self.box)
 
 		self.form_layout = QFormLayout()
+		self.form_layout.setVerticalSpacing(3)
 		self.form_layout.setRowWrapPolicy(QFormLayout.DontWrapRows)
-		self.form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
+		self.form_layout.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
 		self.form_layout.setFormAlignment(Qt.AlignHCenter | Qt.AlignTop)
 		self.form_layout.setLabelAlignment(Qt.AlignLeft)
 
@@ -247,6 +248,8 @@ class CirchartParameterManager(QScrollArea):
 
 		w = CirchartIntegerParameter('dd', self)
 		self.main_layout.addWidget(w)
+
+		self.track_count = 0
 
 	def sizeHint(self):
 		return QSize(200, 0)
@@ -317,6 +320,11 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		param.set_default("255,255,255")
 		form.add_parameter(param)
 
+		self.add_widget(form)
+
+	def create_plot_track(self):
+		self.track_count += 1
+		form = CirchartParameterAccordion('track{}'.format(self.track_count), self)
 		self.add_widget(form)
 
 

@@ -433,7 +433,7 @@ class CirchartMainWindow(QMainWindow):
 		params = CirchartDensityPrepareDialog.count_feature(self)
 
 		if params:
-			worker = CirchartAnnotationPrepareWorker(params)
+			worker = CirchartDensityPrepareWorker(params)
 			worker.signals.success.connect(self.data_tree.update_tree)
 			self.submit_new_worker(worker)
 

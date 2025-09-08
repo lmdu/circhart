@@ -222,6 +222,7 @@ QDoubleSpinBox::down-button:pressed {
 
 QSpinBox::up-arrow,
 QDoubleSpinBox::up-arrow {
+	subcontrol-origin: content;
 	image: url('icons/plus.svg');
 	width: 12px;
 	height: 12px;
@@ -229,10 +230,11 @@ QDoubleSpinBox::up-arrow {
 
 QSpinBox::down-arrow,
 QDoubleSpinBox::down-arrow {
+	subcontrol-origin: content;
 	image: url('icons/minus.svg');
 	width: 12px;
 	height: 12px;
-} 
+}
 
 /* custom widgets */
 CirchartCheckTableWidget {
