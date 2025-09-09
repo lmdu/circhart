@@ -8,6 +8,8 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
+from utils import *
+
 __all__ = [
 	'CirchartCircosParameter',
 	'CirchartCircosConfiger',
@@ -230,6 +232,9 @@ class CirchartParameterAccordion(QWidget):
 				values.update(p.get_param())
 
 		return {self.key: values}
+
+
+
 
 class CirchartParameterManager(QScrollArea):
 	def __init__(self, parent=None):
