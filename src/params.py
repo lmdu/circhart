@@ -65,6 +65,13 @@ class CirchartHiddenParameter(CirchartParameterMixin, QWidget):
 	def get_value(self):
 		return self._value
 
+class CirchartReadonlyParameter(CirchartParameterMixin, QLabel):
+	def set_value(self, value):
+		self.setText(value)
+
+	def get_value(self):
+		return self.text()
+
 class CirchartIntegerParameter(CirchartParameterMixin, QSpinBox):
 	def _init_widget(self):
 		self.adjustSize()
@@ -197,6 +204,11 @@ class CirchartParameterAccordion(QWidget):
 
 		self.params = {}
 
+		self._init_widgets()
+
+	def _init_widgets(self):
+		pass
+
 	def set_title(self, text):
 		self.header.setText(text)
 
@@ -232,6 +244,24 @@ class CirchartParameterAccordion(QWidget):
 				values.update(p.get_param())
 
 		return {self.key: values}
+
+class CirchartIdeogramTrack(CirchartParameterAccordion):
+	def _init_widgets(self):
+		params = CIRCOS_PARAMS['ideogram']
+
+		for param in params:
+			p = AttrDict(param)
+
+			match p.type:
+				case 'hidden':
+					w = CirchartHiddenParameter(p.name, self)
+
+				case 'readonly':
+					w = Circhart
+
+			self.add_parameter(w)
+
+
 
 
 

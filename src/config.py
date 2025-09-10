@@ -48,4 +48,6 @@ if os.name == 'nt':
 else:
 	CIRCOS_COMMAND = str(CIRCOS_PATH / 'bin' / 'circos')
 
+with open(str(ROOT_PATH / 'plots.yml')) as stream:
+	CIRCOS_PARAMS = yaml.safe_load(stream)
 

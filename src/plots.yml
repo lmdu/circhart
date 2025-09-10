@@ -1,0 +1,104 @@
+ideogram:
+  -
+    name: plotid
+    type: hidden
+  -
+    name: karyotype
+    type: readonly
+  -
+    name: spacing
+    type: float
+    range:
+      - 0
+      - 1
+    decimal: 5
+    default: 0.005
+  -
+    name: radius
+    type: float
+    range:
+      - 0
+      - 1
+    decimal: 5
+    default: 0.95
+  -
+    name: thickness
+    type: int
+    range:
+      - 0
+      - 200
+    default: 30
+  -
+    name: fill
+    type: bool
+  -
+    name: stroke_thickness
+    type: int
+    range:
+      - 0
+      - 20
+    default: 1
+  -
+    name: stroke_color
+    type: color
+    default: 255,255,255
+
+tracks:
+  scatter:
+    -
+      name: data
+      type: choice
+      source: plotdata
+    -
+      name: r0
+      type: float
+      range:
+        - 0
+        - 1
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: float
+      range:
+        - 0
+        - 1
+      tooltip: the outer radius of the plot track
+    -
+      name: glyph
+      type: choice
+      source:
+        - circle
+        - rectangle
+        - triangle
+      tooltip: shape of glyph to use for the scatter plot
+    -
+      name: glyph_size
+      type: int
+      range:
+        - 0
+        - 20
+      default: 1
+      tooltip: size of the glyph, in pixels
+    -
+      name: color
+      type: color
+      tooltip: if used, the glyph will be solid and of this color
+    -
+      name: stroke_color
+      type: color
+      tooltip: if used, the glyph will have an outline of this color
+    -
+      name: stroke_thickness
+      type: int
+      range:
+        - 0
+        - 10
+      default: 0
+      tooltip: if used, the glyph's outline will have this thickness, in pixels
+
+
+
+
+
+
+
