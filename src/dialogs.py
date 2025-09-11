@@ -377,7 +377,7 @@ class CirchartCreateCircosPlotDialog(QDialog):
 
 		if dlg.exec() == QDialog.Accepted:
 			return {
-				'plot_name': dlg.input.text(),
+				'plotname': dlg.input.text(),
 				'karyotype': dlg.get_selected_karyotype()
 			}
 

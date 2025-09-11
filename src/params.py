@@ -2,22 +2,22 @@ import re
 
 import yattag
 from superqt import *
-from qt_parameters import *
 
 from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
 from utils import *
+from config import *
+from backend import *
 
 __all__ = [
-	'CirchartCircosParameter',
 	'CirchartCircosConfiger',
 	'CirchartCircosParameterManager'
 ]
 
 class CirchartParameterMixin:
-	_default = 0
+	_default = None
 
 	def __init__(self, key, parent=None):
 		super().__init__(parent)
@@ -33,6 +33,9 @@ class CirchartParameterMixin:
 
 	def set_max(self, value):
 		self.setMaximum(value)
+
+	def set_range(self, values):
+		self.setRange(*values)
 
 	def set_step(self, value):
 		self.setSingleStep(value)
@@ -51,7 +54,8 @@ class CirchartParameterMixin:
 		self.set_value(default)
 
 	def reset_default(self):
-		self.set_value(self._default)
+		if self._default is not None:
+			self.set_value(self._default)
 
 	def get_param(self):
 		return {self.key: self.get_value()}
@@ -64,6 +68,9 @@ class CirchartHiddenParameter(CirchartParameterMixin, QWidget):
 
 	def get_value(self):
 		return self._value
+
+	def _init_widget(self):
+		self.setVisible(False)
 
 class CirchartReadonlyParameter(CirchartParameterMixin, QLabel):
 	def set_value(self, value):
@@ -88,6 +95,23 @@ class CirchartStringParameter(CirchartParameterMixin, QLineEdit):
 
 	def set_value(self, value):
 		self.setText(value)
+
+class CirchartChoiceParameter(CirchartParameterMixin, QComboBox):
+	def get_value(self):
+		return self.currentData()
+
+	def set_value(self, value):
+		self.setCurrentIndex(self.findText(value))
+
+	def set_data(self, data):
+		if isinstance(data, list):
+			for item in data:
+				self.addItem(item, item)
+
+		else:
+			for row in SqlControl.get_datas_by_type(data):
+				self.addItem(row.name, row.id)
+
 
 class CirchartBoolParameter(CirchartParameterMixin, QCheckBox):
 	def _init_widget(self):
@@ -221,7 +245,7 @@ class CirchartParameterAccordion(QWidget):
 		self.form_layout = QFormLayout()
 		self.form_layout.setVerticalSpacing(3)
 		self.form_layout.setRowWrapPolicy(QFormLayout.DontWrapRows)
-		self.form_layout.setFieldGrowthPolicy(QFormLayout.AllNonFixedFieldsGrow)
+		self.form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
 		self.form_layout.setFormAlignment(Qt.AlignHCenter | Qt.AlignTop)
 		self.form_layout.setLabelAlignment(Qt.AlignLeft)
 
@@ -236,6 +260,72 @@ class CirchartParameterAccordion(QWidget):
 		self.form_layout.addRow(label, param)
 		self.params[param.key] = param
 
+	def remove_parameter(self, row):
+		item = self.form_layout.itemAt(row)
+		widget = item.widget()
+		self.params.remove(widget.key)
+		self.form_layout.removeRow(row)
+
+	def create_parameters(self, params):
+		for param in params:
+			p = AttrDict(param)
+
+			match p.type:
+				case 'hidden':
+					w = CirchartHiddenParameter(p.name, self)
+
+				case 'readonly':
+					w = CirchartReadonlyParameter(p.name, self)
+
+				case 'int':
+					w = CirchartIntegerParameter(p.name, self)
+
+				case 'float':
+					w = CirchartFloatParameter(p.name, self)
+
+				case 'bool':
+					w = CirchartBoolParameter(p.name, self)
+
+				case 'str':
+					w = CirchartStringParameter(p.name, self)
+
+				case 'color':
+					w = CirchartColorParameter(p.name, self)
+
+				case 'choice':
+					w = CirchartChoiceParameter(p.name, self)
+
+			for k in p:
+				match k:
+					case 'range':
+						w.set_range(p.range)
+
+					case 'min':
+						w.set_min(p.min)
+
+					case 'max':
+						w.set_max(p.max)
+
+					case 'step':
+						w.set_step(p.step)
+
+					case 'decimal':
+						w.set_decimals(p.decimal)
+
+					case 'default':
+						w.set_default(p.default)
+
+					case 'source':
+						w.set_data(p.source)
+
+					case 'tooltip':
+						w.setToolTip(p.tooltip)
+
+			if 'label' in p:
+				self.add_parameter(w, p.label)
+			else:
+				self.add_parameter(w)
+
 	def get_values(self):
 		values = {}
 
@@ -245,26 +335,40 @@ class CirchartParameterAccordion(QWidget):
 
 		return {self.key: values}
 
+	def set_values(self, values):
+		for k, v in values.items():
+			if k in self.params:
+				self.params[k].set_value(v)
+
+class CirchartGeneralTrack(CirchartParameterAccordion):
+	def _init_widgets(self):
+		self.setVisible(False)
+		params = CIRCOS_PARAMS['general']
+		self.create_parameters(params)
+
 class CirchartIdeogramTrack(CirchartParameterAccordion):
 	def _init_widgets(self):
 		params = CIRCOS_PARAMS['ideogram']
+		self.create_parameters(params)
 
-		for param in params:
-			p = AttrDict(param)
+class CirchartPlotTrack(CirchartParameterAccordion):
+	def _init_widgets(self):
+		self.configs = CIRCOS_PARAMS['tracks']
+		types = [k for k in self.configs]
+		
+		self.plot_type = CirchartChoiceParameter('type', self)
+		self.add_parameter(self.plot_type)
+		self.plot_type.currentTextChanged.connect(self._on_type_changed)
+		self.plot_type.set_data(types)
 
-			match p.type:
-				case 'hidden':
-					w = CirchartHiddenParameter(p.name, self)
+	def _on_type_changed(self, ptype):
+		params = self.configs[ptype]
+		count = self.form_layout.rowCount()
 
-				case 'readonly':
-					w = Circhart
+		for i in range(1, count):
+			self.remove_parameter(i)
 
-			self.add_parameter(w)
-
-
-
-
-
+		self.create_parameters(params)
 
 class CirchartParameterManager(QScrollArea):
 	def __init__(self, parent=None):
@@ -287,7 +391,7 @@ class CirchartParameterManager(QScrollArea):
 		self.track_count = 0
 
 	def sizeHint(self):
-		return QSize(200, 0)
+		return QSize(250, 0)
 
 	def add_widget(self, param):
 		self.main_layout.addWidget(param)
@@ -302,169 +406,31 @@ class CirchartParameterManager(QScrollArea):
 			if isinstance(widget, CirchartParameterMixin):
 				values.update(widget.get_param())
 
+			elif isinstance(widget, CirchartGeneralTrack):
+				for _, vals in widget.get_values().items():
+					values.update(vals)
+
 			elif isinstance(widget, CirchartParameterAccordion):
 				values.update(widget.get_values())
 
 		return values
 	
 class CirchartCircosParameterManager(CirchartParameterManager):
-	def create_name_widget(self, name):
-		label = QLabel(name, self)
-		self.add_widget(label)
-
-	def create_plotid_param(self, value):
-		param = CirchartHiddenParameter('plotid', self)
-		param.set_value(value)
-		self.add_widget(param)
-
-	def create_karyotype_param(self, value):
-		param = CirchartHiddenParameter('karyotype', self)
-		param.set_value(value)
-		self.add_widget(param)
-
-	def create_ideogram_form(self):
-		form = CirchartParameterAccordion('ideogram', self)
-
-		param = CirchartFloatParameter('spacing', self)
-		param.set_decimals(5)
-		param.set_default(0.005)
-		form.add_parameter(param)
-
-		param = CirchartFloatParameter('radius', self)
-		param.set_decimals(5)
-		param.set_default(0.95)
-		form.add_parameter(param)
-
-		param = CirchartIntegerParameter('thickness', self)
-		param.set_min(0)
-		param.set_max(200)
-		param.set_default(30)
-		form.add_parameter(param)
-
-		param = CirchartBoolParameter('fill', self)
-		param.set_default('yes')
-		form.add_parameter(param)
-
-		param = CirchartIntegerParameter('stroke_thickness', self)
-		param.set_min(0)
-		param.set_max(20)
-		param.set_default(1)
-		form.add_parameter(param)
-
-		param = CirchartColorParameter('stroke_color', self)
-		param.set_default("255,255,255")
-		form.add_parameter(param)
-
+	def new_circos_plot(self, params):
+		form = CirchartGeneralTrack('general')
+		form.set_values(params)
 		self.add_widget(form)
 
-	def create_plot_track(self):
-		self.track_count += 1
-		form = CirchartParameterAccordion('track{}'.format(self.track_count), self)
+		form = CirchartIdeogramTrack('ideogram')
+		form.set_values(params)
 		self.add_widget(form)
 
-
-	def new_circos_plot(self, param):
-		self.create_name_widget(param['plot_name'])
-		self.create_plotid_param(param['plot_id'])
-		self.create_karyotype_param(param['karyotype'])
-		self.create_ideogram_form()
 		return self.get_values()
 
-
-
-class HiddenParameter(ParameterWidget):
-	def __init__(self, name):
-		super().__init__(name)
-		self.set_label(None)
-		self.hide()
-
-class SingleColorParameter(ParameterWidget):
-	def _init_ui(self):
-		self.button = QPushButton()
-
-
-class SwitchParameter(ParameterWidget):
-	def _init_ui(self):
-		self.switch = QToggleSwitch()
-		self.switch.toggled.connect(super().set_value)
-		self._layout.addWidget(self.switch)
-		self._layout.addStretch()
-		self.setFocusProxy(self.switch)
-
-	def value(self):
-		return 'yes' if super().value() else 'no'
-
-	def set_value(self, value):
-		value = True if value == 'yes' else False
-		super().set_value(value)
-		self.switch.blockSignals(True)
-		self.switch.setChecked(value)
-		self.switch.blockSignals(False)
-
-class CirchartCircosParameter(ParameterEditor):
-	def __init__(self, parent=None):
-		super().__init__(parent)
-
-	def create_name_widget(self, name):
-		label = QLabel(name, self)
-		self.add_widget(label)
-
-	def create_plotid_param(self, value):
-		param = HiddenParameter('plotid')
-		param.set_value(value)
-		self.add_parameter(param)
-
-	def create_karyotype_param(self, value):
-		param = HiddenParameter('karyotype')
-		param.set_value(value)
-		self.add_parameter(param)
-
-	def create_ideogram_form(self):
-		form = ParameterForm('ideogram')
-		box = self.add_form(form)
-		box.set_title("Ideogram")
-		box.set_box_style(CollapsibleBox.Style.SIMPLE)
-		box.set_collapsed(True)
-
-		param = SwitchParameter('show')
-		param.set_value('yes')
-		form.add_parameter(param)
-
-		param = FloatParameter('spacing')
-		param.set_default(0.005)
-		form.add_parameter(param)
-
-		param = FloatParameter('radius')
-		param.set_default(0.95)
-		form.add_parameter(param)
-
-		param = IntParameter('thickness')
-		param.set_default(30)
-		form.add_parameter(param)
-
-		param = SwitchParameter('fill')
-		param.set_default('yes')
-		form.add_parameter(param)
-
-		param = IntParameter('stroke_thickness')
-		param.set_default(1)
-		form.add_parameter(param)
-
-		param = ColorParameter('stroke_color')
-		param.set_color_min(0)
-		param.set_color_max(255)
-		param.set_decimals(0)
-		param.set_default(QColor(0, 0,0 ))
-		form.add_parameter(param)
-
-
-	def new_circos_plot(self, param):
-		self.clear()
-		self.create_name_widget(param['plot_name'])
-		self.create_plotid_param(param['plot_id'])
-		self.create_karyotype_param(param['karyotype'])
-		self.create_ideogram_form()
-		return self.values()
+	def add_plot_track(self):
+		self.track_count += 1
+		form = CirchartPlotTrack('track{}'.format(self.track_count), self)
+		self.add_widget(form)
 
 class CirchartCircosConfiger(yattag.SimpleDoc):
 	def __init__(self, params):
@@ -527,7 +493,7 @@ class CirchartCircosConfiger(yattag.SimpleDoc):
 		with open(file, 'w') as fw:
 			fw.write(content)
 
-class CirchartSnailParameter(ParameterEditor):
+class CirchartSnailParameter:
 	def __init__(self, parent=None):
 		super().__init__(parent)
 

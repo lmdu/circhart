@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+import yaml
 import PySide6
 
 __all__ = [
@@ -17,6 +18,7 @@ __all__ = [
 	'APP_ORG_DOMAIN',
 	'CIRCOS_COMMAND',
 	'CIRCOS_PATH',
+	'CIRCOS_PARAMS'
 ]
 
 ROOT_PATH = Path(__file__).parent

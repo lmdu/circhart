@@ -1,10 +1,15 @@
-ideogram:
+general:
   -
     name: plotid
     type: hidden
   -
-    name: karyotype
+    name: plotname
     type: readonly
+  -
+    name: karyotype
+    type: hidden
+
+ideogram:
   -
     name: spacing
     type: float
@@ -31,6 +36,7 @@ ideogram:
   -
     name: fill
     type: bool
+    default: 'yes'
   -
     name: stroke_thickness
     type: int

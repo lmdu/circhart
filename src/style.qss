@@ -161,6 +161,7 @@ QDoubleSpinBox {
 	height: 24px;
 	position: relative;
 	text-align: center;
+	min-width: 100px;
 }
 
 QSpinBox:hover,

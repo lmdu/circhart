@@ -451,16 +451,15 @@ class CirchartMainWindow(QMainWindow):
 		params = CirchartCreateCircosPlotDialog.create_plot(self)
 
 		if params:
-			params['plot_id'] = SqlControl.add_plot(params['plot_name'], 'circos')
+			params['plotid'] = SqlControl.add_plot(params['plotname'], 'circos')
 			params = self.circos_panel.new_circos_plot(params)
 			self.draw_circos_plot(params)
 
-
 	def do_add_circos_track(self):
-		pass
+		self.circos_panel.add_plot_track()
 
 	def do_update_circos_plot(self):
-		params = self.circos_panel.values()
+		params = self.circos_panel.get_values()
 		self.draw_circos_plot(params)
 
 

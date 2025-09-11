@@ -178,7 +178,7 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 
 	def make_tempdir(self):
 		self.tempdir = QTemporaryDir()
-		self.tempdir.setAutoRemove(False)
+		#self.tempdir.setAutoRemove(False)
 
 		if not self.tempdir.isValid():
 			raise Exception("Could not create temporary directory")
