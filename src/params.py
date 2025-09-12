@@ -101,7 +101,10 @@ class CirchartChoiceParameter(CirchartParameterMixin, QComboBox):
 		return self.currentData()
 
 	def set_value(self, value):
-		self.setCurrentIndex(self.findText(value))
+		index = self.findData(value)
+
+		if index >= 0:
+			self.setCurrentIndex(index)
 
 	def set_data(self, data):
 		if isinstance(data, list):
@@ -261,13 +264,7 @@ class CirchartParameterAccordion(QWidget):
 		self.form_layout.addRow(label, param)
 		self.params[param.key] = param
 
-	def remove_parameter(self, row):
-		item = self.form_layout.itemAt(row)
-		widget = item.widget()
-		self.params.remove(widget.key)
-		self.form_layout.removeRow(row)
-
-	def create_parameters(self, params):
+	def create_parameters(self, params, values={}):
 		for param in params:
 			p = AttrDict(param)
 
@@ -322,6 +319,9 @@ class CirchartParameterAccordion(QWidget):
 					case 'tooltip':
 						w.setToolTip(p.tooltip)
 
+			if p.name in values:
+				w.set_value(values[p.name])
+
 			if 'label' in p:
 				self.add_parameter(w, p.label)
 			else:
@@ -364,12 +364,17 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 
 	def _on_type_changed(self, ptype):
 		params = self.configs[ptype]
-		count = self.form_layout.rowCount()
 
-		for i in range(1, count):
-			self.remove_parameter(i)
+		values = {}
+		for k, p in self.params.items():
+			if k in ['data', 'r0', 'r1']:
+				values[k] = p.get_value()
 
-		self.create_parameters(params)
+			if k != 'type':
+				self.form_layout.removeRow(p)
+
+		self.params = {'type': self.params['type']}
+		self.create_parameters(params, values)
 
 class CirchartParameterManager(QScrollArea):
 	def __init__(self, parent=None):
