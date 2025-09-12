@@ -172,12 +172,8 @@ QDoubleSpinBox:hover {
 QSpinBox::up-button,
 QDoubleSpinBox::up-button {
 	subcontrol-origin: border;
-	subcontrol-position: center right;
+	subcontrol-position: top right;
 	width: 16px;
-	position: absolute;
-	right: 0;
-	top: 0;
-	bottom: 0;
 	border: 1px solid #c2c2c2;
 	background: #fafafa;
 	border-top-right-radius: 3px;
@@ -198,12 +194,8 @@ QDoubleSpinBox::up-button:pressed {
 QSpinBox::down-button,
 QDoubleSpinBox::down-button {
 	subcontrol-origin: border;
-	subcontrol-position: center left;
+	subcontrol-position: bottom right;
 	width: 16px;
-	position: absolute;
-	left: 0;
-	top: 0;
-	bottom: 0;
 	border: 1px solid #c2c2c2;
 	background: #fafafa;
 	border-top-left-radius: 3px;

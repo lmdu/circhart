@@ -245,7 +245,8 @@ class CirchartParameterAccordion(QWidget):
 		self.form_layout = QFormLayout()
 		self.form_layout.setVerticalSpacing(3)
 		self.form_layout.setRowWrapPolicy(QFormLayout.DontWrapRows)
-		self.form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
+		#self.form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
+		self.form_layout.setFieldGrowthPolicy(QFormLayout.FieldsStayAtSizeHint)
 		self.form_layout.setFormAlignment(Qt.AlignHCenter | Qt.AlignTop)
 		self.form_layout.setLabelAlignment(Qt.AlignLeft)
 
