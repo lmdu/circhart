@@ -37,10 +37,7 @@ class CirchartApplication(QApplication):
 		return super().event(event)
 
 	def load_style(self):
-		style = QFile('style.qss')
-		if style.open(QIODevice.OpenModeFlag.ReadOnly | QIODevice.OpenModeFlag.Text):
-			stream = QTextStream(style)
-			self.setStyleSheet(stream.readAll())
+		self.setStyleSheet('file:///style.qss')
 
 
 class CirchartMainWindow(QMainWindow):

@@ -189,9 +189,20 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 		workdir = self.make_tempdir()
 
 		for index in self.params['karyotype']:
-			outfile = "{}{}.txt".format('karyotype', index)
+			outfile = "karyotype{}.txt".format(index)
 			data = SqlControl.get_data_content('karyotype', index)
 			save_circos_data(workdir, outfile, data)
+
+		for k in self.params:
+			if k.startswith('track'):
+				index = self.params[k]['data']
+				outfile = "data{}.txt".format(index)
+
+				if os.path.isfile(outfile):
+					continue
+
+				data = SqlControl.get_data_content('plotdata', index)
+				save_circos_data(workdir, outfile, data)
 
 		confile = os.path.join(workdir, 'plot.conf')
 		configer = CirchartCircosConfiger(self.params)

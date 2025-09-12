@@ -247,7 +247,7 @@ class CirchartParameterAccordion(QWidget):
 		self.form_layout.setRowWrapPolicy(QFormLayout.DontWrapRows)
 		#self.form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
 		self.form_layout.setFieldGrowthPolicy(QFormLayout.FieldsStayAtSizeHint)
-		self.form_layout.setFormAlignment(Qt.AlignHCenter | Qt.AlignTop)
+		self.form_layout.setFormAlignment(Qt.AlignLeft | Qt.AlignTop)
 		self.form_layout.setLabelAlignment(Qt.AlignLeft)
 
 		self.box.setLayout(self.form_layout)
@@ -386,8 +386,8 @@ class CirchartParameterManager(QScrollArea):
 		self.main_widget.setLayout(self.main_layout)
 		self.setWidget(self.main_widget)
 
-		w = CirchartIntegerParameter('dd', self)
-		self.main_layout.addWidget(w)
+		#w = CirchartIntegerParameter('dd', self)
+		#self.main_layout.addWidget(w)
 
 		self.track_count = 0
 
@@ -463,24 +463,57 @@ class CirchartCircosConfiger(yattag.SimpleDoc):
 		ps = self.params['ideogram']
 		with tag('ideogram'):
 			for k, v in ps.items():
-				if k == 'spacing':
-					with tag('spacing'):
-						option('default', v, 'r')
+				match k:
+					case 'spacing':
+						with tag('spacing'):
+							option('default', v, 'r')
 
-				elif k == 'radius':
-					option(k, v, 'r')
+					case 'radius':
+						option(k, v, 'r')
 
-				elif k == 'thickness':
-					option(k, v, 'p')
+					case 'thickness':
+						option(k, v, 'p')
 
-				else:
-					option(k, v)
+					case _:
+						option(k, v)
+
+		#tracks
+		custom_colors = []
+		if any([p.startswith('track') for p in self.params]):
+			with tag('plots'):
+				for p in self.params:
+					if p.startswith('track'):
+						ps = self.params[p]
+
+						with tag('plot'):
+							for k, v in ps.items():
+								match k:
+									case 'data':
+										option('file', 'data{}.txt'.format(v))
+
+									case 'r0' | 'r1':
+										option(k, v, 'r')
+
+									case 'color':
+										if v not in custom_colors:
+											custom_colors.append(v)
+
+										cid = custom_colors.index(v)
+										option(k, 'cc{}'.format(cid))
+
+									case _:
+										option(k, v)
 
 		with tag('image'):
 			include('image')
 
 		include('colors_fonts_patterns')
 		include('housekeeping')
+
+		if custom_colors:
+			with tag('colors'):
+				for i, c in enumerate(custom_colors):
+					option('cc{}'.format(i), c)
 
 	def save_to_file(self, file):
 		content = yattag.indent(self.getvalue(),

@@ -58,6 +58,8 @@ tracks:
     -
       name: r0
       type: float
+      decimal: 5
+      step: 0.01
       range:
         - 0
         - 1
@@ -65,6 +67,8 @@ tracks:
     -
       name: r1
       type: float
+      decimal: 5
+      step: 0.01
       range:
         - 0
         - 1
@@ -82,28 +86,70 @@ tracks:
       type: int
       range:
         - 0
-        - 20
-      default: 1
+        - 100
+      default: 10
       tooltip: size of the glyph, in pixels
     -
       name: color
       type: color
+      default: 150,150,150
       tooltip: if used, the glyph will be solid and of this color
     -
       name: stroke_color
       type: color
+      default: 0,0,0
       tooltip: if used, the glyph will have an outline of this color
     -
       name: stroke_thickness
       type: int
       range:
         - 0
-        - 10
+        - 100
       default: 0
       tooltip: if used, the glyph's outline will have this thickness, in pixels
+    -
+      name: orientation
+      type: choice
+      source:
+        - out
+        - in
 
-
-
+  line:
+    -
+      name: color
+      type: color
+      default: 0,0,0
+    -
+      name: thickness
+      type: int
+      range:
+        - 0
+        - 100
+      default: 1
+    -
+      name: r0
+      type: float
+      decimal: 5
+      step: 0.01
+      range:
+        - 0
+        - 1
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: float
+      decimal: 5
+      step: 0.01
+      range:
+        - 0
+        - 1
+      tooltip: the outer radius of the plot track
+    -
+      name: orientation
+      type: choice
+      source:
+        - out
+        - in
 
 
 
