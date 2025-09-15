@@ -155,6 +155,46 @@ tracks:
         - out
         - in
 
-
-
-
+  histogram:
+    -
+      name: data
+      type: choice
+      source: plotdata
+    -
+      name: r0
+      type: float
+      decimal: 2
+      step: 0.01
+      range:
+        - 0
+        - 1
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: float
+      decimal: 2
+      step: 0.01
+      range:
+        - 0
+        - 1
+      tooltip: the outer radius of the plot track
+    -
+      name: color
+      type: color
+      default: 0,0,0
+    -
+      name: stroke_thickness
+      type: int
+      range:
+        - 0
+        - 100
+      default: 1
+    -
+      name: fill_color
+      type: color
+      default: 255,255,255
+    -
+      name: extend_bin
+      type: bool
+      default: 'no'
+      tooltip: the bin's left and right sides are extended to the mid-point between this and the neighbouring bin
