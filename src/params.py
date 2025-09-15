@@ -291,15 +291,14 @@ class CirchartColorParameter(CirchartParameterMixin, QPushButton):
 		return self._color
 
 class CirchartColorsParameter(CirchartParameterMixin, QWidget):
-	_colors = []
-
 	def _init_widget(self):
+		self._colors = []
 		self.main_layout = QGridLayout()
 		self.main_layout.setContentsMargins(QMargins(0, 0, 0, 0))
 		self.main_layout.setHorizontalSpacing(1)
-		self.main_layout.setVerticalSpacing(5)
+		self.main_layout.setVerticalSpacing(2)
 		self.setLayout(self.main_layout)
-		self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+		#self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
 
 		for i in range(20):
 			self.add_color("255,200,100")
@@ -317,6 +316,7 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 				item.widget().deleteLater()
 
 		max_cols = (self.width() / 16)
+		print(self.width())
 
 		print(max_cols)
 
