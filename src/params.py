@@ -16,6 +16,99 @@ __all__ = [
 	'CirchartCircosParameterManager'
 ]
 
+#from pyside6 examples
+class FlowLayout(QLayout):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		#if parent is not None:
+		self.setContentsMargins(QMargins(0, 0, 0, 0))
+
+		self._item_list = []
+
+	def __del__(self):
+		item = self.takeAt(0)
+		while item:
+			item = self.takeAt(0)
+
+	def addItem(self, item):
+		self._item_list.append(item)
+
+	def count(self):
+		return len(self._item_list)
+
+	def itemAt(self, index):
+		if 0 <= index < len(self._item_list):
+			return self._item_list[index]
+
+		return None
+
+	def takeAt(self, index):
+		if 0 <= index < len(self._item_list):
+			return self._item_list.pop(index)
+
+		return None
+
+	def expandingDirections(self):
+		return Qt.Orientation(0)
+
+	def hasHeightForWidth(self):
+		return True
+
+	def heightForWidth(self, width):
+		height = self._do_layout(QRect(0, 0, width, 0), True)
+		return height
+
+	def setGeometry(self, rect):
+		super().setGeometry(rect)
+		self._do_layout(rect, False)
+
+	def sizeHint(self):
+		return self.minimumSize()
+
+	def minimumSize(self):
+		size = QSize()
+
+		for item in self._item_list:
+			size = size.expandedTo(item.minimumSize())
+
+		size += QSize(2 * self.contentsMargins().top(), 2 * self.contentsMargins().top())
+		return size
+
+	def _do_layout(self, rect, test_only):
+		x = rect.x()
+		y = rect.y()
+		line_height = 0
+		spacing = self.spacing()
+
+		for item in self._item_list:
+			style = item.widget().style()
+			layout_spacing_x = style.layoutSpacing(
+				QSizePolicy.ControlType.PushButton, QSizePolicy.ControlType.PushButton,
+				Qt.Orientation.Horizontal
+			)
+			layout_spacing_y = style.layoutSpacing(
+				QSizePolicy.ControlType.PushButton, QSizePolicy.ControlType.PushButton,
+				Qt.Orientation.Vertical
+			)
+			space_x = spacing + layout_spacing_x
+			space_y = spacing + layout_spacing_y
+			next_x = x + item.sizeHint().width() + space_x
+			if next_x - space_x > rect.right() and line_height > 0:
+				x = rect.x()
+				y = y + line_height + space_y
+				next_x = x + item.sizeHint().width() + space_x
+				line_height = 0
+
+			if not test_only:
+				item.setGeometry(QRect(QPoint(x, y), item.sizeHint()))
+
+			x = next_x
+			line_height = max(line_height, item.sizeHint().height())
+
+		return y + line_height - rect.y()
+
+
 class CirchartParameterMixin:
 	_default = None
 
@@ -167,6 +260,7 @@ class CirchartColorParameter(CirchartParameterMixin, QPushButton):
 	_color = "255,255,255"
 
 	def _init_widget(self):
+		self.setFixedSize(QSize(24, 24))
 		self.setFocusPolicy(Qt.NoFocus)
 		self.clicked.connect(self._on_pick_color)
 		self.setMaximumWidth(self.sizeHint().height())
@@ -195,6 +289,70 @@ class CirchartColorParameter(CirchartParameterMixin, QPushButton):
 
 	def get_value(self):
 		return self._color
+
+class CirchartColorsParameter(CirchartParameterMixin, QWidget):
+	_colors = []
+
+	def _init_widget(self):
+		self.main_layout = QGridLayout()
+		self.main_layout.setContentsMargins(QMargins(0, 0, 0, 0))
+		self.main_layout.setHorizontalSpacing(1)
+		self.main_layout.setVerticalSpacing(5)
+		self.setLayout(self.main_layout)
+		self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+
+		for i in range(20):
+			self.add_color("255,200,100")
+
+		self.show_colors()
+
+	def sizeHint(self):
+		return QSize(150, 0)
+
+	def show_colors(self):
+		while self.main_layout.count():
+			item = self.main_layout.takeAt(0)
+
+			if item.widget():
+				item.widget().deleteLater()
+
+		max_cols = (self.width() / 16)
+
+		print(max_cols)
+
+		row = 0
+		col = 0
+
+		for c in self._colors:
+			self.add_widget(row, col, c)
+
+			col += 1
+
+			if col >= max_cols:
+				col = 0
+				row += 1
+
+	def add_widget(self, row, col, color):
+		cw = QPushButton(self)
+		cw.setFixedSize(16, 16)
+		cw.clicked.connect(self._on_color_clicked)
+		cw.setStyleSheet("background-color:rgb({});border: 1px solid black;border-radius:none;".format(color))
+		self.main_layout.addWidget(cw, row, col)
+
+	def add_color(self, color):
+		self._colors.append(color)
+
+	def _on_color_clicked(self):
+		color = QColorDialog.getColor()
+		print(color)
+		btn = self.sender()
+
+
+	def set_value(self, value):
+		pass
+
+	def get_value(self):
+		return self._colors
 
 class CirchartAccordionHeader(QPushButton):
 	def __init__(self, parent=None):
@@ -289,6 +447,9 @@ class CirchartParameterAccordion(QWidget):
 
 				case 'color':
 					w = CirchartColorParameter(p.name, self)
+
+				case 'colors':
+					w = CirchartColorsParameter(p.name, self)
 
 				case 'choice':
 					w = CirchartChoiceParameter(p.name, self)
