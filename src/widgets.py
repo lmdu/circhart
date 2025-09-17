@@ -6,6 +6,7 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtSvgWidgets import *
 
+from config import *
 from models import *
 from backend import *
 
@@ -19,6 +20,7 @@ __all__ = [
 	'CirchartCheckTableWidget',
 	'CirchartGraphicsViewWidget',
 	'CirchartGenomeWindowSize',
+	'CirchartCircosColorTable',
 ]
 
 class CirchartEmptyTreeWidget(QTreeWidget):
@@ -312,11 +314,68 @@ class CirchartGenomeWindowSize(QWidget):
 		scales = [1, 1000, 1000000]
 		return self.spin.value() * scales[self.unit.currentIndex()]
 
+class CirchartCircosColorTable(QTableView):
+	def __init__(self, parent=None):
+		super().__init__(parent)
 
+		self.create_model()
 
+	def parse_colors(self):
+		brewer_file = str(CIRCOS_PATH / 'etc' / 'colors.brewer.conf')
 
+		brewer_colors = {}
+		with open(brewer_file) as fh:
+			for line in fh:
+				if line.startswith('#'):
+					continue
 
+				if not line.strip():
+					continue
 
+				cols = line.strip().split('=')
 
+				if cols[1].count(',') != 2:
+					continue
 
+				cname = '-'.join(cols[0].strip().split('-')[0:-1])
+				r, g, b = cols[1].strip().split(',')
 
+				if cname not in brewer_colors:
+					brewer_colors[cname] = [cname]
+
+				brewer_colors[cname].append(QColor(int(r), int(g), int(b)))
+
+		color_file = str(CIRCOS_PATH / 'etc' / 'colors.conf')
+
+		color_list = []
+		with open(color_file) as fh:
+			for line in fh:
+				if line.startswith('#'):
+					continue
+
+				if not line.strip():
+					continue
+
+				if '=' not in line:
+					continue
+
+				cols = line.strip().split('=')
+				cname = cols[0].strip()
+
+				if ',' in cols[1]:
+					r, g, b = cols[1].strip().split(',')
+					color_list.append([cname, QColor(int(r), int(g), int(b))])
+
+				elif '-' in cols[1]:
+					temp = cols[1].strip().split('-')
+					temp_name = '-'.join(temp[0:-1])
+					temp_color = brewer_colors[temp_name][int(temp[-1])]
+					color_list.append([cname, temp_color])
+
+		color_list.extend(brewer_colors.values())
+		return color_list
+
+	def create_model(self):
+		colors = self.parse_colors()
+		model = CirchartCircosColorModel(self, colors)
+		self.setModel(model)

@@ -10,6 +10,7 @@ from PySide6.QtWidgets import *
 from utils import *
 from config import *
 from backend import *
+from dialogs import *
 
 __all__ = [
 	'CirchartCircosConfiger',
@@ -300,14 +301,11 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 		self.main_layout.setVerticalSpacing(5)
 		self.setLayout(self.main_layout)
 		self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-
-		for i in range(20):
-			self.add_color("255,200,100")
-
+		self.max_column =  int(self.width() / 16)
 		self.show_colors()
 
 	def sizeHint(self):
-		return QSize(150, 0)
+		return QSize(100, 0)
 
 	def show_colors(self):
 		while self.main_layout.count():
@@ -315,11 +313,7 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 
 			if item.widget():
 				item.widget().deleteLater()
-
-		max_cols = (self.width() / 16)
-
-		print(max_cols)
-
+ 
 		row = 0
 		col = 0
 
@@ -328,25 +322,69 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 
 			col += 1
 
-			if col >= max_cols:
+			if col >= self.max_column:
 				col = 0
 				row += 1
+
+		self.add_button(row, col)
 
 	def add_widget(self, row, col, color):
 		cw = QPushButton(self)
 		cw.setFixedSize(16, 16)
 		cw.clicked.connect(self._on_color_clicked)
 		cw.setStyleSheet("background-color:rgb({});border: 1px solid black;border-radius:none;".format(color))
+		cw.setContextMenuPolicy(Qt.CustomContextMenu)
+		cw.customContextMenuRequested.connect(self._on_right_menu)
+		cw.setProperty('cindex', row*self.max_column+col)
 		self.main_layout.addWidget(cw, row, col)
 
-	def add_color(self, color):
-		self._colors.append(color)
+	def add_button(self, row, col):
+		btn = QPushButton(self)
+		btn.setFixedSize(16, 16)
+		btn.setIcon(QIcon('icons/color.svg'))
+		btn.setStyleSheet("border: 1px solid black;border-radius:none;")
+		btn.clicked.connect(self._on_add_color)
+		self.main_layout.addWidget(btn, row, col)
+
+	def _on_add_color(self, color):
+		#color = QColorDialog.getColor()
+		color = CirchartCircosColorSelectDialog.get_color(self)
+
+		if color.isValid():
+			r = color.red()
+			g = color.green()
+			b = color.blue()
+			c = "{},{},{}".format(r, g, b)
+
+			self._colors.append(c)
+			self.show_colors()
+
+	def delete_color(self, cindex):
+		self._colors.pop(cindex)
+		self.show_colors()
 
 	def _on_color_clicked(self):
-		color = QColorDialog.getColor()
-		print(color)
 		btn = self.sender()
+		cidx = btn.property('cindex')
+		cstr = self._colors[cidx]
+		r, g, b = cstr.split(',')
+		old_color = QColor(int(r), int(g), int(b))
+		new_color = QColorDialog.getColor(initial=old_color, title="Change color")
+		
+		if new_color.isValid():
+			r = new_color.red()
+			g = new_color.green()
+			b = new_color.blue()
+			c = "{},{},{}".format(r, g, b)
+			self._colors[cidx] = c
+			btn.setStyleSheet("background-color:rgb({});border: 1px solid black;border-radius:none;".format(c))
 
+	def _on_right_menu(self, pos):
+		cindex = self.sender().property('cindex')
+		menu = QMenu(self)
+		act = menu.addAction("Delete")
+		act.triggered.connect(lambda: self.delete_color(cindex))
+		menu.exec(self.sender().mapToGlobal(pos))
 
 	def set_value(self, value):
 		pass

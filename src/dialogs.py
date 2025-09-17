@@ -15,6 +15,7 @@ __all__ = [
 	'CirchartGCContentPrepareDialog',
 	'CirchartDensityPrepareDialog',
 	'CirchartCreateCircosPlotDialog',
+	'CirchartCircosColorSelectDialog',
 ]
 
 class CirchartBaseDialog(QDialog):
@@ -381,7 +382,34 @@ class CirchartCreateCircosPlotDialog(QDialog):
 				'karyotype': dlg.get_selected_karyotype()
 			}
 
+class CirchartCircosColorSelectDialog(QDialog):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.setWindowTitle("Select color")
 
+		self.color_table = CirchartCircosColorTable(self)
+
+		self.btn_box = QDialogButtonBox(
+			QDialogButtonBox.StandardButton.Cancel |
+			QDialogButtonBox.StandardButton.Ok
+		)
+		self.btn_box.accepted.connect(self.accept)
+		self.btn_box.rejected.connect(self.reject)
+
+		layout = QVBoxLayout()
+		layout.addWidget(self.color_table)
+		layout.addWidget(self.btn_box)
+		self.setLayout(layout)
+
+	@classmethod
+	def get_color(cls, parent=None):
+		dlg = cls(parent)
+
+		if dlg.exec() == QDialog.Accepted:
+			pass
+
+
+		
 
 
 

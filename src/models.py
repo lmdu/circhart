@@ -8,6 +8,7 @@ __all__ = [
 	'CirchartPlotTreeModel',
 	'CirchartDataTableModel',
 	'CirchartKaryotypeTableModel',
+	'CirchartCircosColorModel',
 ]
 
 class CirchartBaseTableModel(QAbstractTableModel):
@@ -312,8 +313,37 @@ class CirchartPlotTreeModel(CirchartBaseTableModel):
 	_headers = ['Name', 'Type']
 
 	
+class CirchartCircosColorModel(QAbstractTableModel):
+	def __init__(self, parent=None, colors=[]):
+		super().__init__(parent)
+		self.colors = [[]]
 
+	def rowCount(self, parent=QModelIndex()):
+		if parent.isValid():
+			return 0
 
+		return len(self.colors)
+
+	def columnCount(self, parent=QModelIndex()):
+		if parent.isValid():
+			return 0
+
+		return len(self.colors[0])
+
+	def data(self, index, role=Qt.DisplayRole):
+		if not index.isValid():
+			return None
+
+		row = index.row()
+		col = index.column()
+
+		if role == Qt.BackgroundRole:
+			if col > 0:
+				return self.colors[row][col]
+
+		elif role == Qt.DisplayRole:
+			if col == 0:
+				return self.colors[row][col]
 
 
 
