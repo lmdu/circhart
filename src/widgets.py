@@ -315,11 +315,14 @@ class CirchartGenomeWindowSize(QWidget):
 		return self.spin.value() * scales[self.unit.currentIndex()]
 
 class CirchartCircosColorTable(QTableView):
-	def __init__(self, parent=None):
+	def __init__(self, parent=None, multiple=False):
 		super().__init__(parent)
 		self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
 		self.horizontalHeader().hide()
 		self.verticalHeader().hide()
+
+		if not multiple:
+			self.setSelectionMode(QAbstractItemView.SingleSelection)
 
 		self.create_model()
 
@@ -382,4 +385,3 @@ class CirchartCircosColorTable(QTableView):
 		colors = self.parse_colors()
 		model = CirchartCircosColorModel(self, colors)
 		self.setModel(model)
-		#self.resizeColumnToContents(0)

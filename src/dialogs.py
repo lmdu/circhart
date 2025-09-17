@@ -383,12 +383,12 @@ class CirchartCreateCircosPlotDialog(QDialog):
 			}
 
 class CirchartCircosColorSelectDialog(QDialog):
-	def __init__(self, parent=None):
+	def __init__(self, parent=None, multiple=False):
 		super().__init__(parent)
 		self.setWindowTitle("Select color")
 		self.resize(QSize(500, 300))
 
-		self.color_table = CirchartCircosColorTable(self)
+		self.color_table = CirchartCircosColorTable(self, multiple)
 
 		self.btn_box = QDialogButtonBox(
 			QDialogButtonBox.StandardButton.Cancel |
