@@ -316,7 +316,7 @@ class CirchartPlotTreeModel(CirchartBaseTableModel):
 class CirchartCircosColorModel(QAbstractTableModel):
 	def __init__(self, parent=None, colors=[]):
 		super().__init__(parent)
-		self.colors = [[]]
+		self.colors = colors
 
 	def rowCount(self, parent=QModelIndex()):
 		if parent.isValid():
@@ -328,7 +328,19 @@ class CirchartCircosColorModel(QAbstractTableModel):
 		if parent.isValid():
 			return 0
 
-		return len(self.colors[0])
+		return 16
+
+	def flags(self, index):
+		row = index.row()
+		col = index.column()
+
+		if col == 0:
+			return Qt.ItemIsEnabled
+
+		elif col > 0 and col < len(self.colors[row]):
+			return Qt.ItemIsEnabled | Qt.ItemIsSelectable
+
+		return Qt.NoItemFlags
 
 	def data(self, index, role=Qt.DisplayRole):
 		if not index.isValid():
@@ -338,7 +350,7 @@ class CirchartCircosColorModel(QAbstractTableModel):
 		col = index.column()
 
 		if role == Qt.BackgroundRole:
-			if col > 0:
+			if col > 0 and col < len(self.colors[row]):
 				return self.colors[row][col]
 
 		elif role == Qt.DisplayRole:

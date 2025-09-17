@@ -386,6 +386,7 @@ class CirchartCircosColorSelectDialog(QDialog):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 		self.setWindowTitle("Select color")
+		self.resize(QSize(500, 300))
 
 		self.color_table = CirchartCircosColorTable(self)
 
@@ -406,7 +407,7 @@ class CirchartCircosColorSelectDialog(QDialog):
 		dlg = cls(parent)
 
 		if dlg.exec() == QDialog.Accepted:
-			pass
+			return QColor()
 
 
 		
