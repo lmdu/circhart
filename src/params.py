@@ -1,8 +1,3 @@
-import re
-
-import yattag
-from superqt import *
-
 from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
@@ -13,7 +8,6 @@ from backend import *
 from dialogs import *
 
 __all__ = [
-	'CirchartCircosConfiger',
 	'CirchartCircosParameterManager'
 ]
 
@@ -267,19 +261,17 @@ class CirchartColorParameter(CirchartParameterMixin, QPushButton):
 		self.setMaximumWidth(self.sizeHint().height())
 
 	def _on_pick_color(self):
-		color = QColorDialog.getColor(self.get_color())
+		color = CirchartCircosColorSelectDialog.get_color([self.get_color()])
 
-		if color.isValid():
-			r = color.red()
-			g = color.green()
-			b = color.blue()
-			self._color = "{},{},{}".format(r, g, b)
+		if color:
+			self._color = color
 			self.set_color()
 
 	def get_color(self):
-		r, g, b = self._color.split(',')
-		color = QColor(int(r), int(g), int(b))
-		return color
+		#r, g, b = self._color.split(',')
+		#color = QColor(int(r), int(g), int(b))
+		#return color
+		return self._color
 
 	def set_color(self):
 		self.setStyleSheet("background-color:rgb({});".format(self._color))
@@ -347,47 +339,45 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 		self.main_layout.addWidget(btn, row, col)
 
 	def _on_add_color(self, color):
-		#color = QColorDialog.getColor()
-		color = CirchartCircosColorSelectDialog.get_color(self)
+		colors = CirchartCircosColorSelectDialog.get_color(parent=self, multiple=True)
 
-		if color.isValid():
-			r = color.red()
-			g = color.green()
-			b = color.blue()
-			c = "{},{},{}".format(r, g, b)
+		if colors:
+			for color in colors:
+				self._colors.append(color)
 
-			self._colors.append(c)
 			self.show_colors()
 
 	def delete_color(self, cindex):
 		self._colors.pop(cindex)
 		self.show_colors()
 
+	def delete_all_colors(self):
+		self._colors = []
+		self.show_colors()
+
 	def _on_color_clicked(self):
 		btn = self.sender()
 		cidx = btn.property('cindex')
-		cstr = self._colors[cidx]
-		r, g, b = cstr.split(',')
-		old_color = QColor(int(r), int(g), int(b))
-		new_color = QColorDialog.getColor(initial=old_color, title="Change color")
+		old_color = self._colors[cidx]
+		new_color = CirchartCircosColorSelectDialog.get_color([old_color])
 		
-		if new_color.isValid():
-			r = new_color.red()
-			g = new_color.green()
-			b = new_color.blue()
-			c = "{},{},{}".format(r, g, b)
-			self._colors[cidx] = c
-			btn.setStyleSheet("background-color:rgb({});border: 1px solid black;border-radius:none;".format(c))
+		if new_color:
+			self._colors[cidx] = new_color
+			btn.setStyleSheet("background-color:rgb({});border: 1px solid black;border-radius:none;".format(new_color))
 
 	def _on_right_menu(self, pos):
 		cindex = self.sender().property('cindex')
 		menu = QMenu(self)
-		act = menu.addAction("Delete")
-		act.triggered.connect(lambda: self.delete_color(cindex))
+		del_act = menu.addAction("Delete")
+		del_act.triggered.connect(lambda: self.delete_color(cindex))
+		all_act = menu.addAction("Delete All")
+		all_act.triggered.connect(self.delete_all_colors)
+
 		menu.exec(self.sender().mapToGlobal(pos))
 
 	def set_value(self, value):
-		pass
+		self._colors = value
+		self.show_colors()
 
 	def get_value(self):
 		return self._colors
@@ -636,100 +626,6 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		self.track_count += 1
 		form = CirchartPlotTrack('track{}'.format(self.track_count), self)
 		self.add_widget(form)
-
-class CirchartCircosConfiger(yattag.SimpleDoc):
-	def __init__(self, params):
-		super().__init__(stag_end='>')
-
-		self.params = params
-		self.parse()
-
-	def option(self, name, value, unit=''):
-		line = "{} = {}{}".format(name, value, unit)
-		self.asis(line)
-		self.nl()
-
-	def include(self, confile):
-		self.stag('include', confile)
-		#self.nl()
-
-	def parse(self):
-		tag = self.tag
-		option = self.option
-		include = self.include
-
-		#karyotype
-		kfiles = ['karyotype{}.txt'.format(i) \
-			for i in self.params['karyotype']]
-		option('karyotype', ','.join(kfiles))
-
-		#ideogram
-		ps = self.params['ideogram']
-		with tag('ideogram'):
-			for k, v in ps.items():
-				match k:
-					case 'spacing':
-						with tag('spacing'):
-							option('default', v, 'r')
-
-					case 'radius':
-						option(k, v, 'r')
-
-					case 'thickness':
-						option(k, v, 'p')
-
-					case _:
-						option(k, v)
-
-		#tracks
-		custom_colors = []
-		if any([p.startswith('track') for p in self.params]):
-			with tag('plots'):
-				for p in self.params:
-					if p.startswith('track'):
-						ps = self.params[p]
-
-						with tag('plot'):
-							for k, v in ps.items():
-								match k:
-									case 'data':
-										option('file', 'data{}.txt'.format(v))
-
-									case 'r0' | 'r1':
-										option(k, v, 'r')
-
-									case 'color':
-										if v not in custom_colors:
-											custom_colors.append(v)
-
-										cid = custom_colors.index(v)
-										option(k, 'cc{}'.format(cid))
-
-									case _:
-										option(k, v)
-
-		with tag('image'):
-			include('image')
-
-		include('colors_fonts_patterns')
-		include('housekeeping')
-
-		if custom_colors:
-			with tag('colors'):
-				for i, c in enumerate(custom_colors):
-					option('cc{}'.format(i), c)
-
-	def save_to_file(self, file):
-		content = yattag.indent(self.getvalue(),
-			indentation = ' ',
-			newline = '\n',
-			indent_text = True
-		)
-
-		content = re.sub(r'\<include (.*)\>', r'<<include etc/\1.conf>>', content)
-
-		with open(file, 'w') as fw:
-			fw.write(content)
 
 class CirchartSnailParameter:
 	def __init__(self, parent=None):

@@ -8,6 +8,7 @@ from PySide6.QtSvgWidgets import *
 
 from config import *
 from models import *
+from workers import *
 from backend import *
 
 __all__ = [
@@ -315,6 +316,8 @@ class CirchartGenomeWindowSize(QWidget):
 		return self.spin.value() * scales[self.unit.currentIndex()]
 
 class CirchartCircosColorTable(QTableView):
+	color_changed = Signal(list)
+
 	def __init__(self, parent=None, multiple=False):
 		super().__init__(parent)
 		self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
@@ -324,64 +327,36 @@ class CirchartCircosColorTable(QTableView):
 		if not multiple:
 			self.setSelectionMode(QAbstractItemView.SingleSelection)
 
+		self.selected_index = []
 		self.create_model()
-
-	def parse_colors(self):
-		brewer_file = str(CIRCOS_PATH / 'etc' / 'colors.brewer.conf')
-
-		brewer_colors = {}
-		with open(brewer_file) as fh:
-			for line in fh:
-				if line.startswith('#'):
-					continue
-
-				if not line.strip():
-					continue
-
-				cols = line.strip().split('=')
-
-				if cols[1].count(',') != 2:
-					continue
-
-				cname = '-'.join(cols[0].strip().split('-')[0:-1])
-				r, g, b = cols[1].strip().split(',')
-
-				if cname not in brewer_colors:
-					brewer_colors[cname] = [cname]
-
-				brewer_colors[cname].append(QColor(int(r), int(g), int(b)))
-
-		color_file = str(CIRCOS_PATH / 'etc' / 'colors.conf')
-
-		color_list = []
-		with open(color_file) as fh:
-			for line in fh:
-				if line.startswith('#'):
-					continue
-
-				if not line.strip():
-					continue
-
-				if '=' not in line:
-					continue
-
-				cols = line.strip().split('=')
-				cname = cols[0].strip()
-
-				if ',' in cols[1]:
-					r, g, b = cols[1].strip().split(',')
-					color_list.append([cname, QColor(int(r), int(g), int(b))])
-
-				elif '-' in cols[1]:
-					temp = cols[1].strip().split('-')
-					temp_name = '-'.join(temp[0:-1])
-					temp_color = brewer_colors[temp_name][int(temp[-1])]
-					color_list.append([cname, temp_color])
-
-		color_list.extend(brewer_colors.values())
-		return color_list
+		self.parse_colors()
 
 	def create_model(self):
-		colors = self.parse_colors()
-		model = CirchartCircosColorModel(self, colors)
-		self.setModel(model)
+		self._model = CirchartCircosColorModel(self)
+		self.setModel(self._model)
+
+	def parse_colors(self):
+		worker = CirchartCircosColorWorker()
+		worker.signals.result.connect(self._model.set_data)
+		QThreadPool.globalInstance().start(worker)
+
+	def selectionChanged(self, selected, deselected):
+		for index in selected.indexes():
+			if index not in self.selected_index:
+				
+				self.selected_index.append(index)
+
+		for index in deselected.indexes():
+			if index in self.selected_index:
+				self.selected_index.remove(index)
+
+		colors = []
+		for index in self.selected_index:
+			c = self._model.get_color(index)
+			colors.append(c)
+
+		self.color_changed.emit(colors)
+
+		super().selectionChanged(selected, deselected)
+			
+

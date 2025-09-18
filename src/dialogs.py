@@ -6,7 +6,6 @@ from PySide6.QtWidgets import *
 
 from config import *
 from widgets import *
-from models import *
 from backend import *
 
 __all__ = [
@@ -383,31 +382,94 @@ class CirchartCreateCircosPlotDialog(QDialog):
 			}
 
 class CirchartCircosColorSelectDialog(QDialog):
-	def __init__(self, parent=None, multiple=False):
+	def __init__(self, initials=[], parent=None, multiple=False):
 		super().__init__(parent)
 		self.setWindowTitle("Select color")
 		self.resize(QSize(500, 300))
+		self.multiple = multiple
 
-		self.color_table = CirchartCircosColorTable(self, multiple)
+		self.color_table = CirchartCircosColorTable(self, self.multiple)
+		self.color_table.color_changed.connect(self.on_select_color)
+		self.more_color = QPushButton("More colors", self)
+		self.more_color.clicked.connect(self.on_more_color)
 
-		self.btn_box = QDialogButtonBox(
+		self.btn_box = QDialogButtonBox(self)
+		self.btn_box.addButton(self.more_color, QDialogButtonBox.ResetRole)
+		self.btn_box.setStandardButtons(
 			QDialogButtonBox.StandardButton.Cancel |
 			QDialogButtonBox.StandardButton.Ok
 		)
 		self.btn_box.accepted.connect(self.accept)
 		self.btn_box.rejected.connect(self.reject)
 
-		layout = QVBoxLayout()
-		layout.addWidget(self.color_table)
-		layout.addWidget(self.btn_box)
-		self.setLayout(layout)
+		main_layout = QVBoxLayout()
+		self.color_layout = QHBoxLayout()
+		main_layout.addWidget(self.color_table)
+		main_layout.addLayout(self.color_layout)
+		main_layout.addWidget(self.btn_box)
+		self.setLayout(main_layout)
+
+		self.color_layout.addWidget(QLabel("Selected color:", self))
+
+		self.selected_colors = initials
+		self.show_colors()
+
+	def show_colors(self):
+		if not self.selected_colors:
+			return
+
+		for i in range(1, self.color_layout.count()):
+			item = self.color_layout.itemAt(i)
+
+			if item:
+				item.widget().deleteLater()
+
+		for c in self.selected_colors:
+			cw = QLabel(self)
+			cw.setFixedSize(16, 16)
+			cw.setStyleSheet("background-color:rgb({});border:1px solid black;".format(c))
+			self.color_layout.addWidget(cw)
+
+		self.color_layout.addWidget(CirchartSpacerWidget(self))
+
+	def on_select_color(self, colors):
+		self.selected_colors = []
+
+		for color in colors:
+			r = color.red()
+			g = color.green()
+			b = color.blue()
+			c = "{},{},{}".format(r, g, b)
+			self.selected_colors.append(c)
+
+		self.show_colors()
+
+	def on_more_color(self):
+		color = QColorDialog.getColor(parent=self)
+
+		if color.isValid():
+			r = color.red()
+			g = color.green()
+			b = color.blue()
+			c = "{},{},{}".format(r, g, b)
+
+			if self.multiple:
+				self.selected_colors.append(c)
+			else:
+				self.selected_colors = [c]
+
+			self.show_colors()
 
 	@classmethod
-	def get_color(cls, parent=None):
-		dlg = cls(parent)
+	def get_color(cls, initials=[], parent=None, multiple=False):
+		dlg = cls(initials, parent, multiple)
 
 		if dlg.exec() == QDialog.Accepted:
-			return QColor()
+			if multiple:
+				return dlg.selected_colors
+			else:
+				if dlg.selected_colors:
+					return dlg.selected_colors[0]
 
 
 		

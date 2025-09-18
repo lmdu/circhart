@@ -6,10 +6,9 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 
 
+from tags import *
 from config import *
 from utils import *
-from models import *
-from params import *
 from process import *
 from backend import *
 
@@ -20,6 +19,7 @@ __all__ = [
 	'CirchartDensityPrepareWorker',
 	'CirchartCircosPlotWorker',
 	'CirchartProjectSaveWorker',
+	'CirchartCircosColorWorker',
 ]
 
 class CirchartWorkerSignals(QObject):
@@ -34,7 +34,7 @@ class CirchartWorkerSignals(QObject):
 	finished = Signal()
 
 class CirchartBaseWorker(QRunnable):
-	def __init__(self, params):
+	def __init__(self, params={}):
 		super().__init__()
 		self.params = params
 		self.signals = CirchartWorkerSignals()
@@ -205,7 +205,7 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 				save_circos_data(workdir, outfile, data)
 
 		confile = os.path.join(workdir, 'plot.conf')
-		configer = CirchartCircosConfiger(self.params)
+		configer = CirchartCircosTags(self.params)
 		configer.save_to_file(confile)
 
 	def process_error(self):
@@ -259,9 +259,58 @@ class CirchartProjectSaveWorker(CirchartBaseWorker):
 
 		self.signals.message.emit("Successfully saved project to {}".format(self.params['sfile']))
 
+class CirchartCircosColorWorker(CirchartBaseWorker):
+	def process(self):
+		brewer_file = str(CIRCOS_PATH / 'etc' / 'colors.brewer.conf')
 
+		brewer_colors = {}
+		with open(brewer_file) as fh:
+			for line in fh:
+				if line.startswith('#'):
+					continue
 
+				if not line.strip():
+					continue
 
+				cols = line.strip().split('=')
 
+				if cols[1].count(',') != 2:
+					continue
 
+				cname = '-'.join(cols[0].strip().split('-')[0:-1])
+				r, g, b = cols[1].strip().split(',')
 
+				if cname not in brewer_colors:
+					brewer_colors[cname] = [cname]
+
+				brewer_colors[cname].append(QColor(int(r), int(g), int(b)))
+
+		color_file = str(CIRCOS_PATH / 'etc' / 'colors.conf')
+
+		color_list = []
+		with open(color_file) as fh:
+			for line in fh:
+				if line.startswith('#'):
+					continue
+
+				if not line.strip():
+					continue
+
+				if '=' not in line:
+					continue
+
+				cols = line.strip().split('=')
+				cname = cols[0].strip()
+
+				if ',' in cols[1]:
+					r, g, b = cols[1].strip().split(',')
+					color_list.append([cname, QColor(int(r), int(g), int(b))])
+
+				elif '-' in cols[1]:
+					temp = cols[1].strip().split('-')
+					temp_name = '-'.join(temp[0:-1])
+					temp_color = brewer_colors[temp_name][int(temp[-1])]
+					color_list.append([cname, temp_color])
+
+		color_list.extend(brewer_colors.values())
+		self.signals.result.emit(color_list)

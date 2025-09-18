@@ -10,7 +10,6 @@ from PySide6.QtCore import *
 
 from config import *
 from utils import *
-from params import *
 
 __all__ = [
 	'CirchartImportFastaProcess',

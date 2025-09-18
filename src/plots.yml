@@ -225,4 +225,5 @@ tracks:
     -
       name: color
       type: colors
+      label: colors
       
