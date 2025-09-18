@@ -5,10 +5,9 @@ import multiprocessing
 from PySide6.QtGui import *
 from PySide6.QtCore import *
 
-
-from tags import *
 from config import *
 from utils import *
+from confile import *
 from process import *
 from backend import *
 
@@ -178,10 +177,13 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 
 	def make_tempdir(self):
 		self.tempdir = QTemporaryDir()
-		#self.tempdir.setAutoRemove(False)
+		self.tempdir.setAutoRemove(False)
 
 		if not self.tempdir.isValid():
 			raise Exception("Could not create temporary directory")
+
+		if APP_DEBUG:
+			print(self.tempdir.path())
 
 		return self.tempdir.path()
 
@@ -205,7 +207,7 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 				save_circos_data(workdir, outfile, data)
 
 		confile = os.path.join(workdir, 'plot.conf')
-		configer = CirchartCircosTags(self.params)
+		configer = CirchartCircosConfile(self.params)
 		configer.save_to_file(confile)
 
 	def process_error(self):

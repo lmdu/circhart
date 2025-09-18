@@ -1,54 +1,42 @@
-__all__ = ['CirchartCircosTags']
+__all__ = ['CirchartCircosConfile']
 
-class Tags:
-	_tags = []
-
-	def reset(self):
-		self._tags = []
+class Confile:
+	blocks = []
 
 	def option(self, key, value, unit=''):
-		self._tags.append("{} = {}{}".format(key, value, unit))
+		self.blocks.append("{} = {}{}".format(key, value, unit))
 
 	def include(self, attr):
-		self._tags.append("<<include {}>>".format(attr))
-		self._tags.append('')
+		self.blocks.append("<<include {}>>".format(attr))
+		self.blocks.append('')
 
 	def save_to_file(self, cfile):
 		with open(cfile, 'w') as fw:
-			for tag in self._tags:
+			for tag in self.blocks:
 				print(tag, file=fw)
 
-class Tag(Tags):
-	def __init__(self, name, *args, **kwargs):
-		self.name = name
-		self.attrs = list(args)
+	class Tag:
+		def __init__(self, name):
+			self.name = name
 
-		for k, v in kwargs.items():
-			self.attrs.append("{}={}".format(k, v))
+		def __enter__(self):
+			Confile.blocks.append("<{}>".format(self.name))
+			Confile.blocks.append('')
 
-	def __enter__(self):
-		if self.attrs:
-			line = "<{} {}>".format(self.name, ' '.join(self.attrs))
-		else:
-			line = "<{}>".format(self.name)
+		def __exit__(self, *args):
+			Confile.blocks.append("</{}>".format(self.name))
+			Confile.blocks.append('')
 
-		self._tags.append(line)
-		self._tags.append('')
-
-	def __exit__(self, *args):
-		self._tags.append("</{}>".format(self.name))
-		self._tags.append('')
-
-class CirchartCircosTags(Tags):
+class CirchartCircosConfile(Confile):
 	def __init__(self, params):
 		self.params = params
-		self.reset()
 		self.parse()
 
 	def parse(self):
+		self.blocks = []
 		option = self.option
 		include = self.include
-		tag = Tag
+		tag = self.Tag
 
 		#karyotype
 		kfiles = ['karyotype{}.txt'.format(i) \
