@@ -243,7 +243,6 @@ CirchartAccordionHeader {
 
 CirchartEmptyWidget {
 	background-color: #fafafa;
-	border: 1px solid blue;
 }
 
 CirchartParameterAccordion {
@@ -267,5 +266,29 @@ CirchartColorParameter:pressed {
 	height: 24px;
 	width: 24px;
 	padding: 0;
+}
+
+CirchartAccordionHeader {
+	border-bottom: 1px solid #c2c2c2;
+}
+
+CirchartAccordionContent {
+	border-bottom: 1px solid #c2c2c2;
+}
+
+CirchartAccordionHeader:hover {
+	background: rgba(6,111,209, 0.04);
+	border-color: #a9adb5;
+}
+CirchartAccordionHeader QPushButton {
+	text-align: left;
+	border: none;
+	background: none;
+}
+CirchartAccordionHeader QPushButton:hover {
+	background: none;
+}
+CirchartAccordionHeader QPushButton:pressed {
+	background: none;
 }
 

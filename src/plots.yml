@@ -226,4 +226,231 @@ tracks:
       name: color
       type: colors
       label: colors
+
+  tile:
+    -
+      name: data
+      type: choice
+      source: plotdata
+    -
+      name: r0
+      type: float
+      decimal: 2
+      step: 0.01
+      range:
+        - 0
+        - 1
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: float
+      decimal: 2
+      step: 0.01
+      range:
+        - 0
+        - 1
+      tooltip: the outer radius of the plot track
+    -
+      name: color
+      type: color
+      default: 150,150,150
+    -
+      name: stroke_color
+      type: color
+      default: 217,217,217
+    -
+      name: stroke_thickness
+      type: int
+      range:
+        - 0
+        - 100
+      default: 1
+    -
+      name: layers
+      type: int
+      range:
+        - 0
+        - 100
+      default: 10
+    -
+      name: layers_overflow
+      type: choice
+      source:
+        - hide
+        - collapse
+        - grow
+    -
+      name: margin
+      type: int
+      range:
+        - 0
+        - 100
+      default: 1
+    -
+      name: padding
+      type: int
+      range:
+        - 0
+        - 100
+      default: 3
+    -
+      name: thickness
+      type: int
+      range:
+        - 0
+        - 100
+      default: 10
+  text:
+    -
+      name: data
+      type: choice
+      source: plotdata
+    -
+      name: r0
+      type: float
+      decimal: 2
+      step: 0.01
+      range:
+        - 0
+        - 1
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: float
+      decimal: 2
+      step: 0.01
+      range:
+        - 0
+        - 1
+      tooltip: the outer radius of the plot track
+    -
+      name: label_font
+      type: choice
+      source:
+        - default
+        - light
+        - normal
+        - semibold
+        - bold
+        - italic
+        - bolditalic
+        - italicbold
+    -
+      name: label_size
+      type: int
+      range:
+        - 0
+        - 100
+      default: 12
+    -
+      name: color
+      type: color
+      default: 0,0,0
+    -
+      name: show_links
+      type: bool
+      default: 'no'
+    - 
+      name: link_thickness
+      type: int
+      range:
+        - 0
+        - 100
+      default: 1
+    -
+      name: link_color
+      type: color
+      default: 251,106,74
+    -
+      name: padding
+      type: int
+      range:
+        - 0
+        - 100
+      default: 0
+    -
+      name: rpadding
+      type: int
+      range:
+        - 0
+        - 100
+      default: 0
+    -
+      name: label_snuggle
+      type: bool
+      default: 'no'
+    -
+      name: max_snuggle_distance
+      type: int
+      range:
+        - 0
+        - 100
+      default: 1
+    -
+      name: snuggle_sampling
+      type: int
+      range:
+        - 0
+        - 100
+      default: 1
+    -
+      name: snuggle_tolerance
+      type: float
+      range:
+        - 0
+        - 1
+      decimal: 2
+      default: 0.25
+      step: 0.01
+    -
+      name: snuggle_refine
+      type: bool
+      default: 'no'
+    -
+      name: snuggle_link_overlap_test
+      type: bool
+      default: 'no'
+    -
+      name: snuggle_link_overlap_tolerance
+      type: int
+      range:
+        - 0
+        - 100
+      default: 2
+
+  connector:
+    -
+      name: data
+      type: choice
+      source: plotdata
+    -
+      name: r0
+      type: float
+      decimal: 2
+      step: 0.01
+      range:
+        - 0
+        - 1
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: float
+      decimal: 2
+      step: 0.01
+      range:
+        - 0
+        - 1
+      tooltip: the outer radius of the plot track
+    -
+      name: thickness
+      type: int
+      range:
+        - 0
+        - 100
+      default: 1
+    -
+      name: color
+      type: color
+      default: 0,0,0
+
       

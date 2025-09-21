@@ -382,6 +382,7 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 	def get_value(self):
 		return self._colors
 
+"""
 class CirchartAccordionHeader(QPushButton):
 	def __init__(self, parent=None):
 		super().__init__(parent)
@@ -397,23 +398,70 @@ class CirchartAccordionHeader(QPushButton):
 			self.setIcon(self.expand_icon)
 		else:
 			self.setIcon(self.collapse_icon)
+"""
 
-class CirchartEmptyWidget(QWidget):
+class CirchartAccordionHeader(QFrame):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self.expand_icon = QIcon('icons/down.svg')
+		self.collapse_icon = QIcon('icons/right.svg')
+		
+		self.title_btn = QPushButton(self)
+		self.title_btn.setCheckable(True)
+		self.title_btn.setIcon(self.collapse_icon)
+		self.title_btn.clicked.connect(self._on_clicked)
+
+		self.close_btn = QPushButton(self)
+		self.close_btn.setIcon(QIcon('icons/close.svg'))
+
+		self.toggled = self.title_btn.toggled
+
+		self.set_layout()
+
+	def set_layout(self):
+		layout = QHBoxLayout()
+		layout.setSpacing(0)
+		layout.setContentsMargins(0, 0, 0, 0)
+		layout.addWidget(self.title_btn, 1)
+		layout.addWidget(self.close_btn)
+		layout.setAlignment(self.close_btn, Qt.AlignRight)
+		self.setLayout(layout)
+
+	def set_text(self, text):
+		self.title_btn.setText(text)
+
+	def _on_clicked(self, checked):
+		if checked:
+			self.title_btn.setIcon(self.expand_icon)
+		else:
+			self.title_btn.setIcon(self.collapse_icon)
+
+		self.toggled.emit(checked)
+
+
+class CirchartEmptyWidget(QFrame):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 		self.setVisible(False)
+
+class CirchartAccordionContent(CirchartEmptyWidget):
+	pass
 
 class CirchartParameterAccordion(QWidget):
 	def __init__(self, key, parent=None):
 		super().__init__(parent)
 		self.key = key
 
-		self.box = CirchartEmptyWidget(self)
+		self.box = CirchartAccordionContent(self)
 		self.header = CirchartAccordionHeader(self)
-		self.header.toggled.connect(self.box.setVisible)
 
+		self.set_animate()
 		self.set_layout()
 		self.set_title(self.key.replace('_', ' ').title())
+
+		self.header.toggled.connect(self.box.setVisible)
+		self.header.toggled.connect(self._on_collapsed)
 
 		self.params = {}
 
@@ -423,10 +471,28 @@ class CirchartParameterAccordion(QWidget):
 		pass
 
 	def set_title(self, text):
-		self.header.setText(text)
+		self.header.set_text(text)
+
+	def set_animate(self):
+		self.animation = QPropertyAnimation(self.box, b"maximumHeight", self)
+		self.animation.setEasingCurve(QEasingCurve.OutCubic)
+		self.animation.setDuration(300)
+	
+	def _on_collapsed(self, checked):
+		self.animation.stop()
+
+		if checked:
+			self.animation.setStartValue(0)
+			self.animation.setEndValue(self.box.sizeHint().height())
+		else:
+			self.animation.setStartValue(self.box.height())
+			self.animation.setEndValue(0)
+
+		self.animation.start()
 
 	def set_layout(self):
 		main_layout = QVBoxLayout()
+		main_layout.setSpacing(0)
 		main_layout.setContentsMargins(0, 0, 0, 0)
 		main_layout.addWidget(self.header)
 		main_layout.addWidget(self.box)
@@ -575,7 +641,8 @@ class CirchartParameterManager(QScrollArea):
 
 		self.main_widget = CirchartEmptyWidget(self)
 		self.main_layout = QVBoxLayout()
-		self.main_layout.setContentsMargins(0, 0, 2, 0)
+		self.main_layout.setSpacing(0)
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
 		self.main_layout.setAlignment(Qt.AlignTop)
 		self.main_widget.setLayout(self.main_layout)
 		self.setWidget(self.main_widget)

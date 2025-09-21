@@ -1,31 +1,31 @@
 __all__ = ['CirchartCircosConfile']
 
 class Confile:
-	blocks = []
+	_blocks = []
 
 	def option(self, key, value, unit=''):
-		self.blocks.append("{} = {}{}".format(key, value, unit))
+		self._blocks.append("{} = {}{}".format(key, value, unit))
 
 	def include(self, attr):
-		self.blocks.append("<<include {}>>".format(attr))
-		self.blocks.append('')
+		self._blocks.append("<<include {}>>".format(attr))
+		self._blocks.append('')
 
 	def save_to_file(self, cfile):
 		with open(cfile, 'w') as fw:
-			for tag in self.blocks:
+			for tag in self._blocks:
 				print(tag, file=fw)
 
-	class Tag:
-		def __init__(self, name):
-			self.name = name
+class Tag:
+	def __init__(self, name):
+		self.name = name
 
-		def __enter__(self):
-			Confile.blocks.append("<{}>".format(self.name))
-			Confile.blocks.append('')
+	def __enter__(self):
+		Confile._blocks.append("<{}>".format(self.name))
+		Confile._blocks.append('')
 
-		def __exit__(self, *args):
-			Confile.blocks.append("</{}>".format(self.name))
-			Confile.blocks.append('')
+	def __exit__(self, *args):
+		Confile._blocks.append("</{}>".format(self.name))
+		Confile._blocks.append('')
 
 class CirchartCircosConfile(Confile):
 	def __init__(self, params):
@@ -33,10 +33,10 @@ class CirchartCircosConfile(Confile):
 		self.parse()
 
 	def parse(self):
-		self.blocks = []
+		Confile._blocks = []
 		option = self.option
 		include = self.include
-		tag = self.Tag
+		tag = Tag
 
 		#karyotype
 		kfiles = ['karyotype{}.txt'.format(i) \
