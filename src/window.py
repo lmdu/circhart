@@ -145,17 +145,20 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_circos_dependency_check
 		)
 
-		self.new_circos_act = QAction("&Create Circos Plot", self,
+		self.new_circos_act = QAction(QIcon('icons/new.svg'), "&Create Circos Plot", self,
 			triggered = self.do_create_circos_plot
 		)
+		self.new_circos_act.setIconVisibleInMenu(False)
 
-		self.add_track_act = QAction("&Add Circos Track", self,
+		self.add_track_act = QAction(QIcon('icons/track.svg'), "&Add Circos Track", self,
 			triggered = self.do_add_circos_track
 		)
+		self.add_track_act.setIconVisibleInMenu(False)
 
-		self.update_circos_act = QAction("&Update Circos Plot", self,
+		self.update_circos_act = QAction(QIcon('icons/refresh.svg'), "&Update Circos Plot", self,
 			triggered = self.do_update_circos_plot
 		)
+		self.update_circos_act.setIconVisibleInMenu(False)
 
 		self.about_act = QAction("&About", self,
 			triggered = self.go_to_about,
@@ -232,12 +235,17 @@ class CirchartMainWindow(QMainWindow):
 		self.tool_bar = self.addToolBar('Show Tool Bar')
 		self.tool_bar.setMovable(False)
 		self.tool_bar.setFloatable(False)
-		self.tool_bar.setIconSize(QSize(20, 20))
+		self.tool_bar.setIconSize(QSize(24, 24))
 		self.tool_bar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
 		
 		self.toolbar_act = self.tool_bar.toggleViewAction()
 		self.tool_bar.addAction(self.zoom_in_act)
 		self.tool_bar.addAction(self.zoom_out_act)
+		self.tool_bar.addSeparator()
+
+		self.tool_bar.addAction(self.new_circos_act)
+		self.tool_bar.addAction(self.add_track_act)
+		self.tool_bar.addAction(self.update_circos_act)
 
 
 		self.tool_bar.addWidget(CirchartSpacerWidget(self))

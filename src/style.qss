@@ -39,21 +39,26 @@ QToolBar {
 	background: #ebebeb;
 	border-top: 1px solid #cecece;
 	border-bottom: 1px solid #d5d5d5;
+	spacing: 3px;
+	padding: 5px;
+}
+
+QToolBar::separator {
+	background: #d6d6d6;
+	width: 1px;
+	margin: 5px;
 }
 
 QToolButton {
-	
+	border-radius: 5px;
 }
 
 QToolButton:hover {
-	background: #f7f7f7;
-	border-color: #a9adb5;
+	background: #dedede;
 }
 
 QToolButton:pressed {
-	color: #066fd1;
-	background: rgba(6,111,209, 0.04);
-	border-color: #066fd1;
+	background: #b7b7b7;
 }
 
 QPushButton {
