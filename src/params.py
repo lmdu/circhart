@@ -570,19 +570,32 @@ class CirchartParameterAccordion(QWidget):
 		self.header.set_text(text)
 
 	def set_animate(self):
-		self.animation = QPropertyAnimation(self.box, b"maximumHeight", self)
+		#self.animation = QPropertyAnimation(self.box, b"minimumHeight", self)
+		self.animation = QPropertyAnimation(self.box, b"geometry")
 		self.animation.setEasingCurve(QEasingCurve.OutCubic)
 		self.animation.setDuration(300)
 	
 	def _on_collapsed(self, checked):
 		self.animation.stop()
 
+		x = self.box.x()
+		y = self.box.y()
+		w = self.box.width()
+
 		if checked:
-			self.animation.setStartValue(0)
-			self.animation.setEndValue(self.box.sizeHint().height())
+			#self.animation.setStartValue(0)
+			#self.animation.setEndValue(self.box.sizeHint().height())
+			srect = QRect(x, y, w, 0)
+			self.animation.setStartValue(srect)
+			erect = QRect(x, y, w, self.box.sizeHint().height())
+			self.animation.setEndValue(erect)
 		else:
-			self.animation.setStartValue(self.box.height())
-			self.animation.setEndValue(0)
+			#self.animation.setStartValue(self.box.height())
+			#self.animation.setEndValue(0)
+			srect = QRect(x, y, w, self.box.height())
+			self.animation.setStartValue(srect)
+			erect = QRect(x, y, w, 0)
+			self.animation.setEndValue(erect)
 
 		self.animation.start()
 
