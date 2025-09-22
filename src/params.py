@@ -206,17 +206,109 @@ class CirchartChoiceParameter(CirchartParameterMixin, QComboBox):
 
 class CirchartBoolParameter(CirchartParameterMixin, QCheckBox):
 	def _init_widget(self):
-		self.setFixedSize(60, 30)
-		self.stateChanged.connect(self.update)
+		#self.setFixedSize(60, 30)
+		self.stateChanged.connect(self._on_state_changed)
+		self._handle_position = 0
+		self._halo_radius = 0
+
+		self.set_animations()
+
+	def set_animations(self):
+		self.handle_animation = QPropertyAnimation(self, b"handle_position", self)
+		self.handle_animation.setEasingCurve(QEasingCurve.InOutCubic)
+		self.handle_animation.setDuration(200)
+
+		self.halo_animation = QPropertyAnimation(self, b"halo_radius", self)
+		self.halo_animation.setDuration(350)
+		self.halo_animation.setStartValue(4)
+		self.halo_animation.setEndValue(8)
+
+		self.animation_group = QSequentialAnimationGroup()
+		self.animation_group.addAnimation(self.handle_animation)
+		self.animation_group.addAnimation(self.halo_animation)
+
+	def sizeHint(self):
+		return QSize(50, 20)
+
+	def hitButton(self, pos):
+		return self.contentsRect().contains(pos)
+
+	def _on_state_changed(self, checked):
+		self.animation_group.stop()
+
+		if checked:
+			self.handle_animation.setEndValue(1)
+		else:
+			self.handle_animation.setEndValue(0)
+
+		self.animation_group.start()
 
 	def paintEvent(self, event):
 		painter = QPainter(self)
 		painter.setRenderHint(QPainter.Antialiasing)
 
-		bg_color = QColor("#4CAF50") if self.isChecked() else QColor("#CCCCCC")
-		knob_color = QColor("#FFFFFF")
-		border_color = QColor("#888888")
+		if self.isChecked():
+			bar_color = QColor("#4caf50")
+			halo_color = QColor("#ADDBAF")
+		else:
+			bar_color = QColor("#cccccc")
+			halo_color = QColor("#f2f2f2")
+
+		bar_rect = self.contentsRect()
+		bar_radius = bar_rect.height() / 2
+		handle_radius = bar_radius - 4
+
+		painter.setPen(Qt.NoPen)
+		painter.setBrush(bar_color)
+		painter.drawRoundedRect(bar_rect, bar_radius, bar_radius)
 		
+		handle_xpos = bar_rect.x() + bar_radius + (bar_rect.width() - 2*bar_radius) * self._handle_position
+
+		if self.halo_animation.state() == QPropertyAnimation.Running:
+			painter.setBrush(halo_color)
+			painter.drawEllipse(QPointF(handle_xpos, bar_rect.center().y()+1), self._halo_radius, self._halo_radius)
+		
+		font = self.font()
+		font.setBold(True)
+		painter.setPen(Qt.white)
+		painter.setFont(font)
+
+		if self.isChecked():
+			text_rect = QRect(5, 0, bar_rect.width()-5, bar_rect.height())
+			painter.drawText(text_rect, Qt.AlignLeft | Qt.AlignVCenter, "YES")
+		else:
+			text_rect = QRect(0, 0, bar_rect.width()-5, bar_rect.height())
+			painter.drawText(text_rect, Qt.AlignRight | Qt.AlignVCenter, "NO")
+
+		painter.setPen(Qt.NoPen)
+		painter.setBrush(Qt.white)
+		painter.drawEllipse(
+			QPointF(handle_xpos, bar_rect.center().y()+1),
+			handle_radius, handle_radius
+		)
+
+		painter.end()
+
+	@Property(float)
+	def handle_position(self):
+		return self._handle_position
+
+	@handle_position.setter
+	def handle_position(self, pos):
+		self._handle_position = pos
+		self.update()
+
+	@Property(float)
+	def halo_radius(self):
+		return self._halo_radius
+
+	@halo_radius.setter
+	def halo_radius(self, pos):
+		self._halo_radius = pos
+		self.update()
+
+
+		"""
 		rect = self.rect().adjusted(2, 2, -2, -2)
 		painter.setPen(QPen(border_color, 1))
 		painter.setBrush(bg_color)
@@ -243,6 +335,7 @@ class CirchartBoolParameter(CirchartParameterMixin, QCheckBox):
 			painter.drawText(text_rect, Qt.AlignLeft | Qt.AlignVCenter, text)
 		else:
 			painter.drawText(text_rect, Qt.AlignRight | Qt.AlignVCenter, text)
+		"""
 
 	def get_value(self):
 		return 'yes' if self.isChecked() else 'no'
@@ -255,7 +348,7 @@ class CirchartColorParameter(CirchartParameterMixin, QPushButton):
 	_color = "255,255,255"
 
 	def _init_widget(self):
-		self.setFixedSize(QSize(24, 24))
+		self.setFixedSize(QSize(18, 18))
 		self.setFocusPolicy(Qt.NoFocus)
 		self.clicked.connect(self._on_pick_color)
 		self.setMaximumWidth(self.sizeHint().height())
@@ -414,8 +507,10 @@ class CirchartAccordionHeader(QFrame):
 
 		self.close_btn = QPushButton(self)
 		self.close_btn.setIcon(QIcon('icons/close.svg'))
+		self.close_btn.setIconSize(QSize(12, 12))
 
 		self.toggled = self.title_btn.toggled
+		self.closed = self.close_btn.clicked
 
 		self.set_layout()
 
@@ -462,6 +557,7 @@ class CirchartParameterAccordion(QWidget):
 
 		self.header.toggled.connect(self.box.setVisible)
 		self.header.toggled.connect(self._on_collapsed)
+		self.header.closed.connect(self._on_closed)
 
 		self.params = {}
 
@@ -490,6 +586,11 @@ class CirchartParameterAccordion(QWidget):
 
 		self.animation.start()
 
+	def _on_closed(self):
+		self.animation.setEndValue(0)
+		self.animation.start()
+		self.deleteLater()
+
 	def set_layout(self):
 		main_layout = QVBoxLayout()
 		main_layout.setSpacing(0)
@@ -498,7 +599,7 @@ class CirchartParameterAccordion(QWidget):
 		main_layout.addWidget(self.box)
 
 		self.form_layout = QFormLayout()
-		self.form_layout.setVerticalSpacing(3)
+		self.form_layout.setVerticalSpacing(5)
 		self.form_layout.setRowWrapPolicy(QFormLayout.DontWrapRows)
 		#self.form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
 		self.form_layout.setFieldGrowthPolicy(QFormLayout.FieldsStayAtSizeHint)
@@ -660,6 +761,8 @@ class CirchartParameterManager(QScrollArea):
 
 	def get_values(self):
 		values = {}
+
+		print(self.main_layout.count())
 
 		for i in range(self.main_layout.count()):
 			item = self.main_layout.itemAt(i)

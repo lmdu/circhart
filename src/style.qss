@@ -136,7 +136,7 @@ QLineEdit,
 QComboBox {
 	border: 1px solid #c2c2c2;
 	border-radius: 3px;
-	height: 24px;
+	height: 20px;
 	padding-left: 5px;
 	padding-right: 5px;
 }
@@ -159,7 +159,7 @@ QDoubleSpinBox {
 	padding-right: 15px;
 	border: 1px solid #c2c2c2;
 	border-radius: 3px;
-	height: 24px;
+	height: 20px;
 }
 
 QSpinBox:hover,
@@ -215,14 +215,14 @@ QSpinBox::up-arrow,
 QDoubleSpinBox::up-arrow {
 	subcontrol-origin: content;
 	image: url('icons/plus.svg');
-	width: 12px;
+	width: 10px;
 }
 
 QSpinBox::down-arrow,
 QDoubleSpinBox::down-arrow {
 	subcontrol-origin: content;
 	image: url('icons/minus.svg');
-	height: 12px;
+	height: 10px;
 }
 
 /* custom widgets */
@@ -263,8 +263,6 @@ CirchartColorParameter:hover,
 CirchartColorParameter:pressed {
 	border: 1px solid black;
 	border-radius: none;
-	height: 24px;
-	width: 24px;
 	padding: 0;
 }
 
