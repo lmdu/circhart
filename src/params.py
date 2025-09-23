@@ -358,9 +358,9 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 
 	def _init_widget(self):
 		self.main_layout = QGridLayout()
-		self.main_layout.setContentsMargins(QMargins(0, 0, 0, 0))
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
 		self.main_layout.setHorizontalSpacing(1)
-		self.main_layout.setVerticalSpacing(5)
+		#self.main_layout.setVerticalSpacing(5)
 		self.setLayout(self.main_layout)
 		self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
 		self.max_column =  int(self.width() / 16)
@@ -469,12 +469,13 @@ class CirchartGroupParameter(CirchartParameterMixin, QWidget):
 		self.main_layout.setRowWrapPolicy(QFormLayout.DontWrapRows)
 		self.main_layout.setFieldGrowthPolicy(QFormLayout.FieldsStayAtSizeHint)
 		self.main_layout.setFormAlignment(Qt.AlignLeft | Qt.AlignTop)
+		self.main_layout.setLabelAlignment(Qt.AlignLeft)
 
 		#self.main_layout.setContentsMargins(5, 5, 5, 5)
 		self.content_box.setLayout(self.main_layout)
 
 		layout = QVBoxLayout()
-		layout.setSpacing(0)
+		layout.setSpacing(3)
 		layout.setContentsMargins(0, 0, 0, 0)
 		layout.addWidget(self.check_box)
 		layout.addWidget(self.content_box)
@@ -765,7 +766,11 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 				values[k] = p.get_value()
 
 			if k != 'type':
-				self.form_layout.removeRow(p)
+				try:
+					if self.form_layout.indexOf(p) != -1:
+						self.form_layout.removeRow(p)
+				except:
+					pass
 
 		self.params = {'type': self.params['type']}
 		self.create_parameters(params, values)

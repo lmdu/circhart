@@ -429,7 +429,7 @@ class CirchartCircosColorSelectDialog(QDialog):
 		for i in range(1, self.color_layout.count()):
 			item = self.color_layout.itemAt(i)
 
-			if item:
+			if item.widget():
 				item.widget().deleteLater()
 
 		for c in self.selected_colors:
@@ -446,9 +446,10 @@ class CirchartCircosColorSelectDialog(QDialog):
 			opacity_widget.setValue(self.color_opacity)
 			opacity_widget.valueChanged.connect(self.on_opacity_changed)
 
-		self.color_layout.addSpacing(20)
-		self.color_layout.addWidget(QLabel("Opacity:", self))
-		self.color_layout.addWidget(opacity_widget)
+			self.color_layout.addSpacing(20)
+			self.color_layout.addWidget(QLabel("Opacity:", self))
+			self.color_layout.addWidget(opacity_widget)
+
 		self.color_layout.addWidget(CirchartSpacerWidget(self))
 
 	def on_opacity_changed(self, opacity):
