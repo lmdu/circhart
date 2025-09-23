@@ -348,7 +348,7 @@ tracks:
       default: 0,0,0
     -
       name: show_links
-      type: bool
+      type: group
       default: 'no'
     - 
       name: link_thickness
@@ -357,10 +357,12 @@ tracks:
         - 0
         - 100
       default: 1
+      group: show_links
     -
       name: link_color
       type: color
       default: 251,106,74
+      group: show_links
     -
       name: padding
       type: int
@@ -377,7 +379,7 @@ tracks:
       default: 0
     -
       name: label_snuggle
-      type: bool
+      type: group
       default: 'no'
     -
       name: max_snuggle_distance
@@ -386,6 +388,7 @@ tracks:
         - 0
         - 100
       default: 1
+      group: label_snuggle
     -
       name: snuggle_sampling
       type: int
@@ -393,6 +396,7 @@ tracks:
         - 0
         - 100
       default: 1
+      group: label_snuggle
     -
       name: snuggle_tolerance
       type: float
@@ -402,14 +406,17 @@ tracks:
       decimal: 2
       default: 0.25
       step: 0.01
+      group: label_snuggle
     -
       name: snuggle_refine
       type: bool
       default: 'no'
+      group: label_snuggle
     -
       name: snuggle_link_overlap_test
       type: bool
       default: 'no'
+      group: label_snuggle
     -
       name: snuggle_link_overlap_tolerance
       type: int
@@ -417,6 +424,7 @@ tracks:
         - 0
         - 100
       default: 2
+      group: label_snuggle
 
   connector:
     -
@@ -453,4 +461,55 @@ tracks:
       type: color
       default: 0,0,0
 
-      
+  highlight:
+    -
+      name: data
+      type: choice
+      source: plotdata
+    -
+      name: ideogram
+      type: bool
+      default: 'no'
+      tooltip: toggles the position of the highlight to be within the ideogram extent
+    -
+      name: r0
+      type: float
+      decimal: 2
+      step: 0.01
+      range:
+        - 0
+        - 1
+      mutex: ideogram
+      tooltip: the inner radius of the plot track, disabled when ideogram yes
+    -
+      name: r1
+      type: float
+      decimal: 2
+      step: 0.01
+      range:
+        - 0
+        - 1
+      mutex: ideogram
+      tooltip: the outer radius of the plot track, , disabled when ideogram yes
+    -
+      name: fill_color
+      type: color
+      default: 150,150,150,0.4
+      tooltip: color of the highlight slice
+    -
+      name: stroke_color
+      type: color
+      default: 0,0,0,0.4
+      tooltip: color of the highlight border, drawn if stroke_thickness is set
+    -
+      name: stroke_thickness
+      type: int
+      default: 0
+      tooltip: border thickness, if any, of the highlight slice
+    -
+      name: z
+      type: int
+      label: Z Depth
+      default: 1
+      tooltip: z-depth of the highlight, controlling the order in which highlights are drawn
+

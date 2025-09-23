@@ -141,6 +141,9 @@ class CirchartParameterMixin:
 		self._default = default
 		self.set_value(default)
 
+	def set_tooltip(self, tip):
+		self.setToolTip(tip)
+
 	def reset_default(self):
 		if self._default is not None:
 			self.set_value(self._default)
@@ -270,6 +273,7 @@ class CirchartBoolParameter(CirchartParameterMixin, QCheckBox):
 		
 		font = self.font()
 		font.setBold(True)
+		font.setPointSize(8)
 		painter.setPen(Qt.white)
 		painter.setFont(font)
 
@@ -307,36 +311,6 @@ class CirchartBoolParameter(CirchartParameterMixin, QCheckBox):
 		self._halo_radius = pos
 		self.update()
 
-
-		"""
-		rect = self.rect().adjusted(2, 2, -2, -2)
-		painter.setPen(QPen(border_color, 1))
-		painter.setBrush(bg_color)
-		painter.drawRoundedRect(rect, 10, 10)
-
-		knob_radius = 13
-		if self.isChecked():
-			knob_pos = QPoint(self.width() - knob_radius - 4, self.height() // 2)
-		else:
-			knob_pos = QPoint(knob_radius + 4, self.height() // 2)
-		
-		painter.setPen(Qt.NoPen)
-		painter.setBrush(knob_color)
-		painter.drawEllipse(knob_pos, knob_radius, knob_radius)
-
-		text = "ON" if self.isChecked() else "OFF"
-		text_color = QColor("#FFFFFF") if self.isChecked() else QColor("#666666")
-
-		painter.setPen(text_color)
-		painter.setFont(self.font())
-		text_rect = QRect(0, 0, self.width() - 20, self.height())
-
-		if self.isChecked():
-			painter.drawText(text_rect, Qt.AlignLeft | Qt.AlignVCenter, text)
-		else:
-			painter.drawText(text_rect, Qt.AlignRight | Qt.AlignVCenter, text)
-		"""
-
 	def get_value(self):
 		return 'yes' if self.isChecked() else 'no'
 
@@ -367,7 +341,10 @@ class CirchartColorParameter(CirchartParameterMixin, QPushButton):
 		return self._color
 
 	def set_color(self):
-		self.setStyleSheet("background-color:rgb({});".format(self._color))
+		if self._color.count(',') > 2:
+			self.setStyleSheet("background-color:rgba({});".format(self._color))
+		else:
+			self.setStyleSheet("background-color:rgb({});".format(self._color))
 
 	def set_value(self, value):
 		self._color = value
@@ -475,23 +452,46 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 	def get_value(self):
 		return self._colors
 
-"""
-class CirchartAccordionHeader(QPushButton):
-	def __init__(self, parent=None):
-		super().__init__(parent)
+class CirchartGroupParameter(CirchartParameterMixin, QWidget):
+	def _init_widget(self):
+		self.check_box = QCheckBox(self.key.replace('_', ' ').title(), self)
+		self.content_box = QGroupBox(self)
+		self.content_box.setVisible(False)
+		self.check_box.toggled.connect(self.content_box.setVisible)
+		self.set_layout()
 
-		self.setCheckable(True)
-		self.expand_icon = QIcon('icons/down.svg')
-		self.collapse_icon = QIcon('icons/right.svg')
-		self.setIcon(self.collapse_icon)
-		self.toggled.connect(self._on_clicked)
+	def set_tooltip(self, tip):
+		self.check_box.setToolTip(tip)
 
-	def _on_clicked(self, checked):
-		if checked:
-			self.setIcon(self.expand_icon)
+	def set_layout(self):
+		self.main_layout = QFormLayout()
+		self.main_layout.setVerticalSpacing(5)
+		self.main_layout.setRowWrapPolicy(QFormLayout.DontWrapRows)
+		self.main_layout.setFieldGrowthPolicy(QFormLayout.FieldsStayAtSizeHint)
+		self.main_layout.setFormAlignment(Qt.AlignLeft | Qt.AlignTop)
+
+		#self.main_layout.setContentsMargins(5, 5, 5, 5)
+		self.content_box.setLayout(self.main_layout)
+
+		layout = QVBoxLayout()
+		layout.setSpacing(0)
+		layout.setContentsMargins(0, 0, 0, 0)
+		layout.addWidget(self.check_box)
+		layout.addWidget(self.content_box)
+		self.setLayout(layout)
+
+	def add_subparam(self, widget, label=None):
+		if label:
+			self.main_layout.addRow(label, widget)
 		else:
-			self.setIcon(self.collapse_icon)
-"""
+			self.main_layout.addRow(widget)
+
+	def get_value(self):
+		return 'yes' if self.check_box.isChecked() else 'no'
+
+	def set_value(self, value):
+		value = True if value == 'yes' else False
+		self.check_box.setChecked(value)
 
 class CirchartAccordionHeader(QFrame):
 	def __init__(self, parent=None):
@@ -623,11 +623,21 @@ class CirchartParameterAccordion(QWidget):
 
 		self.setLayout(main_layout)
 
-	def add_parameter(self, param, label=None):
+	def add_parameter(self, param, label=None, group=None):
 		if label is None:
 			label = param.key.replace('_', ' ').title()
 
-		self.form_layout.addRow(label, param)
+		if group is True:
+			self.form_layout.addRow(param)
+
+		elif group:
+			parent = self.params[group]
+			param.setParent(parent)
+			parent.add_subparam(param, label)
+
+		else:
+			self.form_layout.addRow(label, param)
+
 		self.params[param.key] = param
 
 	def create_parameters(self, params, values={}):
@@ -662,6 +672,9 @@ class CirchartParameterAccordion(QWidget):
 				case 'choice':
 					w = CirchartChoiceParameter(p.name, self)
 
+				case 'group':
+					w = CirchartGroupParameter(p.name, self)
+
 			for k in p:
 				match k:
 					case 'range':
@@ -686,13 +699,25 @@ class CirchartParameterAccordion(QWidget):
 						w.set_data(p.source)
 
 					case 'tooltip':
-						w.setToolTip(p.tooltip)
+						w.set_tooltip(p.tooltip)
+
+					case 'mutex':
+						parent = self.params[p.mutex]
+						w.setDisabled(parent.isChecked())
+						parent.toggled.connect(w.setDisabled)
 
 			if p.name in values:
 				w.set_value(values[p.name])
 
-			if 'label' in p:
+			if p.type == 'group':
+				self.add_parameter(w, group=True)
+
+			elif 'group' in p:
+				self.add_parameter(w, group=p.group)
+
+			elif 'label' in p:
 				self.add_parameter(w, p.label)
+
 			else:
 				self.add_parameter(w)
 

@@ -230,6 +230,19 @@ QDoubleSpinBox::down-arrow {
 	height: 10px;
 }
 
+QGroupBox {
+	border: 1px solid #e2e2e2;
+	border-radius: 5px;
+}
+
+QToolTip {
+	border: 1px solid black;
+	border-radius: 6px;
+	background-color: black;
+	color: white;
+	padding: 5px;
+}
+
 /* custom widgets */
 CirchartCheckTableWidget {
 	border: 1px solid #c2c2c2;

@@ -384,7 +384,12 @@ class CirchartCreateCircosPlotDialog(QDialog):
 class CirchartCircosColorSelectDialog(QDialog):
 	def __init__(self, initials=[], parent=None, multiple=False):
 		super().__init__(parent)
-		self.setWindowTitle("Select color")
+		if multiple:
+			self.setWindowTitle("Select colors")
+		else:
+			self.color_opacity = 1
+			self.setWindowTitle("Select color")
+
 		self.resize(QSize(500, 300))
 		self.multiple = multiple
 
@@ -409,7 +414,10 @@ class CirchartCircosColorSelectDialog(QDialog):
 		main_layout.addWidget(self.btn_box)
 		self.setLayout(main_layout)
 
-		self.color_layout.addWidget(QLabel("Selected color:", self))
+		if multiple:
+			self.color_layout.addWidget(QLabel("Selected colors:", self))
+		else:
+			self.color_layout.addWidget(QLabel("Selected color:", self))
 
 		self.selected_colors = initials
 		self.show_colors()
@@ -430,7 +438,21 @@ class CirchartCircosColorSelectDialog(QDialog):
 			cw.setStyleSheet("background-color:rgb({});border:1px solid black;".format(c))
 			self.color_layout.addWidget(cw)
 
+		if not self.multiple:
+			opacity_widget = QDoubleSpinBox(self)
+			opacity_widget.setRange(0, 1)
+			opacity_widget.setDecimals(2)
+			opacity_widget.setSingleStep(0.01)
+			opacity_widget.setValue(self.color_opacity)
+			opacity_widget.valueChanged.connect(self.on_opacity_changed)
+
+		self.color_layout.addSpacing(20)
+		self.color_layout.addWidget(QLabel("Opacity:", self))
+		self.color_layout.addWidget(opacity_widget)
 		self.color_layout.addWidget(CirchartSpacerWidget(self))
+
+	def on_opacity_changed(self, opacity):
+		self.color_opacity = opacity
 
 	def on_select_color(self, colors):
 		self.selected_colors = []
@@ -442,7 +464,14 @@ class CirchartCircosColorSelectDialog(QDialog):
 			c = "{},{},{}".format(r, g, b)
 			self.selected_colors.append(c)
 
-		self.show_colors()
+		if self.multiple:
+			self.show_colors()
+		else:
+			self.change_color(c)
+
+	def change_color(self, c):
+		item = self.color_layout.itemAt(1)
+		item.widget().setStyleSheet("background-color:rgb({});border:1px solid black;".format(c))
 
 	def on_more_color(self):
 		color = QColorDialog.getColor(parent=self)
@@ -455,10 +484,10 @@ class CirchartCircosColorSelectDialog(QDialog):
 
 			if self.multiple:
 				self.selected_colors.append(c)
+				self.show_colors()
 			else:
 				self.selected_colors = [c]
-
-			self.show_colors()
+				self.change_color(c)
 
 	@classmethod
 	def get_color(cls, initials=[], parent=None, multiple=False):
@@ -469,7 +498,11 @@ class CirchartCircosColorSelectDialog(QDialog):
 				return dlg.selected_colors
 			else:
 				if dlg.selected_colors:
-					return dlg.selected_colors[0]
+					if dlg.color_opacity < 1:
+						return "{},{}".format(dlg.selected_colors[0], dlg.color_opacity)
+
+					else:
+						return dlg.selected_colors[0]
 
 
 		
