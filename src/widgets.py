@@ -192,8 +192,8 @@ class CirchartPlotTreeWidget(CirchartIOTreeWidget):
 		self._model = CirchartPlotTreeModel(self)
 		self.setModel(self._model)
 
-	def emit_signal(self, table, rowid):
-		self.show_plot.emit(table, rowid)
+	def emit_signal(self, ptype, rowid):
+		self.show_plot.emit(ptype, rowid)
 
 class CirchartDataTableWidget(QTableView):
 	def __init__(self, parent=None):
@@ -270,6 +270,9 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		self.centerOn(self.svg_item)
 
 	def load_svg(self, svg_str):
+		if not svg_str:
+			return
+
 		self.scene().clear()
 		self.resetTransform()
 		svg_data = QByteArray(svg_str.encode())
@@ -281,7 +284,7 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		#self.fit_view()
 		self.fitInView(self.svg_item, Qt.KeepAspectRatio)
 
-	def show_plot(self, plotid):
+	def show_plot(self, plottype, plotid):
 		svg_str = SqlControl.get_svg(plotid)
 		self.load_svg(svg_str)
 

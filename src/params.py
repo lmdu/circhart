@@ -8,7 +8,8 @@ from backend import *
 from dialogs import *
 
 __all__ = [
-	'CirchartCircosParameterManager'
+	'CirchartCircosParameterManager',
+	'CirchartSnailParameterManager',
 ]
 
 #from pyside6 examples
@@ -567,6 +568,9 @@ class CirchartParameterAccordion(QWidget):
 	def _init_widgets(self):
 		pass
 
+	def set_key(self, key):
+		self.key = key
+
 	def set_title(self, text):
 		self.header.set_text(text)
 
@@ -644,6 +648,9 @@ class CirchartParameterAccordion(QWidget):
 	def create_parameters(self, params, values={}):
 		for param in params:
 			p = AttrDict(param)
+
+			if 'disable' in p:
+				continue
 
 			match p.type:
 				case 'hidden':
@@ -758,6 +765,8 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.plot_type.set_data(types)
 
 	def _on_type_changed(self, ptype):
+		self.set_title("Track:{}".format(ptype))
+
 		params = self.configs[ptype]
 
 		values = {}
@@ -791,10 +800,8 @@ class CirchartParameterManager(QScrollArea):
 		self.main_widget.setLayout(self.main_layout)
 		self.setWidget(self.main_widget)
 
-		#w = CirchartIntegerParameter('dd', self)
-		#self.main_layout.addWidget(w)
-
 		self.track_count = 0
+		self.plot_id = 0
 
 	def sizeHint(self):
 		return QSize(250, 0)
@@ -802,10 +809,18 @@ class CirchartParameterManager(QScrollArea):
 	def add_widget(self, param):
 		self.main_layout.addWidget(param)
 
+	def clear_widgets(self):
+		for i in range(self.main_layout.count()):
+			item = self.main_layout.itemAt(i)
+
+			if item:
+				widget = item.widget()
+
+				if widget:
+					widget.deleteLater()
+
 	def get_values(self):
 		values = {}
-
-		print(self.main_layout.count())
 
 		for i in range(self.main_layout.count()):
 			item = self.main_layout.itemAt(i)
@@ -822,9 +837,30 @@ class CirchartParameterManager(QScrollArea):
 				values.update(widget.get_values())
 
 		return values
-	
+
+	def reset_parameters(self, params):
+		pass
+
+	def change_plot(self, pid):
+		if pid == self.plot_id:
+			return
+
+		params = SqlControl.get_params(pid)
+
+		if not params:
+			return
+
+		params = str_to_dict(params)
+
+		if not params:
+			return
+
+		self.reset_parameters(params)
+
 class CirchartCircosParameterManager(CirchartParameterManager):
 	def new_circos_plot(self, params):
+		self.plot_id = params['plotid']
+
 		form = CirchartGeneralTrack('general')
 		form.set_values(params)
 		self.add_widget(form)
@@ -839,11 +875,29 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		self.track_count += 1
 		form = CirchartPlotTrack('track{}'.format(self.track_count), self)
 		self.add_widget(form)
+		return form
 
-class CirchartSnailParameter:
-	def __init__(self, parent=None):
-		super().__init__(parent)
+	def reset_parameters(self, params):
+		self.clear_widgets()
+		self.new_circos_plot(params)
 
+		track_id = 0
+		for k, v in params.items():
+			if k.startswith('track'):
+				tid = int(k.replace('track', ''))
+
+				if tid > track_id:
+					track_id = tid
+
+				form = self.add_plot_track()
+				form.set_key(k)
+				form.set_values(v)
+
+		self.track_count = track_id
+
+
+class CirchartSnailParameterManager(CirchartParameterManager):
+	pass
 
 
 

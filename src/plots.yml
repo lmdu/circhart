@@ -113,6 +113,7 @@ tracks:
       source:
         - out
         - in
+      disable: true
 
   line:
     -
@@ -141,6 +142,7 @@ tracks:
       name: color
       type: color
       default: 0,0,0
+      tooltip: line color
     -
       name: thickness
       type: int
@@ -148,12 +150,14 @@ tracks:
         - 0
         - 100
       default: 1
+      tooltip: line width
     -
       name: orientation
       type: choice
       source:
         - out
         - in
+      disable: true
 
   histogram:
     -
@@ -182,6 +186,7 @@ tracks:
       name: color
       type: color
       default: 0,0,0
+      tooltip: line color
     -
       name: stroke_thickness
       type: int
@@ -189,10 +194,12 @@ tracks:
         - 0
         - 100
       default: 1
+      tooltip: line width
     -
       name: fill_color
       type: color
       default: 255,255,255
+      tooltip: the bin fill color
     -
       name: extend_bin
       type: bool
@@ -512,4 +519,57 @@ tracks:
       label: Z Depth
       default: 1
       tooltip: z-depth of the highlight, controlling the order in which highlights are drawn
+
+  link:
+    -
+      name: ribbon
+      type: bool
+      default: 'no'
+    -
+      name: color
+      type: color
+      default: 0,0,0
+      tooltip:  color of the link line
+    -
+      name: thickness
+      type: int
+      range:
+        - 0
+        - 100
+      default: 1
+      tooltip: thickness of the link line
+    -
+      name: radius
+      type: float
+      range:
+        - 0
+        - 1
+      decimal: 2
+      default: 0.4
+      tooltip: the radial position of the termination of the link
+    -
+      name: bezier_radius
+      type: float
+      range:
+        - 0
+        - 1
+      decimal: 2
+      default: 0
+      tooltip:  the radial position of the third control point used to draw the Bezier curve
+    -
+      name: crest
+      type: float
+      range:
+        - 0
+        - 1
+      decimal: 2
+      default: 0.5
+    -
+      name: bezier_radius_purity
+      type: float
+      range:
+        - 0
+        - 1
+      decimal: 2
+      default: 0.75
 

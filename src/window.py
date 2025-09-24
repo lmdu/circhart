@@ -53,6 +53,9 @@ class CirchartMainWindow(QMainWindow):
 		self.data_tree.show_data.connect(self.data_table.change_table)
 		self.data_tree.clicked.connect(self.show_data_table)
 		self.plot_tree = CirchartPlotTreeWidget(self)
+		self.plot_tree.show_plot.connect(self.plot_view.show_plot)
+		self.plot_tree.show_plot.connect(self.show_plot_params)
+		self.plot_tree.clicked.connect(self.show_plot_view)
 
 
 		self.stack_widget = QStackedWidget(self)
@@ -291,10 +294,10 @@ class CirchartMainWindow(QMainWindow):
 
 	def create_plot_panels(self):
 		self.circos_panel = CirchartCircosParameterManager(self)
-		#self.snail_panel = qtp.ParameterEditor()
+		self.snail_panel = CirchartSnailParameterManager(self)
 
 		self.param_stack.addWidget(self.circos_panel)
-		#self.param_stack.addWidget(self.snail_panel)
+		self.param_stack.addWidget(self.snail_panel)
 
 
 
@@ -488,11 +491,28 @@ class CirchartMainWindow(QMainWindow):
 		if self.stack_widget.currentIndex() != 1:
 			self.stack_widget.setCurrentIndex(1)
 
-	def show_svg_plot(self, plot_id):
+	def show_plot_view(self):
 		if self.stack_widget.currentIndex() != 0:
 			self.stack_widget.setCurrentIndex(0)
 
-		self.plot_view.show_plot(plot_id)
+	def show_svg_plot(self, plot_id):
+		self.show_plot_view()
+		self.plot_view.show_plot('', plot_id)
+
+	def show_plot_params(self, ptype, pid):
+		if ptype == 'snail':
+			if self.param_stack.currentIndex() != 1:
+				self.param_stack.setCurrentIndex(1)
+
+		else:
+			if self.param_stack.currentIndex() != 0:
+				self.param_stack.setCurrentIndex(0)
+
+			self.circos_panel.change_plot(pid)
+
+
+	
+
 
 
 

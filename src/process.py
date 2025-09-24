@@ -182,7 +182,7 @@ class CirchartCircosPlotProcess(QProcess):
 	def __init__(self, parent, workdir):
 		super().__init__(parent)
 		self.setProgram(CIRCOS_COMMAND)
-		self.setArguments(['-conf', 'plot.conf'])
+		self.setArguments(['-conf', 'plot.conf', '-nopng'])
 		self.setWorkingDirectory(workdir)
 
 		

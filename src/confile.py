@@ -31,6 +31,7 @@ class CirchartCircosConfile(Confile):
 	def __init__(self, params):
 		self.params = params
 		self.parse()
+		self.custom_colors = []
 
 	def parse_ideogram(self, ps):
 		with Tag('ideogram'):
@@ -77,19 +78,19 @@ class CirchartCircosConfile(Confile):
 									cs = []
 
 									for c in v:
-										if c not in custom_colors:
-											custom_colors.append(c)
+										if c not in self.custom_colors:
+											self.custom_colors.append(c)
 
-										cid = custom_colors.index(c)
+										cid = self.custom_colors.index(c)
 										cs.append('cc{}'.format(cid))
 
 									self.option(k, ','.join(cs))
 
 								else:
-									if v not in custom_colors:
-										custom_colors.append(v)
+									if v not in self.custom_colors:
+										self.custom_colors.append(v)
 
-									cid = custom_colors.index(v)
+									cid = self.custom_colors.index(v)
 									self.option(k, 'cc{}'.format(cid))
 
 							case _:
@@ -109,7 +110,7 @@ class CirchartCircosConfile(Confile):
 		
 
 		#tracks
-		custom_colors = []
+		self.custom_colors = []
 		plot_tracks = []
 		highlight_tracks = []
 
@@ -135,7 +136,7 @@ class CirchartCircosConfile(Confile):
 		self.include('etc/colors_fonts_patterns.conf')
 		self.include('etc/housekeeping.conf')
 
-		if custom_colors:
+		if self.custom_colors:
 			with Tag('colors'):
-				for i, c in enumerate(custom_colors):
+				for i, c in enumerate(self.custom_colors):
 					self.option('cc{}'.format(i), c)

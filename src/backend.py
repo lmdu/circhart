@@ -500,6 +500,14 @@ class SqlControl:
 
 		return SqlBase.get_one(sql, pid)
 
+	@staticmethod
+	def get_params(pid):
+		sql = SqlQuery('plot')\
+			.select('param')\
+			.where('id=?')
+
+		return SqlBase.get_one(sql, pid)
+
 
 
 
