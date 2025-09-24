@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "apsw>=3.50.2.0",
+    "blobtk>=0.6.0",
     "cmap>=0.6.1",
     "iconify>=0.0.103",
     "pint>=0.24.4",
