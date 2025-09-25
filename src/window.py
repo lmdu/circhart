@@ -158,6 +158,22 @@ class CirchartMainWindow(QMainWindow):
 		)
 		self.add_track_act.setIconVisibleInMenu(False)
 
+		self.add_rule_act = QAction("&Add Track Rule", self,
+			triggered = self.do_add_circos_rule
+		)
+
+		self.add_background_act = QAction("&Add Track Background", self,
+			triggered = self.do_add_circos_background
+		)
+
+		self.add_axis_act = QAction("&Add Track Axis", self,
+			triggered = self.do_add_circos_axis
+		)
+
+		self.add_grid_act = QAction("&Add Track Grid", self,
+			triggered = self.do_add_circos_grid
+		)
+
 		self.update_circos_act = QAction(QIcon('icons/refresh.svg'), "&Update Circos Plot", self,
 			triggered = self.do_update_circos_plot
 		)
@@ -218,7 +234,13 @@ class CirchartMainWindow(QMainWindow):
 		self.plot_menu = self.menuBar().addMenu("&Plot")
 		self.circos_menu = self.plot_menu.addMenu("&Circos Plot")
 		self.circos_menu.addAction(self.new_circos_act)
+		self.circos_menu.addSeparator()
 		self.circos_menu.addAction(self.add_track_act)
+		self.circos_menu.addSeparator()
+		self.circos_menu.addAction(self.add_rule_act)
+		self.circos_menu.addAction(self.add_background_act)
+		self.circos_menu.addAction(self.add_axis_act)
+		self.circos_menu.addAction(self.add_grid_act)
 		self.circos_menu.addSeparator()
 		self.circos_menu.addAction(self.update_circos_act)
 
@@ -298,7 +320,6 @@ class CirchartMainWindow(QMainWindow):
 
 		self.param_stack.addWidget(self.circos_panel)
 		self.param_stack.addWidget(self.snail_panel)
-
 
 
 	def do_open_project(self, pfile=None):
@@ -465,6 +486,18 @@ class CirchartMainWindow(QMainWindow):
 
 	def do_add_circos_track(self):
 		self.circos_panel.add_plot_track()
+
+	def do_add_circos_rule(self):
+		self.circos_panel.add_plot_rule()
+
+	def do_add_circos_background(self):
+		self.circos_panel.add_plot_background()
+
+	def do_add_circos_axis(self):
+		pass
+
+	def do_add_circos_grid(self):
+		pass
 
 	def do_update_circos_plot(self):
 		params = self.circos_panel.get_values()

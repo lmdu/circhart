@@ -573,3 +573,20 @@ tracks:
       decimal: 2
       default: 0.75
 
+rules:
+  scatter:
+    condition:
+      -
+        name: value
+        type: number
+
+    style:
+      - glyph
+      - glyph_size
+      - color
+      - stroke_color
+      - stroke_thickness
+
+
+
+

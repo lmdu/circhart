@@ -754,6 +754,10 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 		params = CIRCOS_PARAMS['ideogram']
 		self.create_parameters(params)
 
+class CirchartDisplayRule(CirchartParameterAccordion):
+	def _init_widgets(self):
+		pass
+
 class CirchartPlotTrack(CirchartParameterAccordion):
 	def _init_widgets(self):
 		self.configs = CIRCOS_PARAMS['tracks']
@@ -764,8 +768,9 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.plot_type.currentTextChanged.connect(self._on_type_changed)
 		self.plot_type.set_data(types)
 
+
 	def _on_type_changed(self, ptype):
-		self.set_title("Track:{}".format(ptype))
+		#self.set_title("Track:{}".format(ptype))
 
 		params = self.configs[ptype]
 
@@ -783,6 +788,26 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 
 		self.params = {'type': self.params['type']}
 		self.create_parameters(params, values)
+
+	def contextMenuEvent(self, event):
+		menu = QMenu(self)
+		rule_act = QAction("Add Rules", self)
+		rule_act.triggered.connect(self.add_rules)
+		bg_act = QAction("Add Backgrounds", self)
+		axes_act = QAction("Add Axes", self)
+		grid_act = QAction("Add Grids", self)
+
+		menu.addAction(rule_act)
+		menu.addAction(bg_act)
+		menu.addAction(axes_act)
+		menu.addAction(grid_act)
+		menu.exec(self.mapToGlobal(event.pos()))
+
+	def add_rules(self):
+		rule_box = CirchartDisplayRule("Rules", self)
+		self.form_layout.addRow(rule_box)
+
+
 
 class CirchartParameterManager(QScrollArea):
 	def __init__(self, parent=None):
@@ -894,6 +919,8 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 				form.set_values(v)
 
 		self.track_count = track_id
+
+
 
 
 class CirchartSnailParameterManager(CirchartParameterManager):

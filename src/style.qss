@@ -308,3 +308,15 @@ CirchartAccordionHeader QPushButton:pressed {
 	background: none;
 }
 
+CirchartDisplayRule CirchartAccordionHeader {
+	border: 1px solid #cccccc;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+CirchartDisplayRule CirchartAccordionContent {
+	border-bottom: 1px solid #cccccc;
+	border-left: 1px solid #cccccc;
+	border-right: 1px solid #cccccc;
+}
+

@@ -506,9 +506,6 @@ class CirchartCircosColorSelectDialog(QDialog):
 						return dlg.selected_colors[0]
 
 
-		
-
-
 
 
 
