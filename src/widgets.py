@@ -5,6 +5,7 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtSvgWidgets import *
+from PySide6.QtPrintSupport import *
 
 from config import *
 from models import *
@@ -293,6 +294,46 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 			svg_str = fh.read()
 
 		self.load_svg(svg_str)
+
+	def save_plot(self, ifile, iformat):
+		scene = self.scene()
+		scene_rect = scene.sceneRect()
+
+		if scene_rect.isEmpty():
+			scene_rect = scene.itemsBoundingRect()
+
+		if iformat == 'svg':
+			pass
+
+		elif iformat == 'pdf':
+			printer = QPrinter(QPrinter.PrinterResolution)
+			printer.setOutputFormat(QPrinter.PdfFormat)
+			printer.setOutputFileName(ifile)
+			printer.setResolution(300)
+
+			page_size = QPageSize(scene_rect.size(), QPageSize.Point)
+			printer.setPageSize(page_size)
+			printer.setPageMargins(QMarginsF(0, 0, 0, 0))
+			printer.setFullPage(True)
+			painter = QPainter(printer)
+			painter.setRenderHint(QPainter.Antialiasing)
+
+			scene.render(painter)
+			painter.end()
+
+		else:
+			image = QImage(scene_rect.size().toSize(), QImage.Format_ARGB32)
+			image.fill(Qt.white)
+
+			painter = QPainter(image)
+			painter.setRenderHint(QPainter.Antialiasing)
+			scene.render(painter)
+			painter.end()
+
+			dpm = 300 * 39.37
+			image.setDotsPerMeterX(dpm)
+			image.setDotsPerMeterY(dpm)
+			image.save(ifile, quality=100)
 
 class CirchartGenomeWindowSize(QWidget):
 	def __init__(self, parent=None):

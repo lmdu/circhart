@@ -117,6 +117,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_plot_data
 		)
 
+		self.export_image_act = QAction("&Export Image...", self,
+			triggered = self.do_export_image
+		)
+
 		self.zoom_in_act = QAction(QIcon("icons/zoomin.svg"), "&Zoom In", self,
 			triggered = self.do_zoom_in
 		)
@@ -211,6 +215,7 @@ class CirchartMainWindow(QMainWindow):
 		self.import_menu.addSeparator()
 		self.import_menu.addAction(self.import_kdata_act)
 		self.import_menu.addAction(self.import_pdata_act)
+		self.file_menu.addAction(self.export_image_act)
 
 		self.file_menu.addSeparator()
 		self.file_menu.addAction(self.quit_act)
@@ -437,6 +442,23 @@ class CirchartMainWindow(QMainWindow):
 
 	def do_import_plot_data(self):
 		pass
+
+	def do_export_image(self):
+		ifile, ext = QFileDialog.getSaveFileName(self,
+			filter = (
+				"PNG file (*.png);;"
+				"SVG file (*.svg);;"
+				"PDF file (*.pdf);;"
+				"JPG file (*.jpg);;"
+				"TIFF file (*.tif)"
+			)
+		)
+
+		if not ifile:
+			return
+
+		iformat = ext.split()[0].lower()
+		self.plot_view.save_plot(ifile, iformat)
 
 	def do_zoom_in(self):
 		print('zoom in')
