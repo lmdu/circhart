@@ -117,9 +117,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_plot_data
 		)
 
-		self.export_image_act = QAction("&Export Image...", self,
+		self.export_image_act = QAction(QIcon("icons/save.svg"), "&Export Image...", self,
 			triggered = self.do_export_image
 		)
+		self.export_image_act.setIconVisibleInMenu(False)
 
 		self.zoom_in_act = QAction(QIcon("icons/zoomin.svg"), "&Zoom In", self,
 			triggered = self.do_zoom_in
@@ -269,13 +270,17 @@ class CirchartMainWindow(QMainWindow):
 		self.tool_bar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
 		
 		self.toolbar_act = self.tool_bar.toggleViewAction()
-		self.tool_bar.addAction(self.zoom_in_act)
-		self.tool_bar.addAction(self.zoom_out_act)
+		
 		self.tool_bar.addSeparator()
 
 		self.tool_bar.addAction(self.new_circos_act)
 		self.tool_bar.addAction(self.add_track_act)
 		self.tool_bar.addAction(self.update_circos_act)
+		self.tool_bar.addSeparator()
+
+		self.tool_bar.addAction(self.zoom_in_act)
+		self.tool_bar.addAction(self.zoom_out_act)
+		self.tool_bar.addAction(self.export_image_act)
 
 
 		self.tool_bar.addWidget(CirchartSpacerWidget(self))

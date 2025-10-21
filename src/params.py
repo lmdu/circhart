@@ -496,8 +496,11 @@ class CirchartGroupParameter(CirchartParameterMixin, QWidget):
 		self.check_box.setChecked(value)
 
 class CirchartAccordionHeader(QFrame):
-	def __init__(self, parent=None):
+	closed = Signal()
+
+	def __init__(self, parent=None, closable=True):
 		super().__init__(parent)
+		self.closable = closable
 
 		self.expand_icon = QIcon('icons/down.svg')
 		self.collapse_icon = QIcon('icons/right.svg')
@@ -506,13 +509,14 @@ class CirchartAccordionHeader(QFrame):
 		self.title_btn.setCheckable(True)
 		self.title_btn.setIcon(self.collapse_icon)
 		self.title_btn.clicked.connect(self._on_clicked)
-
-		self.close_btn = QPushButton(self)
-		self.close_btn.setIcon(QIcon('icons/close.svg'))
-		self.close_btn.setIconSize(QSize(12, 12))
-
 		self.toggled = self.title_btn.toggled
-		self.closed = self.close_btn.clicked
+	
+		if closable:
+			self.close_btn = QPushButton(self)
+			self.close_btn.setIcon(QIcon('icons/close.svg'))
+			self.close_btn.setIconSize(QSize(12, 12))
+			self.close_btn.setStyleSheet("padding: 0;")
+			self.closed = self.close_btn.clicked
 
 		self.set_layout()
 
@@ -521,8 +525,11 @@ class CirchartAccordionHeader(QFrame):
 		layout.setSpacing(0)
 		layout.setContentsMargins(0, 0, 0, 0)
 		layout.addWidget(self.title_btn, 1)
-		layout.addWidget(self.close_btn)
-		layout.setAlignment(self.close_btn, Qt.AlignRight)
+
+		if self.closable:
+			layout.addWidget(self.close_btn)
+			layout.setAlignment(self.close_btn, Qt.AlignRight)
+
 		self.setLayout(layout)
 
 	def set_text(self, text):
@@ -546,27 +553,39 @@ class CirchartAccordionContent(CirchartEmptyWidget):
 	pass
 
 class CirchartParameterAccordion(QWidget):
+	_closable = True
+
 	def __init__(self, key, parent=None):
 		super().__init__(parent)
 		self.key = key
 
-		self.box = CirchartAccordionContent(self)
-		self.header = CirchartAccordionHeader(self)
-
-		self.set_animate()
-		self.set_layout()
-		self.set_title(self.key.replace('_', ' ').title())
-
+		#self.box = CirchartAccordionContent(self)
+		self.box = QTabWidget(self)
+		self.box.setVisible(False)
+		self.box.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+		self.header = CirchartAccordionHeader(self, self._closable)
 		self.header.toggled.connect(self.box.setVisible)
 		self.header.toggled.connect(self._on_collapsed)
 		self.header.closed.connect(self._on_closed)
 
 		self.params = {}
 
+		self.create_plot_panel()
+		self.create_rule_panel()
+		self.create_background_panel()
+		self.create_grid_panel()
+		self.create_axis_panel()
+
+		self.set_animate()
+		self.set_layout()
+		self.set_title(self.key.replace('_', ' ').title())
+
 		self._init_widgets()
+
 
 	def _init_widgets(self):
 		pass
+		
 
 	def set_key(self, key):
 		self.key = key
@@ -615,6 +634,10 @@ class CirchartParameterAccordion(QWidget):
 		main_layout.setContentsMargins(0, 0, 0, 0)
 		main_layout.addWidget(self.header)
 		main_layout.addWidget(self.box)
+		self.setLayout(main_layout)
+
+	def create_plot_panel(self):
+		self.plot_panel = QWidget(self)
 
 		self.form_layout = QFormLayout()
 		self.form_layout.setVerticalSpacing(5)
@@ -624,9 +647,25 @@ class CirchartParameterAccordion(QWidget):
 		self.form_layout.setFormAlignment(Qt.AlignLeft | Qt.AlignTop)
 		self.form_layout.setLabelAlignment(Qt.AlignLeft)
 
-		self.box.setLayout(self.form_layout)
+		self.plot_panel.setLayout(self.form_layout)
 
-		self.setLayout(main_layout)
+		self.box.addTab(self.plot_panel, QIcon("icons/chart.svg"), "")
+
+	def create_rule_panel(self):
+		self.rule_panel = QWidget(self)
+		self.box.addTab(self.rule_panel, QIcon("icons/rule.svg"), "")
+
+	def create_background_panel(self):
+		self.background_panel = QWidget(self)
+		self.box.addTab(self.background_panel, QIcon("icons/bg.svg"), "")
+
+	def create_grid_panel(self):
+		self.grid_panel = QWidget(self)
+		self.box.addTab(self.grid_panel, QIcon("icons/grid.svg"), "")
+
+	def create_axis_panel(self):
+		self.axis_panel = QWidget(self)
+		self.box.addTab(self.axis_panel, QIcon("icons/axis.svg"), "")
 
 	def add_parameter(self, param, label=None, group=None):
 		if label is None:
@@ -744,12 +783,16 @@ class CirchartParameterAccordion(QWidget):
 				self.params[k].set_value(v)
 
 class CirchartGeneralTrack(CirchartParameterAccordion):
+	_closable = False
+
 	def _init_widgets(self):
 		self.setVisible(False)
 		params = CIRCOS_PARAMS['general']
 		self.create_parameters(params)
 
 class CirchartIdeogramTrack(CirchartParameterAccordion):
+	_closable = False
+
 	def _init_widgets(self):
 		params = CIRCOS_PARAMS['ideogram']
 		self.create_parameters(params)

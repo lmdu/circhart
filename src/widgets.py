@@ -303,7 +303,16 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 			scene_rect = scene.itemsBoundingRect()
 
 		if iformat == 'svg':
-			pass
+			generator = QSvgGenerator()
+			generator.setFileName(ifile)
+			generator.setSize(scene_rect.size().toSize())
+			generator.setViewBox(scene_rect)
+
+			painter = QPainter()
+			painter.begin(generator)
+			painter.setRenderHint(QPainter.Antialiasing)
+			scene.render(painter)
+			painter.end()
 
 		elif iformat == 'pdf':
 			printer = QPrinter(QPrinter.PrinterResolution)

@@ -118,11 +118,9 @@ QGraphicsView {
 
 QStackedWidget {
 	border: none;
-	background: red;
 }
 
 QDockWidget {
-	border: 2px solid red;
 	background: none;
 }
 
@@ -257,6 +255,14 @@ CirchartAccordionHeader {
 	border-left: none;
 	border-right: none;
 	border-radius: none;
+}
+
+QTabWidget {
+	background: white;
+}
+
+QTabWidget QWidget {
+	background: white;
 }
 
 CirchartEmptyWidget {
