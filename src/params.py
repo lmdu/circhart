@@ -515,7 +515,7 @@ class CirchartAccordionHeader(QFrame):
 			self.close_btn = QPushButton(self)
 			self.close_btn.setIcon(QIcon('icons/close.svg'))
 			self.close_btn.setIconSize(QSize(12, 12))
-			self.close_btn.setStyleSheet("padding: 0;")
+			self.close_btn.setFixedSize(32, 16)
 			self.closed = self.close_btn.clicked
 
 		self.set_layout()

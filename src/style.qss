@@ -256,13 +256,39 @@ CirchartAccordionHeader {
 	border-right: none;
 	border-radius: none;
 }
-
 QTabWidget {
+	background-color: red;
+}
+QTabWidget::pane {
 	background: white;
+	border: none;
+	border-top: 1px solid #eeeeee;
+	border-bottom: 1px solid #c2c2c2;
+	margin-top: -1px;
 }
 
-QTabWidget QWidget {
+QTabWidget::tab-bar {
+	alignment: left;
+}
+
+QTabBar::tab {
+	background: #fafafa;
+	border: none;
+	border-bottom: 1px solid #eeeeee;
+	padding-left: 3px;
+	padding-top: 2px;
+
+}
+
+QTabBar::tab:selected {
 	background: white;
+	border-bottom: 1px solid white;
+	border-left: 1px solid #eeeeee;
+	border-right: 1px solid #eeeeee;
+}
+
+QTabBar::tab:first:selected {
+	border-left: none;
 }
 
 CirchartEmptyWidget {
