@@ -307,6 +307,7 @@ tracks:
         - 0
         - 100
       default: 10
+
   text:
     -
       name: data
@@ -364,12 +365,12 @@ tracks:
         - 0
         - 100
       default: 1
-      group: show_links
+      parent: show_links
     -
       name: link_color
       type: color
       default: 251,106,74
-      group: show_links
+      parent: show_links
     -
       name: padding
       type: int
@@ -395,7 +396,7 @@ tracks:
         - 0
         - 100
       default: 1
-      group: label_snuggle
+      parent: label_snuggle
     -
       name: snuggle_sampling
       type: int
@@ -403,7 +404,7 @@ tracks:
         - 0
         - 100
       default: 1
-      group: label_snuggle
+      parent: label_snuggle
     -
       name: snuggle_tolerance
       type: float
@@ -413,17 +414,17 @@ tracks:
       decimal: 2
       default: 0.25
       step: 0.01
-      group: label_snuggle
+      parent: label_snuggle
     -
       name: snuggle_refine
       type: bool
       default: 'no'
-      group: label_snuggle
+      parent: label_snuggle
     -
       name: snuggle_link_overlap_test
       type: bool
       default: 'no'
-      group: label_snuggle
+      parent: label_snuggle
     -
       name: snuggle_link_overlap_tolerance
       type: int
@@ -431,7 +432,7 @@ tracks:
         - 0
         - 100
       default: 2
-      group: label_snuggle
+      parent: label_snuggle
 
   connector:
     -
@@ -575,17 +576,29 @@ tracks:
 
 rules:
   scatter:
-    condition:
-      -
-        name: value
-        type: number
-
-    style:
-      - glyph
-      - glyph_size
-      - color
-      - stroke_color
-      - stroke_thickness
+    -
+      name: conditions
+      type: condition
+      title: true
+      field:
+        -
+          name: value
+          type: number
+    -
+      name: show
+      type: bool
+      default: 'yes'
+    -
+      name: styles
+      type: title
+    -
+      type: style
+      attrs:
+        - glyph
+        - glyph_size
+        - color
+        - stroke_color
+        - stroke_thickness
 
 
 

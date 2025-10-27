@@ -113,8 +113,12 @@ class CirchartParameterMixin:
 		self.key = key
 
 		self._init_widget()
+		self._set_layout()
 
 	def _init_widget(self):
+		pass
+
+	def _set_layout(self):
 		pass
 
 	def set_min(self, value):
@@ -170,6 +174,10 @@ class CirchartReadonlyParameter(CirchartParameterMixin, QLabel):
 
 	def get_value(self):
 		return self.text()
+
+class CirchartTitleParameter(CirchartReadonlyParameter):
+	def get_param(self):
+		return {}
 
 class CirchartIntegerParameter(CirchartParameterMixin, QSpinBox):
 	def _init_widget(self):
@@ -495,8 +503,215 @@ class CirchartGroupParameter(CirchartParameterMixin, QWidget):
 		value = True if value == 'yes' else False
 		self.check_box.setChecked(value)
 
+class CirchartRuleWidget(QWidget):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self._init_widget()
+		self._set_layout()
+
+	def _init_widget(self):
+		pass
+
+	def _set_layout(self):
+		self.main_layout = QHBoxLayout()
+		self.main_layout.setSpacing(5)
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
+		self.setLayout(self.main_layout)
+
+class CirchartRuleValueWidget(CirchartRuleWidget):
+	_number = True
+	_unit = False
+
+	def _init_widget(self):
+		self.sign_widget = QComboBox(self)
+
+		if self._number:
+			self.sign_widget.addItems(['=', '>', '>=', '<', '<='])
+		else:
+			self.sign_widget.addItems(['='])
+
+		self.val_widget = QLineEdit(self)
+
+		if self._unit:
+			self.unit_widget = QComboBox(self)
+			self.unit_widget.addItems(['bp', 'kb', 'mb', 'gb'])
+
+	def _set_layout(self):
+		super()._set_layout()
+
+		self.main_layout.addWidget(self.sign_widget)
+		self.main_layout.addWidget(self.val_widget, 1)
+
+		if self._unit:
+			self.main_layout.addWidget(self.unit_widget)
+
+class CirchartRuleTextWidget(CirchartRuleValueWidget):
+	_number = False
+
+class CirchartRuleSizeWidget(CirchartRuleValueWidget):
+	_number = True
+	_unit = True
+
+class CirchartRuleChromWidget(CirchartRuleWidget):
+	_count = 1
+
+	def _init_widget(self):
+		self.chr1_widget = QComboBox(self)
+
+		if self._count > 1:
+			self.chr2_widget = QComboBox(self)
+
+	def _set_layout(self):
+		super()._set_layout()
+
+		self.main_layout.addWidget(self.chr1_widget, 1)
+
+		if self._count > 1:
+			self.main_layout.addWidget(QLabel('-', self))
+			self.main_layout.addWidget(self.chr2_widget, 1)
+
+	def set_data(self, chroms):
+		self.chr1_widget.addItems(chroms)
+
+		if self._count > 1:
+			self.chr2_widget.addItems(chroms)
+
+class CirchartRuleChromsWidget(CirchartRuleChromWidget):
+	_count = 2
+
+class CirchartRulePositionWidget(CirchartRuleWidget):
+	def _init_widget(self):
+		self.chr_widget = QComboBox(self)
+		self.start_widget = QLineEdit(self)
+		self.end_widget = QLineEdit(self)
+		self.unit_widget = QComboBox(self)
+		self.unit_widget.addItems(['bp', 'kb', 'mb', 'gb'])
+
+	def _set_layout(self):
+		super()._set_layout()
+
+		self.main_layout.addWidget(self.chr_widget)
+		self.main_layout.addWidget(QLabel(':', self))
+		self.main_layout.addWidget(self.start_widget, 1)
+		self.main_layout.addWidget(QLabel('-', self))
+		self.main_layout.addWidget(self.end_widget, 1)
+		self.main_layout.addWidget(self.unit_widget)
+
+	def set_data(self, chroms):
+		self.chr_widget.addItems(chroms)
+
+class CirchartRuleLogicWidget(QComboBox):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.addItems(['and', 'or'])
+
+class CirchartRuleAddButton(QPushButton):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.setIconSize(QSize(16, 16))
+		self.setFixedSize(QSize(20, 20))
+		self.setIcon(QIcon('icons/addrule.svg'))
+
+class CirchartRuleDelButton(QPushButton):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.setIconSize(QSize(16, 16))
+		self.setFixedSize(QSize(20, 20))
+		self.setIcon(QIcon('icons/delrule.svg'))
+
+class CirchartRuleFieldWidget(CirchartRuleWidget):
+	def _init_widget(self):
+		self.field_widget = QComboBox(self)
+		self.field_widget.currentTextChanged.connect(self._on_field_changed)
+		self.rule_widget = QWidget(self)
+
+	def _set_layout(self):
+		super()._set_layout()
+
+		self.main_layout.addWidget(self.field_widget)
+		self.main_layout.addWidget(self.rule_widget, 1)
+
+	def set_data(self, fields):
+		self.field_widget.addItems(fields)
+
+	def _on_field_changed(self, ftype):
+		match ftype:
+			case 'value':
+				w = CirchartRuleValueWidget(self)
+
+			case 'number':
+				w = CirchartRuleValueWidget(self)
+
+			case 'text':
+				w = CirchartRuleTextWidget(self)
+
+			case 'size':
+				w = CirchartRuleSizeWidget(self)
+
+			case 'chrom':
+				w = CirchartRuleChromWidget(self)
+
+			case 'chroms':
+				w = CirchartRuleChromsWidget(self)
+
+			case 'position':
+				w = CirchartRulePositionWidget(self)
+
+		self.main_layout.replaceWidget(self.rule_widget, w)
+		self.rule_widget.deleteLater()
+		self.rule_widget = w
+
+class CirchartConditionParameter(CirchartParameterMixin, QWidget):
+	def _init_widget(self):
+		self.add_btn = CirchartRuleAddButton(self)
+		self.del_btn = CirchartRuleDelButton(self)
+		self.add_btn.clicked.connect(self.add_condition)
+		self.del_btn.clicked.connect(self.remove_condition)
+
+	def _set_layout(self):
+		sub_layout = QHBoxLayout()
+		sub_layout.setSpacing(5)
+		sub_layout.setContentsMargins(0, 0, 0, 0)
+		sub_layout.addWidget(QLabel("<b>Conditions:</b>", self))
+		sub_layout.addStretch()
+		sub_layout.addWidget(self.add_btn)
+		sub_layout.addWidget(self.del_btn)
+
+		self.main_layout = QVBoxLayout()
+		self.main_layout.setSpacing(5)
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
+		self.main_layout.addLayout(sub_layout)
+		self.setLayout(self.main_layout)
+		self.add_condition()
+
+	def set_fields(self, fields):
+		pass
+
+	def add_condition(self):
+		field_widget = CirchartRuleFieldWidget(self)
+		field_widget.set_data(['value', 'size', 'chrom', 'chroms', 'position'])
+		self.main_layout.addWidget(field_widget)
+
+	def remove_condition(self):
+		count = self.main_layout.count()
+
+		if count > 1:
+			item = self.main_layout.itemAt(count-1)
+			widget = item.widget()
+			self.main_layout.removeItem(item)
+
+			if widget:
+				widget.deleteLater()
+
+class CirchartEmptyWidget(QFrame):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.setVisible(False)
+
 class CirchartAccordionHeader(QFrame):
 	closed = Signal()
+	collapsed = Signal(bool)
 
 	def __init__(self, parent=None, closable=True):
 		super().__init__(parent)
@@ -504,19 +719,18 @@ class CirchartAccordionHeader(QFrame):
 
 		self.expand_icon = QIcon('icons/down.svg')
 		self.collapse_icon = QIcon('icons/right.svg')
-		
+
 		self.title_btn = QPushButton(self)
 		self.title_btn.setCheckable(True)
 		self.title_btn.setIcon(self.collapse_icon)
-		self.title_btn.clicked.connect(self._on_clicked)
-		self.toggled = self.title_btn.toggled
+		self.title_btn.clicked.connect(self._on_collapsed)
 	
 		if closable:
 			self.close_btn = QPushButton(self)
 			self.close_btn.setIcon(QIcon('icons/close.svg'))
 			self.close_btn.setIconSize(QSize(12, 12))
 			self.close_btn.setFixedSize(32, 16)
-			self.closed = self.close_btn.clicked
+			self.close_btn.clicked.connect(self._on_closed)
 
 		self.set_layout()
 
@@ -535,66 +749,45 @@ class CirchartAccordionHeader(QFrame):
 	def set_text(self, text):
 		self.title_btn.setText(text)
 
-	def _on_clicked(self, checked):
+	def _on_closed(self):
+		self.closed.emit()
+
+	def _on_collapsed(self, checked):
 		if checked:
 			self.title_btn.setIcon(self.expand_icon)
 		else:
 			self.title_btn.setIcon(self.collapse_icon)
 
-		self.toggled.emit(checked)
-
-
-class CirchartEmptyWidget(QFrame):
-	def __init__(self, parent=None):
-		super().__init__(parent)
-		self.setVisible(False)
-
-class CirchartAccordionContent(CirchartEmptyWidget):
-	pass
+		self.collapsed.emit(checked)
 
 class CirchartParameterAccordion(QWidget):
+	_visible = True
 	_closable = True
 
 	def __init__(self, key, parent=None):
 		super().__init__(parent)
 		self.key = key
+		self.setVisible(self._visible)
 
-		#self.box = CirchartAccordionContent(self)
 		self.box = QTabWidget(self)
 		self.box.setVisible(False)
+		self.box.setTabBarAutoHide(True)
 		self.box.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
 		self.header = CirchartAccordionHeader(self, self._closable)
-		self.header.toggled.connect(self.box.setVisible)
-		self.header.toggled.connect(self._on_collapsed)
+		self.header.collapsed.connect(self.box.setVisible)
+		self.header.collapsed.connect(self._on_collapsed)
 		self.header.closed.connect(self._on_closed)
 
-		self.params = {}
-
-		self.create_plot_panel()
-		self.create_rule_panel()
-		self.create_background_panel()
-		self.create_grid_panel()
-		self.create_axis_panel()
-
-		self.set_animate()
-		self.set_layout()
 		self.set_title(self.key.replace('_', ' ').title())
 
-		self._init_widgets()
+		self._set_animation()
+		self._set_layout()
+		self._init_panels()
 
-
-	def _init_widgets(self):
+	def _init_panels(self):
 		pass
-		
 
-	def set_key(self, key):
-		self.key = key
-
-	def set_title(self, text):
-		self.header.set_text(text)
-
-	def set_animate(self):
-		#self.animation = QPropertyAnimation(self.box, b"minimumHeight", self)
+	def _set_animation(self):
 		self.animation = QPropertyAnimation(self.box, b"geometry")
 		self.animation.setEasingCurve(QEasingCurve.OutCubic)
 		self.animation.setDuration(300)
@@ -628,7 +821,7 @@ class CirchartParameterAccordion(QWidget):
 		self.animation.start()
 		self.deleteLater()
 
-	def set_layout(self):
+	def _set_layout(self):
 		main_layout = QVBoxLayout()
 		main_layout.setSpacing(0)
 		main_layout.setContentsMargins(0, 0, 0, 0)
@@ -636,55 +829,108 @@ class CirchartParameterAccordion(QWidget):
 		main_layout.addWidget(self.box)
 		self.setLayout(main_layout)
 
-	def create_plot_panel(self):
-		self.plot_panel = QWidget(self)
+	def add_panel(self, panel, icon=None , tip=None):
+		if icon:
+			idx = self.box.addTab(panel, QIcon(icon), '')
 
-		self.form_layout = QFormLayout()
-		self.form_layout.setVerticalSpacing(5)
-		self.form_layout.setRowWrapPolicy(QFormLayout.DontWrapRows)
-		#self.form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
-		self.form_layout.setFieldGrowthPolicy(QFormLayout.FieldsStayAtSizeHint)
-		self.form_layout.setFormAlignment(Qt.AlignLeft | Qt.AlignTop)
-		self.form_layout.setLabelAlignment(Qt.AlignLeft)
+		else:
+			idx = self.box.addTab(panel, '')
 
-		self.plot_panel.setLayout(self.form_layout)
 
-		self.box.addTab(self.plot_panel, QIcon("icons/chart.svg"), "")
+		if tip:
+			self.box.setTabToolTip(idx, tip)
 
-	def create_rule_panel(self):
-		self.rule_panel = QWidget(self)
-		self.box.addTab(self.rule_panel, QIcon("icons/rule.svg"), "")
+	def set_key(self, key):
+		self.key = key
 
-	def create_background_panel(self):
-		self.background_panel = QWidget(self)
-		self.box.addTab(self.background_panel, QIcon("icons/bg.svg"), "")
+	def set_title(self, text):
+		self.header.set_text(text)
 
-	def create_grid_panel(self):
-		self.grid_panel = QWidget(self)
-		self.box.addTab(self.grid_panel, QIcon("icons/grid.svg"), "")
+	def get_panel(self, index):
+		return self.box.widget(index)
 
-	def create_axis_panel(self):
-		self.axis_panel = QWidget(self)
-		self.box.addTab(self.axis_panel, QIcon("icons/axis.svg"), "")
+	def get_params(self):
+		params = {}
 
-	def add_parameter(self, param, label=None, group=None):
+		for i in range(self.box.count()):
+			panel = self.get_panel(i)
+			params.update(panel.get_params())
+
+		return {self.key: params}
+
+	def set_params(self, params):
+		if self.key not in params:
+			return
+
+		ps = params[self.key]
+
+		for i in range(self.box.count()):
+			panel = self.get_panel(i)
+			panel.set_params(ps)
+
+	def create_panel(self, key, icon=None, tip=None):
+		panel = CirchartParameterPanel(key, self)
+		self.add_panel(panel, icon, tip)
+		return panel
+
+class CirchartParameterPanel(QWidget):
+	def __init__(self, key, parent=None):
+		super().__init__(parent)
+		self.key = key
+		self.params = {}
+
+		self._set_layout()
+		self._init_widgets()
+
+	def _init_widgets(self):
+		pass
+
+	def _set_layout(self):
+		self.param_layout = QFormLayout()
+		self.param_layout.setContentsMargins(5, 10, 5, 10)
+		self.param_layout.setVerticalSpacing(5)
+		self.param_layout.setRowWrapPolicy(QFormLayout.DontWrapRows)
+		#self.param_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
+		self.param_layout.setFieldGrowthPolicy(QFormLayout.FieldsStayAtSizeHint)
+		self.param_layout.setFormAlignment(Qt.AlignLeft | Qt.AlignTop)
+		self.param_layout.setLabelAlignment(Qt.AlignLeft)
+		self.setLayout(self.param_layout)
+
+	def set_key(self, key):
+		self.key = key
+
+	def add_param(self, param, label=None, group=False, parent=None):
 		if label is None:
 			label = param.key.replace('_', ' ').title()
 
-		if group is True:
-			self.form_layout.addRow(param)
+		if group:
+			self.param_layout.addRow(param)
 
-		elif group:
-			parent = self.params[group]
+		elif parent:
+			parent = self.params[parent]
 			param.setParent(parent)
 			parent.add_subparam(param, label)
 
 		else:
-			self.form_layout.addRow(label, param)
+			self.param_layout.addRow(label, param)
 
 		self.params[param.key] = param
 
-	def create_parameters(self, params, values={}):
+	def remove_param(self, key):
+		if key in self.params:
+			param = self.params.pop(key)
+			self.param_layout.removeRow(param)
+			param.deleteLater()
+
+	def remove_params(self, keys):
+		for key in keys:
+			self.remove_param(key)
+
+	def clear_params(self):
+		ks = [p.key for p in self.params]
+		self.remove_params(ks)
+
+	def create_params(self, params, values={}):
 		for param in params:
 			p = AttrDict(param)
 
@@ -722,6 +968,12 @@ class CirchartParameterAccordion(QWidget):
 				case 'group':
 					w = CirchartGroupParameter(p.name, self)
 
+				case 'condition':
+					w = CirchartConditionParameter(p.name, self)
+
+				case 'title':
+					w = CirchartTitleParameter(p.name, self)
+
 			for k in p:
 				match k:
 					case 'range':
@@ -756,19 +1008,24 @@ class CirchartParameterAccordion(QWidget):
 			if p.name in values:
 				w.set_value(values[p.name])
 
-			if p.type == 'group':
-				self.add_parameter(w, group=True)
+			elif p.type == 'group':
+				self.add_param(w, group=True)
 
-			elif 'group' in p:
-				self.add_parameter(w, group=p.group)
+			elif 'title' in p:
+				tw = CirchartTitleParameter('{}:'.format(p.name.title()), self)
+				self.add_param(tw, group=True)
+				self.add_param(w, group=True)
+
+			elif 'parent' in p:
+				self.add_param(w, parent=p.parent)
 
 			elif 'label' in p:
-				self.add_parameter(w, p.label)
+				self.add_param(w, p.label)
 
 			else:
-				self.add_parameter(w)
+				self.add_param(w)
 
-	def get_values(self):
+	def get_params(self):
 		values = {}
 
 		for k, p in self.params.items():
@@ -777,78 +1034,112 @@ class CirchartParameterAccordion(QWidget):
 
 		return {self.key: values}
 
-	def set_values(self, values):
-		for k, v in values.items():
+	def set_params(self, params):
+		ps = params.get(self.key, {})
+
+		for k, v in ps.items():
 			if k in self.params:
 				self.params[k].set_value(v)
 
 class CirchartGeneralTrack(CirchartParameterAccordion):
 	_closable = False
+	_visible = False
 
-	def _init_widgets(self):
-		self.setVisible(False)
+	def _init_panels(self):
+		panel = self.create_panel('general')
 		params = CIRCOS_PARAMS['general']
-		self.create_parameters(params)
+		panel.create_params(params)
 
 class CirchartIdeogramTrack(CirchartParameterAccordion):
 	_closable = False
 
-	def _init_widgets(self):
+	def _init_panels(self):
+		panel = self.create_panel('ideogram')
 		params = CIRCOS_PARAMS['ideogram']
-		self.create_parameters(params)
+		panel.create_params(params)
 
 class CirchartDisplayRule(CirchartParameterAccordion):
-	def _init_widgets(self):
+	def _init_panels(self):
 		pass
 
 class CirchartPlotTrack(CirchartParameterAccordion):
-	def _init_widgets(self):
-		self.configs = CIRCOS_PARAMS['tracks']
-		types = [k for k in self.configs]
-		
-		self.plot_type = CirchartChoiceParameter('type', self)
-		self.add_parameter(self.plot_type)
-		self.plot_type.currentTextChanged.connect(self._on_type_changed)
-		self.plot_type.set_data(types)
+	def _init_panels(self):
+		self._create_plot_panel()
+		self._create_rule_panel()
+		self._create_axes_panel()
+		self._create_grid_panel()
+		self._create_background_panel()
 
+	def _create_plot_panel(self):
+		self.plot_panel = self.create_panel('plot', 'icons/chart.svg', "Plot")
+		self.plot_params = CIRCOS_PARAMS['tracks']
+		ptypes = [k for k in self.plot_params]
+
+		self.type_param = CirchartChoiceParameter('type', self)
+		self.plot_panel.add_param(self.type_param)
+		self.type_param.currentTextChanged.connect(self._on_type_changed)
+		self.type_param.set_data(ptypes)
+
+	def _create_rule_panel(self):
+		self.rule_panel = self.create_panel('rules', 'icons/rule.svg', "Rules")
+		self.rule_params = CIRCOS_PARAMS['rules']
+		self.type_param.currentIndexChanged.connect(self.rule_panel.clear_params)
+
+		menu = QMenu(self.rule_panel)
+		rule_act = QAction("Add Rule", self.rule_panel)
+		rule_act.triggered.connect(self.add_rule)
+		menu.addAction(rule_act)
+
+		open_menu = lambda x: (menu.move(QCursor().pos()), (menu.show()))
+		self.rule_panel.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.rule_panel.customContextMenuRequested.connect(open_menu)
+
+	def add_rule(self):
+		plot_values = self.plot_panel.get_params()
+		print(plot_values)
+		ptype = self.type_param.get_value()
+		plot_params = self.plot_params[ptype]
+
+		params = []
+		for rp in self.rule_params[ptype]:
+			if rp['type'] == 'style':
+				for p in plot_params:
+					if p['name'] in rp['attrs']:
+						params.append(p)
+
+			else:
+				params.append(rp)
+
+		rule = CirchartDisplayRule('rule0', self.rule_panel)
+		panel = rule.create_panel('rules')
+		panel.create_params(params)
+		self.rule_panel.add_param(rule, group=True)
+
+	def _create_axes_panel(self):
+		panel = self.create_panel('axes', 'icons/axis.svg', "Axes")
+
+	def _create_grid_panel(self):
+		panel = self.create_panel('grids', 'icons/grid.svg', "Grid")
+
+	def _create_background_panel(self):
+		panel = self.create_panel('backgrounds', 'icons/bg.svg', "Backgrounds")
 
 	def _on_type_changed(self, ptype):
 		#self.set_title("Track:{}".format(ptype))
-
-		params = self.configs[ptype]
+		panel = self.get_panel(0)
+		params = self.plot_params[ptype]
 
 		values = {}
-		for k, p in self.params.items():
+		ks = []
+		for k, p in panel.params.items():
 			if k in ['data', 'r0', 'r1']:
 				values[k] = p.get_value()
 
 			if k != 'type':
-				try:
-					if self.form_layout.indexOf(p) != -1:
-						self.form_layout.removeRow(p)
-				except:
-					pass
+				ks.append(k)
 
-		self.params = {'type': self.params['type']}
-		self.create_parameters(params, values)
-
-	def contextMenuEvent(self, event):
-		menu = QMenu(self)
-		rule_act = QAction("Add Rules", self)
-		rule_act.triggered.connect(self.add_rules)
-		bg_act = QAction("Add Backgrounds", self)
-		axes_act = QAction("Add Axes", self)
-		grid_act = QAction("Add Grids", self)
-
-		menu.addAction(rule_act)
-		menu.addAction(bg_act)
-		menu.addAction(axes_act)
-		menu.addAction(grid_act)
-		menu.exec(self.mapToGlobal(event.pos()))
-
-	def add_rules(self):
-		rule_box = CirchartDisplayRule("Rules", self)
-		self.form_layout.addRow(rule_box)
+		panel.remove_params(ks)
+		panel.create_params(params, values)
 
 
 
