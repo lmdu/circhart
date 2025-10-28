@@ -601,25 +601,6 @@ class CirchartRulePositionWidget(CirchartRuleWidget):
 	def set_data(self, chroms):
 		self.chr_widget.addItems(chroms)
 
-class CirchartRuleLogicWidget(QComboBox):
-	def __init__(self, parent=None):
-		super().__init__(parent)
-		self.addItems(['and', 'or'])
-
-class CirchartRuleAddButton(QPushButton):
-	def __init__(self, parent=None):
-		super().__init__(parent)
-		self.setIconSize(QSize(16, 16))
-		self.setFixedSize(QSize(20, 20))
-		self.setIcon(QIcon('icons/addrule.svg'))
-
-class CirchartRuleDelButton(QPushButton):
-	def __init__(self, parent=None):
-		super().__init__(parent)
-		self.setIconSize(QSize(16, 16))
-		self.setFixedSize(QSize(20, 20))
-		self.setIcon(QIcon('icons/delrule.svg'))
-
 class CirchartRuleFieldWidget(CirchartRuleWidget):
 	def _init_widget(self):
 		self.field_widget = QComboBox(self)
@@ -662,11 +643,90 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 		self.rule_widget.deleteLater()
 		self.rule_widget = w
 
+class CirchartRuleStyleWidget(CirchartRuleWidget):
+	def _init_widget(self):
+		self.style_widget = QComboBox(self)
+		self.style_widget.currentTextChanged.connect(self._on_style_changed)
+		self.value_widget = QWidget(self)
+
+	def _set_layout(self):
+		super()._set_layout()
+
+		self.main_layout.addWidget(self.style_widget)
+		self.main_layout.addWidget(self.value_widget)
+
+	def set_data(self, attrs):
+		self.attrs = attrs
+		self.style_widget.addItems(list(attrs.keys()))
+
+	def _on_style_changed(self, attr):
+		p = self.attrs[attr]
+
+		match p.type:
+			case 'int':
+				w = CirchartIntegerParameter(p.name, self)
+
+			case 'float':
+				w = CirchartFloatParameter(p.name, self)
+
+			case 'bool':
+				w = CirchartBoolParameter(p.name, self)
+
+			case 'str':
+				w = CirchartStringParameter(p.name, self)
+
+			case 'color':
+				w = CirchartColorParameter(p.name, self)
+
+			case 'colors':
+				w = CirchartColorsParameter(p.name, self)
+
+			case 'choice':
+				w = CirchartChoiceParameter(p.name, self)
+
+		for k in p:
+			match k:
+				case 'range':
+					w.set_range(p.range)
+
+				case 'min':
+					w.set_min(p.min)
+
+				case 'max':
+					w.set_max(p.max)
+
+				case 'step':
+					w.set_step(p.step)
+
+				case 'decimal':
+					w.set_decimals(p.decimal)
+
+				case 'default':
+					w.set_default(p.default)
+
+				case 'source':
+					w.set_data(p.source)
+
+				case 'tooltip':
+					w.set_tooltip(p.tooltip)
+
+		self.main_layout.replaceWidget(self.value_widget, w)
+		self.value_widget.deleteLater()
+		self.value_widget = w
+
+
 class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
-		self.add_btn = CirchartRuleAddButton(self)
-		self.del_btn = CirchartRuleDelButton(self)
+		self.add_btn = QPushButton(self)
+		self.add_btn.setIconSize(QSize(16, 16))
+		self.add_btn.setFixedSize(QSize(20, 20))
+		self.add_btn.setIcon(QIcon('icons/addrule.svg'))
 		self.add_btn.clicked.connect(self.add_condition)
+
+		self.del_btn = QPushButton(self)
+		self.del_btn.setIconSize(QSize(16, 16))
+		self.del_btn.setFixedSize(QSize(20, 20))
+		self.del_btn.setIcon(QIcon('icons/delrule.svg'))
 		self.del_btn.clicked.connect(self.remove_condition)
 
 	def _set_layout(self):
@@ -694,6 +754,57 @@ class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 		self.main_layout.addWidget(field_widget)
 
 	def remove_condition(self):
+		count = self.main_layout.count()
+
+		if count > 1:
+			item = self.main_layout.itemAt(count-1)
+			widget = item.widget()
+			self.main_layout.removeItem(item)
+
+			if widget:
+				widget.deleteLater()
+
+class CirchartStyleParameter(CirchartParameterMixin, QWidget):
+	def _init_widget(self):
+		self.attrs = {}
+
+		self.add_btn = QPushButton(self)
+		self.add_btn.setIconSize(QSize(16, 16))
+		self.add_btn.setFixedSize(QSize(20, 20))
+		self.add_btn.setIcon(QIcon('icons/addrule.svg'))
+		self.add_btn.clicked.connect(self.add_style)
+
+		self.del_btn = QPushButton(self)
+		self.del_btn.setIconSize(QSize(16, 16))
+		self.del_btn.setFixedSize(QSize(20, 20))
+		self.del_btn.setIcon(QIcon('icons/delrule.svg'))
+		self.del_btn.clicked.connect(self.remove_style)
+
+	def _set_layout(self):
+		sub_layout = QHBoxLayout()
+		sub_layout.setSpacing(5)
+		sub_layout.setContentsMargins(0, 0, 0, 0)
+		sub_layout.addWidget(QLabel("<b>Styles:</b>", self))
+		sub_layout.addStretch()
+		sub_layout.addWidget(self.add_btn)
+		sub_layout.addWidget(self.del_btn)
+
+		self.main_layout = QVBoxLayout()
+		self.main_layout.setSpacing(5)
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
+		self.main_layout.addLayout(sub_layout)
+		self.setLayout(self.main_layout)
+		#self.add_style()
+
+	def set_data(self, attrs):
+		self.attrs = attrs
+
+	def add_style(self):
+		style_widget = CirchartRuleStyleWidget(self)
+		style_widget.set_data(self.attrs)
+		self.main_layout.addWidget(style_widget)
+
+	def remove_style(self):
 		count = self.main_layout.count()
 
 		if count > 1:
@@ -971,6 +1082,9 @@ class CirchartParameterPanel(QWidget):
 				case 'condition':
 					w = CirchartConditionParameter(p.name, self)
 
+				case 'style':
+					w = CirchartStyleParameter(p.name, self)
+
 				case 'title':
 					w = CirchartTitleParameter(p.name, self)
 
@@ -1011,19 +1125,24 @@ class CirchartParameterPanel(QWidget):
 			elif p.type == 'group':
 				self.add_param(w, group=True)
 
-			elif 'title' in p:
-				tw = CirchartTitleParameter('{}:'.format(p.name.title()), self)
-				self.add_param(tw, group=True)
+			elif p.type == 'title':
 				self.add_param(w, group=True)
 
 			elif 'parent' in p:
 				self.add_param(w, parent=p.parent)
 
 			elif 'label' in p:
-				self.add_param(w, p.label)
+				if p.label:
+					self.add_param(w, p.label)
+
+				else:
+					self.add_param(w, group=True)
 
 			else:
 				self.add_param(w)
+
+	def get_widget(self, key):
+		return self.params[key]
 
 	def get_params(self):
 		values = {}
@@ -1095,24 +1214,24 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.rule_panel.customContextMenuRequested.connect(open_menu)
 
 	def add_rule(self):
-		plot_values = self.plot_panel.get_params()
-		print(plot_values)
 		ptype = self.type_param.get_value()
 		plot_params = self.plot_params[ptype]
+		rule_params = self.rule_params[ptype]
 
-		params = []
-		for rp in self.rule_params[ptype]:
-			if rp['type'] == 'style':
-				for p in plot_params:
-					if p['name'] in rp['attrs']:
-						params.append(p)
+		attrs = {'show': AttrDict(name='show', type='bool', default='yes')}
 
-			else:
-				params.append(rp)
+		for p in plot_params:
+			p = AttrDict(p)
+
+			if p.name in rule_params[1]['attrs']:
+				attrs[p.name] = p
 
 		rule = CirchartDisplayRule('rule0', self.rule_panel)
 		panel = rule.create_panel('rules')
-		panel.create_params(params)
+		panel.create_params(rule_params)
+		param = panel.get_widget('style')
+		param.set_data(attrs)
+
 		self.rule_panel.add_param(rule, group=True)
 
 	def _create_axes_panel(self):

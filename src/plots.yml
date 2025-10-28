@@ -577,29 +577,20 @@ tracks:
 rules:
   scatter:
     -
-      name: conditions
+      name: condition
       type: condition
-      title: true
+      label: false
       field:
         -
           name: value
           type: number
     -
-      name: show
-      type: bool
-      default: 'yes'
-    -
-      name: styles
-      type: title
-    -
+      name: style
       type: style
+      label: false
       attrs:
         - glyph
         - glyph_size
         - color
         - stroke_color
         - stroke_thickness
-
-
-
-
