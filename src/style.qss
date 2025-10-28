@@ -342,14 +342,11 @@ CirchartAccordionHeader QPushButton:pressed {
 
 CirchartDisplayRule CirchartAccordionHeader {
 	border: 1px solid #cccccc;
-	border-radius: 5px;
-	border-bottom-left-radius: none;
-	border-bottom-right-radius: none;
+	border-radius: 10px;
 }
 
-CirchartDisplayRule CirchartAccordionContent {
-	border-bottom: 1px solid #cccccc;
-	border-left: 1px solid #cccccc;
-	border-right: 1px solid #cccccc;
+CirchartDisplayRule QTabWidget:pane {
+	border: none;
 }
+
 

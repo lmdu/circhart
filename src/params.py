@@ -604,7 +604,7 @@ class CirchartRulePositionWidget(CirchartRuleWidget):
 class CirchartRuleFieldWidget(CirchartRuleWidget):
 	def _init_widget(self):
 		self.field_widget = QComboBox(self)
-		self.field_widget.currentTextChanged.connect(self._on_field_changed)
+		self.field_widget.currentIndexChanged.connect(self._on_field_changed)
 		self.rule_widget = QWidget(self)
 
 	def _set_layout(self):
@@ -614,13 +614,21 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 		self.main_layout.addWidget(self.rule_widget, 1)
 
 	def set_data(self, fields):
-		self.field_widget.addItems(fields)
+		names = []
+		datas = []
+		for f in fields:
+			names.append(f['name'])
+			datas.append(f['type'])
 
-	def _on_field_changed(self, ftype):
+		self.field_widget.addItems(names)
+
+		for i, d in enumerate(datas):
+			self.field_widget.setItemData(i, d)
+
+	def _on_field_changed(self, index):
+		ftype = self.field_widget.itemData(index)
+
 		match ftype:
-			case 'value':
-				w = CirchartRuleValueWidget(self)
-
 			case 'number':
 				w = CirchartRuleValueWidget(self)
 
@@ -638,6 +646,9 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 
 			case 'position':
 				w = CirchartRulePositionWidget(self)
+
+			case _:
+				w = QWidget(self)
 
 		self.main_layout.replaceWidget(self.rule_widget, w)
 		self.rule_widget.deleteLater()
@@ -717,6 +728,8 @@ class CirchartRuleStyleWidget(CirchartRuleWidget):
 
 class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
+		self.tests = []
+
 		self.add_btn = QPushButton(self)
 		self.add_btn.setIconSize(QSize(16, 16))
 		self.add_btn.setFixedSize(QSize(20, 20))
@@ -743,14 +756,14 @@ class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 		self.main_layout.setContentsMargins(0, 0, 0, 0)
 		self.main_layout.addLayout(sub_layout)
 		self.setLayout(self.main_layout)
-		self.add_condition()
+		#self.add_condition()
 
-	def set_fields(self, fields):
-		pass
+	def set_tests(self, tests):
+		self.tests = tests
 
 	def add_condition(self):
 		field_widget = CirchartRuleFieldWidget(self)
-		field_widget.set_data(['value', 'size', 'chrom', 'chroms', 'position'])
+		field_widget.set_data(self.tests)
 		self.main_layout.addWidget(field_widget)
 
 	def remove_condition(self):
@@ -796,7 +809,7 @@ class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 		self.setLayout(self.main_layout)
 		#self.add_style()
 
-	def set_data(self, attrs):
+	def set_attrs(self, attrs):
 		self.attrs = attrs
 
 	def add_style(self):
@@ -1218,6 +1231,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		plot_params = self.plot_params[ptype]
 		rule_params = self.rule_params[ptype]
 
+		tests = rule_params[0]['tests']
 		attrs = {'show': AttrDict(name='show', type='bool', default='yes')}
 
 		for p in plot_params:
@@ -1230,7 +1244,9 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		panel = rule.create_panel('rules')
 		panel.create_params(rule_params)
 		param = panel.get_widget('style')
-		param.set_data(attrs)
+		param.set_attrs(attrs)
+		param = panel.get_widget('condition')
+		param.set_tests(tests)
 
 		self.rule_panel.add_param(rule, group=True)
 

@@ -580,7 +580,7 @@ rules:
       name: condition
       type: condition
       label: false
-      field:
+      tests:
         -
           name: value
           type: number
@@ -594,3 +594,160 @@ rules:
         - color
         - stroke_color
         - stroke_thickness
+
+  line:
+    -
+      name: condition
+      type: condition
+      label: false
+      tests:
+        -
+          name: value
+          type: number
+
+    -
+      name: style
+      type: style
+      label: false
+      attrs:
+        - color
+        - thickness
+
+  histogram:
+    -
+      name: condition
+      type: condition
+      label: false
+      tests:
+        -
+          name: value
+          type: number
+
+    -
+      name: style
+      type: style
+      label: false
+      attrs:
+        - color
+        - fill_color
+        - stroke_thickness
+
+  heatmap:
+    -
+      name: condition
+      type: condition
+      label: false
+      tests:
+        -
+          name: value
+          type: number
+
+    -
+      name: style
+      type: style
+      label: false
+      attrs:
+        - color
+
+  text:
+    -
+      name: condition
+      type: condition
+      label: false
+      tests:
+        -
+          name: value
+          type: text
+
+    -
+      name: style
+      type: style
+      label: false
+      attrs:
+        - color
+        - label_size
+
+  link:
+    -
+      name: condition
+      type: condition
+      label: false
+      tests:
+        -
+          name: chr1
+          type: text
+        -
+          name: chr2
+          type: text
+        -
+          name: start1
+          type: number
+        -
+          name: start2
+          type: number
+        -
+          name: end1
+          type: number
+        -
+          name: end2
+          type: number
+        -
+          name: position1
+          type: size
+        -
+          name: position2
+          type: size
+        -
+          name: size1
+          type: size
+        -
+          name: size2
+          type: size
+        -
+          name: rev1
+          type: bool
+        -
+          name: rev2
+          type: bool
+        - 
+          name: inv
+          type: bool
+        -
+          name: interchr
+          type: bool
+        -
+          name: intrachr
+          type: bool
+        -
+          name: 'on'
+          type: chrom
+        -
+          name: 'on'
+          type: position
+        -
+          name: from
+          type: chrom
+        -
+          name: to
+          type: chrom
+        -
+          name: between
+          type: chroms
+        -
+          name: fromto
+          type: chroms
+        -
+          name: tofrom
+          type: chroms
+        -
+          name: within
+          type: position
+
+    -
+      name: style
+      type: style
+      label: false
+      attrs:
+        - color
+        - thickness
+        - z
