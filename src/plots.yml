@@ -742,7 +742,6 @@ rules:
         -
           name: within
           type: position
-
     -
       name: style
       type: style

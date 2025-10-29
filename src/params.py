@@ -536,6 +536,7 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 		if self._unit:
 			self.unit_widget = QComboBox(self)
 			self.unit_widget.addItems(['bp', 'kb', 'mb', 'gb'])
+			self.unit_widget.setCurrentIndex(2)
 
 	def _set_layout(self):
 		super()._set_layout()
@@ -587,6 +588,7 @@ class CirchartRulePositionWidget(CirchartRuleWidget):
 		self.end_widget = QLineEdit(self)
 		self.unit_widget = QComboBox(self)
 		self.unit_widget.addItems(['bp', 'kb', 'mb', 'gb'])
+		self.unit_widget.setCurrentIndex(2)
 
 	def _set_layout(self):
 		super()._set_layout()
@@ -614,21 +616,13 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 		self.main_layout.addWidget(self.rule_widget, 1)
 
 	def set_data(self, fields):
-		names = []
-		datas = []
 		for f in fields:
-			names.append(f['name'])
-			datas.append(f['type'])
-
-		self.field_widget.addItems(names)
-
-		for i, d in enumerate(datas):
-			self.field_widget.setItemData(i, d)
+			self.field_widget.addItem(f.name, f)
 
 	def _on_field_changed(self, index):
-		ftype = self.field_widget.itemData(index)
+		f = self.field_widget.itemData(index)
 
-		match ftype:
+		match f.type:
 			case 'number':
 				w = CirchartRuleValueWidget(self)
 
@@ -657,7 +651,7 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 class CirchartRuleStyleWidget(CirchartRuleWidget):
 	def _init_widget(self):
 		self.style_widget = QComboBox(self)
-		self.style_widget.currentTextChanged.connect(self._on_style_changed)
+		self.style_widget.currentIndexChanged.connect(self._on_style_changed)
 		self.value_widget = QWidget(self)
 
 	def _set_layout(self):
@@ -666,12 +660,15 @@ class CirchartRuleStyleWidget(CirchartRuleWidget):
 		self.main_layout.addWidget(self.style_widget)
 		self.main_layout.addWidget(self.value_widget)
 
-	def set_data(self, attrs):
-		self.attrs = attrs
-		self.style_widget.addItems(list(attrs.keys()))
+		spacer = QSpacerItem(10, 10, QSizePolicy.Expanding, QSizePolicy.Minimum)
+		self.main_layout.addSpacerItem(spacer)
 
-	def _on_style_changed(self, attr):
-		p = self.attrs[attr]
+	def set_data(self, attrs):
+		for a in attrs:
+			self.style_widget.addItem(a.name, a)
+
+	def _on_style_changed(self, index):
+		p = self.style_widget.itemData(index)
 
 		match p.type:
 			case 'int':
@@ -724,7 +721,6 @@ class CirchartRuleStyleWidget(CirchartRuleWidget):
 		self.main_layout.replaceWidget(self.value_widget, w)
 		self.value_widget.deleteLater()
 		self.value_widget = w
-
 
 class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
@@ -779,7 +775,7 @@ class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 
 class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
-		self.attrs = {}
+		self.attrs = []
 
 		self.add_btn = QPushButton(self)
 		self.add_btn.setIconSize(QSize(16, 16))
@@ -887,6 +883,7 @@ class CirchartAccordionHeader(QFrame):
 class CirchartParameterAccordion(QWidget):
 	_visible = True
 	_closable = True
+	deleted = Signal()
 
 	def __init__(self, key, parent=None):
 		super().__init__(parent)
@@ -941,6 +938,7 @@ class CirchartParameterAccordion(QWidget):
 		self.animation.start()
 
 	def _on_closed(self):
+		self.deleted.emit()
 		self.animation.setEndValue(0)
 		self.animation.start()
 		self.deleteLater()
@@ -959,7 +957,6 @@ class CirchartParameterAccordion(QWidget):
 
 		else:
 			idx = self.box.addTab(panel, '')
-
 
 		if tip:
 			self.box.setTabToolTip(idx, tip)
@@ -1023,6 +1020,9 @@ class CirchartParameterPanel(QWidget):
 	def set_key(self, key):
 		self.key = key
 
+	def set_spacing(self, space):
+		self.param_layout.setVerticalSpacing(space)
+
 	def add_param(self, param, label=None, group=False, parent=None):
 		if label is None:
 			label = param.key.replace('_', ' ').title()
@@ -1043,8 +1043,14 @@ class CirchartParameterPanel(QWidget):
 	def remove_param(self, key):
 		if key in self.params:
 			param = self.params.pop(key)
-			self.param_layout.removeRow(param)
-			param.deleteLater()
+
+			#some subparameters were deleted with parent
+			try:
+				self.param_layout.removeRow(param)
+			except:
+				pass
+			#do not need to delete widget manually after removerow
+			#param.deleteLater()
 
 	def remove_params(self, keys):
 		for key in keys:
@@ -1231,17 +1237,18 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		plot_params = self.plot_params[ptype]
 		rule_params = self.rule_params[ptype]
 
-		tests = rule_params[0]['tests']
-		attrs = {'show': AttrDict(name='show', type='bool', default='yes')}
+		tests = [AttrDict(p) for p in rule_params[0]['tests']]
+		attrs = [AttrDict(name='show', type='bool', default='yes')]
 
 		for p in plot_params:
 			p = AttrDict(p)
 
 			if p.name in rule_params[1]['attrs']:
-				attrs[p.name] = p
+				attrs.append(p)
 
 		rule = CirchartDisplayRule('rule0', self.rule_panel)
 		panel = rule.create_panel('rules')
+		panel.set_spacing(20)
 		panel.create_params(rule_params)
 		param = panel.get_widget('style')
 		param.set_attrs(attrs)
@@ -1268,14 +1275,16 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		ks = []
 		for k, p in panel.params.items():
 			if k in ['data', 'r0', 'r1']:
-				values[k] = p.get_value()
+				val = p.get_value()
+
+				if val is not None:
+					values[k] = val
 
 			if k != 'type':
 				ks.append(k)
 
 		panel.remove_params(ks)
 		panel.create_params(params, values)
-
 
 
 class CirchartParameterManager(QScrollArea):
@@ -1302,6 +1311,14 @@ class CirchartParameterManager(QScrollArea):
 
 	def add_widget(self, param):
 		self.main_layout.addWidget(param)
+
+	def get_widgets(self):
+		for i in range(self.main_layout.count()):
+			item = self.main_layout.itemAt(i)
+			widget = item.widget()
+
+			if widget:
+				yield widget
 
 	def clear_widgets(self):
 		for i in range(self.main_layout.count()):
@@ -1368,8 +1385,20 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 	def add_plot_track(self):
 		self.track_count += 1
 		form = CirchartPlotTrack('track{}'.format(self.track_count), self)
+		form.deleted.connect(self.del_plot_track)
 		self.add_widget(form)
 		return form
+
+	def del_plot_track(self):
+		self.track_count -= 1
+
+		count = 0
+		for widget in self.get_widgets():
+			if isinstance(widget, CirchartPlotTrack):
+				count += 1
+				key = "track{}".format(count)
+				widget.set_key(key)
+				widget.set_title(key.title())
 
 	def reset_parameters(self, params):
 		self.clear_widgets()
