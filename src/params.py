@@ -519,6 +519,12 @@ class CirchartRuleWidget(QWidget):
 		self.main_layout.setContentsMargins(0, 0, 0, 0)
 		self.setLayout(self.main_layout)
 
+	def get_value(self):
+		pass
+
+	def set_value(self, value):
+		pass
+
 class CirchartRuleValueWidget(CirchartRuleWidget):
 	_number = True
 	_unit = False
@@ -546,6 +552,40 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 
 		if self._unit:
 			self.main_layout.addWidget(self.unit_widget)
+
+	def get_value(self):
+		sign = self.sign_widget.currentText()
+
+		if sign == '=':
+			sign = 'eq'
+
+		val = self.val_widget.text().strip()
+
+		if self._unit:
+			unit = self.unit_widget.currentText().replace('bp', '')
+			ret = "{} {}{}".format(sign, val, unit)
+		else:
+			ret = "{} {}".format(sign, val)
+
+		return ret
+
+	def set_value(self, value):
+		sign, val = value.split()
+
+		if sign == 'eq':
+			sign = '='
+
+		if val.endswith(['bp', 'kb', 'mb', 'gb']):
+			unit = val[-2:]
+			val = val[0:-2]
+		elif self._unit:
+			unit = 'bp'
+
+		self.sign_widget.setCurrentText(sign)
+		self.val_widget.setText(val)
+
+		if self._unit:
+			self.unit_widget.setCurrentText(unit)
 
 class CirchartRuleTextWidget(CirchartRuleValueWidget):
 	_number = False
@@ -578,6 +618,24 @@ class CirchartRuleChromWidget(CirchartRuleWidget):
 		if self._count > 1:
 			self.chr2_widget.addItems(chroms)
 
+	def get_value(self):
+		if self._count == 1:
+			return self.chr1_widget.currentText()
+		else:
+			return "{}, {}".fomrat(
+				self.chr1_widget.currentText(),
+				self.chr2_widget.currentText()
+			)
+
+	def set_value(self, value):
+		if self._count == 1:
+			self.chr1_widget.setCurrentText(value)
+
+		else:
+			chr1, chr2 = value.split(', ')
+			self.chr1_widget.setCurrentText(chr1)
+			self.chr2_widget.setCurrentText(chr2)
+
 class CirchartRuleChromsWidget(CirchartRuleChromWidget):
 	_count = 2
 
@@ -602,6 +660,29 @@ class CirchartRulePositionWidget(CirchartRuleWidget):
 
 	def set_data(self, chroms):
 		self.chr_widget.addItems(chroms)
+
+	def get_value(self):
+		chrom = self.chr_widget.currentText()
+		start = self.start_widget.text().strip()
+		end = self.end_widget.text().strip()
+		unit = self.unit_widget.currentText().replace('bp', '')
+
+		return "{}, {}{}, {}{}".format(chrom, start, unit, end, unit)
+
+	def set_value(self, value):
+		chrom, start, end = value.split(', ')
+
+		if start.endswith(['kb', 'mb', 'gb']):
+			unit = start[-2:]
+			start = start[0:-2]
+			end = end[0:-2]
+		else:
+			unit = 'bp'
+
+		self.chr_widget.setCurrentText(chrom)
+		self.start_widget.setText(start)
+		self.end_widget.setText(end)
+		self.unit_widget.setCurrentText(unit)
 
 class CirchartRuleFieldWidget(CirchartRuleWidget):
 	def _init_widget(self):
@@ -647,6 +728,33 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 		self.main_layout.replaceWidget(self.rule_widget, w)
 		self.rule_widget.deleteLater()
 		self.rule_widget = w
+
+	def get_value(self):
+		field = self.field_widget.currentText()
+		rule = self.rule_widget.get_value()
+
+		funcs = {'on', 'from', 'to', 'between', 'fromto', 'tofrom', 'within'}
+
+		if field in funcs:
+			return "{}()".format(field, rule)
+
+		else:
+			return "var({}) {}".fomrat(field, rule)
+			
+
+	def set_value(self, value):
+		funcs = {'on', 'from', 'to', 'between', 'fromto', 'tofrom', 'within'}
+
+		if field in funcs:
+			field, rule = value.split('(')
+			rule = rule.strip(')')
+		else:
+			field, rule = value.split(')')
+			field = field.split('(')[1]
+			rule = rule.strip()
+
+		self.field_widget.setCurrentText(field)
+		self.rule_widget.set_value(rule)
 
 class CirchartRuleStyleWidget(CirchartRuleWidget):
 	def _init_widget(self):
@@ -722,20 +830,36 @@ class CirchartRuleStyleWidget(CirchartRuleWidget):
 		self.value_widget.deleteLater()
 		self.value_widget = w
 
+	def get_value(self):
+		style = self.style_widget.currentText()
+		val = self.value_widget.get_value()
+
+		return "{} = {}".format(style, val)
+
+	def set_value(self, value):
+		style, val = value.split(' = ')
+		self.style_widget.setCurrentText(style)
+		self.value_widget.setText(val)
+
+class CirchartAddDelButton(QPushButton):
+	def __init__(self, parent=None, btype='add'):
+		super().__init__(parent)
+		self.setIconSize(QSize(16, 16))
+		self.setFixedSize(QSize(20, 20))
+
+		if btype == 'add':
+			self.setIcon(QIcon('icons/add.svg'))
+		else:
+			self.setIcon(QIcon('icons/delete.svg'))
+
 class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
 		self.tests = []
 
-		self.add_btn = QPushButton(self)
-		self.add_btn.setIconSize(QSize(16, 16))
-		self.add_btn.setFixedSize(QSize(20, 20))
-		self.add_btn.setIcon(QIcon('icons/addrule.svg'))
+		self.add_btn = CirchartAddDelButton(self)
 		self.add_btn.clicked.connect(self.add_condition)
 
-		self.del_btn = QPushButton(self)
-		self.del_btn.setIconSize(QSize(16, 16))
-		self.del_btn.setFixedSize(QSize(20, 20))
-		self.del_btn.setIcon(QIcon('icons/delrule.svg'))
+		self.del_btn = CirchartAddDelButton(self, 'del')
 		self.del_btn.clicked.connect(self.remove_condition)
 
 	def _set_layout(self):
@@ -773,20 +897,20 @@ class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 			if widget:
 				widget.deleteLater()
 
+	def get_value(self):
+		pass
+
+	def set_value(self, values):
+		pass
+
 class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
 		self.attrs = []
 
-		self.add_btn = QPushButton(self)
-		self.add_btn.setIconSize(QSize(16, 16))
-		self.add_btn.setFixedSize(QSize(20, 20))
-		self.add_btn.setIcon(QIcon('icons/addrule.svg'))
+		self.add_btn = CirchartAddDelButton(self)
 		self.add_btn.clicked.connect(self.add_style)
 
-		self.del_btn = QPushButton(self)
-		self.del_btn.setIconSize(QSize(16, 16))
-		self.del_btn.setFixedSize(QSize(20, 20))
-		self.del_btn.setIcon(QIcon('icons/delrule.svg'))
+		self.del_btn = CirchartAddDelButton(self, 'del')
 		self.del_btn.clicked.connect(self.remove_style)
 
 	def _set_layout(self):
@@ -883,7 +1007,7 @@ class CirchartAccordionHeader(QFrame):
 class CirchartParameterAccordion(QWidget):
 	_visible = True
 	_closable = True
-	deleted = Signal()
+	#deleted = Signal()
 
 	def __init__(self, key, parent=None):
 		super().__init__(parent)
@@ -938,7 +1062,7 @@ class CirchartParameterAccordion(QWidget):
 		self.animation.start()
 
 	def _on_closed(self):
-		self.deleted.emit()
+		#self.deleted.emit()
 		self.animation.setEndValue(0)
 		self.animation.start()
 		self.deleteLater()
@@ -1202,6 +1326,8 @@ class CirchartDisplayRule(CirchartParameterAccordion):
 
 class CirchartPlotTrack(CirchartParameterAccordion):
 	def _init_panels(self):
+		self.rule_count = 0
+
 		self._create_plot_panel()
 		self._create_rule_panel()
 		self._create_axes_panel()
@@ -1246,7 +1372,9 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 			if p.name in rule_params[1]['attrs']:
 				attrs.append(p)
 
-		rule = CirchartDisplayRule('rule0', self.rule_panel)
+		self.rule_count += 1
+
+		rule = CirchartDisplayRule('rule{}'.format(self.rule_count), self.rule_panel)
 		panel = rule.create_panel('rules')
 		panel.set_spacing(20)
 		panel.create_params(rule_params)
@@ -1313,7 +1441,11 @@ class CirchartParameterManager(QScrollArea):
 		self.main_layout.addWidget(param)
 
 	def get_widgets(self):
-		for i in range(self.main_layout.count()):
+		count = self.main_layout.count()
+
+		print(count)
+
+		for i in range(count):
 			item = self.main_layout.itemAt(i)
 			widget = item.widget()
 
@@ -1385,13 +1517,11 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 	def add_plot_track(self):
 		self.track_count += 1
 		form = CirchartPlotTrack('track{}'.format(self.track_count), self)
-		form.deleted.connect(self.del_plot_track)
+		#form.deleted.connect(self.del_plot_track)
 		self.add_widget(form)
 		return form
 
 	def del_plot_track(self):
-		self.track_count -= 1
-
 		count = 0
 		for widget in self.get_widgets():
 			if isinstance(widget, CirchartPlotTrack):
