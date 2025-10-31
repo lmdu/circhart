@@ -834,10 +834,10 @@ class CirchartRuleStyleWidget(CirchartRuleWidget):
 		style = self.style_widget.currentText()
 		val = self.value_widget.get_value()
 
-		return "{} = {}".format(style, val)
+		return (style, val)
 
 	def set_value(self, value):
-		style, val = value.split(' = ')
+		style, val = value
 		self.style_widget.setCurrentText(style)
 		self.value_widget.setText(val)
 
@@ -886,6 +886,8 @@ class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 		field_widget.set_data(self.tests)
 		self.main_layout.addWidget(field_widget)
 
+		return field_widget
+
 	def remove_condition(self):
 		count = self.main_layout.count()
 
@@ -897,11 +899,40 @@ class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 			if widget:
 				widget.deleteLater()
 
+	def clear_conditions(self):
+		count = self.main_layout.count()
+
+		for i in range(count):
+			item = self.main_layout.itemAt(i)
+			widget = item.widget()
+
+			if widget:
+				widget.deleteLater()
+
 	def get_value(self):
-		pass
+		values = []
+
+		count = self.main_layout.count()
+
+		for i in range(count):
+			item = self.main_layout.itemAt(i)
+			widget = item.widget()
+
+			if widget:
+				values.append(widget.get_value())
+
+		return values
 
 	def set_value(self, values):
-		pass
+		self.clear_conditions()
+
+		for value in values:
+			widget = self.add_condition()
+			widget.set_value(value)
+
+	def get_param(self):
+		return {'conditions': self.get_value()}
+
 
 class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
@@ -936,6 +967,7 @@ class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 		style_widget = CirchartRuleStyleWidget(self)
 		style_widget.set_data(self.attrs)
 		self.main_layout.addWidget(style_widget)
+		return style_widget
 
 	def remove_style(self):
 		count = self.main_layout.count()
@@ -947,6 +979,39 @@ class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 
 			if widget:
 				widget.deleteLater()
+
+	def clear_styles(self):
+		count = self.main_layout.count()
+
+		for i in range(count):
+			item = self.main_layout.itemAt(i)
+			widget = item.widget()
+
+			if widget:
+				widget.deleteLater()
+
+	def get_value(self):
+		count = self.main_layout.count()
+
+		values = []
+
+		for i in range(count):
+			item = self.main_layout.itemAt(i)
+			widget = item.widget()
+
+			if widget:
+				values.append(widget.get_value())
+
+	def set_value(self, values):
+		self.clear_styles()
+
+		for value in values:
+			widget = self.add_style()
+			widget.set_value(value)
+
+	def get_param(self):
+		return {'styles': self.get_value()}
+
 
 class CirchartEmptyWidget(QFrame):
 	def __init__(self, parent=None):
@@ -1442,8 +1507,6 @@ class CirchartParameterManager(QScrollArea):
 
 	def get_widgets(self):
 		count = self.main_layout.count()
-
-		print(count)
 
 		for i in range(count):
 			item = self.main_layout.itemAt(i)
