@@ -527,7 +527,10 @@ class CirchartMainWindow(QMainWindow):
 		pass
 
 	def do_update_circos_plot(self):
-		params = self.circos_panel.get_values()
+		params = self.circos_panel.get_params()
+
+		print(params)
+
 		self.draw_circos_plot(params)
 
 

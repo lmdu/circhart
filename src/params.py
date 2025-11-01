@@ -1169,6 +1169,9 @@ class CirchartParameterAccordion(QWidget):
 		return {self.key: params}
 
 	def set_params(self, params):
+		print("key:", self.key)
+		print('params:', params)
+
 		if self.key not in params:
 			return
 
@@ -1373,7 +1376,7 @@ class CirchartGeneralTrack(CirchartParameterAccordion):
 	_visible = False
 
 	def _init_panels(self):
-		panel = self.create_panel('general')
+		panel = self.create_panel('global')
 		params = CIRCOS_PARAMS['general']
 		panel.create_params(params)
 
@@ -1396,11 +1399,10 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self._create_plot_panel()
 		self._create_rule_panel()
 		self._create_axes_panel()
-		self._create_grid_panel()
 		self._create_background_panel()
 
 	def _create_plot_panel(self):
-		self.plot_panel = self.create_panel('plot', 'icons/chart.svg', "Plot")
+		self.plot_panel = self.create_panel('plot', 'icons/chart.svg', "Track plot parameters")
 		self.plot_params = CIRCOS_PARAMS['tracks']
 		ptypes = [k for k in self.plot_params]
 
@@ -1410,7 +1412,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.type_param.set_data(ptypes)
 
 	def _create_rule_panel(self):
-		self.rule_panel = self.create_panel('rules', 'icons/rule.svg', "Rules")
+		self.rule_panel = self.create_panel('rules', 'icons/rule.svg', "Track display rules")
 		self.rule_params = CIRCOS_PARAMS['rules']
 		self.type_param.currentIndexChanged.connect(self.rule_panel.clear_params)
 
@@ -1451,13 +1453,10 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.rule_panel.add_param(rule, group=True)
 
 	def _create_axes_panel(self):
-		panel = self.create_panel('axes', 'icons/axis.svg', "Axes")
-
-	def _create_grid_panel(self):
-		panel = self.create_panel('grids', 'icons/grid.svg', "Grid")
+		panel = self.create_panel('axes', 'icons/axis.svg', "Track Axes")
 
 	def _create_background_panel(self):
-		panel = self.create_panel('backgrounds', 'icons/bg.svg', "Backgrounds")
+		panel = self.create_panel('backgrounds', 'icons/bg.svg', "Track Backgrounds")
 
 	def _on_type_changed(self, ptype):
 		#self.set_title("Track:{}".format(ptype))
@@ -1525,26 +1524,23 @@ class CirchartParameterManager(QScrollArea):
 				if widget:
 					widget.deleteLater()
 
-	def get_values(self):
+	def get_params(self):
 		values = {}
+		count = self.main_layout.count()
 
-		for i in range(self.main_layout.count()):
+		for i in range(count):
 			item = self.main_layout.itemAt(i)
 			widget = item.widget()
 
 			if isinstance(widget, CirchartParameterMixin):
 				values.update(widget.get_param())
 
-			elif isinstance(widget, CirchartGeneralTrack):
-				for _, vals in widget.get_values().items():
-					values.update(vals)
-
 			elif isinstance(widget, CirchartParameterAccordion):
-				values.update(widget.get_values())
+				values.update(widget.get_params())
 
 		return values
 
-	def reset_parameters(self, params):
+	def reset_params(self, params):
 		pass
 
 	def change_plot(self, pid):
@@ -1561,39 +1557,29 @@ class CirchartParameterManager(QScrollArea):
 		if not params:
 			return
 
-		self.reset_parameters(params)
+		self.reset_params(params)
 
 class CirchartCircosParameterManager(CirchartParameterManager):
 	def new_circos_plot(self, params):
 		self.plot_id = params['plotid']
 
-		form = CirchartGeneralTrack('general')
-		form.set_values(params)
+		form = CirchartGeneralTrack('general', self)
+		form.set_params(params)
 		self.add_widget(form)
 
-		form = CirchartIdeogramTrack('ideogram')
-		form.set_values(params)
+		form = CirchartIdeogramTrack('ideogram', self)
+		form.set_params(params)
 		self.add_widget(form)
 
-		return self.get_values()
+		return self.get_params()
 
 	def add_plot_track(self):
 		self.track_count += 1
 		form = CirchartPlotTrack('track{}'.format(self.track_count), self)
-		#form.deleted.connect(self.del_plot_track)
 		self.add_widget(form)
 		return form
 
-	def del_plot_track(self):
-		count = 0
-		for widget in self.get_widgets():
-			if isinstance(widget, CirchartPlotTrack):
-				count += 1
-				key = "track{}".format(count)
-				widget.set_key(key)
-				widget.set_title(key.title())
-
-	def reset_parameters(self, params):
+	def reset_params(self, params):
 		self.clear_widgets()
 		self.new_circos_plot(params)
 
@@ -1607,7 +1593,7 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 
 				form = self.add_plot_track()
 				form.set_key(k)
-				form.set_values(v)
+				form.set_params(v)
 
 		self.track_count = track_id
 
