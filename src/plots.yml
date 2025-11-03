@@ -49,6 +49,118 @@ ideogram:
     type: color
     default: 255,255,255
 
+labels:
+  -
+    name: show_label
+    type: bool
+    default: 'no'
+  -
+    name: label_font
+    type: choice
+    source:
+      - light
+      - normal
+      - default
+      - semibold
+      - bold
+      - italic
+      - bolditalic
+      - italicbold
+  -
+    name: label_center
+    type: bool
+    default: 'yes'
+  -
+    name: label_size
+    type: int
+    range:
+      - 0
+      - 200
+    default: 48
+  -
+    name: label_color
+    type: color
+    default: 150,150,150
+  -
+    name: label_parallel
+    type: bool
+    default: 'yes'
+  -
+    name: label_case
+    type: choice
+    source:
+      - upper
+      - lower
+
+ticks:
+  -
+    name: show_ticks
+    type: bool
+    default: 'no'
+    level: 0
+  -
+    name: show_tick_labels
+    type: bool
+    default: 'yes'
+    level: 0
+  -
+    name: chromosomes_units
+    type: int
+    step: 1000
+    range:
+      - 0
+      - 1000000000
+    default: 1000000
+    level: 0
+  -
+    name: color
+    type: color
+    default: 0, 0, 0
+    level: 1
+  -
+    name: thickness
+    type: int
+    default: 1
+    range:
+      - 0
+      - 100
+    level: 1
+  -
+    name: spacing
+    type: int
+    range:
+      - 0
+      - 200
+    level: 1
+  -
+    name: size
+    type: int
+    range:
+      - 0
+      - 200
+    level: 1
+  -
+    name: show_label
+    type: bool
+    default: 'no'
+    level: 1
+  -
+    name: label_size
+    type: int
+    range:
+      - 0
+      - 100
+    default: 20
+    level: 1
+  -
+    name: label_offset
+    type: int
+    range:
+      - 0
+      - 100
+    default: 10
+    level: 1
+
 tracks:
   scatter:
     -

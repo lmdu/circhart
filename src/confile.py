@@ -33,9 +33,13 @@ class CirchartCircosConfile(Confile):
 		self.parse()
 		self.custom_colors = []
 
-	def parse_ideogram(self, ps):
+	def parse_ideogram(self, params):
+		main_params = params['main']
+		label_params = params['label']
+		ticks_params = params['ticks']
+
 		with Tag('ideogram'):
-			for k, v in ps.items():
+			for k, v in main_params.items():
 				match k:
 					case 'spacing':
 						with Tag('spacing'):
@@ -50,11 +54,49 @@ class CirchartCircosConfile(Confile):
 					case _:
 						self.option(k, v)
 
+			for k, v in label_params.items():
+				match k:
+					case 'label_size':
+						self.option(k, v, 'p')
+					
+					case _:
+						self.option(k, v)
+
+			ticks_count = 0
+			#get global ticks parameter
+			for k, v in ticks_params.items():
+				if not k.startswith('tick'):
+					self.option(k, v)
+
+				else:
+					ticks_count += 1
+
+			if ticks_count > 0:
+				with Tag('ticks'):
+					for k, v in ticks_params.items():
+						if k.startswith('tick'):
+							with Tag('tick'):
+								match k:
+									case 'thickness' | 'size' | 'label_size' | 'label_offset':
+										self.option(k, v, 'p')
+
+									case 'spacing':
+										self.option(k, v, 'u')
+
+									case _:
+										self.option(k, v)
+
+
 	def parse_track(self, tracks, name='plot'):
 		with Tag('{}s'.format(name)):
 			for track in tracks:
+				main_params = track['main']
+				rule_params = track['rules']
+				axes_params = track['axes']
+				bg_params = track['backgrounds']
+
 				with Tag(name):
-					for k, v in track.items():
+					for k, v in main_params.items():
 						match k:
 							case 'data':
 								self.option('file', 'data{}.txt'.format(v))
@@ -67,7 +109,7 @@ class CirchartCircosConfile(Confile):
 									self.option(k, v)
 
 							case 'r0' | 'r1':
-								if track['type'] == 'highlight' and track['ideogram'] == 'yes':
+								if main_params['type'] == 'highlight' and main_params['ideogram'] == 'yes':
 									pass
 
 								else:
@@ -96,18 +138,49 @@ class CirchartCircosConfile(Confile):
 							case _:
 								self.option(k, v)
 
+					if rule_params:
+						with Tag('rules'):
+							for k, v in rule_params.items():
+								with Tag('rule'):
+									for c in v.get('conditions', []):
+										self.option('condition', c)
+
+									for a, s in v.get('styles', []):
+										if a == 'color':
+											if s not in self.custom_colors:
+												self.custom_colors.append(s)
+
+											cid = self.custom_colors.index(v)
+											self.option(a, 'cc{}'.format(cid))
+										else:
+											self.option(a, s)
+
+					if axes_params:
+						with Tag('axes'):
+							for k, v in axes_params.items():
+								with Tag('axis'):
+									for x, y in v.items():
+										self.option(x, y)
+
+					if bg_params:
+						with Tag('backgrounds'):
+							for k, v in bg_params.items():
+								with Tag('background'):
+									for x, y in v.items():
+										self.option(x, y)
+
+
 	def parse(self):
 		Confile._blocks = []
 
 		#karyotype
 		kfiles = ['karyotype{}.txt'.format(i) \
-			for i in self.params['karyotype']]
+			for i in self.params['general']['global']['karyotype']]
 		self.option('karyotype', ','.join(kfiles))
 
 		#ideogram
 		ps = self.params['ideogram']
 		self.parse_ideogram(ps)
-		
 
 		#tracks
 		self.custom_colors = []
@@ -118,7 +191,7 @@ class CirchartCircosConfile(Confile):
 			if p.startswith('track'):
 				ps = self.params[p]
 
-				if ps['type'] == 'highlight':
+				if ps['main']['type'] == 'highlight':
 					highlight_tracks.append(ps)
 				else:
 					plot_tracks.append(ps)

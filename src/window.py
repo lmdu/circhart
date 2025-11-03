@@ -508,6 +508,7 @@ class CirchartMainWindow(QMainWindow):
 
 		if params:
 			params['plotid'] = SqlControl.add_plot(params['plotname'], 'circos')
+			params = {'general': {'global': params}}
 			params = self.circos_panel.new_circos_plot(params)
 			self.draw_circos_plot(params)
 

@@ -1169,9 +1169,6 @@ class CirchartParameterAccordion(QWidget):
 		return {self.key: params}
 
 	def set_params(self, params):
-		print("key:", self.key)
-		print('params:', params)
-
 		if self.key not in params:
 			return
 
@@ -1384,9 +1381,20 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 	_closable = False
 
 	def _init_panels(self):
-		panel = self.create_panel('ideogram')
-		params = CIRCOS_PARAMS['ideogram']
-		panel.create_params(params)
+		
+		main_params = CIRCOS_PARAMS['ideogram']
+		ideogram_panel = self.create_panel('main', 'icons/dna.svg', "Ideogram Parameters")
+		ideogram_panel.create_params(main_params)
+
+		label_params = CIRCOS_PARAMS['labels']
+		label_panel = self.create_panel('label', 'icons/label.svg', "Ideogram Labels")
+		label_panel.create_params(label_params)
+
+		tick_params = CIRCOS_PARAMS['ticks']
+		tick_level0 = [p for p in tick_params if p['level'] == 0]
+		tick_panel = self.create_panel('ticks', 'icons/tick.svg', "Ideogram Ticks")
+		tick_panel.create_params(tick_level0)
+
 
 class CirchartDisplayRule(CirchartParameterAccordion):
 	def _init_panels(self):
@@ -1402,7 +1410,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self._create_background_panel()
 
 	def _create_plot_panel(self):
-		self.plot_panel = self.create_panel('plot', 'icons/chart.svg', "Track plot parameters")
+		self.plot_panel = self.create_panel('main', 'icons/chart.svg', "Track plot parameters")
 		self.plot_params = CIRCOS_PARAMS['tracks']
 		ptypes = [k for k in self.plot_params]
 
@@ -1515,7 +1523,9 @@ class CirchartParameterManager(QScrollArea):
 				yield widget
 
 	def clear_widgets(self):
-		for i in range(self.main_layout.count()):
+		count = self.main_layout.count()
+
+		for i in range(count):
 			item = self.main_layout.itemAt(i)
 
 			if item:
@@ -1561,7 +1571,7 @@ class CirchartParameterManager(QScrollArea):
 
 class CirchartCircosParameterManager(CirchartParameterManager):
 	def new_circos_plot(self, params):
-		self.plot_id = params['plotid']
+		self.plot_id = params['general']['global']['plotid']
 
 		form = CirchartGeneralTrack('general', self)
 		form.set_params(params)
