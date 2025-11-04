@@ -1482,14 +1482,18 @@ class CirchartTickTrack(CirchartParameterAccordion):
 	_closable = False
 
 	def _init_panels(self):
+		self._create_main_panel()
 		self._create_tick_panel()
 		self.tick_count = 0
 
-	def _create_tick_panel(self):
+	def _create_main_panel(self):
 		self.tick_params = CIRCOS_PARAMS['ticks']
 		tick_level0 = [p for p in self.tick_params if p['level'] == 0]
-		self.main_panel = self.create_panel('main', 'icons/tick.svg', "Ideogram Ticks")
+		self.main_panel = self.create_panel('main', 'icons/mark.svg', "Tick display parameters")
 		self.main_panel.create_params(tick_level0)
+
+	def _create_tick_panel(self):
+		self.tick_panel = self.create_panel('ticks', 'icons/tick.svg', "Ticks")
 
 		menu = QMenu(self.main_panel)
 		tick_act = QAction("Add Tick", self.main_panel)
@@ -1497,18 +1501,18 @@ class CirchartTickTrack(CirchartParameterAccordion):
 		menu.addAction(tick_act)
 
 		open_menu = lambda x: (menu.move(QCursor().pos()), (menu.show()))
-		self.main_panel.setContextMenuPolicy(Qt.CustomContextMenu)
-		self.main_panel.customContextMenuRequested.connect(open_menu)
+		self.tick_panel.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.tick_panel.customContextMenuRequested.connect(open_menu)
 
 	def add_tick(self):
 		tick_level1 = [p for p in self.tick_params if p['level'] == 1]
 
 		self.tick_count += 1
 
-		tick = CirchartChildAccordion('tick{}'.format(self.tick_count), self.main_panel)
+		tick = CirchartChildAccordion('tick{}'.format(self.tick_count), self.tick_panel)
 		panel = tick.create_panel('styles')
 		panel.create_params(tick_level1)
-		self.main_panel.add_param(tick, group=True)
+		self.tick_panel.add_param(tick, group=True)
 
 class CirchartPlotTrack(CirchartParameterAccordion):
 	def _init_panels(self):

@@ -73,44 +73,41 @@ class CirchartCircosConfile(Confile):
 					case _:
 						self.option(k, v)
 
-	def parse_ticks(self):
-		ticks_params = params['ticks']
+	def parse_ticks(self, params):
+		main_params = params['main']
+		tick_params = params['ticks']
 
-		ticks_count = 0
 		#get global ticks parameter
-		for k, v in ticks_params.items():
-			if not k.startswith('tick'):
-				self.option(k, v)
+		for k in ['show_ticks', 'show_tick_labels', 'chromosomes_units']:
+			self.option(k, main_params[k])
 
-			else:
-				ticks_count += 1
+		with Tag('ticks'):
+			for k in ['radius', 'label_multiplier', 'orientation']:
+				self.option(k, main_params[k])
 
-		if ticks_count > 0:
-			with Tag('ticks'):
-				for k, v in ticks_params.items():
-					if k.startswith('tick'):
-						with Tag('tick'):
-							for x, y in v['styles'].items():
-								match x:
-									case 'thickness' | 'size' | 'label_size' | 'label_offset':
-										self.option(x, y, 'p')
+			for k, v in tick_params.items():
+				with Tag('tick'):
+					for x, y in v['styles'].items():
+						match x:
+							case 'thickness' | 'size' | 'label_size' | 'label_offset':
+								self.option(x, y, 'p')
 
-									case 'spacing':
-										self.option(x, y, 'u')
+							case 'spacing':
+								self.option(x, y, 'u')
 
-									case 'color':
-										self.option(x, self.get_color(y))
+							case 'color':
+								self.option(x, self.get_color(y))
 
-									case 'format':
-										if y > 0:
-											f = "%.{}f".format(y)
-										else:
-											f = "%d"
+							case 'format':
+								if y > 0:
+									f = "%.{}f".format(y)
+								else:
+									f = "%d"
 
-										self.option(x, f)
+								self.option(x, f)
 
-									case _:
-										self.option(x, y)
+							case _:
+								self.option(x, y)
 
 
 	def parse_track(self, tracks, name='plot'):
@@ -196,6 +193,10 @@ class CirchartCircosConfile(Confile):
 		#ideogram
 		ps = self.params['ideogram']
 		self.parse_ideogram(ps)
+
+		#ticks
+		ps = self.params['ticks']
+		self.parse_ticks(ps)
 
 		#tracks
 		plot_tracks = []
