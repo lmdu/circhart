@@ -503,6 +503,77 @@ class CirchartGroupParameter(CirchartParameterMixin, QWidget):
 		value = True if value == 'yes' else False
 		self.check_box.setChecked(value)
 
+class CirchartRadiusParameter(CirchartParameterMixin, QWidget):
+	def _init_widget(self):
+		self.location = QComboBox(self)
+		self.location.addItems(['outer ideogram', 'inside ideogram', 'inner ideogram'])
+		self.location.currentIndexChanged.connect(self._on_location_changed)
+		self.offset = QSpinBox(self)
+		self.offset.setPrefix('+')
+		self.offset.setRange(0, 1000)
+
+		self.radius_locations = [
+			"dims(ideogram,radius_outer)",
+			"(dims(ideogram,radius_outer)+dims(ideogram,radius_inner))/2",
+			"dims(ideogram,radius_inner)"
+		]
+
+		self.set_layout()
+
+	def set_layout(self):
+		main_layout = QVBoxLayout()
+		main_layout.addWidget(self.location)
+		main_layout.setSpacing(5)
+		main_layout.setContentsMargins(0, 0, 0, 0)
+		sub_layout = QHBoxLayout()
+		sub_layout.setSpacing(5)
+		sub_layout.setContentsMargins(0, 0, 0, 0)
+		sub_layout.addWidget(QLabel("Offset", self))
+		sub_layout.addWidget(self.offset)
+		sub_layout.addSpacerItem(QSpacerItem(10, 10, QSizePolicy.Preferred, QSizePolicy.Minimum))
+
+		main_layout.addLayout(sub_layout)
+
+		self.setLayout(main_layout)
+
+	def _on_location_changed(self, index):
+		if index == 0:
+			self.offset.setPrefix('+')
+			self.offset.setEnabled(True)
+		
+		elif index == 1:
+			#self.offset.setPrefix('')
+			self.offset.setEnabled(False)
+		
+		elif index == 2:
+			self.offset.setPrefix('-')
+			self.offset.setEnabled(True)
+
+	def get_value(self):
+		index = self.location.currentIndex()
+		location = self.radius_locations[index]
+
+		if self.offset.isEnabled():
+			offset = self.offset.value()
+
+			if offset:
+				sign = self.offset.prefix()
+				return "{} {} {}p".format(location, sign, offset)
+		
+		return location
+
+	def set_value(self, value):
+		vals = value.split()
+
+		index = self.radius_locations.index(vals[0])
+		self.location.setCurrentIndex(index)
+
+		if len(vals) > 1:
+			sign = vals[1]
+			offset = int(vals[2].strip('p'))
+			self.offset.setPrefix(sign)
+			self.offset.setValue(offset)
+
 class CirchartRuleWidget(QWidget):
 	def __init__(self, parent=None):
 		super().__init__(parent)
@@ -1296,6 +1367,9 @@ class CirchartParameterPanel(QWidget):
 				case 'title':
 					w = CirchartTitleParameter(p.name, self)
 
+				case 'radius':
+					w = CirchartRadiusParameter(p.name, self)
+
 			for k in p:
 				match k:
 					case 'range':
@@ -1359,6 +1433,9 @@ class CirchartParameterPanel(QWidget):
 			if isinstance(p, CirchartParameterMixin):
 				values.update(p.get_param())
 
+			elif isinstance(p, CirchartParameterAccordion):
+				values.update(p.get_params())
+
 		return {self.key: values}
 
 	def set_params(self, params):
@@ -1366,7 +1443,14 @@ class CirchartParameterPanel(QWidget):
 
 		for k, v in ps.items():
 			if k in self.params:
-				self.params[k].set_value(v)
+				if isinstance(v, dict):
+					self.params[k].set_params(v)
+				else:
+					self.params[k].set_value(v)
+
+class CirchartChildAccordion(CirchartParameterAccordion):
+	def _init_panels(self):
+		pass
 
 class CirchartGeneralTrack(CirchartParameterAccordion):
 	_closable = False
@@ -1381,24 +1465,50 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 	_closable = False
 
 	def _init_panels(self):
-		
+		self._create_main_panel()
+		self._create_label_panel()
+
+	def _create_main_panel(self):
 		main_params = CIRCOS_PARAMS['ideogram']
 		ideogram_panel = self.create_panel('main', 'icons/dna.svg', "Ideogram Parameters")
 		ideogram_panel.create_params(main_params)
 
+	def _create_label_panel(self):
 		label_params = CIRCOS_PARAMS['labels']
 		label_panel = self.create_panel('label', 'icons/label.svg', "Ideogram Labels")
 		label_panel.create_params(label_params)
 
-		tick_params = CIRCOS_PARAMS['ticks']
-		tick_level0 = [p for p in tick_params if p['level'] == 0]
-		tick_panel = self.create_panel('ticks', 'icons/tick.svg', "Ideogram Ticks")
-		tick_panel.create_params(tick_level0)
+class CirchartTickTrack(CirchartParameterAccordion):
+	_closable = False
 
-
-class CirchartDisplayRule(CirchartParameterAccordion):
 	def _init_panels(self):
-		pass
+		self._create_tick_panel()
+		self.tick_count = 0
+
+	def _create_tick_panel(self):
+		self.tick_params = CIRCOS_PARAMS['ticks']
+		tick_level0 = [p for p in self.tick_params if p['level'] == 0]
+		self.main_panel = self.create_panel('main', 'icons/tick.svg', "Ideogram Ticks")
+		self.main_panel.create_params(tick_level0)
+
+		menu = QMenu(self.main_panel)
+		tick_act = QAction("Add Tick", self.main_panel)
+		tick_act.triggered.connect(self.add_tick)
+		menu.addAction(tick_act)
+
+		open_menu = lambda x: (menu.move(QCursor().pos()), (menu.show()))
+		self.main_panel.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.main_panel.customContextMenuRequested.connect(open_menu)
+
+	def add_tick(self):
+		tick_level1 = [p for p in self.tick_params if p['level'] == 1]
+
+		self.tick_count += 1
+
+		tick = CirchartChildAccordion('tick{}'.format(self.tick_count), self.main_panel)
+		panel = tick.create_panel('styles')
+		panel.create_params(tick_level1)
+		self.main_panel.add_param(tick, group=True)
 
 class CirchartPlotTrack(CirchartParameterAccordion):
 	def _init_panels(self):
@@ -1449,7 +1559,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 
 		self.rule_count += 1
 
-		rule = CirchartDisplayRule('rule{}'.format(self.rule_count), self.rule_panel)
+		rule = CirchartChildAccordion('rule{}'.format(self.rule_count), self.rule_panel)
 		panel = rule.create_panel('rules')
 		panel.set_spacing(20)
 		panel.create_params(rule_params)
@@ -1578,6 +1688,10 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		self.add_widget(form)
 
 		form = CirchartIdeogramTrack('ideogram', self)
+		form.set_params(params)
+		self.add_widget(form)
+
+		form = CirchartTickTrack('ticks', self)
 		form.set_params(params)
 		self.add_widget(form)
 

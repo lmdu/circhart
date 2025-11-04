@@ -159,7 +159,7 @@ QComboBox::down-arrow {
 
 QSpinBox,
 QDoubleSpinBox {
-	padding-right: 15px;
+	/*padding-right: 15px;*/
 	border: 1px solid #c2c2c2;
 	border-radius: 3px;
 	height: 20px;
@@ -340,12 +340,12 @@ CirchartAccordionHeader QPushButton:pressed {
 	background: none;
 }
 
-CirchartDisplayRule CirchartAccordionHeader {
+CirchartChildAccordion CirchartAccordionHeader {
 	border: 1px solid #cccccc;
 	border-radius: 10px;
 }
 
-CirchartDisplayRule QTabWidget:pane {
+CirchartChildAccordion QTabWidget:pane {
 	border: none;
 }
 

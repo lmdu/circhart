@@ -55,6 +55,16 @@ labels:
     type: bool
     default: 'no'
   -
+    name: label_radius
+    type: radius
+    label: Label position
+  -
+    name: label_format
+    type: choice
+    source:
+      - label
+      - name
+  -
     name: label_font
     type: choice
     source:
@@ -66,6 +76,7 @@ labels:
       - italic
       - bolditalic
       - italicbold
+    default: default
   -
     name: label_center
     type: bool
@@ -113,14 +124,19 @@ ticks:
     default: 1000000
     level: 0
   -
+    name: radius
+    type: radius
+    label: position
+    level: 0
+  -
     name: color
     type: color
-    default: 0, 0, 0
+    default: 0,0,0
     level: 1
   -
     name: thickness
     type: int
-    default: 1
+    default: 2
     range:
       - 0
       - 100
@@ -138,10 +154,11 @@ ticks:
     range:
       - 0
       - 200
+    default: 10
     level: 1
   -
     name: show_label
-    type: bool
+    type: group
     default: 'no'
     level: 1
   -
@@ -151,6 +168,7 @@ ticks:
       - 0
       - 100
     default: 20
+    parent: show_label
     level: 1
   -
     name: label_offset
@@ -159,6 +177,17 @@ ticks:
       - 0
       - 100
     default: 10
+    parent: show_label
+    level: 1
+  -
+    name: format
+    type: int
+    label: Label decimals
+    range:
+      - 0
+      - 5
+    default: 0
+    parent: show_label
     level: 1
 
 tracks:

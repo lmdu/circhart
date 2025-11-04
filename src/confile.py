@@ -33,10 +33,16 @@ class CirchartCircosConfile(Confile):
 		self.parse()
 		self.custom_colors = []
 
+	def get_color(self, rgb):
+		if rgb not in self.custom_colors:
+			self.custom_colors.append(rgb)
+
+		cid = self.custom_colors.index(rgb)
+		return "cc{}".format(cid)
+
 	def parse_ideogram(self, params):
 		main_params = params['main']
 		label_params = params['label']
-		ticks_params = params['ticks']
 
 		with Tag('ideogram'):
 			for k, v in main_params.items():
@@ -58,33 +64,53 @@ class CirchartCircosConfile(Confile):
 				match k:
 					case 'label_size':
 						self.option(k, v, 'p')
+
+					case 'label_format':
+						if v == 'name':
+							v = 'chr'
+						self.option(k, "eval(var({}))".format(v))
 					
 					case _:
 						self.option(k, v)
 
-			ticks_count = 0
-			#get global ticks parameter
-			for k, v in ticks_params.items():
-				if not k.startswith('tick'):
-					self.option(k, v)
+	def parse_ticks(self):
+		ticks_params = params['ticks']
 
-				else:
-					ticks_count += 1
+		ticks_count = 0
+		#get global ticks parameter
+		for k, v in ticks_params.items():
+			if not k.startswith('tick'):
+				self.option(k, v)
 
-			if ticks_count > 0:
-				with Tag('ticks'):
-					for k, v in ticks_params.items():
-						if k.startswith('tick'):
-							with Tag('tick'):
-								match k:
+			else:
+				ticks_count += 1
+
+		if ticks_count > 0:
+			with Tag('ticks'):
+				for k, v in ticks_params.items():
+					if k.startswith('tick'):
+						with Tag('tick'):
+							for x, y in v['styles'].items():
+								match x:
 									case 'thickness' | 'size' | 'label_size' | 'label_offset':
-										self.option(k, v, 'p')
+										self.option(x, y, 'p')
 
 									case 'spacing':
-										self.option(k, v, 'u')
+										self.option(x, y, 'u')
+
+									case 'color':
+										self.option(x, self.get_color(y))
+
+									case 'format':
+										if y > 0:
+											f = "%.{}f".format(y)
+										else:
+											f = "%d"
+
+										self.option(x, f)
 
 									case _:
-										self.option(k, v)
+										self.option(x, y)
 
 
 	def parse_track(self, tracks, name='plot'):
@@ -120,20 +146,12 @@ class CirchartCircosConfile(Confile):
 									cs = []
 
 									for c in v:
-										if c not in self.custom_colors:
-											self.custom_colors.append(c)
-
-										cid = self.custom_colors.index(c)
-										cs.append('cc{}'.format(cid))
+										cs.append(self.get_color(c))
 
 									self.option(k, ','.join(cs))
 
 								else:
-									if v not in self.custom_colors:
-										self.custom_colors.append(v)
-
-									cid = self.custom_colors.index(v)
-									self.option(k, 'cc{}'.format(cid))
+									self.option(k, self.get_color(v))
 
 							case _:
 								self.option(k, v)
@@ -147,11 +165,7 @@ class CirchartCircosConfile(Confile):
 
 									for a, s in v.get('styles', []):
 										if a == 'color':
-											if s not in self.custom_colors:
-												self.custom_colors.append(s)
-
-											cid = self.custom_colors.index(v)
-											self.option(a, 'cc{}'.format(cid))
+											self.option(a, self.get_color(v))
 										else:
 											self.option(a, s)
 
@@ -172,6 +186,7 @@ class CirchartCircosConfile(Confile):
 
 	def parse(self):
 		Confile._blocks = []
+		self.custom_colors = []
 
 		#karyotype
 		kfiles = ['karyotype{}.txt'.format(i) \
@@ -183,7 +198,6 @@ class CirchartCircosConfile(Confile):
 		self.parse_ideogram(ps)
 
 		#tracks
-		self.custom_colors = []
 		plot_tracks = []
 		highlight_tracks = []
 
