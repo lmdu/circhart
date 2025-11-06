@@ -157,12 +157,12 @@ class CirchartCircosConfile(Confile):
 						with Tag('rules'):
 							for k, v in rule_params.items():
 								with Tag('rule'):
-									for c in v.get('conditions', []):
+									for c in v['main'].get('condition', []):
 										self.option('condition', c)
 
-									for a, s in v.get('styles', []):
+									for a, s in v['main'].get('style', []):
 										if a == 'color':
-											self.option(a, self.get_color(v))
+											self.option(a, self.get_color(s))
 										else:
 											self.option(a, s)
 
@@ -170,14 +170,14 @@ class CirchartCircosConfile(Confile):
 						with Tag('axes'):
 							for k, v in axes_params.items():
 								with Tag('axis'):
-									for x, y in v.items():
+									for x, y in v['main'].items():
 										self.option(x, y)
 
 					if bg_params:
 						with Tag('backgrounds'):
 							for k, v in bg_params.items():
 								with Tag('background'):
-									for x, y in v.items():
+									for x, y in v['main'].items():
 										self.option(x, y)
 
 

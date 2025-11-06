@@ -1002,7 +1002,7 @@ class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 			widget.set_value(value)
 
 	def get_param(self):
-		return {'conditions': self.get_value()}
+		return {self.key: self.get_value()}
 
 
 class CirchartStyleParameter(CirchartParameterMixin, QWidget):
@@ -1073,6 +1073,8 @@ class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 			if widget:
 				values.append(widget.get_value())
 
+		return values
+
 	def set_value(self, values):
 		self.clear_styles()
 
@@ -1081,7 +1083,7 @@ class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 			widget.set_value(value)
 
 	def get_param(self):
-		return {'styles': self.get_value()}
+		return {self.key: self.get_value()}
 
 
 class CirchartEmptyWidget(QFrame):
@@ -1518,18 +1520,19 @@ class CirchartTickTrack(CirchartParameterAccordion):
 		self.create_tick(key)
 
 	def set_params(self, params):
-		ticks = params['ticks']['ticks']
+		if 'ticks' in params:
+			ticks = params['ticks']['ticks']
 
-		self.ticks_panel.clear_params()
-		self.tick_count = 0
+			self.ticks_panel.clear_params()
+			self.tick_count = 0
 
-		for k in ticks:
-			tid = int(k.lstrip('tick'))
+			for k in ticks:
+				tid = int(k.lstrip('tick'))
 
-			if tid > self.tick_count:
-				self.tick_count = tid
+				if tid > self.tick_count:
+					self.tick_count = tid
 
-			self.create_tick(k)
+				self.create_tick(k)
 
 		super().set_params(params)
 
@@ -1537,6 +1540,8 @@ class CirchartTickTrack(CirchartParameterAccordion):
 class CirchartPlotTrack(CirchartParameterAccordion):
 	def _init_panels(self):
 		self.rule_count = 0
+		self.axes_count = 0
+		self.bg_count = 0
 
 		self._create_plot_panel()
 		self._create_rule_panel()
@@ -1567,11 +1572,10 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.rule_panel.setContextMenuPolicy(Qt.CustomContextMenu)
 		self.rule_panel.customContextMenuRequested.connect(open_menu)
 
-	def add_rule(self):
+	def create_rule(self, key):
 		ptype = self.type_param.get_value()
 		plot_params = self.plot_params[ptype]
 		rule_params = self.rule_params[ptype]
-
 		tests = [AttrDict(p) for p in rule_params[0]['tests']]
 		attrs = [AttrDict(name='show', type='bool', default='yes')]
 
@@ -1581,10 +1585,8 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 			if p.name in rule_params[1]['attrs']:
 				attrs.append(p)
 
-		self.rule_count += 1
-
-		rule = CirchartChildAccordion('rule{}'.format(self.rule_count), self.rule_panel)
-		panel = rule.create_panel('rules')
+		rule = CirchartChildAccordion(key, self.rule_panel)
+		panel = rule.create_panel('main')
 		panel.set_spacing(20)
 		panel.create_params(rule_params)
 		param = panel.get_widget('style')
@@ -1594,11 +1596,28 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 
 		self.rule_panel.add_param(rule, group=True)
 
+	def add_rule(self):
+		self.rule_count += 1
+		key = 'rule{}'.format(self.rule_count)
+		self.create_rule(key)
+
 	def _create_axes_panel(self):
-		panel = self.create_panel('axes', 'icons/axis.svg', "Track Axes")
+		self.axes_panel = self.create_panel('axes', 'icons/axis.svg', "Track Axes")
+
+	def create_axis(self):
+		pass
+
+	def add_axis(self):
+		pass
 
 	def _create_background_panel(self):
-		panel = self.create_panel('backgrounds', 'icons/bg.svg', "Track Backgrounds")
+		self.bg_panel = self.create_panel('backgrounds', 'icons/bg.svg', "Track Backgrounds")
+
+	def create_background(self):
+		pass
+
+	def add_background(self):
+		pass
 
 	def _on_type_changed(self, ptype):
 		#self.set_title("Track:{}".format(ptype))
@@ -1619,6 +1638,45 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 
 		panel.remove_params(ks)
 		panel.create_params(params, values)
+
+	def set_params(self, params):
+
+		self.rule_panel.clear_params()
+
+		self.rule_count = 0
+		self.axes_count = 0
+		self.bg_count = 0
+
+		for k, v in params.items():
+			if k.startswith('track'):
+				if 'rules' in v:
+					for x, y in v['rules'].items():
+						rid = int(x.lstrip('rule'))
+
+						if rid > self.rule_count:
+							self.rule_count = rid
+
+						self.create_rule(x)
+
+				if 'axes' in v:
+					for x, y in v['axes'].items():
+						aid = int(x.lstrip('axis'))
+
+						if aid > self.axes_count:
+							self.axes_count = aid
+
+						self.create_axis(x)
+
+				if 'backgrounds' in v:
+					for x, y in v['backgrounds'].items():
+						bid = int(x.lstrip('background'))
+
+						if bid > self.bg_count:
+							self.bg_count = bid
+
+						self.create_background(x)
+
+		super().set_params(params)
 
 
 class CirchartParameterManager(QScrollArea):
