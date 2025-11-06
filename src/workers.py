@@ -197,7 +197,7 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 
 		for k in self.params:
 			if k.startswith('track'):
-				index = self.params[k]['plot']['data']
+				index = self.params[k]['main']['data']
 				outfile = "data{}.txt".format(index)
 
 				if os.path.isfile(outfile):

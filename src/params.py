@@ -810,7 +810,7 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 			return "{}()".format(field, rule)
 
 		else:
-			return "var({}) {}".fomrat(field, rule)
+			return "var({}) {}".format(field, rule)
 			
 
 	def set_value(self, value):
@@ -1444,7 +1444,8 @@ class CirchartParameterPanel(QWidget):
 		for k, v in ps.items():
 			if k in self.params:
 				if isinstance(v, dict):
-					self.params[k].set_params(v)
+					self.params[k].set_params(ps)
+
 				else:
 					self.params[k].set_value(v)
 
@@ -1483,7 +1484,7 @@ class CirchartTickTrack(CirchartParameterAccordion):
 
 	def _init_panels(self):
 		self._create_main_panel()
-		self._create_tick_panel()
+		self._create_ticks_panel()
 		self.tick_count = 0
 
 	def _create_main_panel(self):
@@ -1492,27 +1493,46 @@ class CirchartTickTrack(CirchartParameterAccordion):
 		self.main_panel = self.create_panel('main', 'icons/mark.svg', "Tick display parameters")
 		self.main_panel.create_params(tick_level0)
 
-	def _create_tick_panel(self):
-		self.tick_panel = self.create_panel('ticks', 'icons/tick.svg', "Ticks")
+	def _create_ticks_panel(self):
+		self.ticks_panel = self.create_panel('ticks', 'icons/tick.svg', "Ticks")
 
-		menu = QMenu(self.main_panel)
-		tick_act = QAction("Add Tick", self.main_panel)
+		menu = QMenu(self.ticks_panel)
+		tick_act = QAction("Add Tick", self.ticks_panel)
 		tick_act.triggered.connect(self.add_tick)
 		menu.addAction(tick_act)
 
 		open_menu = lambda x: (menu.move(QCursor().pos()), (menu.show()))
-		self.tick_panel.setContextMenuPolicy(Qt.CustomContextMenu)
-		self.tick_panel.customContextMenuRequested.connect(open_menu)
+		self.ticks_panel.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.ticks_panel.customContextMenuRequested.connect(open_menu)
+
+	def create_tick(self, key):
+		tick_level1 = [p for p in self.tick_params if p['level'] == 1]
+		tick_panel = CirchartChildAccordion(key, self.ticks_panel)
+		style_panel = tick_panel.create_panel('styles')
+		style_panel.create_params(tick_level1)
+		self.ticks_panel.add_param(tick_panel, group=True)
 
 	def add_tick(self):
-		tick_level1 = [p for p in self.tick_params if p['level'] == 1]
-
 		self.tick_count += 1
+		key = 'tick{}'.format(self.tick_count)
+		self.create_tick(key)
 
-		tick = CirchartChildAccordion('tick{}'.format(self.tick_count), self.tick_panel)
-		panel = tick.create_panel('styles')
-		panel.create_params(tick_level1)
-		self.tick_panel.add_param(tick, group=True)
+	def set_params(self, params):
+		ticks = params['ticks']['ticks']
+
+		self.ticks_panel.clear_params()
+		self.tick_count = 0
+
+		for k in ticks:
+			tid = int(k.lstrip('tick'))
+
+			if tid > self.tick_count:
+				self.tick_count = tid
+
+			self.create_tick(k)
+
+		super().set_params(params)
+
 
 class CirchartPlotTrack(CirchartParameterAccordion):
 	def _init_panels(self):
@@ -1701,31 +1721,32 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 
 		return self.get_params()
 
+	def create_plot_track(self, key):
+		track = CirchartPlotTrack(key, self)
+		self.add_widget(track)
+		return track
+
 	def add_plot_track(self):
 		self.track_count += 1
-		form = CirchartPlotTrack('track{}'.format(self.track_count), self)
-		self.add_widget(form)
-		return form
+		key = 'track{}'.format(self.track_count)
+		track = self.create_plot_track(key)
+		return track
 
 	def reset_params(self, params):
 		self.clear_widgets()
 		self.new_circos_plot(params)
+		self.track_count = 0
 
-		track_id = 0
 		for k, v in params.items():
 			if k.startswith('track'):
 				tid = int(k.replace('track', ''))
 
-				if tid > track_id:
-					track_id = tid
+				if tid > self.track_count:
+					self.track_count = tid
 
-				form = self.add_plot_track()
-				form.set_key(k)
-				form.set_params(v)
-
-		self.track_count = track_id
-
-
+				track = self.add_plot_track()
+				track.set_key(k)
+				track.set_params(params)
 
 
 class CirchartSnailParameterManager(CirchartParameterManager):
