@@ -905,3 +905,70 @@ rules:
         - color
         - thickness
         - z
+
+axes:
+  -
+    name: spacing
+    type: float
+    range:
+      - 0
+      - 1
+    decimal: 3
+    step: 0.01
+  -
+    name: position
+    type: float
+    range:
+      - 0
+      - 1
+    decimal: 3
+    step: 0.01
+  -
+    name: y0
+    type: float
+    range:
+      - 0
+      - 1
+    decimal: 3
+    step: 0.01
+  -
+    name: y1
+    type: float
+    range:
+      - 0
+      - 1
+    decimal: 3
+    step: 0.01
+  -
+    name: color
+    type: color
+    default: 240,240,240
+  -
+    name: thickness
+    type: int
+    range:
+      - 0
+      - 100
+    default: 1
+
+backgrounds:
+  -
+    name: y0
+    type: float
+    range:
+      - 0
+      - 1
+    decimal: 3
+    step: 0.01
+  -
+    name: y1
+    type: float
+    range:
+      - 0
+      - 1
+    decimal: 3
+    step: 0.01
+  -
+    name: color
+    type: color
+    default: 240,240,240

@@ -646,7 +646,7 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 		if sign == 'eq':
 			sign = '='
 
-		if val.endswith(['bp', 'kb', 'mb', 'gb']):
+		if val.endswith(('bp', 'kb', 'mb', 'gb')):
 			unit = val[-2:]
 			val = val[0:-2]
 		elif self._unit:
@@ -807,16 +807,16 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 		funcs = {'on', 'from', 'to', 'between', 'fromto', 'tofrom', 'within'}
 
 		if field in funcs:
-			return "{}()".format(field, rule)
+			return "{}({})".format(field, rule)
 
 		else:
 			return "var({}) {}".format(field, rule)
 			
 
 	def set_value(self, value):
-		funcs = {'on', 'from', 'to', 'between', 'fromto', 'tofrom', 'within'}
+		funcs = ('on', 'from', 'to', 'between', 'fromto', 'tofrom', 'within')
 
-		if field in funcs:
+		if value.startswith(funcs):
 			field, rule = value.split('(')
 			rule = rule.strip(')')
 		else:
@@ -910,7 +910,7 @@ class CirchartRuleStyleWidget(CirchartRuleWidget):
 	def set_value(self, value):
 		style, val = value
 		self.style_widget.setCurrentText(style)
-		self.value_widget.setText(val)
+		self.value_widget.set_value(val)
 
 class CirchartAddDelButton(QPushButton):
 	def __init__(self, parent=None, btype='add'):
@@ -1604,7 +1604,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 	def _create_axes_panel(self):
 		self.axes_panel = self.create_panel('axes', 'icons/axis.svg', "Track Axes")
 
-	def create_axis(self):
+	def create_axis(self, key):
 		pass
 
 	def add_axis(self):
