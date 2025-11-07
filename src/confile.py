@@ -171,14 +171,20 @@ class CirchartCircosConfile(Confile):
 							for k, v in axes_params.items():
 								with Tag('axis'):
 									for x, y in v['main'].items():
-										self.option(x, y)
+										if x in ['spacing', 'position']:
+											self.option(x, y, 'r')
+										else:
+											self.option(x, y)
 
 					if bg_params:
 						with Tag('backgrounds'):
 							for k, v in bg_params.items():
 								with Tag('background'):
 									for x, y in v['main'].items():
-										self.option(x, y)
+										if x in ['y0', 'y1']:
+											self.option(x, y, 'r')
+										else:
+											self.option(x, y)
 
 
 	def parse(self):

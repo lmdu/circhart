@@ -1604,20 +1604,61 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 	def _create_axes_panel(self):
 		self.axes_panel = self.create_panel('axes', 'icons/axis.svg', "Track Axes")
 
-	def create_axis(self, key):
-		pass
+		menu = QMenu(self.axes_panel)
+		axes_space_act = QAction("Add Spacing Axis", self.axes_panel)
+		axes_space_act.triggered.connect(lambda : self.add_axis('spacing'))
 
-	def add_axis(self):
-		pass
+		axes_pos_act = QAction("Add Fixed Position Axis", self.axes_panel)
+		axes_pos_act.triggered.connect(lambda: self.add_axis('position'))
+
+		menu.addAction(axes_space_act)
+		menu.addAction(axes_pos_act)
+
+		open_menu = lambda x: (menu.move(QCursor().pos()), (menu.show()))
+		self.axes_panel.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.axes_panel.customContextMenuRequested.connect(open_menu)
+
+	def create_axis(self, key, by='spacing'):
+		axis_params = CIRCOS_PARAMS['axes']
+
+		if by == 'spacing':
+			axis_params = [p for p in axis_params if p['name'] != 'position']
+		else:
+			axis_params = [p for p in axis_params if p['name'] != 'spacing']
+
+		axis_panel = CirchartChildAccordion(key, self.axes_panel)
+		style_panel = axis_panel.create_panel('main')
+		style_panel.create_params(axis_params)
+		self.axes_panel.add_param(axis_panel, group=True)
+
+	def add_axis(self, by):
+		self.axes_count += 1
+		key = "axis{}".format(self.axes_count)
+		self.create_axis(key, by)
 
 	def _create_background_panel(self):
-		self.bg_panel = self.create_panel('backgrounds', 'icons/bg.svg', "Track Backgrounds")
+		self.bgs_panel = self.create_panel('backgrounds', 'icons/bg.svg', "Track Backgrounds")
 
-	def create_background(self):
-		pass
+		menu = QMenu(self.bgs_panel)
+		bg_act = QAction("Add Background", self.bgs_panel)
+		bg_act.triggered.connect(self.add_background)
+		menu.addAction(bg_act)
+
+		open_menu = lambda x: (menu.move(QCursor().pos()), (menu.show()))
+		self.bgs_panel.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.bgs_panel.customContextMenuRequested.connect(open_menu)
+
+	def create_background(self, key):
+		bg_params = CIRCOS_PARAMS['backgrounds']
+		bg_panel = CirchartChildAccordion(key, self.bgs_panel)
+		style_panel = bg_panel.create_panel('main')
+		style_panel.create_params(bg_params)
+		self.bgs_panel.add_param(bg_panel, group=True)
 
 	def add_background(self):
-		pass
+		self.bg_count += 1
+		key = 'background{}'.format(self.bg_count)
+		self.create_background(key)
 
 	def _on_type_changed(self, ptype):
 		#self.set_title("Track:{}".format(ptype))
@@ -1665,7 +1706,10 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 						if aid > self.axes_count:
 							self.axes_count = aid
 
-						self.create_axis(x)
+						if 'spacing' in y['main']:
+							self.create_axis(x, 'spacing')
+						else:
+							self.create_axis(x, 'position')
 
 				if 'backgrounds' in v:
 					for x, y in v['backgrounds'].items():

@@ -924,22 +924,6 @@ axes:
     decimal: 3
     step: 0.01
   -
-    name: y0
-    type: float
-    range:
-      - 0
-      - 1
-    decimal: 3
-    step: 0.01
-  -
-    name: y1
-    type: float
-    range:
-      - 0
-      - 1
-    decimal: 3
-    step: 0.01
-  -
     name: color
     type: color
     default: 240,240,240
