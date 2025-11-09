@@ -1203,6 +1203,10 @@ class CirchartParameterAccordion(QWidget):
 		#self.deleted.emit()
 		self.animation.setEndValue(0)
 		self.animation.start()
+
+		if self.key in self.params:
+			self.params
+
 		self.deleteLater()
 
 	def _set_layout(self):
