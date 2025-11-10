@@ -505,12 +505,14 @@ class CirchartMainWindow(QMainWindow):
 
 	def do_create_circos_plot(self):
 		params = CirchartCreateCircosPlotDialog.create_plot(self)
+		plot_name = params['plotname']
 
 		if params:
 			params['plotid'] = SqlControl.add_plot(params['plotname'], 'circos')
 			params = {'general': {'global': params}}
 			params = self.circos_panel.new_circos_plot(params)
 			self.draw_circos_plot(params)
+			self.param_dock.setWindowTitle("Circos:{}".format(plot_name))
 
 	def do_add_circos_track(self):
 		self.circos_panel.add_plot_track()
@@ -572,10 +574,13 @@ class CirchartMainWindow(QMainWindow):
 			if self.param_stack.currentIndex() != 0:
 				self.param_stack.setCurrentIndex(0)
 
-			self.circos_panel.change_plot(pid)
+			
+			plot_name = self.circos_panel.change_plot(pid)
+			title = 'Circos:{}'.format(plot_name)
+			self.param_dock.setWindowTitle(title)
 
 
-	
+
 
 
 

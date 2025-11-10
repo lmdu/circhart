@@ -1204,10 +1204,11 @@ class CirchartParameterAccordion(QWidget):
 		self.animation.setEndValue(0)
 		self.animation.start()
 
-		if self.key in self.params:
-			self.params
+		#if self.key in self.parent().params:
+		#	self.params
 
-		self.deleteLater()
+		self.parent().remove_param(self.key)
+		#self.deleteLater()
 
 	def _set_layout(self):
 		main_layout = QVBoxLayout()
@@ -1808,9 +1809,11 @@ class CirchartParameterManager(QScrollArea):
 			return
 
 		self.reset_params(params)
+		return params['general']['global']['plotname']
 
 class CirchartCircosParameterManager(CirchartParameterManager):
 	def new_circos_plot(self, params):
+		self.clear_widgets()
 		self.plot_id = params['general']['global']['plotid']
 
 		form = CirchartGeneralTrack('general', self)
@@ -1839,7 +1842,6 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		return track
 
 	def reset_params(self, params):
-		self.clear_widgets()
 		self.new_circos_plot(params)
 		self.track_count = 0
 

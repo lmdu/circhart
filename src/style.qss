@@ -157,6 +157,10 @@ QComboBox::down-arrow {
 	width: 16px;
 }
 
+/*QComboBox {
+	max-width: 120px;
+}*/
+
 QSpinBox,
 QDoubleSpinBox {
 	/*padding-right: 15px;*/
