@@ -14,6 +14,7 @@ __all__ = [
 	'CirchartGCContentPrepareDialog',
 	'CirchartDensityPrepareDialog',
 	'CirchartCreateCircosPlotDialog',
+	'CirchartCreateSnailPlotDialog',
 	'CirchartCircosColorSelectDialog',
 ]
 
@@ -379,6 +380,36 @@ class CirchartCreateCircosPlotDialog(QDialog):
 			return {
 				'plotname': dlg.input.text(),
 				'karyotype': dlg.get_selected_karyotype()
+			}
+
+class CirchartCreateSnailPlotDialog(CirchartBaseDialog):
+	def create_widgets(self):
+		self.select_genome = QComboBox(self)
+		self.plot_name = QLineEdit(self)
+
+	def init_widgets(self):
+		gs = SqlControl.get_datas_by_type('genome')
+
+		for g in gs:
+			self.select_genome.addItem(g.name, g.id)
+
+	def init_layouts(self):
+		layout = QVBoxLayout()
+		layout.addWidget(QLabel("Select genome:", self))
+		layout.addWidget(self.select_genome)
+		layout.addWidget(QLabel("Snail plot name:", self))
+		layout.addWidget(self.plot_name)
+		layout.addWidget(self.btn_box)
+		self.setLayout(layout)
+
+	@classmethod
+	def create_plot(cls, parent):
+		dlg = cls(parent)
+
+		if dlg.exec() == QDialog.Accepted:
+			return {
+				'genome': dlg.select_genome.currentData(),
+				'plotname': dlg.plot_name.text()
 			}
 
 class CirchartCircosColorSelectDialog(QDialog):

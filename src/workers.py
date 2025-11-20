@@ -67,6 +67,18 @@ class CirchartBaseWorker(QRunnable):
 	def on_error_occurred(self, error):
 		self.signals.error.emit(str(error))
 
+	def make_tempdir(self):
+		self.tempdir = QTemporaryDir()
+		self.tempdir.setAutoRemove(False)
+
+		if not self.tempdir.isValid():
+			raise Exception("Could not create temporary directory")
+
+		if APP_DEBUG:
+			print(self.tempdir.path())
+
+		return self.tempdir.path()
+
 class CirchartProcessWorker(CirchartBaseWorker):
 	processor = None
 
@@ -175,18 +187,6 @@ class CirchartDensityPrepareWorker(CirchartProcessWorker):
 class CirchartCircosPlotWorker(CirchartBaseWorker):
 	processor = CirchartCircosPlotProcess
 
-	def make_tempdir(self):
-		self.tempdir = QTemporaryDir()
-		self.tempdir.setAutoRemove(False)
-
-		if not self.tempdir.isValid():
-			raise Exception("Could not create temporary directory")
-
-		if APP_DEBUG:
-			print(self.tempdir.path())
-
-		return self.tempdir.path()
-
 	def preprocess(self):
 		workdir = self.make_tempdir()
 
@@ -243,6 +243,12 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 			SqlControl.update_plot(params, content, plotid)
 
 			self.signals.result.emit(plotid)
+
+class CirchartSnailPlotWorker(CirchartBaseWorker):
+	processor = CirchartSnailPlotProcess
+
+	def preprocess(self):
+		workdir = self.make_tempdir()
 		
 class CirchartProjectSaveWorker(CirchartBaseWorker):
 	def process(self):

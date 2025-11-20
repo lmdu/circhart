@@ -184,6 +184,15 @@ class CirchartMainWindow(QMainWindow):
 		)
 		self.update_circos_act.setIconVisibleInMenu(False)
 
+		self.new_snail_act = QAction(QIcon('icons/spiral.svg'), "&Create Snail Plot", self,
+			triggered = self.do_create_snail_plot
+		)
+		self.new_snail_act.setIconVisibleInMenu(False)
+
+		self.update_snail_act = QAction("&Update Snail Plot", self,
+			triggered = self.do_update_snail_plot
+		)
+
 		self.about_act = QAction("&About", self,
 			triggered = self.go_to_about,
 		)
@@ -251,6 +260,9 @@ class CirchartMainWindow(QMainWindow):
 		self.circos_menu.addAction(self.update_circos_act)
 
 		self.snail_menu = self.plot_menu.addMenu("&Snail Plot")
+		self.snail_menu.addAction(self.new_snail_act)
+		self.snail_menu.addSeparator()
+		self.snail_menu.addAction(self.update_snail_act)
 
 		self.tool_menu.addSeparator()
 		self.tool_menu.addAction(self.check_circos_act)
@@ -276,6 +288,9 @@ class CirchartMainWindow(QMainWindow):
 		self.tool_bar.addAction(self.new_circos_act)
 		self.tool_bar.addAction(self.add_track_act)
 		self.tool_bar.addAction(self.update_circos_act)
+		self.tool_bar.addSeparator()
+
+		self.tool_bar.addAction(self.new_snail_act)
 		self.tool_bar.addSeparator()
 
 		self.tool_bar.addAction(self.zoom_in_act)
@@ -503,12 +518,18 @@ class CirchartMainWindow(QMainWindow):
 		worker.signals.result.connect(self.show_svg_plot)
 		self.submit_new_worker(worker)
 
+	def draw_snail_plot(self, params):
+		worker = CirchartSnailPlotWorker(params)
+		worker.signals.success.connect(self.plot_tree.update_tree)
+		worker.signals.result.connect(self.show_svg_plot)
+		self.submit_new_worker(worker)
+
 	def do_create_circos_plot(self):
 		params = CirchartCreateCircosPlotDialog.create_plot(self)
-		plot_name = params['plotname']
 
 		if params:
-			params['plotid'] = SqlControl.add_plot(params['plotname'], 'circos')
+			plot_name = params['plotname']
+			params['plotid'] = SqlControl.add_plot(plot_name, 'circos')
 			params = {'general': {'global': params}}
 			params = self.circos_panel.new_circos_plot(params)
 			self.draw_circos_plot(params)
@@ -535,6 +556,21 @@ class CirchartMainWindow(QMainWindow):
 		print(params)
 
 		self.draw_circos_plot(params)
+
+	def do_create_snail_plot(self):
+		params = CirchartCreateSnailPlotDialog.create_plot(self)
+
+		if params:
+			plot_name = params['plotname']
+			params['plotid'] = SqlControl.add_plot(plot_name, 'snail')
+			params = self.snail_panel.new_snail_plot(params)
+			self.draw_snail_plot(params)
+			self.param_dock.setWindowTitle("Snail:{}".format(plot_name))
+
+
+
+	def do_update_snail_plot(self):
+		pass
 
 
 	def go_to_about(self):

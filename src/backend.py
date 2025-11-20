@@ -70,6 +70,8 @@ class GenomeTable(SqlTable):
 	_index = True
 	chrom = str
 	length = int
+	gc = float
+	ns = int
 
 class KaryotypeTable(SqlTable):
 	_index = True

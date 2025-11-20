@@ -5,6 +5,7 @@ import traceback
 import multiprocessing
 
 import pyfastx
+from blobtk.plot import plot as snail_plot
 
 from PySide6.QtCore import *
 
@@ -17,6 +18,7 @@ __all__ = [
 	'CirchartGCContentPrepareProcess',
 	'CirchartDensityPrepareProcess',
 	'CirchartCircosPlotProcess',
+	'CirchartSnailPlotProcess',
 ]
 
 class CirchartBaseProcess(multiprocessing.Process):
@@ -58,11 +60,23 @@ class CirchartBaseProcess(multiprocessing.Process):
 
 class CirchartImportFastaProcess(CirchartBaseProcess):
 	def do(self):
-		fa = pyfastx.Fasta(self.params.fasta)
+		fa = pyfastx.Fasta(self.params.fasta, full_index=True)
 
 		rows = []
 		for seq in fa:
-			rows.append((seq.name, len(seq)))
+			comp = seq.composition
+			gc = 0
+			ns = 0
+
+			for k in comp:
+				if k in ['G', 'C', 'g', 'c']:
+					gc += comp[k]
+
+				elif k not in ['A', 'T', 'G', 'C', 'a', 't', 'g', 'c']:
+					ns += comp[k]
+
+			gc = round(gc / len(seq), 4)
+			rows.append((seq.name, len(seq), gc, ns))
 
 			if len(rows) == 200:
 				self.send('result', rows)
@@ -184,6 +198,10 @@ class CirchartCircosPlotProcess(QProcess):
 		self.setProgram(CIRCOS_COMMAND)
 		self.setArguments(['-conf', 'plot.conf', '-nopng'])
 		self.setWorkingDirectory(workdir)
+
+class CirchartSnailPlotProcess(CirchartBaseProcess):
+	def do(self):
+		snail_plot()
 
 		
 
