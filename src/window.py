@@ -201,6 +201,11 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.go_to_document
 		)
 
+		self.cite_act = QAction(QIcon('icons/citation.svg'), "&Citation", self,
+			triggered = self.go_to_citation
+		)
+		self.cite_act.setIconVisibleInMenu(False)
+
 		self.issue_act = QAction("&Report Issues", self,
 			triggered = self.go_to_issues
 		)
@@ -269,6 +274,7 @@ class CirchartMainWindow(QMainWindow):
 
 		self.help_menu = self.menuBar().addMenu("&Help")
 		self.help_menu.addAction(self.about_act)
+		self.help_menu.addAction(self.cite_act)
 		self.help_menu.addAction(self.doc_act)
 		self.help_menu.addAction(self.issue_act)
 		self.help_menu.addAction(self.update_act)
@@ -296,6 +302,9 @@ class CirchartMainWindow(QMainWindow):
 		self.tool_bar.addAction(self.zoom_in_act)
 		self.tool_bar.addAction(self.zoom_out_act)
 		self.tool_bar.addAction(self.export_image_act)
+		self.tool_bar.addSeparator()
+
+		self.tool_bar.addAction(self.cite_act)
 
 
 		self.tool_bar.addWidget(CirchartSpacerWidget(self))
@@ -575,6 +584,9 @@ class CirchartMainWindow(QMainWindow):
 
 	def go_to_about(self):
 		QMessageBox.about(self, "About", APP_DESCRIPTION)
+
+	def go_to_citation(self):
+		QMessageBox.information(self, "Citation", APP_CITATION)
 
 	def go_to_issues(self):
 		QDesktopServices.openUrl(QUrl(APP_ISSUE_URL))

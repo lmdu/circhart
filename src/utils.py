@@ -5,6 +5,7 @@ import json
 __all__ = [
 	'AttrDict',
 	'save_circos_data',
+	'save_snail_data',
 	'dict_to_str',
 	'str_to_dict',
 ]

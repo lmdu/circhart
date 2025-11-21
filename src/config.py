@@ -14,6 +14,7 @@ __all__ = [
 	'APP_DOCUMENT_URL',
 	'APP_UPDATE_URL',
 	'APP_DESCRIPTION',
+	'APP_CITATION',
 	'APP_ORG_NAME',
 	'APP_ORG_DOMAIN',
 	'CIRCOS_COMMAND',
@@ -36,6 +37,13 @@ APP_UPDATE_URL = "https://github.com/lmdu/circhart/releases"
 APP_DESCRIPTION = """
 <p>Circhart is a user-friendly graphical tool for assisting circos
 running.</p>
+"""
+
+APP_CITATION = """
+<p>Krzywinski M, Schein J, Birol I, et al. Circos: an information
+aesthetic for comparative genomics. Genome Research. 2009;19(9):1639-1645.</p>
+<p>Challis R, Richards E, Rajan J, Cochrane G, Blaxter M. BlobToolKit -
+Interactive Quality Assessment of Genome Assemblies. G3 (Bethesda). 2020;10(4):1361-1374.</p>
 """
 
 APP_ORG_NAME = "DuLab"

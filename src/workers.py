@@ -245,7 +245,7 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 
 			self.signals.result.emit(plotid)
 
-class CirchartSnailPlotWorker(CirchartBaseWorker):
+class CirchartSnailPlotWorker(CirchartProcessWorker):
 	processor = CirchartSnailPlotProcess
 
 	def preprocess(self):
@@ -257,23 +257,96 @@ class CirchartSnailPlotWorker(CirchartBaseWorker):
 		gcs = []
 		lens = []
 		ns = []
+		size = 0
+		count = 0
 
 		for row in data:
-			ids.append(row[1])
-			lens.append(row[2])
-			gcs.append(row[3])
-			ns.append(row[4])
+			ids.append(row[0])
+			lens.append(row[1])
+			gcs.append(row[2])
+			ns.append(row[3])
+
+			size += row[1]
+			count += 1
+
+		metadata = {
+			'id': "blobdir",
+			'assembly': {
+				'file': 'genome.fa',
+				'scaffold-count': count,
+				'span': size
+			},
+			'fields': [
+				{
+					'id': 'identifiers',
+					'type': 'identifiers'
+				},
+				{
+					'id': 'gc',
+					'preload': True,
+					'scale': 'scaleLinear',
+					'name': 'GC',
+					'datatype': 'float',
+					'range': [min(gcs), max(gcs)],
+					'type': 'variable'
+				},
+				{
+					'id': 'length',
+					'preload': True,
+					'scale': 'scaleLog',
+					'name': 'Length',
+					'clamp': False,
+					'datatype': 'integer',
+					'range': [min(lens), max(lens)],
+					'type': 'variable'
+				},
+				{
+					'id': 'ncount',
+					'scale': 'scaleLinear',
+					'name': 'N count',
+					'datatype': 'integer',
+					'range': [min(ns), max(ns)],
+					'type': 'variable'
+				}
+			],
+			'links': {},
+			'name': 'blobdir',
+			'plot': {
+				'x': 'gc',
+				'z': 'length'
+			},
+			'record_type': 'record',
+			'records': count,
+			'taxon': {},
+			'version': 1,
+			'revision': 0
+		}
 
 		datasets = {
 			'identifiers.json': {'values': ids, 'keys': []},
 			'gc.json': {'values': gcs, 'keys': []},
 			'length.json': {'values': lens, 'keys': []},
-			'ncount.json': {'values': ns, keys: []},
-			'meta.json': {},
+			'ncount.json': {'values': ns, 'keys': []},
+			'meta.json': metadata,
 		}
 
-	def process(self):
-		pass
+		for jfile, data in datasets.items():
+			save_snail_data(workdir, jfile, data)
+
+		self.params['workdir'] = workdir
+
+	def save_result(self, res):
+		svg_file = os.path.join(self.tempdir.path(), 'snail.svg')
+
+		if os.path.isfile(svg_file):
+			with open(svg_file) as fh:
+				content = fh.read()
+
+			params = dict_to_str(self.params)
+			plotid = self.params['plotid']
+			SqlControl.update_plot(params, content, plotid)
+
+			self.signals.result.emit(plotid)
 		
 class CirchartProjectSaveWorker(CirchartBaseWorker):
 	def process(self):

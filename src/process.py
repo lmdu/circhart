@@ -201,7 +201,39 @@ class CirchartCircosPlotProcess(QProcess):
 
 class CirchartSnailPlotProcess(CirchartBaseProcess):
 	def do(self):
-		snail_plot()
+		outfile = os.path.join(self.params.workdir, 'snail.svg')
+		ps = self.params.snail
 
+		if ps['max_span'] > 0:
+			ps['max_span'] = int(ps['max_span'])
 		
+		else:
+			ps.pop('max_span')
+
+		if ps['max_scaffold'] > 0:
+			ps['max_scaffold'] = int(ps['max_scaffold'])
+
+		else:
+			ps.pop('max_scaffold')
+
+		if ps['show_numbers'] == 'yes':
+			ps['show_numbers'] = True
+
+		else:
+			ps['show_numbers'] = False
+
+		if ps['busco_numbers'] == 'yes':
+			ps['busco_numbers'] = True
+
+		else:
+			ps['busco_numbers'] = False
+
+		snail_plot.plot(
+			blobdir = self.params.workdir,
+			output = outfile,
+			view = 'snail',
+			**ps
+		)
+
+		self.send('result')
 
