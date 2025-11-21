@@ -560,6 +560,9 @@ class CirchartMainWindow(QMainWindow):
 	def do_create_snail_plot(self):
 		params = CirchartCreateSnailPlotDialog.create_plot(self)
 
+		print(params)
+		return
+
 		if params:
 			plot_name = params['plotname']
 			params['plotid'] = SqlControl.add_plot(plot_name, 'snail')
