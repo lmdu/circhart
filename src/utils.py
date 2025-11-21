@@ -26,6 +26,11 @@ def save_circos_data(workdir, filename, data):
 		writer = csv.writer(fw, delimiter=' ', quoting=csv.QUOTE_NONE)
 		writer.writerows(data)
 
+def save_snail_data(workdir, filename, data):
+	outfile = os.path.join(workdir, filename)
+
+	with open(outfile, 'w') as fw:
+		fw.write(json.dumps(data, indent=2))
 
 def dict_to_str(obj):
 	return json.dumps(obj)

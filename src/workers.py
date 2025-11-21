@@ -19,6 +19,7 @@ __all__ = [
 	'CirchartCircosPlotWorker',
 	'CirchartProjectSaveWorker',
 	'CirchartCircosColorWorker',
+	'CirchartSnailPlotWorker',
 ]
 
 class CirchartWorkerSignals(QObject):
@@ -249,6 +250,30 @@ class CirchartSnailPlotWorker(CirchartBaseWorker):
 
 	def preprocess(self):
 		workdir = self.make_tempdir()
+		index = self.params['genome']
+
+		data = SqlControl.get_data_content('genome', index)
+		ids = []
+		gcs = []
+		lens = []
+		ns = []
+
+		for row in data:
+			ids.append(row[1])
+			lens.append(row[2])
+			gcs.append(row[3])
+			ns.append(row[4])
+
+		datasets = {
+			'identifiers.json': {'values': ids, 'keys': []},
+			'gc.json': {'values': gcs, 'keys': []},
+			'length.json': {'values': lens, 'keys': []},
+			'ncount.json': {'values': ns, keys: []},
+			'meta.json': {},
+		}
+
+	def process(self):
+		pass
 		
 class CirchartProjectSaveWorker(CirchartBaseWorker):
 	def process(self):

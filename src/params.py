@@ -1786,6 +1786,9 @@ class CirchartParameterManager(QScrollArea):
 			if isinstance(widget, CirchartParameterMixin):
 				values.update(widget.get_param())
 
+			elif isinstance(widget, CirchartParameterPanel):
+				values.update(widget.get_params())
+
 			elif isinstance(widget, CirchartParameterAccordion):
 				values.update(widget.get_params())
 
@@ -1858,7 +1861,24 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 
 
 class CirchartSnailParameterManager(CirchartParameterManager):
-	pass
+	def new_snail_plot(self, params):
+		param = CirchartHiddenParameter('plotid', self)
+		param.set_value(params['plotid'])
+		self.add_widget(param)
+
+		param = CirchartHiddenParameter('genome', self)
+		param.set_value(params['genome'])
+		self.add_widget(param)
+
+		presets = CIRCOS_PARAMS['snail']
+		form = CirchartParameterPanel('snail', self)
+		form.create_params(presets)
+		self.add_widget(form)
+
+		return self.get_params()
+
+	def reset_params(self, params):
+		pass
 
 
 

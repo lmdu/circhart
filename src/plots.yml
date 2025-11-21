@@ -968,14 +968,16 @@ snail:
     tooltip: segment count for snail plot
   -
     name: max_span
-    type: int
+    type: float
+    decimal: 0
     range:
       - 0
       - 100000000000
     tooltip: max span for snail plot
   -
     name: max_scaffold
-    type: int
+    type: float
+    decimal: 0
     range:
       - 0
       - 1000000000

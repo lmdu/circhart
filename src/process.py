@@ -5,7 +5,7 @@ import traceback
 import multiprocessing
 
 import pyfastx
-from blobtk.plot import plot as snail_plot
+from blobtk import plot as snail_plot
 
 from PySide6.QtCore import *
 
