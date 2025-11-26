@@ -15,6 +15,7 @@ from utils import *
 __all__ = [
 	'CirchartImportFastaProcess',
 	'CirchartImportAnnotationProcess',
+	'CirchartImportBuscoProcess',
 	'CirchartGCContentPrepareProcess',
 	'CirchartDensityPrepareProcess',
 	'CirchartCircosPlotProcess',
@@ -109,6 +110,25 @@ class CirchartImportAnnotationProcess(CirchartBaseProcess):
 
 		if rows:
 			self.send('result', rows)
+
+class CirchartImportBuscoProcess(CirchartBaseProcess):
+	def do(self):
+		rows = []
+
+		with open(self.params.buscofile) as fh:
+			for line in fh:
+				if line[0] == '#':
+					continue
+
+				cols = line.strip().split()
+				rows.append((cols[0], cols[1]))
+
+				if len(rows) == 200:
+					self.send('result', rows)
+					rows = []
+
+			if rows:
+				self.send('result', rows)
 
 class CirchartGCContentPrepareProcess(CirchartBaseProcess):
 	def do(self):

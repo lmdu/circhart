@@ -14,6 +14,7 @@ from backend import *
 __all__ = [
 	'CirchartImportGenomeWorker',
 	'CirchartImportAnnotationWorker',
+	'CirchartImportBuscoWorker',
 	'CirchartGCContentPrepareWorker',
 	'CirchartDensityPrepareWorker',
 	'CirchartCircosPlotWorker',
@@ -136,6 +137,32 @@ class CirchartImportAnnotationWorker(CirchartProcessWorker):
 		qf = QFileInfo(self.params['annotation'])
 		name = qf.completeBaseName()
 		self.table_index = SqlControl.add_data(name, 'annotation', self.params['annotation'])
+		SqlControl.create_annotation_table(self.table_index)
+
+	def save_result(self, res):
+		SqlControl.add_annotation_data(self.table_index, res)
+
+class CirchartImportBuscoWorker(CirchartProcessWorker):
+	processor = CirchartImportBuscoProcess
+
+	def preprocess(self):
+		qf = QFileInfo(self.params['buscofile'])
+		name = qf.completeBaseName()
+
+		with open(self.params['buscofile']) as fh:
+			for line in fh:
+				if line[0] == '#' and 'version' in line:
+					version = line.split(':')[-1].strip()
+
+				elif line[0] == '#' and 'lineage' in line:
+					lineage = line.split(':')[1].split('(')[0].strip()
+					buscos = line.split(':')[-1].strip().strip(')')
+
+				else:
+					break
+
+		metadata = dict_to_str({'version': version, 'lineage': lineage, 'buscos': buscos})
+		self.table_index = SqlControl.add_data(name, 'busco', metadata)
 		SqlControl.create_annotation_table(self.table_index)
 
 	def save_result(self, res):

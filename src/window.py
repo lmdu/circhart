@@ -109,6 +109,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_genome_annotation
 		)
 
+		self.import_busco_act = QAction("&Import BUSCO Full Table...", self,
+			triggered = self.do_import_busco_full_table
+		)
+
 		self.import_kdata_act = QAction("&Import Karyotype Data...", self,
 			triggered = self.do_import_karyotype_data
 		)
@@ -463,6 +467,21 @@ class CirchartMainWindow(QMainWindow):
 			return
 
 		worker = CirchartImportAnnotationWorker({'annotation': afile})
+		worker.signals.success.connect(self.data_tree.update_tree)
+		self.submit_new_worker(worker)
+
+	def do_import_busco_full_table(self):
+		bfile, _ = QFileDialog.getOpenFileName(self, "Select BUSCO Full Table File",
+			filter = (
+				"TSV file (*.tsv);;"
+				"All files (*.*)"
+			)
+		)
+
+		if not bfile:
+			return
+
+		worker = CirchartImportBuscoWorker({'buscofile': bfile})
 		worker.signals.success.connect(self.data_tree.update_tree)
 		self.submit_new_worker(worker)
 

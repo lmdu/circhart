@@ -57,7 +57,7 @@ class DataTable(SqlTable):
 	_index = False
 	name = str
 	type = str
-	path = str
+	meta = str
 
 class PlotTable(SqlTable):
 	_index = False
@@ -89,6 +89,11 @@ class AnnotationTable(SqlTable):
 	feature = str
 	start = int
 	end = int
+
+class BuscoTable(SqlTable):
+	_index = True
+	busco = str
+	status = str
 
 class PlotDataTable(SqlTable):
 	_index = True
@@ -371,11 +376,11 @@ SqlBase = DataBackend()
 
 class SqlControl:
 	@staticmethod
-	def add_data(name, type, path=''):
+	def add_data(name, type, meta=''):
 		sql = SqlQuery('data')\
-			.insert('name', 'type', 'path')
+			.insert('name', 'type', 'meta')
 
-		return SqlBase.insert_row(sql, name, type, path)
+		return SqlBase.insert_row(sql, name, type, meta)
 
 	@staticmethod
 	def create_genome_table(index):
