@@ -419,6 +419,18 @@ class SqlControl:
 		SqlBase.insert_rows(sql, data)
 
 	@staticmethod
+	def create_busco_table(index):
+		table, fields = BuscoTable.table(index)
+		SqlBase.create_table(table, fields)
+
+	@staticmethod
+	def add_busco_data(index, data):
+		table, _ = BuscoTable.table(index)
+		sql = SqlQuery(table)\
+			.insert(*BuscoTable.fields())
+		SqlBase.insert_rows(sql, data)
+
+	@staticmethod
 	def create_plot_data_table(index):
 		table, fields = PlotDataTable.table(index)
 		SqlBase.create_table(table, fields)

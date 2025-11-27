@@ -231,6 +231,7 @@ class CirchartMainWindow(QMainWindow):
 		self.import_menu = self.file_menu.addMenu("&Import Data")
 		self.import_menu.addAction(self.import_genome_act)
 		self.import_menu.addAction(self.import_annot_act)
+		self.import_menu.addAction(self.import_busco_act)
 		self.import_menu.addSeparator()
 		self.import_menu.addAction(self.import_kdata_act)
 		self.import_menu.addAction(self.import_pdata_act)

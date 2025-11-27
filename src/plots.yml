@@ -958,30 +958,30 @@ backgrounds:
     default: 240,240,240
 
 snail:
-  -
-    name: segments
-    type: int
-    range:
-      - 0
-      - 10000000
-    default: 1000
-    tooltip: segment count for snail plot
-  -
-    name: max_span
-    type: float
-    decimal: 0
-    range:
-      - 0
-      - 100000000000
-    tooltip: max span for snail plot
-  -
-    name: max_scaffold
-    type: float
-    decimal: 0
-    range:
-      - 0
-      - 1000000000
-    tooltip: max scaffold length for snail plot
+  #-
+  #  name: segments
+  #  type: int
+  #  range:
+  #    - 0
+  #    - 10000000
+  #  default: 1000
+  #  tooltip: segment count for snail plot
+  #-
+  #  name: max_span
+  #  type: float
+  #  decimal: 0
+  #  range:
+  #    - 0
+  #    - 100000000000
+  #  tooltip: max span for snail plot
+  #-
+  #  name: max_scaffold
+  #  type: float
+  #  decimal: 0
+  #  range:
+  #    - 0
+  #    - 1000000000
+  #  tooltip: max scaffold length for snail plot
   -
     name: show_numbers
     type: bool
@@ -992,3 +992,10 @@ snail:
     type: bool
     default: 'no'
     tooltip: show busco numbers instead of percentages in snail plot legend
+
+busco:
+  -
+    name: data
+    type: choice
+    source: busco
+

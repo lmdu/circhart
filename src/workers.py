@@ -163,10 +163,10 @@ class CirchartImportBuscoWorker(CirchartProcessWorker):
 
 		metadata = dict_to_str({'version': version, 'lineage': lineage, 'buscos': buscos})
 		self.table_index = SqlControl.add_data(name, 'busco', metadata)
-		SqlControl.create_annotation_table(self.table_index)
+		SqlControl.create_busco_table(self.table_index)
 
 	def save_result(self, res):
-		SqlControl.add_annotation_data(self.table_index, res)
+		SqlControl.add_busco_data(self.table_index, res)
 
 class CirchartGCContentPrepareWorker(CirchartProcessWorker):
 	processor = CirchartGCContentPrepareProcess
