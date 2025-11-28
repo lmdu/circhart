@@ -982,16 +982,24 @@ snail:
   #    - 0
   #    - 1000000000
   #  tooltip: max scaffold length for snail plot
-  -
-    name: show_numbers
-    type: bool
-    default: 'no'
-    tooltip: show numbers instead of percentages in snail plot
-  -
-    name: busco_numbers
-    type: bool
-    default: 'no'
-    tooltip: show busco numbers instead of percentages in snail plot legend
+  general:
+    -
+      name: plotid
+      type: hidden
+    -
+      name:
+
+  plot:
+    -
+      name: show_numbers
+      type: bool
+      default: 'no'
+      tooltip: show numbers instead of percentages in snail plot
+    -
+      name: busco_numbers
+      type: bool
+      default: 'no'
+      tooltip: show busco numbers instead of percentages in snail plot legend
 
 busco:
   -

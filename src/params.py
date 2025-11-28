@@ -1859,6 +1859,14 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 				track.set_key(k)
 				track.set_params(params)
 
+class CirchartSnailGeneralForm(CirchartParameterAccordion):
+	_closable = False
+	_visible = False
+
+	def _init_panels(self):
+		panel = self.create_panel('global')
+		params = CIRCOS_PARAMS['general']
+		panel.create_params(params)
 
 class CirchartSnailParameterManager(CirchartParameterManager):
 	def new_snail_plot(self, params):
