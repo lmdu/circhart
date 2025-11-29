@@ -197,6 +197,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_update_snail_plot
 		)
 
+		self.update_plot_act = QAction(QIcon('icons/refresh.svg'), "&Update Plot", self,
+			triggered = self.do_update_plot
+		)
+
 		self.about_act = QAction("&About", self,
 			triggered = self.go_to_about,
 		)
@@ -298,19 +302,18 @@ class CirchartMainWindow(QMainWindow):
 
 		self.tool_bar.addAction(self.new_circos_act)
 		self.tool_bar.addAction(self.add_track_act)
-		self.tool_bar.addAction(self.update_circos_act)
 		self.tool_bar.addSeparator()
 
 		self.tool_bar.addAction(self.new_snail_act)
 		self.tool_bar.addSeparator()
 
+		self.tool_bar.addAction(self.update_plot_act)
 		self.tool_bar.addAction(self.zoom_in_act)
 		self.tool_bar.addAction(self.zoom_out_act)
 		self.tool_bar.addAction(self.export_image_act)
 		self.tool_bar.addSeparator()
 
 		self.tool_bar.addAction(self.cite_act)
-
 
 		self.tool_bar.addWidget(CirchartSpacerWidget(self))
 		self.wait_spinner = CirchartSpinnerWidget(self)
@@ -581,9 +584,6 @@ class CirchartMainWindow(QMainWindow):
 
 	def do_update_circos_plot(self):
 		params = self.circos_panel.get_params()
-
-		print(params)
-
 		self.draw_circos_plot(params)
 
 	def do_create_snail_plot(self):
@@ -599,10 +599,16 @@ class CirchartMainWindow(QMainWindow):
 			#self.param_dock.setWindowTitle("Snail:{}".format(plot_name))
 			self.show_plot_params('snail', plot_id)
 
-
-
 	def do_update_snail_plot(self):
-		pass
+		params = self.snail_panel.get_params()
+		self.draw_snail_plot(params)
+
+	def do_update_plot(self):
+		if self.param_stack.currentIndex() == 0:
+			self.do_update_circos_plot()
+
+		else:
+			self.do_update_snail_plot()
 
 
 	def go_to_about(self):

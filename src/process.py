@@ -121,7 +121,11 @@ class CirchartImportBuscoProcess(CirchartBaseProcess):
 					continue
 
 				cols = line.strip().split()
-				rows.append((cols[0], cols[1]))
+
+				if cols[1].lower() == 'missing':
+					continue
+
+				rows.append((cols[0], cols[1], cols[2]))
 
 				if len(rows) == 200:
 					self.send('result', rows)

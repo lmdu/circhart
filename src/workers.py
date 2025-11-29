@@ -307,7 +307,7 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 			'fields': [
 				{
 					'id': 'identifiers',
-					'type': 'identifiers'
+					'type': 'identifier'
 				},
 				{
 					'id': 'gc',
@@ -338,7 +338,7 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 				}
 			],
 			'links': {},
-			'name': 'blobdir1',
+			'name': 'blobdir',
 			'plot': {
 				'x': 'gc',
 				'z': 'length'
@@ -357,20 +357,18 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 			busco_meta = str_to_dict(SqlControl.get_data_meta(busco_id))
 
 			busco_keys = ['Complete', 'Duplicated', 'Fragmented']
-			busco_vals = {}
-			busco_miss = set()
+			busco_chrs = {}
 
 			for row in busco_data:
-				if row[1] in busco_keys:
-					busco_vals[row[0]] = busco_keys.index(row[1])
-				else:
-					busco_miss.add(row[0])
+				if row[2] in busco_chrs:
+					busco_chrs[row[2]] = []
 
-			busco_list = [
-				[[b, c] for b, c in busco_vals.items()]
-			]
+				busco_chrs[row[2]].append([row[0], busco_keys.index(row[1])])
 
-			for b in busco_miss:
+			busco_list = list(busco_chrs.values())
+			empty_count = count - len(busco_chrs)
+
+			for i in range(empty_count):
 				busco_list.append([])
 
 			busco_dict = {
@@ -393,7 +391,7 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 					'set': busco_meta['lineage'],
 					'count': busco_meta['count'],
 					'file': 'busco.tsv',
-					'id': 'busco',
+					'id': 'buscos',
 					'type': 'multiarray',
 					'category_slot': 1,
 					'headers': [
@@ -414,7 +412,7 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 		}
 
 		if busco_id:
-			datasets['busco.json'] = busco_dict
+			datasets['buscos.json'] = busco_dict
 
 		for jfile, data in datasets.items():
 			save_snail_data(workdir, jfile, data)

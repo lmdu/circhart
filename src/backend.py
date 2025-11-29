@@ -94,6 +94,7 @@ class BuscoTable(SqlTable):
 	_index = True
 	busco = str
 	status = str
+	contig = str
 
 class PlotDataTable(SqlTable):
 	_index = True

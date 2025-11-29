@@ -211,9 +211,21 @@ class CirchartChoiceParameter(CirchartParameterMixin, QComboBox):
 			for item in data:
 				self.addItem(item, item)
 
+			self.dynamic = None
+
 		else:
 			for row in SqlControl.get_datas_by_type(data):
 				self.addItem(row.name, row.id)
+
+			self.dynamic = data
+
+	def showPopup(self):
+		if self.dynamic:
+			for row in SqlControl.get_datas_by_type(self.dynamic):
+				if self.findData(row.id) < 0:
+					self.addItem(row.name, row.id)
+
+		super().showPopup()
 
 
 class CirchartBoolParameter(CirchartParameterMixin, QCheckBox):
