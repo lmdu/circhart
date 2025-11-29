@@ -1865,28 +1865,48 @@ class CirchartSnailGeneralForm(CirchartParameterAccordion):
 
 	def _init_panels(self):
 		panel = self.create_panel('global')
-		params = CIRCOS_PARAMS['general']
+		params = CIRCOS_PARAMS['snail']['general']
+		panel.create_params(params)
+
+class CirchartSnailPlotForm(CirchartParameterAccordion):
+	_closable = False
+	_visible = True
+
+	def _init_panels(self):
+		panel = self.create_panel('main')
+		params = CIRCOS_PARAMS['snail']['plot']
+		panel.create_params(params)
+
+class CirchartSnailBuscoForm(CirchartParameterAccordion):
+	_closable = False
+	_visible = True
+
+	def _init_panels(self):
+		panel = self.create_panel('main')
+		params = CIRCOS_PARAMS['snail']['busco']
 		panel.create_params(params)
 
 class CirchartSnailParameterManager(CirchartParameterManager):
 	def new_snail_plot(self, params):
-		param = CirchartHiddenParameter('plotid', self)
-		param.set_value(params['plotid'])
-		self.add_widget(param)
+		self.clear_widgets()
+		self.plot_id = params['general']['global']['plotid']
 
-		param = CirchartHiddenParameter('genome', self)
-		param.set_value(params['genome'])
-		self.add_widget(param)
+		form = CirchartSnailGeneralForm('general', self)
+		form.set_params(params)
+		self.add_widget(form)
 
-		presets = CIRCOS_PARAMS['snail']
-		form = CirchartParameterPanel('snail', self)
-		form.create_params(presets)
+		form = CirchartSnailPlotForm('plot', self)
+		#form.set_params(params)
+		self.add_widget(form)
+
+		form = CirchartSnailBuscoForm('busco', self)
+		#form.set_params(params)
 		self.add_widget(form)
 
 		return self.get_params()
 
 	def reset_params(self, params):
-		pass
+		self.new_circos_plot(params)
 
 
 

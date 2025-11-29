@@ -383,6 +383,14 @@ class SqlControl:
 		return SqlBase.insert_row(sql, name, type, meta)
 
 	@staticmethod
+	def get_data_meta(did):
+		sql = SqlQuery('data')\
+			.select('meta')\
+			.where('id=?')
+
+		return SqlBase.get_one(sql, did)
+
+	@staticmethod
 	def create_genome_table(index):
 		table, fields = GenomeTable.table(index)
 		SqlBase.create_table(table, fields)

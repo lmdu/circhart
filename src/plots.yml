@@ -987,7 +987,8 @@ snail:
       name: plotid
       type: hidden
     -
-      name:
+      name: genome
+      type: hidden
 
   plot:
     -
@@ -999,11 +1000,11 @@ snail:
       name: busco_numbers
       type: bool
       default: 'no'
-      tooltip: show busco numbers instead of percentages in snail plot legend
+      tooltip: show busco numbers instead of percentages in snail plot legend      
 
-busco:
-  -
-    name: data
-    type: choice
-    source: busco
+  busco:
+    -
+      name: busco_data
+      type: choice
+      source: busco
 

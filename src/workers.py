@@ -161,7 +161,7 @@ class CirchartImportBuscoWorker(CirchartProcessWorker):
 				else:
 					break
 
-		metadata = dict_to_str({'version': version, 'lineage': lineage, 'buscos': buscos})
+		metadata = dict_to_str({'version': version, 'lineage': lineage, 'count': int(buscos)})
 		self.table_index = SqlControl.add_data(name, 'busco', metadata)
 		SqlControl.create_busco_table(self.table_index)
 
@@ -277,9 +277,10 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 
 	def preprocess(self):
 		workdir = self.make_tempdir()
-		index = self.params['genome']
+		index = self.params['general']['global']['genome']
 
 		data = SqlControl.get_data_content('genome', index)
+
 		ids = []
 		gcs = []
 		lens = []
@@ -337,7 +338,7 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 				}
 			],
 			'links': {},
-			'name': 'blobdir',
+			'name': 'blobdir1',
 			'plot': {
 				'x': 'gc',
 				'z': 'length'
@@ -349,6 +350,61 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 			'revision': 0
 		}
 
+		busco_id = self.params['busco']['main']['busco_data']
+
+		if busco_id:
+			busco_data = SqlControl.get_data_content('busco', busco_id)
+			busco_meta = str_to_dict(SqlControl.get_data_meta(busco_id))
+
+			busco_keys = ['Complete', 'Duplicated', 'Fragmented']
+			busco_vals = {}
+			busco_miss = set()
+
+			for row in busco_data:
+				if row[1] in busco_keys:
+					busco_vals[row[0]] = busco_keys.index(row[1])
+				else:
+					busco_miss.add(row[0])
+
+			busco_list = [
+				[[b, c] for b, c in busco_vals.items()]
+			]
+
+			for b in busco_miss:
+				busco_list.append([])
+
+			busco_dict = {
+				'values': busco_list,
+				'keys': busco_keys,
+				'category_slot': 1,
+				'headers': [
+					"Busco id",
+					"Status"
+				]
+			}
+
+			busco_plot = {
+				'datatype': 'mixed',
+				'type': 'array',
+				'id': 'busco',
+				'name': 'Busco',
+				'children': [{
+					'version': busco_meta['version'],
+					'set': busco_meta['lineage'],
+					'count': busco_meta['count'],
+					'file': 'busco.tsv',
+					'id': 'busco',
+					'type': 'multiarray',
+					'category_slot': 1,
+					'headers': [
+						"Busco id",
+						"Status"
+					]
+				}]
+			}
+
+			metadata['fields'].append(busco_plot)
+
 		datasets = {
 			'identifiers.json': {'values': ids, 'keys': []},
 			'gc.json': {'values': gcs, 'keys': []},
@@ -356,6 +412,9 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 			'ncount.json': {'values': ns, 'keys': []},
 			'meta.json': metadata,
 		}
+
+		if busco_id:
+			datasets['busco.json'] = busco_dict
 
 		for jfile, data in datasets.items():
 			save_snail_data(workdir, jfile, data)
@@ -370,7 +429,7 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 				content = fh.read()
 
 			params = dict_to_str(self.params)
-			plotid = self.params['plotid']
+			plotid = self.params['general']['global']['plotid']
 			SqlControl.update_plot(params, content, plotid)
 
 			self.signals.result.emit(plotid)
