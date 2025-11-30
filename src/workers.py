@@ -360,7 +360,7 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 			busco_chrs = {}
 
 			for row in busco_data:
-				if row[2] in busco_chrs:
+				if row[2] not in busco_chrs:
 					busco_chrs[row[2]] = []
 
 				busco_chrs[row[2]].append([row[0], busco_keys.index(row[1])])
