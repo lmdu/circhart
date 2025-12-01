@@ -239,6 +239,9 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 			with open(svg_file) as fh:
 				content = fh.read()
 
+			font_str = "Arial, Helvetica Neue, Helvetica, sans-serif"
+			content = content.replace('CMUBright-Roman', font_str)
+
 			params = dict_to_str(self.params)
 			plotid = self.params['general']['global']['plotid']
 			SqlControl.update_plot(params, content, plotid)
@@ -404,10 +407,15 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 
 	def save_result(self, res):
 		svg_file = os.path.join(self.tempdir.path(), 'snail.svg')
+		font_str1 = "Roboto, Open sans, DejaVu Sans, Arial, sans-serif"
+		font_str2 = "Arial, Helvetica Neue, Helvetica, sans-serif"
 
 		if os.path.isfile(svg_file):
 			with open(svg_file) as fh:
 				content = fh.read()
+
+			content = content.replace('viewBox="0 0 1000 1000"', 'width="1000" height="1000" version="1.1"')
+			content = content.replace(font_str1, font_str2)
 
 			params = dict_to_str(self.params)
 			plotid = self.params['general']['global']['plotid']

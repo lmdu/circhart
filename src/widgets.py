@@ -315,34 +315,55 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 			painter.end()
 
 		elif iformat == 'pdf':
-			printer = QPrinter(QPrinter.PrinterResolution)
-			printer.setOutputFormat(QPrinter.PdfFormat)
-			printer.setOutputFileName(ifile)
+			#printer = QPrinter(QPrinter.PrinterResolution)
+			#printer.setOutputFormat(QPrinter.PdfFormat)
+			#printer.setOutputFileName(ifile)
+			printer = QPdfWriter(ifile)
 			printer.setResolution(300)
 
 			page_size = QPageSize(scene_rect.size(), QPageSize.Point)
 			printer.setPageSize(page_size)
 			printer.setPageMargins(QMarginsF(0, 0, 0, 0))
-			printer.setFullPage(True)
+			#printer.setFullPage(True)
 			painter = QPainter(printer)
 			painter.setRenderHint(QPainter.Antialiasing)
+			painter.setRenderHint(QPainter.SmoothPixmapTransform)
 
 			scene.render(painter)
 			painter.end()
 
 		else:
-			image = QImage(scene_rect.size().toSize(), QImage.Format_ARGB32)
+			size = scene_rect.size().toSize()
+
+			if size.width() < 3000:
+				size *= 3
+
+			image = QImage(size, QImage.Format_RGB32)
 			image.fill(Qt.white)
 
 			painter = QPainter(image)
 			painter.setRenderHint(QPainter.Antialiasing)
+			painter.setRenderHint(QPainter.SmoothPixmapTransform)
 			scene.render(painter)
 			painter.end()
 
 			dpm = 300 * 39.37
 			image.setDotsPerMeterX(dpm)
 			image.setDotsPerMeterY(dpm)
-			image.save(ifile, quality=100)
+			#image.save(ifile, quality=100)
+
+			writer = QImageWriter(ifile)
+
+			if iformat == 'png':
+				writer.setQuality(85)
+			else:
+				writer.setQuality(100)
+
+			if iformat in ['tif', 'tiff']:
+				writer.setCompression(1)
+
+			writer.write(image)
+
 
 class CirchartGenomeWindowSize(QWidget):
 	def __init__(self, parent=None):
