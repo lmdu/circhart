@@ -1003,8 +1003,35 @@ snail:
       tooltip: show busco numbers instead of percentages in snail plot legend      
 
   busco:
+    - 
+      name: busco_lineage
+      type: str
     -
-      name: busco_data
-      type: choice
-      source: busco
+      name: busco_count
+      label: Total BUSCOs
+      type: int
+      range:
+        - 0
+        - 100000
+    -
+      name: singlecopy
+      type: int
+      label: Single-copy BUSCOs (S)
+      range:
+        - 0
+        - 100000
+    -
+      name: duplicated
+      type: int
+      label: Duplicated BUSCOs (D)
+      range:
+        - 0
+        - 100000
+    -
+      name: fragmented
+      type: int
+      label: Fragmented BUSCOs (F)
+      range:
+        - 0
+        - 100000
 

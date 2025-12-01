@@ -14,7 +14,6 @@ from backend import *
 __all__ = [
 	'CirchartImportGenomeWorker',
 	'CirchartImportAnnotationWorker',
-	'CirchartImportBuscoWorker',
 	'CirchartGCContentPrepareWorker',
 	'CirchartDensityPrepareWorker',
 	'CirchartCircosPlotWorker',
@@ -141,32 +140,6 @@ class CirchartImportAnnotationWorker(CirchartProcessWorker):
 
 	def save_result(self, res):
 		SqlControl.add_annotation_data(self.table_index, res)
-
-class CirchartImportBuscoWorker(CirchartProcessWorker):
-	processor = CirchartImportBuscoProcess
-
-	def preprocess(self):
-		qf = QFileInfo(self.params['buscofile'])
-		name = qf.completeBaseName()
-
-		with open(self.params['buscofile']) as fh:
-			for line in fh:
-				if line[0] == '#' and 'version' in line:
-					version = line.split(':')[-1].strip()
-
-				elif line[0] == '#' and 'lineage' in line:
-					lineage = line.split(':')[1].split('(')[0].strip()
-					buscos = line.split(':')[-1].strip().strip(')')
-
-				else:
-					break
-
-		metadata = dict_to_str({'version': version, 'lineage': lineage, 'count': int(buscos)})
-		self.table_index = SqlControl.add_data(name, 'busco', metadata)
-		SqlControl.create_busco_table(self.table_index)
-
-	def save_result(self, res):
-		SqlControl.add_busco_data(self.table_index, res)
 
 class CirchartGCContentPrepareWorker(CirchartProcessWorker):
 	processor = CirchartGCContentPrepareProcess
@@ -298,7 +271,7 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 			count += 1
 
 		metadata = {
-			'id': "blobdir",
+			'id': "blobdir1",
 			'assembly': {
 				'file': 'genome.fa',
 				'scaffold-count': count,
@@ -350,23 +323,35 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 			'revision': 0
 		}
 
-		busco_id = self.params['busco']['main']['busco_data']
+		busco_lineage = self.params['busco']['main']['busco_lineage']
+		busco_count = self.params['busco']['main']['busco_count']
+		singlecopy = self.params['busco']['main']['singlecopy']
+		duplicated = self.params['busco']['main']['duplicated']
+		fragmented = self.params['busco']['main']['fragmented']
 
-		if busco_id:
-			busco_data = SqlControl.get_data_content('busco', busco_id)
-			busco_meta = str_to_dict(SqlControl.get_data_meta(busco_id))
+		datasets = {}
 
+		if busco_count and singlecopy:
 			busco_keys = ['Complete', 'Duplicated', 'Fragmented']
-			busco_chrs = {}
+			busco_code = 0
+			busco_res = []
+			
+			for i in range(singlecopy):
+				busco_code += 1
+				busco_res.append(["B{}".format(busco_code), 0])
 
-			for row in busco_data:
-				if row[2] not in busco_chrs:
-					busco_chrs[row[2]] = []
+			for i in range(duplicated):
+				busco_code += 1
+				busco_res.append(["B{}".format(busco_code), 1])
+				busco_res.append(["B{}".format(busco_code), 1])
 
-				busco_chrs[row[2]].append([row[0], busco_keys.index(row[1])])
+			for i in range(fragmented):
+				busco_code += 1
+				busco_res.append(["B{}".format(busco_code), 2])
 
-			busco_list = list(busco_chrs.values())
-			empty_count = count - len(busco_chrs)
+
+			busco_list = [busco_res]
+			empty_count = count - 1
 
 			for i in range(empty_count):
 				busco_list.append([])
@@ -387,9 +372,9 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 				'id': 'busco',
 				'name': 'Busco',
 				'children': [{
-					'version': busco_meta['version'],
-					'set': busco_meta['lineage'],
-					'count': busco_meta['count'],
+					'version': '3.0.1',
+					'set': busco_lineage,
+					'count': busco_count,
 					'file': 'busco.tsv',
 					'id': 'buscos',
 					'type': 'multiarray',
@@ -402,17 +387,15 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 			}
 
 			metadata['fields'].append(busco_plot)
+			datasets['buscos.json'] = busco_dict
 
-		datasets = {
+		datasets.update({
 			'identifiers.json': {'values': ids, 'keys': []},
 			'gc.json': {'values': gcs, 'keys': []},
 			'length.json': {'values': lens, 'keys': []},
 			'ncount.json': {'values': ns, 'keys': []},
 			'meta.json': metadata,
-		}
-
-		if busco_id:
-			datasets['buscos.json'] = busco_dict
+		})
 
 		for jfile, data in datasets.items():
 			save_snail_data(workdir, jfile, data)
