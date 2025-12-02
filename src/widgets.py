@@ -248,6 +248,7 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		self.setRenderHints(QPainter.Antialiasing | QPainter.SmoothPixmapTransform)
 
 		#self.create_plot()
+		self.plot_id = 0
 
 	def wheelEvent(self, event):
 		if event.angleDelta().y() > 0:
@@ -264,7 +265,7 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 
 		x_ratio = view_rect.width() / svg_rect.width()
 		y_ratio = view_rect.height() / svg_rect.height()
-		m_ratio = min(x_ratio, y_ratio) * 0.95
+		m_ratio = min(x_ratio, y_ratio) * 0.8
 
 		self.resetTransform()
 		self.scale(m_ratio, m_ratio)
@@ -287,6 +288,7 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 
 	def show_plot(self, plottype, plotid):
 		svg_str = SqlControl.get_svg(plotid)
+		self.plot_id = plotid
 		self.load_svg(svg_str)
 
 	def create_plot(self):
@@ -303,28 +305,34 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 			scene_rect = scene.itemsBoundingRect()
 
 		if iformat == 'svg':
-			generator = QSvgGenerator()
-			generator.setFileName(ifile)
-			generator.setSize(scene_rect.size().toSize())
-			generator.setViewBox(scene_rect)
+			#generator = QSvgGenerator()
+			#generator.setFileName(ifile)
+			#generator.setSize(scene_rect.size().toSize())
+			#generator.setViewBox(scene_rect)
 
-			painter = QPainter()
-			painter.begin(generator)
-			painter.setRenderHint(QPainter.Antialiasing)
-			scene.render(painter)
-			painter.end()
+			#painter = QPainter()
+			#painter.begin(generator)
+			#painter.setRenderHint(QPainter.Antialiasing)
+			#scene.render(painter)
+			#painter.end()
+
+			if self.plot_id > 0:
+				with open(ifile, 'w') as fw:
+					svg_str = SqlControl.get_svg(self.plot_id)
+					fw.write(svg_str)
 
 		elif iformat == 'pdf':
-			#printer = QPrinter(QPrinter.PrinterResolution)
-			#printer.setOutputFormat(QPrinter.PdfFormat)
-			#printer.setOutputFileName(ifile)
-			printer = QPdfWriter(ifile)
+			printer = QPrinter(QPrinter.PrinterResolution)
+			printer.setOutputFormat(QPrinter.PdfFormat)
+			printer.setOutputFileName(ifile)
 			printer.setResolution(300)
 
-			page_size = QPageSize(scene_rect.size(), QPageSize.Point)
+			size = scene_rect.size()
+
+			page_size = QPageSize(size, QPageSize.Point)
 			printer.setPageSize(page_size)
 			printer.setPageMargins(QMarginsF(0, 0, 0, 0))
-			#printer.setFullPage(True)
+			printer.setFullPage(True)
 			painter = QPainter(printer)
 			painter.setRenderHint(QPainter.Antialiasing)
 			painter.setRenderHint(QPainter.SmoothPixmapTransform)
