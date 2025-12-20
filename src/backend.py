@@ -58,6 +58,7 @@ class DataTable(SqlTable):
 	name = str
 	type = str
 	meta = str
+	parent = int
 
 class PlotTable(SqlTable):
 	_index = False
@@ -377,11 +378,11 @@ SqlBase = DataBackend()
 
 class SqlControl:
 	@staticmethod
-	def add_data(name, type, meta=''):
+	def add_data(name, type, meta='', parent=0):
 		sql = SqlQuery('data')\
-			.insert('name', 'type', 'meta')
+			.insert('name', 'type', 'meta', 'parent')
 
-		return SqlBase.insert_row(sql, name, type, meta)
+		return SqlBase.insert_row(sql, name, type, meta, parent)
 
 	@staticmethod
 	def get_data_meta(did):

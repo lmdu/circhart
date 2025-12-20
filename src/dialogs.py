@@ -9,6 +9,7 @@ from widgets import *
 from backend import *
 
 __all__ = [
+	'CirchartImportForGenomeDialog',
 	'CirchartCircosDependencyDialog',
 	'CirchartKaryotypePrepareDialog',
 	'CirchartGCContentPrepareDialog',
@@ -28,31 +29,55 @@ class CirchartBaseDialog(QDialog):
 		self.main_layout = QVBoxLayout()
 		self.setLayout(self.main_layout)
 
-		self.create_widgets()
-		self.create_buttons()
-		self.init_layouts()
-		self.init_widgets()
+		self._create_widgets()
+		self._init_layouts()
+		self._init_widgets()
+		self._create_buttons()
 
 	def sizeHint(self):
-		return QSize(400, 300)
+		return QSize(400, 30)
 
-	def create_widgets(self):
+	def _create_widgets(self):
 		pass
 
-	def create_buttons(self):
+	def _create_buttons(self):
 		self.btn_box = QDialogButtonBox(
 			QDialogButtonBox.StandardButton.Cancel |
 			QDialogButtonBox.StandardButton.Ok
 		)
 		self.btn_box.accepted.connect(self.accept)
 		self.btn_box.rejected.connect(self.reject)
+		self.main_layout.addWidget(self.btn_box)
 
-	def init_widgets(self):
+	def _init_widgets(self):
 		pass
 
-	def init_layouts(self):
+	def _init_layouts(self):
 		pass
-		
+
+class CirchartImportForGenomeDialog(CirchartBaseDialog):
+	_title = "Select Genome"
+
+	def _create_widgets(self):
+		self.info = QLabel("Import for Genome:", self)
+		self.select = QComboBox(self)
+
+	def _init_widgets(self):
+		gs = SqlControl.get_datas_by_type('genome')
+
+		for g in gs:
+			self.select.addItem(g.name, g.id)
+
+	def _init_layouts(self):
+		self.main_layout.addWidget(self.info)
+		self.main_layout.addWidget(self.select)
+
+	@classmethod
+	def get_genome(cls, parent):
+		dlg = cls(parent)
+
+		if dlg.exec() == QDialog.Accepted:
+			return dlg.select.currentData()
 
 class CirchartCircosDependencyDialog(CirchartBaseDialog):
 	_title = "Circos Perl Dependencies"
@@ -385,25 +410,21 @@ class CirchartCreateCircosPlotDialog(QDialog):
 class CirchartCreateSnailPlotDialog(CirchartBaseDialog):
 	_title = "Create New Snail Plot"
 
-	def sizeHint(self):
-		return QSize(400, 10)
-
-	def create_widgets(self):
+	def _create_widgets(self):
 		self.select_genome = QComboBox(self)
 		self.plot_name = QLineEdit(self)
 
-	def init_widgets(self):
+	def _init_widgets(self):
 		gs = SqlControl.get_datas_by_type('genome')
 
 		for g in gs:
 			self.select_genome.addItem(g.name, g.id)
 
-	def init_layouts(self):
+	def _init_layouts(self):
 		self.main_layout.addWidget(QLabel("Select a genome:", self))
 		self.main_layout.addWidget(self.select_genome)
 		self.main_layout.addWidget(QLabel("Snail plot name:", self))
 		self.main_layout.addWidget(self.plot_name)
-		self.main_layout.addWidget(self.btn_box)
 
 	@classmethod
 	def create_plot(cls, parent):

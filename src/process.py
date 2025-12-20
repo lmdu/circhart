@@ -60,7 +60,7 @@ class CirchartBaseProcess(multiprocessing.Process):
 
 class CirchartImportFastaProcess(CirchartBaseProcess):
 	def do(self):
-		fa = pyfastx.Fasta(self.params.fasta, full_index=True)
+		fa = pyfastx.Fasta(self.params.path, full_index=True)
 
 		rows = []
 		for seq in fa:
@@ -86,10 +86,10 @@ class CirchartImportFastaProcess(CirchartBaseProcess):
 
 class CirchartImportAnnotationProcess(CirchartBaseProcess):
 	def do(self):
-		if self.params.annotation.endswith('.gz'):
-			fp = gzip.open(self.params.annotation, 'rt')
+		if self.params.path.endswith('.gz'):
+			fp = gzip.open(self.params.path, 'rt')
 		else:
-			fp = open(self.params.annotation)
+			fp = open(self.params.path)
 
 		rows = []
 

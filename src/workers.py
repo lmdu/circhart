@@ -121,9 +121,10 @@ class CirchartImportGenomeWorker(CirchartProcessWorker):
 	processor = CirchartImportFastaProcess
 
 	def preprocess(self):
-		qf = QFileInfo(self.params['fasta'])
+		qf = QFileInfo(self.params['path'])
 		name = qf.completeBaseName()
-		self.table_index = SqlControl.add_data(name, 'genome', self.params['fasta'])
+		meta = dict_to_str(self.params)
+		self.table_index = SqlControl.add_data(name, 'genome', meta)
 		SqlControl.create_genome_table(self.table_index)
 
 	def save_result(self, res):
@@ -133,9 +134,11 @@ class CirchartImportAnnotationWorker(CirchartProcessWorker):
 	processor = CirchartImportAnnotationProcess
 
 	def preprocess(self):
-		qf = QFileInfo(self.params['annotation'])
+		qf = QFileInfo(self.params['path'])
 		name = qf.completeBaseName()
-		self.table_index = SqlControl.add_data(name, 'annotation', self.params['annotation'])
+		meta = dict_to_str(self.params)
+		parent = self.params['genome']
+		self.table_index = SqlControl.add_data(name, 'annotation', meta, parent)
 		SqlControl.create_annotation_table(self.table_index)
 
 	def save_result(self, res):

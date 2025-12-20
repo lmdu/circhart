@@ -1,12 +1,9 @@
 import os
 import sys
 
-import qt_parameters as qtp
 from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
-
-#from superqt import QCollapsible
 
 from config import *
 from dialogs import *
@@ -445,7 +442,7 @@ class CirchartMainWindow(QMainWindow):
 		if not gfile:
 			return
 
-		worker = CirchartImportGenomeWorker({'fasta': gfile})
+		worker = CirchartImportGenomeWorker({'path': gfile})
 		worker.signals.success.connect(self.data_tree.update_tree)
 		self.submit_new_worker(worker)
 
@@ -460,6 +457,11 @@ class CirchartMainWindow(QMainWindow):
 		QThreadPool.globalInstance().start(worker)
 
 	def do_import_genome_annotation(self):
+		genome = CirchartImportForGenomeDialog.get_genome(self)
+
+		if not genome:
+			return
+
 		afile, _ = QFileDialog.getOpenFileName(self, "Select Genome Annotation File",
 			filter = (
 				"GXF file (*.gff *.gtf *.gff.gz *.gtf.gz);;"
@@ -470,7 +472,7 @@ class CirchartMainWindow(QMainWindow):
 		if not afile:
 			return
 
-		worker = CirchartImportAnnotationWorker({'annotation': afile})
+		worker = CirchartImportAnnotationWorker({'path': afile, 'genome': genome})
 		worker.signals.success.connect(self.data_tree.update_tree)
 		self.submit_new_worker(worker)
 
