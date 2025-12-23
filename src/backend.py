@@ -104,6 +104,22 @@ class PlotDataTable(SqlTable):
 	end = int
 	value = float
 
+class LinkDataTable(SqlTable):
+	_index = True
+	chr1 = str
+	start1 = int
+	end1 = int
+	chr2 = str
+	start2 = int
+	end2 = int
+
+class TextDataTable(SqlTable):
+	_index = True
+	chrid = str
+	start = int
+	end = int
+	text = str
+
 
 class SqlQuery:
 	def __init__(self, table):

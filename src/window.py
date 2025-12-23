@@ -106,16 +106,20 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_genome_annotation
 		)
 
-		self.import_busco_act = QAction("&Import BUSCO Full Table...", self,
-			triggered = self.do_import_busco_full_table
-		)
-
 		self.import_kdata_act = QAction("&Import Karyotype Data...", self,
 			triggered = self.do_import_karyotype_data
 		)
 
 		self.import_pdata_act = QAction("&Import Plot Data...", self,
 			triggered = self.do_import_plot_data
+		)
+
+		self.import_link_act = QAction("&Import Link Data...", self,
+			triggered = self.do_import_link_data
+		)
+
+		self.import_text_act = QAction("&Import Text Data...", self,
+			triggered = self.do_import_text_data
 		)
 
 		self.export_image_act = QAction(QIcon("icons/save.svg"), "&Export Image...", self,
@@ -130,7 +134,6 @@ class CirchartMainWindow(QMainWindow):
 		self.zoom_out_act = QAction(QIcon("icons/zoomout.svg"), "&Zoom Out", self,
 			triggered = self.do_zoom_out
 		)
-
 
 
 		self.quit_act = QAction("&Exit", self,
@@ -232,10 +235,11 @@ class CirchartMainWindow(QMainWindow):
 		self.import_menu = self.file_menu.addMenu("&Import Data")
 		self.import_menu.addAction(self.import_genome_act)
 		self.import_menu.addAction(self.import_annot_act)
-		self.import_menu.addAction(self.import_busco_act)
 		self.import_menu.addSeparator()
 		self.import_menu.addAction(self.import_kdata_act)
 		self.import_menu.addAction(self.import_pdata_act)
+		self.import_menu.addAction(self.import_link_act)
+		self.import_menu.addAction(self.import_text_act)
 		self.file_menu.addAction(self.export_image_act)
 
 		self.file_menu.addSeparator()
@@ -495,6 +499,12 @@ class CirchartMainWindow(QMainWindow):
 		pass
 
 	def do_import_plot_data(self):
+		pass
+
+	def do_import_link_data(self):
+		pass
+
+	def do_import_text_data(self):
 		pass
 
 	def do_export_image(self):
