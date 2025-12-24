@@ -1,6 +1,7 @@
 import os
 import csv
 import json
+import gzip
 
 __all__ = [
 	'AttrDict',
@@ -8,6 +9,7 @@ __all__ = [
 	'save_snail_data',
 	'dict_to_str',
 	'str_to_dict',
+	'get_gxf_format'
 ]
 
 class AttrDict(dict):
@@ -38,4 +40,33 @@ def dict_to_str(obj):
 
 def str_to_dict(obj):
 	return json.loads(obj)
+
+def get_gxf_format(gxf):
+	if gxf.endswith('.gz'):
+		fp = gzip.open(gxf, 'rt')
+	else:
+		fp = open(gxf)
+
+	gxformat = None
+
+	with fp:
+		for line in fp:
+			line = line.strip()
+
+			if line[0] == '#':
+				continue
+
+			elif line:
+				cols = line.split('\t')
+				attrs = cols[8].split(';')
+
+				if '=' in attrs[0]:
+					gxformat = 'gff'
+
+				elif '"' in attrs[0]:
+					gxformat = 'gtf'
+
+				break
+
+	return gxformat
 

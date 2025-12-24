@@ -19,6 +19,7 @@ __all__ = [
 	'CirchartDensityPrepareProcess',
 	'CirchartCircosPlotProcess',
 	'CirchartSnailPlotProcess',
+	'CirchartImportCollinearityProcess',
 ]
 
 class CirchartBaseProcess(multiprocessing.Process):
@@ -86,22 +87,65 @@ class CirchartImportFastaProcess(CirchartBaseProcess):
 
 class CirchartImportAnnotationProcess(CirchartBaseProcess):
 	def do(self):
+		aformat = get_gxf_format(self.params.path)
+		assert aformat is not None, "the annotation format is not gtf or gff"
+
+		if aformat == 'gtf':
+			split_attrs = lambda x: x.split('"')
+		else:
+			split_attrs = lambda x: x.split('=')
+
+		rows = []
+		features = set()
+		attributes = set()
+
 		if self.params.path.endswith('.gz'):
 			fp = gzip.open(self.params.path, 'rt')
 		else:
 			fp = open(self.params.path)
-
-		rows = []
 
 		with fp:
 			for line in fp:
 				if line.startswith('#'):
 					continue
 
-				cols = line.strip().split('\t')
+				line = line.strip()
+				if not line:
+					continue
 
-				if cols:
-					rows.append((cols[0], cols[2], int(cols[3]), int(cols[4])))
+				cols = line.split('\t')
+				features.add(cols[2])
+
+				for attrs in cols[8].split(';'):
+					for at in attrs:
+						a = split_attrs(at)[0].strip()
+						attributes.add(a)
+
+				if len(rows) < 1000:
+					cols[3] = int(cols[3])
+					cols[4] = int(cols[4])
+					rows.append(cols)
+				else:
+					break
+
+		self.send('result', {
+			'data': rows,
+			'meta': {
+				'features': list(features),
+				'attributes': list(attributes)
+			}
+		})
+
+class CirchartImportCollinearityProcess(CirchartBaseProcess):
+	def do(self):
+		rows = []
+		with open(self.params.path) as fh:
+			for line in fh:
+				if line[0] == '#':
+					continue
+
+				cols = line.strip().split()
+				rows.append((cols[2], cols[3]))
 
 				if len(rows) == 200:
 					self.send('result', rows)

@@ -17,6 +17,7 @@ __all__ = [
 	'CirchartCreateCircosPlotDialog',
 	'CirchartCreateSnailPlotDialog',
 	'CirchartCircosColorSelectDialog',
+	'CirchartLinkPrepareDialog',
 ]
 
 class CirchartBaseDialog(QDialog):
@@ -562,7 +563,17 @@ class CirchartCircosColorSelectDialog(QDialog):
 						return dlg.selected_colors[0]
 
 
+class CirchartLinkPrepareDialog(CirchartBaseDialog):
+	_title = "Prepare Link Data"
 
+	def _create_widgets(self):
+		pass
+
+	def _init_widgets(self):
+		pass
+
+	def _init_layouts(self):
+		pass
 
 
 

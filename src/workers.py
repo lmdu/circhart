@@ -14,6 +14,7 @@ from backend import *
 __all__ = [
 	'CirchartImportGenomeWorker',
 	'CirchartImportAnnotationWorker',
+	'CirchartImportCollinearityWorker',
 	'CirchartGCContentPrepareWorker',
 	'CirchartDensityPrepareWorker',
 	'CirchartCircosPlotWorker',
@@ -137,12 +138,28 @@ class CirchartImportAnnotationWorker(CirchartProcessWorker):
 		qf = QFileInfo(self.params['path'])
 		name = qf.completeBaseName()
 		meta = dict_to_str(self.params)
-		parent = self.params['genome']
-		self.table_index = SqlControl.add_data(name, 'annotation', meta, parent)
+		self.table_index = SqlControl.add_data(name, 'annotation', meta)
 		SqlControl.create_annotation_table(self.table_index)
 
 	def save_result(self, res):
-		SqlControl.add_annotation_data(self.table_index, res)
+		data = res['data']
+		meta = res['meta']
+		SqlControl.add_annotation_data(self.table_index, data)
+		SqlControl.update_data_meta(self.table_index, meta)
+
+class CirchartImportCollinearityWorker(CirchartProcessWorker):
+	processor = CirchartImportCollinearityProcess
+
+	def preprocess(self):
+		qf = QFileInfo(self.params['path'])
+		name = qf.completeBaseName()
+		meta = dict_to_str(self.params)
+		self.table_index = SqlControl.add_data(name, 'collinearity', meta)
+		SqlControl.create_collinearity_table(self.table_index)
+
+	def save_result(self, res):
+		SqlControl.add_collinearity_data(self.table_index, res)
+
 
 class CirchartGCContentPrepareWorker(CirchartProcessWorker):
 	processor = CirchartGCContentPrepareProcess

@@ -58,7 +58,6 @@ class DataTable(SqlTable):
 	name = str
 	type = str
 	meta = str
-	parent = int
 
 class PlotTable(SqlTable):
 	_index = False
@@ -87,9 +86,19 @@ class KaryotypeTable(SqlTable):
 class AnnotationTable(SqlTable):
 	_index = True
 	chrom = str
+	source = str
 	feature = str
 	start = int
 	end = int
+	score = str
+	strand = str
+	frame = str
+	attribute = str
+
+class CollinearityTable(SqlTable):
+	_index = True
+	gene1 = str
+	gene2 = str
 
 class BuscoTable(SqlTable):
 	_index = True
@@ -394,11 +403,11 @@ SqlBase = DataBackend()
 
 class SqlControl:
 	@staticmethod
-	def add_data(name, type, meta='', parent=0):
+	def add_data(name, type, meta=''):
 		sql = SqlQuery('data')\
-			.insert('name', 'type', 'meta', 'parent')
+			.insert('name', 'type', 'meta')
 
-		return SqlBase.insert_row(sql, name, type, meta, parent)
+		return SqlBase.insert_row(sql, name, type, meta)
 
 	@staticmethod
 	def get_data_meta(did):
@@ -407,6 +416,28 @@ class SqlControl:
 			.where('id=?')
 
 		return SqlBase.get_one(sql, did)
+
+	@staticmethod
+	def update_data_meta(did, meta):
+		sql = SqlQuery('data')\
+			.select('meta')\
+			.where('id=?')
+
+		mdata = SqlBase.get_one(sql, did)
+
+		if mdata:
+			mdata = str_to_dict(mdata)
+			mdata.update(meta)
+		else:
+			mdata = meta
+
+		mdata = dict_to_str(mdata)
+
+		sql = SqlQuery('data')\
+			.update('meta')\
+			.where('id=?')
+
+		SqlBase.update_row(sql, mdata, did)
 
 	@staticmethod
 	def create_genome_table(index):
@@ -466,6 +497,18 @@ class SqlControl:
 		table, _ = PlotDataTable.table(index)
 		sql = SqlQuery(table)\
 			.insert(*PlotDataTable.fields())
+		SqlBase.insert_rows(sql, data)
+
+	@staticmethod
+	def create_collinearity_table(index):
+		table, fields = CollinearityTable.table(index)
+		SqlBase.create_table(table, fields)
+
+	@staticmethod
+	def add_collinearity_data(index, data):
+		table, _ = CollinearityTable.table(index)
+		sql = SqlQuery(table)\
+			.insert(*CollinearityTable.fields())
 		SqlBase.insert_rows(sql, data)
 
 	@staticmethod

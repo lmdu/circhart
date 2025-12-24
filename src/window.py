@@ -106,6 +106,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_genome_annotation
 		)
 
+		self.import_collinearity_act = QAction("&Import Collinearity File...", self,
+			triggered = self.do_import_mcscanx_collinearity
+		)
+
 		self.import_kdata_act = QAction("&Import Karyotype Data...", self,
 			triggered = self.do_import_karyotype_data
 		)
@@ -151,6 +155,10 @@ class CirchartMainWindow(QMainWindow):
 
 		self.prepare_pdata_act = QAction("&Prepare Density Data", self,
 			triggered = self.do_prepare_density_data
+		)
+
+		self.prepare_ldata_act = QAction("&Prepare Link Data", self,
+			triggered = self.do_prepare_link_data
 		)
 
 		self.check_circos_act = QAction("&Check Circos Dependencies", self,
@@ -235,6 +243,7 @@ class CirchartMainWindow(QMainWindow):
 		self.import_menu = self.file_menu.addMenu("&Import Data")
 		self.import_menu.addAction(self.import_genome_act)
 		self.import_menu.addAction(self.import_annot_act)
+		self.import_menu.addAction(self.import_collinearity_act)
 		self.import_menu.addSeparator()
 		self.import_menu.addAction(self.import_kdata_act)
 		self.import_menu.addAction(self.import_pdata_act)
@@ -260,6 +269,7 @@ class CirchartMainWindow(QMainWindow):
 		self.prepare_menu.addAction(self.prepare_kdata_act)
 		self.prepare_menu.addAction(self.prepare_gc_act)
 		self.prepare_menu.addAction(self.prepare_pdata_act)
+		self.prepare_menu.addAction(self.prepare_ldata_act)
 
 		self.plot_menu = self.menuBar().addMenu("&Plot")
 		self.circos_menu = self.plot_menu.addMenu("&Circos Plot")
@@ -461,11 +471,6 @@ class CirchartMainWindow(QMainWindow):
 		QThreadPool.globalInstance().start(worker)
 
 	def do_import_genome_annotation(self):
-		genome = CirchartImportForGenomeDialog.get_genome(self)
-
-		if not genome:
-			return
-
 		afile, _ = QFileDialog.getOpenFileName(self, "Select Genome Annotation File",
 			filter = (
 				"GXF file (*.gff *.gtf *.gff.gz *.gtf.gz);;"
@@ -476,7 +481,22 @@ class CirchartMainWindow(QMainWindow):
 		if not afile:
 			return
 
-		worker = CirchartImportAnnotationWorker({'path': afile, 'genome': genome})
+		worker = CirchartImportAnnotationWorker({'path': afile})
+		worker.signals.success.connect(self.data_tree.update_tree)
+		self.submit_new_worker(worker)
+
+	def do_import_mcscanx_collinearity(self):
+		cfile, _ = QFileDialog.getOpenFileName(self, "Select MCSCANX Collinearity File",
+			filter = (
+				"Collinearity file (*.collinearity);;"
+				"All files (*.*)"
+			)
+		)
+
+		if not cfile:
+			return
+
+		worker = CirchartImportCollinearityWorker({'path': cfile})
 		worker.signals.success.connect(self.data_tree.update_tree)
 		self.submit_new_worker(worker)
 
@@ -551,6 +571,12 @@ class CirchartMainWindow(QMainWindow):
 			worker = CirchartDensityPrepareWorker(params)
 			worker.signals.success.connect(self.data_tree.update_tree)
 			self.submit_new_worker(worker)
+
+	def do_prepare_link_data(self):
+		params = CirchartLinkPrepareDialog.prepare(self)
+
+		if params:
+			pass
 
 	def do_circos_dependency_check(self):
 		dlg = CirchartCircosDependencyDialog(self)
