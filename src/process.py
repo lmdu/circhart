@@ -20,6 +20,7 @@ __all__ = [
 	'CirchartCircosPlotProcess',
 	'CirchartSnailPlotProcess',
 	'CirchartImportCollinearityProcess',
+	'CirchartLinkPrepareProcess',
 ]
 
 class CirchartBaseProcess(multiprocessing.Process):
@@ -116,10 +117,9 @@ class CirchartImportAnnotationProcess(CirchartBaseProcess):
 				cols = line.split('\t')
 				features.add(cols[2])
 
-				for attrs in cols[8].split(';'):
-					for at in attrs:
-						a = split_attrs(at)[0].strip()
-						attributes.add(a)
+				for attr in cols[8].split(';'):
+					a = split_attrs(attr)[0].strip()
+					attributes.add(a)
 
 				if len(rows) < 1000:
 					cols[3] = int(cols[3])
@@ -131,6 +131,7 @@ class CirchartImportAnnotationProcess(CirchartBaseProcess):
 		self.send('result', {
 			'data': rows,
 			'meta': {
+				'format': aformat,
 				'features': list(features),
 				'attributes': list(attributes)
 			}
@@ -145,14 +146,13 @@ class CirchartImportCollinearityProcess(CirchartBaseProcess):
 					continue
 
 				cols = line.strip().split()
-				rows.append((cols[2], cols[3]))
 
-				if len(rows) == 200:
-					self.send('result', rows)
-					rows = []
+				if len(rows) < 1000:
+					rows.append((cols[2], cols[3]))
+				else:
+					break
 
-		if rows:
-			self.send('result', rows)
+		self.send('result', rows)
 
 class CirchartGCContentPrepareProcess(CirchartBaseProcess):
 	def do(self):
@@ -235,6 +235,49 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 				rows.append((chrid, i, j, c))
 
 			self.send('result', rows)
+
+class CirchartLinkPrepareProcess(CirchartBaseProcess):
+	def do(self):
+		gene_mappings = {}
+
+		for k in self.params:
+			if not k.startswith('sp'):
+				continue
+
+			sp = self.params[k]
+
+			if sp['annoformat'] == 'gtf':
+				split_attrs = lambda x: x.split('"')
+			else:
+				split_attrs = lambda x: x.split('=')
+
+			with open(sp['annotation']) as fh:
+				for line in fh:
+					line = line.strip()
+
+					if not line:
+						continue
+
+					cols = line.strip().split('\t')
+
+					if cols[2] != sp['feature']:
+						continue
+
+					if cols[0] not in sp['karyotype']:
+						continue
+
+					chrid = sp['karyotype'][cols[0]]
+					start = cols[3]
+					end = cols[4]
+
+					for attr in cols[8].split(';'):
+						if attr.strip().startswith(sp['attribute']):
+							val = split_attrs(attr)[1].strip().strip('"')
+
+							gene_mappings[val] = (chrid, start, end)
+
+		with open(self.params.collinearity) as fh:
+			pass
 
 class CirchartCircosPlotProcess(QProcess):
 	def __init__(self, parent, workdir):

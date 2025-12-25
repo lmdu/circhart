@@ -82,8 +82,11 @@ class CirchartImportForGenomeDialog(CirchartBaseDialog):
 
 class CirchartCircosDependencyDialog(CirchartBaseDialog):
 	_title = "Circos Perl Dependencies"
+
+	def sizeHint(self):
+		return QSize(400, 350)
 	
-	def create_widgets(self):
+	def _create_widgets(self):
 		self.spinner = CirchartSpinnerWidget(self)
 		self.updator = QPushButton("Refresh", self)
 		self.tree = CirchartEmptyTreeWidget(self)
@@ -95,22 +98,22 @@ class CirchartCircosDependencyDialog(CirchartBaseDialog):
 		self.tree.header().setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
 		self.tree.header().setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
 
-	def create_buttons(self):
+	def _create_buttons(self):
 		self.btn_box = QDialogButtonBox(
 			QDialogButtonBox.StandardButton.Ok
 		)
 		self.btn_box.accepted.connect(self.accept)
+		self.main_layout.addWidget(self.btn_box)
 
-	def init_layouts(self):
+	def _init_layouts(self):
 		top_layout = QHBoxLayout()
 		top_layout.addWidget(self.spinner)
 		top_layout.addWidget(CirchartSpacerWidget(self))
 		top_layout.addWidget(self.updator)
 		self.main_layout.addLayout(top_layout)
 		self.main_layout.addWidget(self.tree)
-		self.main_layout.addWidget(self.btn_box)
 
-	def init_widgets(self):
+	def _init_widgets(self):
 		self.process = QProcess(self)
 		self.process.setProgram(str(CIRCOS_COMMAND))
 		self.process.setArguments(["-modules"])
@@ -156,23 +159,22 @@ class CirchartKaryotypePrepareDialog(CirchartBaseDialog):
 	def sizeHint(self):
 		return QSize(500, 400)
 
-	def create_widgets(self):
+	def _create_widgets(self):
 		self.select = QComboBox(self)
 		self.select.currentIndexChanged.connect(self.change_genome)
 		self.table = CirchartCheckTableWidget(self)
 		self.table.setSortingEnabled(True)
 		self.input = QLineEdit(self)
 		
-	def init_layouts(self):
+	def _init_layouts(self):
 		self.main_layout.addWidget(QLabel("Select a genome:", self))
 		self.main_layout.addWidget(self.select)
 		self.main_layout.addWidget(QLabel("Select chromosomes:", self))
 		self.main_layout.addWidget(self.table)
 		self.main_layout.addWidget(QLabel("Specify a short and uniq chromosome id prefix:", self))
 		self.main_layout.addWidget(self.input)
-		self.main_layout.addWidget(self.btn_box)
 
-	def init_widgets(self):
+	def _init_widgets(self):
 		self.genome_ids = []
 		genome_names = []
 
@@ -567,23 +569,72 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 	_title = "Prepare Link Data"
 
 	def _create_widgets(self):
-		pass
+		self.mapping_widgets = []
 
-	def _init_widgets(self):
-		pass
+		self.dataname_label = QLabel("Specify name for generated link data", self)
+		self.dataname_input = QLineEdit(self)
+		
+		self.collinear_label = QLabel("Select collinearity data", self)
+		self.collinear_select = QComboBox(self)
+
+		self.species_label = QLabel("Number of species in collinearity", self)
+		self.species_spin = QSpinBox(self)
+		self.species_spin.setRange(1, 10)
+		self.species_spin.valueChanged.connect(self._on_species_changed)
 
 	def _init_layouts(self):
-		pass
+		self.base_layout = QGridLayout()
+		self.subs_layout = QVBoxLayout()
+		self.subs_layout.setContentsMargins(0, 0, 0, 0)
 
+		self.base_layout.addWidget(self.dataname_label, 0, 0)
+		self.base_layout.addWidget(self.dataname_select, 0, 1)
+		self.base_layout.addWidget(self.collinear_label, 1, 0)
+		self.base_layout.addWidget(self.collinear_select, 1, 1)
+		self.base_layout.addWidget(self.species_label, 2, 0)
+		self.base_layout.addWidget(self.species_spin, 2, 1)
 
+		self.main_layout.addLayout(self.base_layout)
+		self.main_layout.addLayout(self.subs_layout)
 
+	def _init_widgets(self):
+		cs = SqlControl.get_datas_by_type('collinearity')
 
+		for c in cs:
+			self.collinear_select.addItem(c.name, c.id)
 
+		self.add_mapping("Species1")
 
+	def add_mapping(self, title):
+		mapwdg = CirchartCollinearityIdmappingWidget(title, self)
+		self.subs_layout.addWidget(mapwdg)
+		self.mapping_widgets.append(mapwdg)
 
+	def remove_mapping(self):
+		mapwdg = self.mapping_widgets.pop()
+		self.subs_layout.removeWidget(mapwdg)
+		mapwdg.deleteLater()
 
+		self.adjustSize()
 
+	def _on_species_changed(self, num):
+		widget_num = len(self.mapping_widgets)
 
+		if num > widget_num:
+			j = widget_num
+			for i in range(num - widget_num):
+				j += 1
+				self.add_mapping("Species{}".format(j))
+		else:
+			for i in range(widget_num - num):
+				self.remove_mapping()
 
+	@classmethod
+	def prepare(cls, parent):
+		dlg = cls(parent)
 
-
+		if dlg.exec() == QDialog.Accepted:
+			data = {'sp{}'.format(idx): wdg.get_values() for idx, wdg in enumerate(self.mapping_widgets)}
+			data['collinearity'] = collinear_select.currentData()
+			data['dataname'] = self.dataname_input.text()
+			return data

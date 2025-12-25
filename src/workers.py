@@ -17,6 +17,7 @@ __all__ = [
 	'CirchartImportCollinearityWorker',
 	'CirchartGCContentPrepareWorker',
 	'CirchartDensityPrepareWorker',
+	'CirchartLinkPrepareWorker',
 	'CirchartCircosPlotWorker',
 	'CirchartProjectSaveWorker',
 	'CirchartCircosColorWorker',
@@ -204,6 +205,32 @@ class CirchartDensityPrepareWorker(CirchartProcessWorker):
 
 	def save_result(self, res):
 		SqlControl.add_plot_data(self.table_index, res)
+
+class CirchartLinkPrepareWorker(CirchartProcessWorker):
+	processor = CirchartLinkPrepareProcess
+
+	def preprocess(self):
+		cmeta = SqlControl.get_data_meta(self.params['collinearity'])
+
+		self.params['collinearity'] = cmeta['path']
+
+		for k in self.params:
+			if not k.startswith('sp'):
+				continue
+
+			rows = SqlControl.get_data_content('karyotype', self.params[k]['karyotype'])
+			self.params[k]['karyotype'] = {row[3]: row[2] for row in rows}
+
+			ameta = SqlControl.get_data_meta(self.params[k]['annotation'])
+			self.params[k]['annotation'] = ameta['path']
+			self.params[k]['annoformat'] = ameta['format']
+
+		self.table_index = SqlControl.add_data(self.params['dataname'], 'linkdata')
+		SqlControl.create_link_data_table(self.table_index)
+
+	def save_result(self, res):
+		SqlControl.add_link_data(self.table_index, res)
+
 
 class CirchartCircosPlotWorker(CirchartBaseWorker):
 	processor = CirchartCircosPlotProcess

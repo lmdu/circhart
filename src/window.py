@@ -576,7 +576,9 @@ class CirchartMainWindow(QMainWindow):
 		params = CirchartLinkPrepareDialog.prepare(self)
 
 		if params:
-			pass
+			worker = CirchartLinkPrepareWorker(params)
+			worker.signals.success.connect(self.data_tree.update_tree)
+			self.submit_new_worker(worker)
 
 	def do_circos_dependency_check(self):
 		dlg = CirchartCircosDependencyDialog(self)

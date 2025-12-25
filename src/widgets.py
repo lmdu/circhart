@@ -7,6 +7,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtSvgWidgets import *
 from PySide6.QtPrintSupport import *
 
+from utils import *
 from config import *
 from models import *
 from workers import *
@@ -23,6 +24,7 @@ __all__ = [
 	'CirchartGraphicsViewWidget',
 	'CirchartGenomeWindowSize',
 	'CirchartCircosColorTable',
+	'CirchartCollinearityIdmappingWidget',
 ]
 
 class CirchartEmptyTreeWidget(QTreeWidget):
@@ -442,3 +444,84 @@ class CirchartCircosColorTable(QTableView):
 		super().selectionChanged(selected, deselected)
 			
 
+class CirchartCollinearityIdmappingWidget(QWidget):
+	def __init__(self, title=None, parent=None):
+		super().__init__(parent)
+		self.title = title
+		self.features = {}
+		self.attributes = {}
+
+		self._create_widgets()
+		self._init_layouts()
+		self._init_widgets()
+
+	def _create_widgets(self):
+		self.title_label = QLabel("<b>{}</b>".format(self.title), self)
+
+		self.kary_label = QLabel("Karyotype", self)
+		self.kary_select = QComboBox(self)
+
+		self.anno_label = QLabel("Annotation", self)
+		self.anno_select = QComboBox(self)
+		self.anno_select.currentIndexChanged.connect(self._on_annotation_changed)
+
+		self.feat_label = QLabel("Feature", self)
+		self.feat_select = QComboBox(self)
+
+		self.attr_label = QLabel("Attirbute", self)
+		self.attr_select = QComboBox(self)
+
+	def _init_layouts(self):
+		layout = QGridLayout()
+		layout.setContentsMargins(0, 0, 0, 0)
+		self.setLayout(layout)
+
+		layout.addWidget(self.title_label, 1, 0)
+
+		layout.addWidget(self.kary_label, 0, 1)
+		layout.addWidget(self.kary_select, 1, 1)
+
+		layout.addWidget(self.anno_label, 0, 2)
+		layout.addWidget(self.anno_select, 1, 2)
+
+		layout.addWidget(self.feat_label, 0, 3)
+		layout.addWidget(self.feat_select, 1, 3)
+
+		layout.addWidget(self.attr_label, 0, 4)
+		layout.addWidget(self.attr_select, 1, 4)
+
+	def _init_widgets(self):
+		ks = SqlControl.get_datas_by_type('karyotype')
+		for k in ks:
+			self.kary_select.addItem(k.name, k.id)
+
+		ans = SqlControl.get_datas_by_type('annotation')
+		for a in ans:
+			meta = str_to_dict(a.meta)
+			self.features[a.id] = meta['features']
+			self.attributes[a.id] = meta['attributes']
+
+			self.anno_select.addItem(a.name, a.id)
+
+	def _on_annotation_changed(self, index):
+		index = self.anno_select.itemData(index)
+
+		self.attr_select.clear()
+		self.feat_select.clear()
+
+		feats = self.features[index]
+		self.feat_select.addItems(feats)
+
+		attrs = self.attributes[index]
+		self.attr_select.addItems(attrs)
+
+		print(attrs)
+		
+
+	def get_values(self):
+		return {
+			'karyotype': self.kary_select.currentData(),
+			'annotation': self.anno_select.currentData(),
+			'feature': self.feat_select.currentText(),
+			'attribute': self.attr_select.currentText()
+		}

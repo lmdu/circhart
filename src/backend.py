@@ -415,7 +415,10 @@ class SqlControl:
 			.select('meta')\
 			.where('id=?')
 
-		return SqlBase.get_one(sql, did)
+		res = SqlBase.get_one(sql, did)
+
+		if res:
+			return str_to_dict(res)
 
 	@staticmethod
 	def update_data_meta(did, meta):
@@ -493,10 +496,22 @@ class SqlControl:
 		SqlBase.create_table(table, fields)
 
 	@staticmethod
+	def create_link_data_table(index):
+		table, fields = LinkDataTable.table(index)
+		SqlBase.create_table(table, fields)
+
+	@staticmethod
 	def add_plot_data(index, data):
 		table, _ = PlotDataTable.table(index)
 		sql = SqlQuery(table)\
 			.insert(*PlotDataTable.fields())
+		SqlBase.insert_rows(sql, data)
+
+	@staticmethod
+	def add_link_data(index, data):
+		table, _ = LinkDataTable.table(index)
+		sql = SqlQuery(table)\
+			.insert(*LinkDataTable.fields())
 		SqlBase.insert_rows(sql, data)
 
 	@staticmethod
