@@ -374,30 +374,74 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 
 			writer.write(image)
 
-
 class CirchartGenomeWindowSize(QWidget):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 
-		self.spin = QSpinBox(self)
-		self.spin.setValue(10)
-		self.spin.setMinimum(1)
-		self.spin.setMaximum(1000000)
-		self.spin.setAlignment(Qt.AlignCenter)
+		self.win_spin = QSpinBox(self)
+		self.win_spin.setValue(5)
+		self.win_spin.setMinimum(1)
+		self.win_spin.setMaximum(1000000)
+		self.win_spin.setAlignment(Qt.AlignCenter)
 
-		self.unit = QComboBox(self)
-		self.unit.addItems(['BP', 'KB', 'MB'])
-		self.unit.setCurrentIndex(2)
+		self.step_spin = QSpinBox(self)
+		self.step_spin.setValue(3)
+		self.step_spin.setMinimum(1)
+		self.step_spin.setMaximum(1000000)
+		self.step_spin.setAlignment(Qt.AlignCenter)
+		self.step_spin.setVisible(False)
 
-		layout = QHBoxLayout()
+		self.win_unit = QComboBox(self)
+		self.win_unit.addItems(['BP', 'KB', 'MB'])
+		self.win_unit.setCurrentIndex(2)
+
+		self.step_unit = QComboBox(self)
+		self.step_unit.addItems(['BP', 'KB', 'MB'])
+		self.step_unit.setCurrentIndex(2)
+		self.step_unit.setVisible(False)
+
+		self.win_label = QLabel("Window size", self)
+		self.step_label = QLabel("Step size", self)
+		self.step_label.setVisible(False)
+
+		self.fixed_radio = QRadioButton("Use tumbling window", self)
+		self.fixed_radio.setChecked(True)
+		self.slide_radio = QRadioButton("Use sliding window", self)
+		self.slide_radio.toggled.connect(self._on_slide_checked)
+
+		layout = QGridLayout()
+		layout.setColumnStretch(0, 1)
+		layout.setColumnStretch(2, 1)
 		layout.setContentsMargins(0, 0, 0, 0)
-		layout.addWidget(self.spin)
-		layout.addWidget(self.unit)
+		layout.addWidget(self.fixed_radio, 0, 0, 1, 2)
+		layout.addWidget(self.slide_radio, 0, 2, 1, 2)
+		layout.addWidget(self.win_label, 1, 0)
+		layout.addWidget(self.step_label, 1, 2)
+		layout.addWidget(self.win_spin, 2, 0)
+		layout.addWidget(self.win_unit, 2, 1)
+		layout.addWidget(self.step_spin, 2, 2)
+		layout.addWidget(self.step_unit, 2, 3)
 		self.setLayout(layout)
 
-	def get_value(self):
+	def _on_slide_checked(self, checked):
+		self.step_label.setVisible(checked)
+		self.step_spin.setVisible(checked)
+		self.step_unit.setVisible(checked)
+
+	def get_values(self):
 		scales = [1, 1000, 1000000]
-		return self.spin.value() * scales[self.unit.currentIndex()]
+
+		window_size = self.win_spin.value() * scales[self.win_unit.currentIndex()]
+
+		if self.slide_radio.isChecked():
+			step_size = self.step_spin.value() * scales[self.step_unit.currentIndex()]
+		else:
+			step_size = window_size
+
+		return {
+			'window': window_size,
+			'step': step_size
+		}
 
 class CirchartCircosColorTable(QTableView):
 	color_changed = Signal(list)
@@ -514,9 +558,6 @@ class CirchartCollinearityIdmappingWidget(QWidget):
 
 		attrs = self.attributes[index]
 		self.attr_select.addItems(attrs)
-
-		print(attrs)
-		
 
 	def get_values(self):
 		return {

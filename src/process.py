@@ -4,6 +4,7 @@ import time
 import traceback
 import multiprocessing
 
+import pygros
 import pyfastx
 from blobtk import plot as snail_plot
 
@@ -21,6 +22,7 @@ __all__ = [
 	'CirchartSnailPlotProcess',
 	'CirchartImportCollinearityProcess',
 	'CirchartLinkPrepareProcess',
+	'CirchartGCSkewPrepareProcess',
 ]
 
 class CirchartBaseProcess(multiprocessing.Process):
@@ -155,84 +157,132 @@ class CirchartImportCollinearityProcess(CirchartBaseProcess):
 		self.send('result', rows)
 
 class CirchartGCContentPrepareProcess(CirchartBaseProcess):
+	def _calc_gc(self, seq, i, j):
+		a = seq.count('A', i, j)
+		t = seq.count('T', i, j)
+		g = seq.count('G', i, j)
+		c = seq.count('C', i, j)
+
+		if g or c:
+			gc = (g + c) / (a + t + g + c)
+		else:
+			gc = 0
+
+		return gc
+
 	def do(self):
 		fa = pyfastx.Fasta(self.params.genome, uppercase=True)
 		wsize = self.params.window
+		step = self.params.step
 
-		rows = []
 		for chrom in self.params.axes:
 			chrid, size = self.params.axes[chrom]
 			seq = fa[chrom].seq
+			rows = []
 
-			for i in range(0, size, wsize):
+			for i in range(0, size, step):
 				j = i + wsize
 
 				if j > size:
 					j = size
 
-				a = seq.count('A', i, j)
-				t = seq.count('T', i, j)
-				g = seq.count('G', i, j)
-				c = seq.count('C', i, j)
-
-				if g + c:
-					gc = (g + c) / (a + t + g + c)
-				else:
-					gc = 0
-
+				gc = self._calc_gc(seq, i, j)
 				rows.append((chrid, i+1, j, gc))
 
-				if len(rows) == 200:
-					self.send('result', rows)
-					rows = []
+				if j == size:
+					break
 
-		if rows:
 			self.send('result', rows)
+
+class CirchartGCSkewPrepareProcess(CirchartGCContentPrepareProcess):
+	def _calc_gc(self, seq, i, j):
+		g = seq.count('G', i, j)
+		c = seq.count('C', i, j)
+
+		if g or c:
+			gc = (g - c) / (g + c)
+
+		else:
+			gc = 0
+
+		return gc
 
 class CirchartDensityPrepareProcess(CirchartBaseProcess):
 	def do(self):
 		wsize = self.params.window
+		step = self.params.step
 
-		for chrom, loci in self.params['loci'].items():
-			if chrom not in self.params.axes:
-				continue
+		interval_mapping = {}
+		location_mapping = {}
+		counts_mapping = {}
+		
+		for chrom in self.params.axes:
+			ranges = pygros.Ranges()
+			locus = []
+			counts = []
 
 			chrid, size = self.params.axes[chrom]
-			loci = iter(loci)
-			rows = []
-			s = 0
-			e = 0
 
-			for i in range(0, size, wsize):
+			for i in range(0, size, step):
 				j = i + wsize
 				i += 1
-				c = 0
 
 				if j > size:
 					j = size
 
-				if s and e:
-					if i <= s <= j or i <= e <= j:
-						c += 1
+				index = len(locus)
+				locus.append([chrid, i, j])
+				counts.append(0)
+				ranges.add(chrom, i, j, index)
 
-					elif s <= i <= j <= e:
-						c += 1
+				if j == size:
+					break
 
-					else:
-						rows.append((chrid, i, j, c))
-						continue
+			ranges.index()
+			interval_mapping[chrom] = ranges
+			location_mapping[chrom] = locus
+			counts_mapping[chrom] = counts
 
-				for s, e in loci:
-					if i <= s <= j or i <= e <= j:
-						c += 1
+		if self.params.annotation.endswith('.gz'):
+			fp = gzip.open(self.params.annotation, 'rt')
+		else:
+			fp = open(self.params.annotation)
 
-					elif s <= i <= j <= e:
-						c += 1
+		with fp:
+			for line in fp:
+				if line[0] == '#':
+					continue
 
-					else:
-						break
+				line = line.strip()
 
-				rows.append((chrid, i, j, c))
+				if not line:
+					continue
+
+				cols = line.split('\t')
+
+				chrom = cols[0]
+				if chrom not in self.params.axes:
+					continue
+
+				feat = cols[2]
+				if feat != self.params.feature:
+					continue
+
+				start = int(cols[3])
+				end = int(cols[4])
+
+				ilist = interval_mapping[chrom].overlap(chrom, start, end)
+
+				for _, _, index in ilist:
+					counts_mapping[chrom][index] += 1
+
+		for chrom, locus in location_mapping.items():
+			counts = counts_mapping[chrom]
+			rows = []
+
+			for idx, loci in enumerate(locus):
+				loci.append(counts[idx])
+				rows.append(loci)
 
 			self.send('result', rows)
 
@@ -251,8 +301,16 @@ class CirchartLinkPrepareProcess(CirchartBaseProcess):
 			else:
 				split_attrs = lambda x: x.split('=')
 
-			with open(sp['annotation']) as fh:
-				for line in fh:
+			if sp['annotation'].endswith('.gz'):
+				fp = gzip.open(sp['annotation'], 'rt')
+			else:
+				fp = open(sp['annotation'])
+
+			with fp:
+				for line in fp:
+					if line[0] == '#':
+						continue
+
 					line = line.strip()
 
 					if not line:
@@ -273,11 +331,26 @@ class CirchartLinkPrepareProcess(CirchartBaseProcess):
 					for attr in cols[8].split(';'):
 						if attr.strip().startswith(sp['attribute']):
 							val = split_attrs(attr)[1].strip().strip('"')
-
 							gene_mappings[val] = (chrid, start, end)
 
+		rows = []
 		with open(self.params.collinearity) as fh:
-			pass
+			for line in fh:
+				if line[0] == '#':
+					continue
+
+				cols = line.strip().split()
+				row = []
+				row.extend(gene_mappings[cols[2]])
+				row.extend(gene_mappings[cols[3]])
+				rows.append(row)
+
+				if len(rows) == 200:
+					self.send('result', rows)
+					rows = []
+
+		if rows:
+			self.send('result', rows)
 
 class CirchartCircosPlotProcess(QProcess):
 	def __init__(self, parent, workdir):

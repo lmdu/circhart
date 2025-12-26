@@ -131,12 +131,13 @@ class CirchartCircosConfile(Confile):
 								else:
 									self.option(k, v)
 
-							case 'r0' | 'r1':
+							case 'r0r1':
 								if main_params['type'] == 'highlight' and main_params['ideogram'] == 'yes':
 									pass
 
 								else:
-									self.option(k, v, 'r')
+									self.option('r0', v[0], 'r')
+									self.option('r1', v[1], 'r')
 
 							case 'color':
 								if isinstance(v, list):

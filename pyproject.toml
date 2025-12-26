@@ -12,6 +12,7 @@ dependencies = [
     "pint>=0.24.4",
     "pyconify>=0.2.1",
     "pyfastx>=2.2.0",
+    "pygros>=0.1.4",
     "pyside6-essentials>=6.9.1",
     "pywebview>=5.4",
     "pyyaml>=6.0.2",

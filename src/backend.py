@@ -129,6 +129,11 @@ class TextDataTable(SqlTable):
 	end = int
 	text = str
 
+class LociDataTable(SqlTable):
+	_index = True
+	chrid = str
+	start = int
+	end = int
 
 class SqlQuery:
 	def __init__(self, table):

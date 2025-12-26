@@ -110,6 +110,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_mcscanx_collinearity
 		)
 
+		self.import_bed_act = QAction("&Import Bed File...", self,
+			triggered = self.do_import_bed_file
+		)
+
 		self.import_kdata_act = QAction("&Import Karyotype Data...", self,
 			triggered = self.do_import_karyotype_data
 		)
@@ -151,6 +155,10 @@ class CirchartMainWindow(QMainWindow):
 
 		self.prepare_gc_act = QAction("&Prepare GC Content Data", self,
 			triggered = self.do_prepare_gccontent_data
+		)
+
+		self.prepare_skew_act = QAction("&Prepare GC Skew Data", self,
+			triggered = self.do_prepare_gcskew_data
 		)
 
 		self.prepare_pdata_act = QAction("&Prepare Density Data", self,
@@ -244,6 +252,7 @@ class CirchartMainWindow(QMainWindow):
 		self.import_menu.addAction(self.import_genome_act)
 		self.import_menu.addAction(self.import_annot_act)
 		self.import_menu.addAction(self.import_collinearity_act)
+		self.import_menu.addAction(self.import_bed_act)
 		self.import_menu.addSeparator()
 		self.import_menu.addAction(self.import_kdata_act)
 		self.import_menu.addAction(self.import_pdata_act)
@@ -268,6 +277,7 @@ class CirchartMainWindow(QMainWindow):
 		self.prepare_menu = self.tool_menu.addMenu("&Prepare Data")
 		self.prepare_menu.addAction(self.prepare_kdata_act)
 		self.prepare_menu.addAction(self.prepare_gc_act)
+		self.prepare_menu.addAction(self.prepare_skew_act)
 		self.prepare_menu.addAction(self.prepare_pdata_act)
 		self.prepare_menu.addAction(self.prepare_ldata_act)
 
@@ -473,7 +483,7 @@ class CirchartMainWindow(QMainWindow):
 	def do_import_genome_annotation(self):
 		afile, _ = QFileDialog.getOpenFileName(self, "Select Genome Annotation File",
 			filter = (
-				"GXF file (*.gff *.gtf *.gff.gz *.gtf.gz);;"
+				"GXF file (*.gff *.gtf *.gff3 *.gff.gz *.gtf.gz *.gff3.gz);;"
 				"All files (*.*)"
 			)
 		)
@@ -499,6 +509,9 @@ class CirchartMainWindow(QMainWindow):
 		worker = CirchartImportCollinearityWorker({'path': cfile})
 		worker.signals.success.connect(self.data_tree.update_tree)
 		self.submit_new_worker(worker)
+
+	def do_import_bed_file(self):
+		pass
 
 	def do_import_busco_full_table(self):
 		bfile, _ = QFileDialog.getOpenFileName(self, "Select BUSCO Full Table File",
@@ -554,18 +567,26 @@ class CirchartMainWindow(QMainWindow):
 		CirchartKaryotypePrepareDialog.make_karyotype(self)
 
 	def do_prepare_gccontent_data(self):
-		params = CirchartGCContentPrepareDialog.calculate_gc_content(self)
+		params = CirchartGCContentPrepareDialog.prepare(self)
 
 		if params:
-			if not os.path.isfile(params['genome']):
-				return self.show_error_message('{} does not exist'.format(params['genome']))
+			#if not os.path.isfile(params['genome']):
+			#	return self.show_error_message('{} does not exist'.format(params['genome']))
 
 			worker = CirchartGCContentPrepareWorker(params)
 			worker.signals.success.connect(self.data_tree.update_tree)
 			self.submit_new_worker(worker)
 
+	def do_prepare_gcskew_data(self):
+		params = CirchartGCSkewPrepareDialog.prepare(self)
+
+		if params:
+			worker = CirchartGCSkewPrepareWorker(params)
+			worker.signals.success.connect(self.data_tree.update_tree)
+			self.submit_new_worker(worker)
+
 	def do_prepare_density_data(self):
-		params = CirchartDensityPrepareDialog.count_feature(self)
+		params = CirchartDensityPrepareDialog.prepare(self)
 
 		if params:
 			worker = CirchartDensityPrepareWorker(params)

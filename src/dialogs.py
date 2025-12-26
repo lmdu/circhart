@@ -13,6 +13,7 @@ __all__ = [
 	'CirchartCircosDependencyDialog',
 	'CirchartKaryotypePrepareDialog',
 	'CirchartGCContentPrepareDialog',
+	'CirchartGCSkewPrepareDialog',
 	'CirchartDensityPrepareDialog',
 	'CirchartCreateCircosPlotDialog',
 	'CirchartCreateSnailPlotDialog',
@@ -250,25 +251,26 @@ class CirchartGCContentPrepareDialog(CirchartBaseDialog):
 	def sizeHint(self):
 		return QSize(400, 0)
 	
-	def create_widgets(self):
+	def _create_widgets(self):
+		self.dataname_input = QLineEdit(self)
+		self.dataname_input.setPlaceholderText("Specify a name for generated data")
 		self.select_genome = QComboBox(self)
 		self.select_karyotype = QComboBox(self)
 		self.window_size = CirchartGenomeWindowSize(self)
 
-	def init_layouts(self):
+	def _init_layouts(self):
+		self.main_layout.addWidget(self.dataname_input)
 		self.main_layout.addWidget(QLabel("Select a genome:", self))
 		self.main_layout.addWidget(self.select_genome)
 		self.main_layout.addWidget(QLabel("Select a karyotype:", self))
 		self.main_layout.addWidget(self.select_karyotype)
-		self.main_layout.addWidget(QLabel("Window size:", self))
 		self.main_layout.addWidget(self.window_size)
-		self.main_layout.addWidget(self.btn_box)
 
-	def init_widgets(self):
+	def _init_widgets(self):
 		genomes = SqlControl.get_datas_by_type('genome')
 
 		for g in genomes:
-			self.select_genome.addItem(g.name, g.path)
+			self.select_genome.addItem(g.name, g.id)
 
 		karyotypes = SqlControl.get_datas_by_type('karyotype')
 
@@ -276,20 +278,27 @@ class CirchartGCContentPrepareDialog(CirchartBaseDialog):
 			self.select_karyotype.addItem(k.name, k.id)
 
 	@classmethod
-	def calculate_gc_content(cls, parent=None):
+	def prepare(cls, parent=None):
 		dlg = cls(parent)
 
 		if dlg.exec() == QDialog.Accepted:
-			genome_path = dlg.select_genome.currentData()
-			karyotype_id = dlg.select_karyotype.currentData()
-			window_size = dlg.window_size.get_value()
+			genome = dlg.select_genome.currentData()
+			karyotype = dlg.select_karyotype.currentData()
+			window_size = dlg.window_size.get_values()
+			data_name = dlg.dataname_input.text()
 
-			if genome_path and karyotype_id:
-				return {
-					'genome': genome_path,
-					'karyotype': karyotype_id,
-					'window': window_size
+			if genome and karyotype:
+				params = {
+					'dataname': data_name,
+					'genome': genome,
+					'karyotype': karyotype,
 				}
+
+				params.update(window_size)
+				return params
+
+class CirchartGCSkewPrepareDialog(CirchartGCContentPrepareDialog):
+	_title = "Prepare GC Skew Data"
 
 class CirchartDensityPrepareDialog(CirchartBaseDialog):
 	_title = "Prepare Density Data"
@@ -297,14 +306,16 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 	def sizeHint(self):
 		return QSize(400, 0)
 
-	def create_widgets(self):
+	def _create_widgets(self):
+		self.dataname_input = QLineEdit(self)
+		self.dataname_input.setPlaceholderText("Specify a name for generated data")
 		self.select_annotation = QComboBox(self)
 		self.select_karyotype = QComboBox(self)
 		self.select_feature = QComboBox(self)
 		self.window_size = CirchartGenomeWindowSize(self)
 		self.select_annotation.currentIndexChanged.connect(self.on_annotation_changed)
 
-	def init_widgets(self):
+	def _init_widgets(self):
 		annots = SqlControl.get_datas_by_type('annotation')
 
 		for a in annots:
@@ -315,16 +326,15 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 		for k in karyotypes:
 			self.select_karyotype.addItem(k.name, k.id)
 
-	def init_layouts(self):
+	def _init_layouts(self):
+		self.main_layout.addWidget(self.dataname_input)
 		self.main_layout.addWidget(QLabel("Select a karyotype:", self))
 		self.main_layout.addWidget(self.select_karyotype)
 		self.main_layout.addWidget(QLabel("Select an annotation:", self))
 		self.main_layout.addWidget(self.select_annotation)
 		self.main_layout.addWidget(QLabel("Select a feature:", self))
 		self.main_layout.addWidget(self.select_feature)
-		self.main_layout.addWidget(QLabel("Window size:", self))
 		self.main_layout.addWidget(self.window_size)
-		self.main_layout.addWidget(self.btn_box)
 
 	def on_annotation_changed(self, index):
 		annot_id = self.select_annotation.currentData()
@@ -332,22 +342,26 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 		self.select_feature.addItems(features)
 
 	@classmethod
-	def count_feature(cls, parent=None):
+	def prepare(cls, parent=None):
 		dlg = cls(parent)
 
 		if dlg.exec() == QDialog.Accepted:
 			annotation_id = dlg.select_annotation.currentData()
 			karyotype_id = dlg.select_karyotype.currentData()
-			window_size = dlg.window_size.get_value()
+			window_size = dlg.window_size.get_values()
 			feature = dlg.select_feature.currentText()
+			dataname = dlg.dataname_input.text()
 
 			if annotation_id and karyotype_id:
-				return {
+				params = {
 					'annotation': annotation_id,
 					'karyotype': karyotype_id,
 					'feature': feature,
-					'window': window_size
+					'dataname': dataname
 				}
+
+				params.update(window_size)
+				return params
 
 class CirchartCreateCircosPlotDialog(QDialog):
 	def __init__(self, parent=None):
@@ -588,7 +602,7 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 		self.subs_layout.setContentsMargins(0, 0, 0, 0)
 
 		self.base_layout.addWidget(self.dataname_label, 0, 0)
-		self.base_layout.addWidget(self.dataname_select, 0, 1)
+		self.base_layout.addWidget(self.dataname_input, 0, 1)
 		self.base_layout.addWidget(self.collinear_label, 1, 0)
 		self.base_layout.addWidget(self.collinear_select, 1, 1)
 		self.base_layout.addWidget(self.species_label, 2, 0)
@@ -629,12 +643,16 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 			for i in range(widget_num - num):
 				self.remove_mapping()
 
+	def get_params(self):
+		data = {'sp{}'.format(idx): wdg.get_values() for idx, wdg in enumerate(self.mapping_widgets)}
+		data['collinearity'] = self.collinear_select.currentData()
+		data['dataname'] = self.dataname_input.text()
+		return data
+
 	@classmethod
 	def prepare(cls, parent):
 		dlg = cls(parent)
 
 		if dlg.exec() == QDialog.Accepted:
-			data = {'sp{}'.format(idx): wdg.get_values() for idx, wdg in enumerate(self.mapping_widgets)}
-			data['collinearity'] = collinear_select.currentData()
-			data['dataname'] = self.dataname_input.text()
-			return data
+			params = dlg.get_params()
+			return params

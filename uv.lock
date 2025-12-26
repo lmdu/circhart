@@ -209,6 +209,7 @@ dependencies = [
     { name = "pint" },
     { name = "pyconify" },
     { name = "pyfastx" },
+    { name = "pygros" },
     { name = "pyside6-essentials" },
     { name = "pywebview" },
     { name = "pyyaml" },
@@ -226,6 +227,7 @@ requires-dist = [
     { name = "pint", specifier = ">=0.24.4" },
     { name = "pyconify", specifier = ">=0.2.1" },
     { name = "pyfastx", specifier = ">=2.2.0" },
+    { name = "pygros", specifier = ">=0.1.4" },
     { name = "pyside6-essentials", specifier = ">=6.9.1" },
     { name = "pywebview", specifier = ">=5.4" },
     { name = "pyyaml", specifier = ">=6.0.2" },
@@ -898,6 +900,26 @@ source = { registry = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" }
 sdist = { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/b0/77/a5b8c569bf593b0140bde72ea885a803b82086995367bf2037de0159d924/pygments-2.19.2.tar.gz", hash = "sha256:636cb2477cec7f8952536970bc533bc43743542f70392ae026374600add5b887", size = 4968631, upload-time = "2025-06-21T13:39:12.283Z" }
 wheels = [
     { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/c7/21/705964c7812476f378728bdf590ca4b771ec72385c533964653c68e86bdc/pygments-2.19.2-py3-none-any.whl", hash = "sha256:86540386c03d588bb81d44bc3928634ff26449851e99741617ecb9037ee5ec0b", size = 1225217, upload-time = "2025-06-21T13:39:07.939Z" },
+]
+
+[[package]]
+name = "pygros"
+version = "0.1.4"
+source = { registry = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple" }
+sdist = { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/fc/a3/ebf036afde1c5b17154a870f2e56929ce40cb589e12fc56585428bb878df/pygros-0.1.4.tar.gz", hash = "sha256:6729363dfdd1c0cd0f67f2b12a71773964b506ad7b5b90c06201807c7ff6d31c", size = 4907, upload-time = "2024-07-16T02:44:15.696Z" }
+wheels = [
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/b9/63/e687176072c9408a00783bc9408a681411d98372a6bf53346320f9a522ad/pygros-0.1.4-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:3312819d336aedffad617fc4b307b1427a1a345d1171daeb23e3c18760494df3", size = 11883, upload-time = "2024-07-16T02:43:44.428Z" },
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/77/67/91a1725b74c3fb0a784e5880797a23764b1fda93aabb1e090eca7389c631/pygros-0.1.4-cp310-cp310-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:d252552775d213bec207012d59ea8de157d9c680eb731599df65b8c5ab0bc8b1", size = 36025, upload-time = "2024-07-16T02:43:45.957Z" },
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/55/80/91f6000db94f05dd27d19611ff346ee0ad32c2b2c77de2c1196302fd6c01/pygros-0.1.4-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:771927101310db2c4eda57ee802b9b883d46f037134b46015d744d8a927a89d5", size = 36713, upload-time = "2024-07-16T02:43:46.997Z" },
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/17/0e/e9316f3770963e830c24f4796128113a3793a80887054e1bc2bba8abb9e9/pygros-0.1.4-cp310-cp310-win_amd64.whl", hash = "sha256:be8678b2046d0cae931249aa59600661c5bbf75dc5a43ffd853a4ff00c424bcf", size = 12612, upload-time = "2024-07-16T02:43:48.391Z" },
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/11/86/30ed9513d353c4c69be3c2fe6229163e37dad3c19303db12c79fc778776d/pygros-0.1.4-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:b597c3619a42a84fc6b1308adc23543bc4098a15e5580a69432eea93fa11473b", size = 11884, upload-time = "2024-07-16T02:43:49.57Z" },
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/61/c8/f93ce61e19f325553f58f43c7e7ef541dce75365977bf7659245d708806a/pygros-0.1.4-cp311-cp311-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:9a0b770a52deb8029cb24c41c2c500e52204b8848ec03485f91b91cb2eeebcea", size = 36067, upload-time = "2024-07-16T02:43:50.926Z" },
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/7d/b8/361c0e1b269766d236d144396e03208b05a955a64c7093275e52ba36cc34/pygros-0.1.4-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:5c9dcc182b126b8cb3d1028d373bf5c923d466bffa66ce5335d486351480d79e", size = 36448, upload-time = "2024-07-16T02:43:52.378Z" },
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/0e/61/8d62cd52f84d507422803aac67e289a6980dd98e6d8754f71e7306f006d7/pygros-0.1.4-cp311-cp311-win_amd64.whl", hash = "sha256:2efb1c6dee4b601471f142232a540863d5f0bd5ead5e09257a1e13ff8f3e750e", size = 12612, upload-time = "2024-07-16T02:43:54.76Z" },
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/da/64/7f7b2c80e5acd06d9b13df9d3c581b8baa3b31ff243159615280b470e006/pygros-0.1.4-cp312-cp312-macosx_10_9_x86_64.whl", hash = "sha256:b1e15c7d4f2ecbb7eb749d2b63dd8737c63c8a88f856425b2f0f7b46e3d04297", size = 11896, upload-time = "2024-07-16T02:43:56.195Z" },
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/4d/5b/144e584d7b9a3e56fa96fc3ba84a458d2043b1f1d1e9528f83d9253a18fd/pygros-0.1.4-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f77a5c514d6d7bc15c3eb0b546498ac66334d1b589fee41d556fa3b7dec0dd3e", size = 36233, upload-time = "2024-07-16T02:43:57.537Z" },
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/88/35/30bd56ba40db4817f29012109f2d45195c348f06b207fc7ca1d607550483/pygros-0.1.4-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:fcf48c1f43c0cfd12a29664961ad2661db92e35f0fe284277c9b36e54c4064ea", size = 36857, upload-time = "2024-07-16T02:43:58.502Z" },
+    { url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/packages/2b/4d/60d56aa719a2020ffb03b9127a15b6e5ddc1a0d881d57b95f12e9b975018/pygros-0.1.4-cp312-cp312-win_amd64.whl", hash = "sha256:1063c54fca1ecb8860e615f8c2511eff6bc6d00c97e542daadaee4a86c6b8670", size = 12619, upload-time = "2024-07-16T02:43:59.955Z" },
 ]
 
 [[package]]

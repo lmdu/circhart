@@ -211,23 +211,9 @@ tracks:
       type: choice
       source: plotdata
     -
-      name: r0
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the inner radius of the plot track
-    -
-      name: r1
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the outer radius of the plot track
+      name: r0r1
+      type: annulus
+      tooltip: the inner and outer radius of the plot track
     -
       name: glyph
       type: choice
@@ -276,23 +262,10 @@ tracks:
       type: choice
       source: plotdata
     -
-      name: r0
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the inner radius of the plot track
-    -
-      name: r1
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the outer radius of the plot track
+      name: r0r1
+      type: annulus
+      label: radius
+      tooltip: the inner and outer radius of the plot track
     -
       name: color
       type: color
@@ -320,23 +293,10 @@ tracks:
       type: choice
       source: plotdata
     -
-      name: r0
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the inner radius of the plot track
-    -
-      name: r1
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the outer radius of the plot track
+      name: r0r1
+      type: annulus
+      label: radius
+      tooltip: the inner and outer radius of the plot track
     -
       name: color
       type: color
@@ -367,23 +327,10 @@ tracks:
       type: choice
       source: plotdata
     -
-      name: r0
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the inner radius of the plot track
-    -
-      name: r1
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the outer radius of the plot track
+      name: r0r1
+      type: annulus
+      label: radius
+      tooltip: the inner and outer radius of the plot track
     -
       name: color
       type: colors
@@ -393,25 +340,12 @@ tracks:
     -
       name: data
       type: choice
-      source: plotdata
+      source: locidata
     -
-      name: r0
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the inner radius of the plot track
-    -
-      name: r1
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the outer radius of the plot track
+      name: r0r1
+      type: annulus
+      label: radius
+      tooltip: the inner and outer radius of the plot track
     -
       name: color
       type: color
@@ -467,25 +401,12 @@ tracks:
     -
       name: data
       type: choice
-      source: plotdata
+      source: textdata
     -
-      name: r0
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the inner radius of the plot track
-    -
-      name: r1
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the outer radius of the plot track
+      name: r0r1
+      type: annulus
+      label: radius
+      tooltip: the inner and outer radius of the plot track
     -
       name: label_font
       type: choice
@@ -593,25 +514,12 @@ tracks:
     -
       name: data
       type: choice
-      source: plotdata
+      source: locidata
     -
-      name: r0
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the inner radius of the plot track
-    -
-      name: r1
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      tooltip: the outer radius of the plot track
+      name: r0r1
+      type: annulus
+      label: radius
+      tooltip: the inner and outer radius of the plot track
     -
       name: thickness
       type: int
@@ -628,32 +536,18 @@ tracks:
     -
       name: data
       type: choice
-      source: plotdata
+      source: locidata
     -
       name: ideogram
       type: bool
       default: 'no'
       tooltip: toggles the position of the highlight to be within the ideogram extent
     -
-      name: r0
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
+      name: r0r1
+      type: annulus
       mutex: ideogram
-      tooltip: the inner radius of the plot track, disabled when ideogram yes
-    -
-      name: r1
-      type: float
-      decimal: 2
-      step: 0.01
-      range:
-        - 0
-        - 1
-      mutex: ideogram
-      tooltip: the outer radius of the plot track, , disabled when ideogram yes
+      label: radius
+      tooltip: the inner and outer radius of the plot track
     -
       name: fill_color
       type: color
@@ -677,6 +571,10 @@ tracks:
       tooltip: z-depth of the highlight, controlling the order in which highlights are drawn
 
   link:
+    -
+      name: data
+      type: choice
+      source: linkdata
     -
       name: ribbon
       type: bool

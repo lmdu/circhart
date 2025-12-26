@@ -16,6 +16,7 @@ __all__ = [
 	'CirchartImportAnnotationWorker',
 	'CirchartImportCollinearityWorker',
 	'CirchartGCContentPrepareWorker',
+	'CirchartGCSkewPrepareWorker',
 	'CirchartDensityPrepareWorker',
 	'CirchartLinkPrepareWorker',
 	'CirchartCircosPlotWorker',
@@ -166,42 +167,40 @@ class CirchartGCContentPrepareWorker(CirchartProcessWorker):
 	processor = CirchartGCContentPrepareProcess
 
 	def preprocess(self):
-		data = SqlControl.get_data_by_id(self.params['karyotype'])
 		objs = SqlControl.get_data_objects('karyotype', self.params['karyotype'])
 
 		self.params['axes'] = {
 			obj.label: (obj.uid, obj.end)
 			for obj in objs if obj.type == 'chr'
 		}
-		self.table_index = SqlControl.add_data("{}_gc_content".format(data.name), 'plotdata')
+		self.table_index = SqlControl.add_data(self.params['dataname'], 'plotdata')
 		SqlControl.create_plot_data_table(self.table_index)
+
+		gmeta = SqlControl.get_data_meta(self.params['genome'])
+		self.params['genome'] = gmeta['path']
 
 	def save_result(self, res):
 		SqlControl.add_plot_data(self.table_index, res)
+
+class CirchartGCSkewPrepareWorker(CirchartGCContentPrepareWorker):
+	processor = CirchartGCSkewPrepareProcess
 
 class CirchartDensityPrepareWorker(CirchartProcessWorker):
 	processor = CirchartDensityPrepareProcess
 
 	def preprocess(self):
-		data = SqlControl.get_data_by_id(self.params['karyotype'])
 		objs = SqlControl.get_data_objects('karyotype', self.params['karyotype'])
 
 		self.params['axes'] = {
 			obj.label: (obj.uid, obj.end)
 			for obj in objs if obj.type == 'chr'
 		}
-		data_name = "{}_{}_density".format(data.name, self.params['feature'])
-		self.table_index = SqlControl.add_data(data_name, 'plotdata')
+
+		self.table_index = SqlControl.add_data(self.params['dataname'], 'plotdata')
 		SqlControl.create_plot_data_table(self.table_index)
 
-		pos = SqlControl.get_annotation_content(self.params['annotation'], self.params['feature'])
-		self.params['loci'] = {}
-
-		for p in pos:
-			if p[0] not in self.params['loci']:
-				self.params['loci'][p[0]] = []
-
-			self.params['loci'][p[0]].append((p[1], p[2]))
+		ameta = SqlControl.get_data_meta(self.params['annotation'])
+		self.params['annotation'] = ameta['path']
 
 	def save_result(self, res):
 		SqlControl.add_plot_data(self.table_index, res)

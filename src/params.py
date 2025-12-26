@@ -179,6 +179,32 @@ class CirchartTitleParameter(CirchartReadonlyParameter):
 	def get_param(self):
 		return {}
 
+class CirchartAnnulusParameter(CirchartParameterMixin, QWidget):
+	def _init_widget(self):
+		self.radius0 = QDoubleSpinBox(self)
+		self.radius0.setRange(0, 1)
+		self.radius0.setDecimals(3)
+		self.radius0.setSingleStep(0.01)
+		self.radius1 = QDoubleSpinBox(self)
+		self.radius1.setRange(0, 1)
+		self.radius1.setDecimals(3)
+		self.radius1.setSingleStep(0.01)
+
+	def _set_layout(self):
+		layout = QHBoxLayout()
+		layout.setContentsMargins(0, 0, 0, 0)
+		layout.addWidget(self.radius0)
+		layout.addWidget(QLabel("to", self))
+		layout.addWidget(self.radius1)
+		self.setLayout(layout)
+
+	def set_value(self, value):
+		self.radius0.setValue(value[0])
+		self.radius1.setValue(value[1])
+
+	def get_value(self, value):
+		return (self.radius0.value(), self.radius1.value())
+
 class CirchartIntegerParameter(CirchartParameterMixin, QSpinBox):
 	def _init_widget(self):
 		self.adjustSize()
@@ -1219,8 +1245,10 @@ class CirchartParameterAccordion(QWidget):
 		#if self.key in self.parent().params:
 		#	self.params
 
-		self.parent().remove_param(self.key)
-		#self.deleteLater()
+		try:
+			self.parent().remove_param(self.key)
+		except:
+			self.deleteLater()
 
 	def _set_layout(self):
 		main_layout = QVBoxLayout()
@@ -1388,6 +1416,9 @@ class CirchartParameterPanel(QWidget):
 
 				case 'radius':
 					w = CirchartRadiusParameter(p.name, self)
+
+				case 'annulus':
+					w = CirchartAnnulusParameter(p.name, self)
 
 			for k in p:
 				match k:
@@ -1682,20 +1713,13 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		panel = self.get_panel(0)
 		params = self.plot_params[ptype]
 
-		values = {}
 		ks = []
 		for k, p in panel.params.items():
-			if k in ['data', 'r0', 'r1']:
-				val = p.get_value()
-
-				if val is not None:
-					values[k] = val
-
 			if k != 'type':
 				ks.append(k)
 
 		panel.remove_params(ks)
-		panel.create_params(params, values)
+		panel.create_params(params)
 
 	def set_params(self, params):
 
