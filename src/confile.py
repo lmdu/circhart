@@ -128,6 +128,9 @@ class CirchartCircosConfile(Confile):
 								if v == 'highlight':
 									pass
 
+								elif v == 'link':
+									pass
+
 								else:
 									self.option(k, v)
 
@@ -138,6 +141,13 @@ class CirchartCircosConfile(Confile):
 								else:
 									self.option('r0', v[0], 'r')
 									self.option('r1', v[1], 'r')
+
+							case 'radius' | 'bezier_radius':
+								if main_params['type'] == 'link':
+									self.option(k, v, 'r')
+
+								else:
+									self.option(k, v)
 
 							case 'color':
 								if isinstance(v, list):
@@ -159,6 +169,11 @@ class CirchartCircosConfile(Confile):
 							for k, v in rule_params.items():
 								with Tag('rule'):
 									for c in v['main'].get('condition', []):
+										if c.startswith('var(chr'):
+											cl = c.split(' eq ')
+											cl[1] = '"{}"'.format(cl[1])
+											c = ' eq '.join(cl)
+
 										self.option('condition', c)
 
 									for a, s in v['main'].get('style', []):
@@ -207,19 +222,27 @@ class CirchartCircosConfile(Confile):
 
 		#tracks
 		plot_tracks = []
+		link_tracks = []
 		highlight_tracks = []
 
 		for p in self.params:
 			if p.startswith('track'):
 				ps = self.params[p]
 
-				if ps['main']['type'] == 'highlight':
+				if ps['main']['type'] == 'link':
+					link_tracks.append(ps)
+
+				elif ps['main']['type'] == 'highlight':
 					highlight_tracks.append(ps)
+
 				else:
 					plot_tracks.append(ps)
 
 		if plot_tracks:
 			self.parse_track(plot_tracks)
+
+		if link_tracks:
+			self.parse_track(link_tracks, 'link')
 
 		if highlight_tracks:
 			self.parse_track(highlight_tracks, 'highlight')

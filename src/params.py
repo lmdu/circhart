@@ -202,7 +202,7 @@ class CirchartAnnulusParameter(CirchartParameterMixin, QWidget):
 		self.radius0.setValue(value[0])
 		self.radius1.setValue(value[1])
 
-	def get_value(self, value):
+	def get_value(self):
 		return (self.radius0.value(), self.radius1.value())
 
 class CirchartIntegerParameter(CirchartParameterMixin, QSpinBox):
@@ -634,6 +634,9 @@ class CirchartRuleWidget(QWidget):
 	def set_value(self, value):
 		pass
 
+class CirchartRuleEmptyWidget(CirchartRuleWidget):
+	pass
+
 class CirchartRuleValueWidget(CirchartRuleWidget):
 	_number = True
 	_unit = False
@@ -832,7 +835,7 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 				w = CirchartRulePositionWidget(self)
 
 			case _:
-				w = QWidget(self)
+				w = CirchartRuleEmptyWidget(self)
 
 		self.main_layout.replaceWidget(self.rule_widget, w)
 		self.rule_widget.deleteLater()
@@ -843,9 +846,13 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 		rule = self.rule_widget.get_value()
 
 		funcs = {'on', 'from', 'to', 'between', 'fromto', 'tofrom', 'within'}
+		noval = {'interchr', 'intrachr', 'rev1', 'rev2', 'inv'}
 
 		if field in funcs:
 			return "{}({})".format(field, rule)
+
+		elif field in noval:
+			return "var({})".format(field)
 
 		else:
 			return "var({}) {}".format(field, rule)

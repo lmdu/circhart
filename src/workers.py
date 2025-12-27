@@ -244,13 +244,26 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 
 		for k in self.params:
 			if k.startswith('track'):
+				ptype = self.params[k]['main']['type']
 				index = self.params[k]['main']['data']
 				outfile = "data{}.txt".format(index)
 
 				if os.path.isfile(outfile):
 					continue
 
-				data = SqlControl.get_data_content('plotdata', index)
+				if ptype == 'link':
+					tag = 'linkdata'
+				
+				elif ptype == 'text':
+					tag = 'textdata'
+				
+				elif ptype in ['tile', 'connector', 'highlight']:
+					tag = 'locidata'
+
+				else:
+					tag = 'plotdata'
+
+				data = SqlControl.get_data_content(tag, index)
 				save_circos_data(workdir, outfile, data)
 
 		confile = os.path.join(workdir, 'plot.conf')

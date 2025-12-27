@@ -606,7 +606,7 @@ tracks:
       type: float
       range:
         - 0
-        - 1
+        - 10
       decimal: 2
       default: 0
       tooltip:  the radial position of the third control point used to draw the Bezier curve
@@ -615,7 +615,7 @@ tracks:
       type: float
       range:
         - 0
-        - 1
+        - 10
       decimal: 2
       default: 0.5
     -
@@ -803,6 +803,9 @@ rules:
         - color
         - thickness
         - z
+        - crest
+        - bezier_radius
+        - bezier_radius_purity
 
 axes:
   -
