@@ -682,6 +682,7 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 		return ret
 
 	def set_value(self, value):
+		print(value)
 		sign, val = value.split()
 
 		if sign == 'eq':
@@ -1371,7 +1372,9 @@ class CirchartParameterPanel(QWidget):
 			self.remove_param(key)
 
 	def clear_params(self):
-		ks = [p.key for p in self.params]
+		print(self.params)
+
+		ks = [p.key for k, p in self.params.items()]
 		self.remove_params(ks)
 
 	def create_params(self, params, values={}):
