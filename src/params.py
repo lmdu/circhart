@@ -1857,6 +1857,8 @@ class CirchartParameterManager(QScrollArea):
 		if not params:
 			return
 
+		print(params)
+
 		self.reset_params(params)
 		return params['general']['global']['plotname']
 
