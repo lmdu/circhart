@@ -1886,9 +1886,11 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		self.add_widget(track)
 		return track
 
-	def add_plot_track(self):
-		self.track_count += 1
-		key = 'track{}'.format(self.track_count)
+	def add_plot_track(self, key=None):
+		if key is None:
+			self.track_count += 1
+			key = 'track{}'.format(self.track_count)
+
 		track = self.create_plot_track(key)
 		return track
 
@@ -1903,8 +1905,7 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 				if tid > self.track_count:
 					self.track_count = tid
 
-				track = self.add_plot_track()
-				track.set_key(k)
+				track = self.add_plot_track(k)
 				track.set_params(params)
 
 class CirchartSnailGeneralForm(CirchartParameterAccordion):
