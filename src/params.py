@@ -12,99 +12,6 @@ __all__ = [
 	'CirchartSnailParameterManager',
 ]
 
-#from pyside6 examples
-class FlowLayout(QLayout):
-	def __init__(self, parent=None):
-		super().__init__(parent)
-
-		#if parent is not None:
-		self.setContentsMargins(QMargins(0, 0, 0, 0))
-
-		self._item_list = []
-
-	def __del__(self):
-		item = self.takeAt(0)
-		while item:
-			item = self.takeAt(0)
-
-	def addItem(self, item):
-		self._item_list.append(item)
-
-	def count(self):
-		return len(self._item_list)
-
-	def itemAt(self, index):
-		if 0 <= index < len(self._item_list):
-			return self._item_list[index]
-
-		return None
-
-	def takeAt(self, index):
-		if 0 <= index < len(self._item_list):
-			return self._item_list.pop(index)
-
-		return None
-
-	def expandingDirections(self):
-		return Qt.Orientation(0)
-
-	def hasHeightForWidth(self):
-		return True
-
-	def heightForWidth(self, width):
-		height = self._do_layout(QRect(0, 0, width, 0), True)
-		return height
-
-	def setGeometry(self, rect):
-		super().setGeometry(rect)
-		self._do_layout(rect, False)
-
-	def sizeHint(self):
-		return self.minimumSize()
-
-	def minimumSize(self):
-		size = QSize()
-
-		for item in self._item_list:
-			size = size.expandedTo(item.minimumSize())
-
-		size += QSize(2 * self.contentsMargins().top(), 2 * self.contentsMargins().top())
-		return size
-
-	def _do_layout(self, rect, test_only):
-		x = rect.x()
-		y = rect.y()
-		line_height = 0
-		spacing = self.spacing()
-
-		for item in self._item_list:
-			style = item.widget().style()
-			layout_spacing_x = style.layoutSpacing(
-				QSizePolicy.ControlType.PushButton, QSizePolicy.ControlType.PushButton,
-				Qt.Orientation.Horizontal
-			)
-			layout_spacing_y = style.layoutSpacing(
-				QSizePolicy.ControlType.PushButton, QSizePolicy.ControlType.PushButton,
-				Qt.Orientation.Vertical
-			)
-			space_x = spacing + layout_spacing_x
-			space_y = spacing + layout_spacing_y
-			next_x = x + item.sizeHint().width() + space_x
-			if next_x - space_x > rect.right() and line_height > 0:
-				x = rect.x()
-				y = y + line_height + space_y
-				next_x = x + item.sizeHint().width() + space_x
-				line_height = 0
-
-			if not test_only:
-				item.setGeometry(QRect(QPoint(x, y), item.sizeHint()))
-
-			x = next_x
-			line_height = max(line_height, item.sizeHint().height())
-
-		return y + line_height - rect.y()
-
-
 class CirchartParameterMixin:
 	_default = None
 
@@ -682,7 +589,6 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 		return ret
 
 	def set_value(self, value):
-		print(value)
 		sign, val = value.split()
 
 		if sign == 'eq':
@@ -1372,8 +1278,6 @@ class CirchartParameterPanel(QWidget):
 			self.remove_param(key)
 
 	def clear_params(self):
-		print(self.params)
-
 		ks = [p.key for k, p in self.params.items()]
 		self.remove_params(ks)
 
@@ -1630,8 +1534,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.rule_panel.setContextMenuPolicy(Qt.CustomContextMenu)
 		self.rule_panel.customContextMenuRequested.connect(open_menu)
 
-	def create_rule(self, key):
-		ptype = self.type_param.get_value()
+	def create_rule(self, key, ptype):
 		plot_params = self.plot_params[ptype]
 		rule_params = self.rule_params[ptype]
 		tests = [AttrDict(p) for p in rule_params[0]['tests']]
@@ -1657,7 +1560,8 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 	def add_rule(self):
 		self.rule_count += 1
 		key = 'rule{}'.format(self.rule_count)
-		self.create_rule(key)
+		ptype = self.type_param.get_value()
+		self.create_rule(key, ptype)
 
 	def _create_axes_panel(self):
 		self.axes_panel = self.create_panel('axes', 'icons/axis.svg', "Track Axes")
@@ -1732,44 +1636,48 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		panel.create_params(params)
 
 	def set_params(self, params):
-
 		self.rule_panel.clear_params()
 
 		self.rule_count = 0
 		self.axes_count = 0
 		self.bg_count = 0
 
-		for k, v in params.items():
-			if k.startswith('track'):
-				if 'rules' in v:
-					for x, y in v['rules'].items():
-						rid = int(x.lstrip('rule'))
+		ps = params[self.key]
+		ptype = ps['main']['type']
 
-						if rid > self.rule_count:
-							self.rule_count = rid
+		#when type changed, will delete rules
+		self.type_param.set_value(ptype)
 
-						self.create_rule(x)
+		for k, v in ps.items():
+			if k == 'rules':
+				for x, y in v.items():
+					rid = int(x.lstrip('rule'))
 
-				if 'axes' in v:
-					for x, y in v['axes'].items():
-						aid = int(x.lstrip('axis'))
+					if rid > self.rule_count:
+						self.rule_count = rid
 
-						if aid > self.axes_count:
-							self.axes_count = aid
+					self.create_rule(x, ptype)
 
-						if 'spacing' in y['main']:
-							self.create_axis(x, 'spacing')
-						else:
-							self.create_axis(x, 'position')
+			elif k == 'axes':
+				for x, y in v.items():
+					aid = int(x.lstrip('axis'))
 
-				if 'backgrounds' in v:
-					for x, y in v['backgrounds'].items():
-						bid = int(x.lstrip('background'))
+					if aid > self.axes_count:
+						self.axes_count = aid
 
-						if bid > self.bg_count:
-							self.bg_count = bid
+					if 'spacing' in y['main']:
+						self.create_axis(x, 'spacing')
+					else:
+						self.create_axis(x, 'position')
 
-						self.create_background(x)
+			elif k == 'backgrounds':
+				for x, y in v.items():
+					bid = int(x.lstrip('background'))
+
+					if bid > self.bg_count:
+						self.bg_count = bid
+
+					self.create_background(x)
 
 		super().set_params(params)
 
@@ -1856,8 +1764,6 @@ class CirchartParameterManager(QScrollArea):
 
 		if not params:
 			return
-
-		print(params)
 
 		self.reset_params(params)
 		return params['general']['global']['plotname']
