@@ -249,8 +249,8 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 
 		self.setRenderHints(QPainter.Antialiasing | QPainter.SmoothPixmapTransform)
 
-		#self.create_plot()
 		self.plot_id = 0
+		self.create_svg_item()
 
 	def wheelEvent(self, event):
 		if event.angleDelta().y() > 0:
@@ -273,30 +273,26 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		self.scale(m_ratio, m_ratio)
 		self.centerOn(self.svg_item)
 
+	def create_svg_item(self):
+		self.svg_item = QGraphicsSvgItem()
+		self.svg_item.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
+		self.scene().addItem(self.svg_item)
+		self.fitInView(self.svg_item, Qt.KeepAspectRatio)
+
 	def load_svg(self, svg_str):
 		if not svg_str:
 			return
 
-		self.scene().clear()
-		self.resetTransform()
 		svg_data = QByteArray(svg_str.encode())
-		self.svg_item = QGraphicsSvgItem()
 		self.svg_item.renderer().load(svg_data)
 		self.svg_item.setElementId("")
-		self.svg_item.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
-		self.scene().addItem(self.svg_item)
-		#self.fit_view()
-		self.fitInView(self.svg_item, Qt.KeepAspectRatio)
+
+		if self.svg_item.boundingRect().width() <= 0:
+			self.fitInView(self.svg_item, Qt.KeepAspectRatio)
 
 	def show_plot(self, plottype, plotid):
 		svg_str = SqlControl.get_svg(plotid)
 		self.plot_id = plotid
-		self.load_svg(svg_str)
-
-	def create_plot(self):
-		with open('test/circos.svg') as fh:
-			svg_str = fh.read()
-
 		self.load_svg(svg_str)
 
 	def save_plot(self, ifile, iformat):

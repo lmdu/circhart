@@ -728,10 +728,10 @@ rules:
       tests:
         -
           name: chr1
-          type: text
+          type: chrome
         -
           name: chr2
-          type: text
+          type: chrome
         -
           name: start1
           type: number

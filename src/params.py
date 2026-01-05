@@ -615,6 +615,7 @@ class CirchartRuleSizeWidget(CirchartRuleValueWidget):
 
 class CirchartRuleChromWidget(CirchartRuleWidget):
 	_count = 1
+	_equal = False
 
 	def _init_widget(self):
 		self.chr1_widget = QComboBox(self)
@@ -639,7 +640,12 @@ class CirchartRuleChromWidget(CirchartRuleWidget):
 
 	def get_value(self):
 		if self._count == 1:
-			return self.chr1_widget.currentText()
+			val = self.chr1_widget.currentText()
+
+			if self._equal:
+				return "eq {}".format(val)
+			else:
+				return val
 		else:
 			return "{}, {}".fomrat(
 				self.chr1_widget.currentText(),
@@ -648,12 +654,18 @@ class CirchartRuleChromWidget(CirchartRuleWidget):
 
 	def set_value(self, value):
 		if self._count == 1:
+			if self._equal:
+				value = value.split()[1]
+
 			self.chr1_widget.setCurrentText(value)
 
 		else:
 			chr1, chr2 = value.split(', ')
 			self.chr1_widget.setCurrentText(chr1)
 			self.chr2_widget.setCurrentText(chr2)
+
+class CirchartRuleChromeWidget(CirchartRuleChromWidget):
+	_equal = True
 
 class CirchartRuleChromsWidget(CirchartRuleChromWidget):
 	_count = 2
@@ -709,13 +721,17 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 		self.field_widget.currentIndexChanged.connect(self._on_field_changed)
 		self.rule_widget = QWidget(self)
 
+		self.chroms = []
+
 	def _set_layout(self):
 		super()._set_layout()
 
 		self.main_layout.addWidget(self.field_widget)
 		self.main_layout.addWidget(self.rule_widget, 1)
 
-	def set_data(self, fields):
+	def set_data(self, fields, chroms):
+		self.chroms = chroms
+
 		for f in fields:
 			self.field_widget.addItem(f.name, f)
 
@@ -734,12 +750,19 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 
 			case 'chrom':
 				w = CirchartRuleChromWidget(self)
+				w.set_data(self.chroms)
+
+			case 'chrome':
+				w = CirchartRuleChromeWidget(self)
+				w.set_data(self.chroms)
 
 			case 'chroms':
 				w = CirchartRuleChromsWidget(self)
+				w.set_data(self.chroms)
 
 			case 'position':
 				w = CirchartRulePositionWidget(self)
+				w.set_data(self.chroms)
 
 			case _:
 				w = CirchartRuleEmptyWidget(self)
@@ -763,7 +786,6 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 
 		else:
 			return "var({}) {}".format(field, rule)
-			
 
 	def set_value(self, value):
 		funcs = ('on', 'from', 'to', 'between', 'fromto', 'tofrom', 'within')
@@ -878,6 +900,7 @@ class CirchartAddDelButton(QPushButton):
 class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
 		self.tests = []
+		self.chroms = []
 
 		self.add_btn = CirchartAddDelButton(self)
 		self.add_btn.clicked.connect(self.add_condition)
@@ -904,9 +927,12 @@ class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 	def set_tests(self, tests):
 		self.tests = tests
 
+	def set_chroms(self, chroms):
+		self.chroms = chroms
+
 	def add_condition(self):
 		field_widget = CirchartRuleFieldWidget(self)
-		field_widget.set_data(self.tests)
+		field_widget.set_data(self.tests, self.chroms)
 		self.main_layout.addWidget(field_widget)
 
 		return field_widget
@@ -1510,6 +1536,8 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self._create_axes_panel()
 		self._create_background_panel()
 
+		self.chroms = []
+
 	def _create_plot_panel(self):
 		self.plot_panel = self.create_panel('main', 'icons/chart.svg', "Track plot parameters")
 		self.plot_params = CIRCOS_PARAMS['tracks']
@@ -1534,6 +1562,9 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.rule_panel.setContextMenuPolicy(Qt.CustomContextMenu)
 		self.rule_panel.customContextMenuRequested.connect(open_menu)
 
+	def set_chroms(self, chroms):
+		self.chroms = chroms
+
 	def create_rule(self, key, ptype):
 		plot_params = self.plot_params[ptype]
 		rule_params = self.rule_params[ptype]
@@ -1554,6 +1585,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		param.set_attrs(attrs)
 		param = panel.get_widget('condition')
 		param.set_tests(tests)
+		param.set_chroms(self.chroms)
 
 		self.rule_panel.add_param(rule, group=True)
 
@@ -1637,6 +1669,8 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 
 	def set_params(self, params):
 		self.rule_panel.clear_params()
+		self.axes_panel.clear_params()
+		self.bgs_panel.clear_params()
 
 		self.rule_count = 0
 		self.axes_count = 0
@@ -1773,6 +1807,13 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		self.clear_widgets()
 		self.plot_id = params['general']['global']['plotid']
 
+		self.chroms = []
+		for k in params['general']['global']['karyotype']:
+			rows = SqlControl.get_data_objects('karyotype', k)
+
+			for row in rows:
+				self.chroms.append(row.uid)
+
 		form = CirchartGeneralTrack('general', self)
 		form.set_params(params)
 		self.add_widget(form)
@@ -1789,6 +1830,7 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 
 	def create_plot_track(self, key):
 		track = CirchartPlotTrack(key, self)
+		track.set_chroms(self.chroms)
 		self.add_widget(track)
 		return track
 
