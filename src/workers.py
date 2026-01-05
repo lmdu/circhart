@@ -1,8 +1,10 @@
 import os
+import time
 import traceback
 import multiprocessing
 
 from PySide6.QtGui import *
+from PySide6.QtSvg import *
 from PySide6.QtCore import *
 
 from config import *
@@ -23,6 +25,7 @@ __all__ = [
 	'CirchartProjectSaveWorker',
 	'CirchartCircosColorWorker',
 	'CirchartSnailPlotWorker',
+	'CirchartSvgRenderWorker',
 ]
 
 class CirchartWorkerSignals(QObject):
@@ -554,3 +557,17 @@ class CirchartCircosColorWorker(CirchartBaseWorker):
 
 		color_list.extend(brewer_colors.values())
 		self.signals.result.emit(color_list)
+
+class CirchartSvgRenderWorker(CirchartBaseWorker):
+	def process(self):
+		QThread.msleep(10)
+		plotid = self.params['plotid']
+
+		svg_str = SqlControl.get_svg(plotid)
+		svg_data = QByteArray(svg_str.encode())
+		svg_render = QSvgRenderer()
+		svg_render.load(svg_data)
+
+		self.signals.result.emit(svg_render)
+
+

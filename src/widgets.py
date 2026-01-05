@@ -274,8 +274,12 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		self.centerOn(self.svg_item)
 
 	def create_svg_item(self):
+		self.svg_render = QSvgRenderer()
 		self.svg_item = QGraphicsSvgItem()
+		self.svg_item.setSharedRenderer(self.svg_render)
+		self.svg_item.setMaximumCacheSize(QSize(10000, 10000))
 		self.svg_item.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
+		self.svg_item.setFlags(QGraphicsItem.ItemUsesExtendedStyleOption)
 		self.scene().addItem(self.svg_item)
 		self.fitInView(self.svg_item, Qt.KeepAspectRatio)
 
@@ -283,17 +287,27 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		if not svg_str:
 			return
 
+		svg_width = self.svg_item.boundingRect().width()
+
 		svg_data = QByteArray(svg_str.encode())
-		self.svg_item.renderer().load(svg_data)
+		#self.svg_item.renderer().load(svg_data)
+		self.svg_render.load(svg_data)
 		self.svg_item.setElementId("")
 
-		if self.svg_item.boundingRect().width() <= 0:
+		if svg_width <= 0:
 			self.fitInView(self.svg_item, Qt.KeepAspectRatio)
 
-	def show_plot(self, plottype, plotid):
+	def show_plot(self, plotid):
 		svg_str = SqlControl.get_svg(plotid)
 		self.plot_id = plotid
 		self.load_svg(svg_str)
+
+	def change_render(self, render):
+		self.svg_render = render
+		self.svg_item.setSharedRenderer(self.svg_render)
+		self.svg_item.setElementId('')
+		self.fitInView(self.svg_item, Qt.KeepAspectRatio)
+
 
 	def save_plot(self, ifile, iformat):
 		scene = self.scene()

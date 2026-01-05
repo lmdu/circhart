@@ -50,8 +50,8 @@ class CirchartMainWindow(QMainWindow):
 		self.data_tree.show_data.connect(self.data_table.change_table)
 		self.data_tree.clicked.connect(self.show_data_table)
 		self.plot_tree = CirchartPlotTreeWidget(self)
-		self.plot_tree.show_plot.connect(self.plot_view.show_plot)
 		self.plot_tree.show_plot.connect(self.show_plot_params)
+		self.plot_tree.show_plot.connect(self.show_plot_image)
 		self.plot_tree.clicked.connect(self.show_plot_view)
 
 
@@ -701,7 +701,14 @@ class CirchartMainWindow(QMainWindow):
 
 	def show_svg_plot(self, plot_id):
 		self.show_plot_view()
-		self.plot_view.show_plot('', plot_id)
+		self.plot_view.show_plot(plot_id)
+
+	def show_plot_image(self, ptype, pid):
+		worker = CirchartSvgRenderWorker({'plotid': pid})
+		worker.signals.result.connect(self.plot_view.change_render)
+		self.submit_new_worker(worker)
+
+		#self.plot_view.show_plot(pid)
 
 	def show_plot_params(self, ptype, pid):
 		if ptype == 'snail':
