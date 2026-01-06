@@ -210,14 +210,13 @@ class CirchartDataTableWidget(QTableView):
 			case 'karyotype':
 				if type(self._model) != CirchartKaryotypeTableModel:
 					self._model = CirchartKaryotypeTableModel(self)
-				
-				self.doubleClicked.connect(self.change_color)
+
+				delegate = CirchartKaryotypeDelegate(self)
+				self.setItemDelegate(delegate)
 			
 			case _:
 				if type(self._model) != CirchartDataTableModel:
 					self._model = CirchartDataTableModel(self)
-				
-				self.doubleClicked.disconnect(self.change_color)
 
 	def change_table(self, table, index=None):
 		self.create_model(table)
@@ -229,12 +228,19 @@ class CirchartDataTableWidget(QTableView):
 		self._model.update_model()
 		self.setModel(self._model)
 
-	def change_color(self, index):
-		if index.column() == 7:
-			color = QColorDialog.getColor(self)
+	def update_karyotype_color(self, method, color=None):
+		if type(self._model) != CirchartKaryotypeTableModel:
+			return
 
-			if color.isValid():
-				pass
+		match method:
+			case 'single':
+				self._model.update_single_color(color)
+
+			case 'random':
+				self._model.update_random_color()
+
+			case 'default':
+				self._model.update_default_color()
 
 class CirchartCheckTableWidget(CirchartDataTableWidget):
 	def create_model(self, table):

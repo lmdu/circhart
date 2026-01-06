@@ -1,3 +1,5 @@
+import distinctipy
+
 from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
@@ -284,34 +286,35 @@ class CirchartKaryotypeDelegate(QStyledItemDelegate):
 		col = index.column()
 
 		if col == 3:
-			editor = QLineEdit(parent)
+			return QLineEdit(parent)
 
 		elif col == 7:
-			editor = QColorDialog.getColor(parent)
-
-		else:
-			editor = super().createEditor(parent, option, index)
-
-		return editor
+			return QColorDialog(parent)
 
 	def setEditorData(self, editor, index):
 		col = index.column()
-		value = index.model().data(index, Qt.EditRole)
+		
 
 		if col == 7:
-			editor.setCurrentColor(QColor(value))
-		else:
-			editor.setValue(value)
+			value = index.model().data(index, Qt.BackgroundRole)
+			editor.setCurrentColor(value)
+
+		elif col == 3:
+			value = index.model().data(index, Qt.DisplayRole)
+			editor.setText(value)
 
 	def setModelData(self, editor, model, index):
 		col = index.column()
 
 		if col == 7:
 			value = editor.currentColor()
-		else:
-			value = editor.value()
 
-		model.setData(index, value, Qt.EditRole)
+			if value.isValid():
+				model.setData(index, value, Qt.EditRole)
+
+		elif col == 3:
+			value = editor.text()
+			model.setData(index, value, Qt.EditRole)
 
 	def updateEditorGeometry(self, editor, option, index):
 		if index.column() == 3:
@@ -347,15 +350,73 @@ class CirchartKaryotypeTableModel(CirchartDataTableModel):
 
 	def flags(self, index):
 		flags = Qt.ItemIsEnabled | Qt.ItemIsSelectable
-		flags |= Qt.ItemIsEditable
+
+		if index.column() in [3, 7]:
+			flags |= Qt.ItemIsEditable
+
 		return flags
 
 	def setData(self, index, value, role):
 		if role == Qt.EditRole:
-			pass
+			col = index.column()
+
+			if col == 3:
+				self.update_name(index, value)
+
+			elif col == 7:
+				self.update_color(index, value)
+				
+			self.dataChanged.emit(index, index)
+			return True
 
 		return False
 
+	def update_name(self, index, name):
+		kid = self.get_id(index)
+		sql = SqlQuery(self._table)\
+			.update('name')\
+			.where('id=?')
+
+		SqlBase.update_row(sql, name, kid)
+
+	def update_color(self, index, color):
+		kid = self.get_id(index)
+		r, g, b, _ = color.toTuple()
+		color = "{},{},{}".format(r, g, b)
+		sql = SqlQuery(self._table)\
+			.update('color')\
+			.where('id=?')
+
+		SqlBase.update_row(sql, color, kid)
+
+	def update_single_color(self, color):
+		r, g, b, _ = color.toTuple()
+		color = "{},{},{}".format(r, g, b)
+		sql = SqlQuery(self._table)\
+			.update('color')
+		SqlBase.update_row(sql, color)
+
+		sindex = self.createIndex(0, 7)
+		eindex = self.createIndex(self.total_count-1, 7)
+		self.dataChanged.emit(sindex, eindex)
+
+	def update_random_color(self):
+		colors = distinctipy.get_colors(self.total_count)
+
+		sql = SqlQuery(self._table)\
+			.update('color')\
+			.where('rowid=?')
+
+		for i, c in enumerate(colors, 1):
+			c = ','.join(map(str, distinctipy.get_rgb256(c)))
+			SqlBase.update_row(sql, c, i)
+
+		sindex = self.createIndex(0, 7)
+		eindex = self.createIndex(self.total_count-1, 7)
+		self.dataChanged.emit(sindex, eindex)
+
+	def update_default_color(self):
+		pass
 
 
 class CirchartDataTreeModel(CirchartBaseTableModel):

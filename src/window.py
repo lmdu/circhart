@@ -143,10 +143,21 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_zoom_out
 		)
 
-
 		self.quit_act = QAction("&Exit", self,
 			shortcut = QKeySequence.Quit,
 			triggered = self.close
+		)
+
+		self.kcolor_default_act = QAction("Set to Default", self,
+			triggered = self.do_set_karyotype_default_color
+		)
+
+		self.kcolor_random_act = QAction("Set to Random", self,
+			triggered = self.do_set_karyotype_random_color
+		)
+
+		self.kcolor_pure_act = QAction("Set to Single", self,
+			triggered = self.do_set_karyotype_pure_color
 		)
 
 		self.prepare_kdata_act = QAction("&Prepare Karyotype Data", self,
@@ -266,6 +277,12 @@ class CirchartMainWindow(QMainWindow):
 		self.edit_menu = self.menuBar().addMenu("&Edit")
 		self.edit_menu.addAction(self.zoom_in_act)
 		self.edit_menu.addAction(self.zoom_out_act)
+
+		self.kcolor_menu = self.edit_menu.addMenu("&Karyotype Color")
+		self.kcolor_menu.addAction(self.kcolor_default_act)
+		self.kcolor_menu.addAction(self.kcolor_random_act)
+		self.kcolor_menu.addAction(self.kcolor_pure_act)
+
 
 		self.view_menu = self.menuBar().addMenu("&View")
 		self.view_menu.addAction(self.toolbar_act)
@@ -562,6 +579,29 @@ class CirchartMainWindow(QMainWindow):
 
 	def do_zoom_out(self):
 		print('zoom out')
+
+	def do_set_karyotype_default_color(self):
+		if self.stack_widget.currentIndex() != 1:
+			return
+
+		self.data_table.update_karyotype_color('default')
+
+	def do_set_karyotype_random_color(self):
+		if self.stack_widget.currentIndex() != 1:
+			return
+
+		self.data_table.update_karyotype_color('random')
+
+	def do_set_karyotype_pure_color(self):
+		if self.stack_widget.currentIndex() != 1:
+			return
+
+		color = QColorDialog.getColor(parent=self)
+
+		if not color.isValid():
+			return
+
+		self.data_table.update_karyotype_color('single', color)
 
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.make_karyotype(self)

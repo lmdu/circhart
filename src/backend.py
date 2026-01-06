@@ -472,6 +472,24 @@ class SqlControl:
 		SqlBase.insert_rows(sql, data)
 
 	@staticmethod
+	def update_karyotype_name(index, kid, name):
+		table, _ = KaryotypeTable.table(index)
+		sql = SqlQuery(table)\
+			.update('name')\
+			.where('id=?')
+
+		SqlBase.update_row(sql, name, kid)
+
+	@staticmethod
+	def update_karyotype_color(index, kid, color):
+		table, _ = KaryotypeTable.table(index)
+		sql = SqlQuery(table)\
+			.update('color')\
+			.where('id=?')
+
+		SqlBase.update_row(sql, color, kid)
+
+	@staticmethod
 	def create_annotation_table(index):
 		table, fields = AnnotationTable.table(index)
 		SqlBase.create_table(table, fields)
