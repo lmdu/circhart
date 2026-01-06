@@ -16,11 +16,15 @@ class Confile:
 				print(tag, file=fw)
 
 class Tag:
-	def __init__(self, name):
+	def __init__(self, name, attrs=None):
 		self.name = name
+		self.attrs = attrs
 
 	def __enter__(self):
-		Confile._blocks.append("<{}>".format(self.name))
+		if self.attrs:
+			Confile._blocks.append("<{} {}>".format(self.name, self.attrs))
+		else:
+			Confile._blocks.append("<{}>".format(self.name))
 		Confile._blocks.append('')
 
 	def __exit__(self, *args):
@@ -43,6 +47,7 @@ class CirchartCircosConfile(Confile):
 	def parse_ideogram(self, params):
 		main_params = params['main']
 		label_params = params['label']
+		space_params = params['spaces']
 
 		with Tag('ideogram'):
 			for k, v in main_params.items():
@@ -50,6 +55,12 @@ class CirchartCircosConfile(Confile):
 					case 'spacing':
 						with Tag('spacing'):
 							self.option('default', v, 'r')
+
+							for ss in space_params.values():
+								s = ss['space']
+
+								with Tag('pairwise', s['pairwise']):
+									self.option('spacing', s['spacing'], 'r')
 
 					case 'radius':
 						self.option(k, v, 'r')

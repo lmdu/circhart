@@ -1,5 +1,6 @@
 from PySide6.QtGui import *
 from PySide6.QtCore import *
+from PySide6.QtWidgets import *
 
 from backend import *
 
@@ -7,6 +8,7 @@ __all__ = [
 	'CirchartDataTreeModel',
 	'CirchartPlotTreeModel',
 	'CirchartDataTableModel',
+	'CirchartKaryotypeDelegate',
 	'CirchartKaryotypeTableModel',
 	'CirchartCircosColorModel',
 ]
@@ -274,6 +276,48 @@ class CirchartDataTableModel(CirchartBaseTableModel):
 		fields = [field.capitalize() for field in SqlBase.get_fields(table)]
 		self.set_headers(fields)
 
+class CirchartKaryotypeDelegate(QStyledItemDelegate):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+	def createEditor(self, parent, option, index):
+		col = index.column()
+
+		if col == 3:
+			editor = QLineEdit(parent)
+
+		elif col == 7:
+			editor = QColorDialog.getColor(parent)
+
+		else:
+			editor = super().createEditor(parent, option, index)
+
+		return editor
+
+	def setEditorData(self, editor, index):
+		col = index.column()
+		value = index.model().data(index, Qt.EditRole)
+
+		if col == 7:
+			editor.setCurrentColor(QColor(value))
+		else:
+			editor.setValue(value)
+
+	def setModelData(self, editor, model, index):
+		col = index.column()
+
+		if col == 7:
+			value = editor.currentColor()
+		else:
+			value = editor.value()
+
+		model.setData(index, value, Qt.EditRole)
+
+	def updateEditorGeometry(self, editor, option, index):
+		if index.column() == 3:
+			editor.setGeometry(option.rect)
+
+
 class CirchartKaryotypeTableModel(CirchartDataTableModel):
 	def data(self, index, role=Qt.DisplayRole):
 		if not index.isValid():
@@ -300,6 +344,18 @@ class CirchartKaryotypeTableModel(CirchartDataTableModel):
 			if col == 7:
 				r, g, b = self.get_value(row, col).split(',')
 				return QColor(int(r), int(g), int(b))
+
+	def flags(self, index):
+		flags = Qt.ItemIsEnabled | Qt.ItemIsSelectable
+		flags |= Qt.ItemIsEditable
+		return flags
+
+	def setData(self, index, value, role):
+		if role == Qt.EditRole:
+			pass
+
+		return False
+
 
 
 class CirchartDataTreeModel(CirchartBaseTableModel):

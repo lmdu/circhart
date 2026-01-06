@@ -316,6 +316,7 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 	def preprocess(self):
 		workdir = self.make_tempdir()
 		index = self.params['general']['global']['genome']
+		dname = self.params['plot']['main']['dataset_name']
 
 		data = SqlControl.get_data_content('genome', index)
 
@@ -336,7 +337,7 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 			count += 1
 
 		metadata = {
-			'id': "blobdir1",
+			'id': dname,
 			'assembly': {
 				'file': 'genome.fa',
 				'scaffold-count': count,
@@ -568,6 +569,6 @@ class CirchartSvgRenderWorker(CirchartBaseWorker):
 		svg_render = QSvgRenderer()
 		svg_render.load(svg_data)
 
-		self.signals.result.emit(svg_render)
+		self.signals.result.emit((plotid, svg_render))
 
 

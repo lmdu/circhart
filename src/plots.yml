@@ -12,6 +12,7 @@ general:
 ideogram:
   -
     name: spacing
+    label: Default spacing
     type: float
     range:
       - 0
@@ -50,6 +51,18 @@ ideogram:
     name: stroke_color
     type: color
     default: 255,255,255
+
+spaces:
+  -
+    name: pairwise
+    label: between
+    type: chroms
+  -
+    name: spacing
+    type: int
+    range:
+      - 0
+      - 1000
 
 labels:
   -
@@ -892,6 +905,10 @@ snail:
       type: hidden
 
   plot:
+    -
+      name: dataset_name
+      type: str
+      default: snail
     -
       name: show_numbers
       type: bool

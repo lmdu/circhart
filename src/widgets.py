@@ -202,6 +202,7 @@ class CirchartDataTableWidget(QTableView):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 		self.verticalHeader().hide()
+		#self.horizontalHeader().setStretchLastSection(True)
 		self._model = None
 
 	def create_model(self, table):
@@ -209,10 +210,14 @@ class CirchartDataTableWidget(QTableView):
 			case 'karyotype':
 				if type(self._model) != CirchartKaryotypeTableModel:
 					self._model = CirchartKaryotypeTableModel(self)
+				
+				self.doubleClicked.connect(self.change_color)
 			
 			case _:
 				if type(self._model) != CirchartDataTableModel:
 					self._model = CirchartDataTableModel(self)
+				
+				self.doubleClicked.disconnect(self.change_color)
 
 	def change_table(self, table, index=None):
 		self.create_model(table)
@@ -223,6 +228,13 @@ class CirchartDataTableWidget(QTableView):
 		self._model.change_table(table)
 		self._model.update_model()
 		self.setModel(self._model)
+
+	def change_color(self, index):
+		if index.column() == 7:
+			color = QColorDialog.getColor(self)
+
+			if color.isValid():
+				pass
 
 class CirchartCheckTableWidget(CirchartDataTableWidget):
 	def create_model(self, table):
@@ -277,9 +289,7 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		self.svg_render = QSvgRenderer()
 		self.svg_item = QGraphicsSvgItem()
 		self.svg_item.setSharedRenderer(self.svg_render)
-		self.svg_item.setMaximumCacheSize(QSize(10000, 10000))
 		self.svg_item.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
-		self.svg_item.setFlags(QGraphicsItem.ItemUsesExtendedStyleOption)
 		self.scene().addItem(self.svg_item)
 		self.fitInView(self.svg_item, Qt.KeepAspectRatio)
 
@@ -303,7 +313,7 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		self.load_svg(svg_str)
 
 	def change_render(self, render):
-		self.svg_render = render
+		self.plot_id, self.svg_render = render
 		self.svg_item.setSharedRenderer(self.svg_render)
 		self.svg_item.setElementId('')
 		self.fitInView(self.svg_item, Qt.KeepAspectRatio)

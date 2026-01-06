@@ -519,6 +519,42 @@ class CirchartRadiusParameter(CirchartParameterMixin, QWidget):
 			self.offset.setPrefix(sign)
 			self.offset.setValue(offset)
 
+class CirchartChromsParameter(CirchartParameterMixin, QWidget):
+	def _init_widget(self):
+		self.chr1_widget = QComboBox(self)
+		self.chr2_widget = QComboBox(self)
+
+	def _set_layout(self):
+		main_layout = QHBoxLayout()
+		main_layout.setContentsMargins(0, 0, 0, 0)
+		main_layout.addWidget(self.chr1_widget)
+		main_layout.addWidget(QLabel('and', self))
+		main_layout.addWidget(self.chr2_widget)
+		self.setLayout(main_layout)
+
+	def set_data(self, chroms):
+		self.chr1_widget.addItems(chroms)
+		self.chr2_widget.addItems(chroms)
+
+	def get_value(self):
+		chr1 = self.chr1_widget.currentText()
+		chr2 = self.chr2_widget.currentText()
+
+		if chr1 == chr2:
+			return chr1
+		else:
+			return "{} {}".format(chr1, chr2)
+
+	def set_value(self, value):
+		vals = value.split()
+
+		if len(vals) > 1:
+			self.chr1_widget.setCurrentText(vals[0])
+			self.chr2_widget.setCurrentText(vals[1])
+		else:
+			self.chr1_widget.setCurrentText(vals[0])
+			self.chr2_widget.setCurrentText(vals[0])
+
 class CirchartRuleWidget(QWidget):
 	def __init__(self, parent=None):
 		super().__init__(parent)
@@ -1360,6 +1396,9 @@ class CirchartParameterPanel(QWidget):
 				case 'annulus':
 					w = CirchartAnnulusParameter(p.name, self)
 
+				case 'chroms':
+					w = CirchartChromsParameter(p.name, self)
+
 			for k in p:
 				match k:
 					case 'range':
@@ -1458,6 +1497,9 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 	def _init_panels(self):
 		self._create_main_panel()
 		self._create_label_panel()
+		self._create_space_panel()
+		self.space_count = 0
+		self.chroms = []
 
 	def _create_main_panel(self):
 		main_params = CIRCOS_PARAMS['ideogram']
@@ -1466,8 +1508,56 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 
 	def _create_label_panel(self):
 		label_params = CIRCOS_PARAMS['labels']
-		label_panel = self.create_panel('label', 'icons/label.svg', "Ideogram Labels")
+		label_panel = self.create_panel('label', 'icons/label.svg', "Show ideogram labels")
 		label_panel.create_params(label_params)
+
+	def _create_space_panel(self):
+		self.space_panel = self.create_panel('spaces', 'icons/space.svg', "Spacing between specific chromosomes")
+
+		menu = QMenu(self.space_panel)
+		space_act = QAction("Add Spacing", self.space_panel)
+		space_act.triggered.connect(self.add_spacing)
+		menu.addAction(space_act)
+
+		open_menu = lambda x: (menu.move(QCursor().pos()), (menu.show()))
+		self.space_panel.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.space_panel.customContextMenuRequested.connect(open_menu)
+
+	def set_chroms(self, chroms):
+		self.chroms = chroms
+
+	def create_spacing(self, key):
+		space_params = CIRCOS_PARAMS['spaces']
+		space = CirchartChildAccordion(key, self.space_panel)
+		panel = space.create_panel('space')
+		panel.create_params(space_params)
+		param = panel.get_widget('pairwise')
+		param.set_data(self.chroms)
+		self.space_panel.add_param(space, group=True)
+
+	def add_spacing(self):
+		self.space_count += 1
+		key = 'spacing{}'.format(self.space_count)
+		self.create_spacing(key)
+
+	def set_params(self, params):
+		print(params)
+
+		if 'ideogram' in params:
+			spaces = params['ideogram']['spaces']
+
+			self.space_panel.clear_params()
+			self.space_count = 0
+
+			for s in spaces:
+				sid = int(s.lstrip('spacing'))
+
+				if sid > self.space_count:
+					self.space_count = sid
+
+				self.create_spacing(s)
+
+		super().set_params(params)
 
 class CirchartTickTrack(CirchartParameterAccordion):
 	_closable = False
@@ -1800,7 +1890,7 @@ class CirchartParameterManager(QScrollArea):
 			return
 
 		self.reset_params(params)
-		return params['general']['global']['plotname']
+		#return params['general']['global']['plotname']
 
 class CirchartCircosParameterManager(CirchartParameterManager):
 	def new_circos_plot(self, params):
@@ -1819,6 +1909,7 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		self.add_widget(form)
 
 		form = CirchartIdeogramTrack('ideogram', self)
+		form.set_chroms(self.chroms)
 		form.set_params(params)
 		self.add_widget(form)
 
@@ -1893,17 +1984,19 @@ class CirchartSnailParameterManager(CirchartParameterManager):
 		self.add_widget(form)
 
 		form = CirchartSnailPlotForm('plot', self)
-		#form.set_params(params)
+		form.set_params(params)
 		self.add_widget(form)
 
 		form = CirchartSnailBuscoForm('busco', self)
-		#form.set_params(params)
+		form.set_params(params)
 		self.add_widget(form)
 
 		return self.get_params()
 
 	def reset_params(self, params):
-		self.new_circos_plot(params)
+		self.new_snail_plot(params)
+
+
 
 
 

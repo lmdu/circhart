@@ -715,30 +715,11 @@ class CirchartMainWindow(QMainWindow):
 			if self.param_stack.currentIndex() != 1:
 				self.param_stack.setCurrentIndex(1)
 
-			plot_name = self.snail_panel.change_plot(pid)
-			#title = 'Snail:{}'.format(plot_name)
-			#self.param_dock.setWindowTitle(title)
+			self.snail_panel.change_plot(pid)
 
 		elif ptype == 'circos':
 			if self.param_stack.currentIndex() != 0:
 				self.param_stack.setCurrentIndex(0)
 			
-			plot_name = self.circos_panel.change_plot(pid)
-			#title = 'Circos:{}'.format(plot_name)
-			#self.param_dock.setWindowTitle(title)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+			self.circos_panel.change_plot(pid)
 
