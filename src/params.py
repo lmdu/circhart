@@ -14,57 +14,50 @@ __all__ = [
 
 #from https://gis.stackexchange.com/questions/350148/qcombobox-multiple-selection-pyqt5
 class CirchartCheckableComboBox(QComboBox):
-
-	# Subclass Delegate to increase item height
-	#class Delegate(QStyledItemDelegate):
-	#    def sizeHint(self, option, index):
-	#        size = super().sizeHint(option, index)
-	#        size.setHeight(20)
-	#        return size
-
 	def __init__(self, parent=None):
 		super().__init__(parent)
 
 		self.setEditable(True)
 		self.lineEdit().setReadOnly(True)
 
-		palette = self.palette()
-		palette.setBrush(QPalette.Base, palette.button())
-		self.lineEdit().setPalette(palette)
-
-		# Use custom delegate
-		#self.setItemDelegate(CheckableComboBox.Delegate())
 		self.model().dataChanged.connect(self.update_text)
 
 		self.lineEdit().installEventFilter(self)
 		self.close_popup = False
 
 		self.view().viewport().installEventFilter(self)
+		self.setMinimumWidth(100)
 
 	def resizeEvent(self, event):
 		self.update_text()
 		super().resizeEvent(event)
 
-	def eventFilter(self, object, event):
-		if object == self.lineEdit():
+	def eventFilter(self, watched, event):
+		if watched == self.lineEdit():
 			if event.type() == QEvent.MouseButtonRelease:
 				if self.close_popup:
 					self.hidePopup()
+				
 				else:
 					self.showPopup()
+				
 				return True
+			
 			return False
 
-		if object == self.view().viewport():
+		if watched == self.view().viewport():
 			if event.type() == QEvent.MouseButtonRelease:
 				index = self.view().indexAt(event.pos())
 				item = self.model().item(index.row())
 
 				if item.checkState() == Qt.Checked:
 					item.setCheckState(Qt.Unchecked)
+				
 				else:
 					item.setCheckState(Qt.Checked)
+				
 				return True
+		
 		return False
 
 	def showPopup(self):
@@ -87,21 +80,28 @@ class CirchartCheckableComboBox(QComboBox):
 
 			if item.checkState() == Qt.Checked:
 				texts.append(item.text())
-		
-		text = ",".join(texts)
 
-		#metrics = QFontMetrics(self.lineEdit().font())
-		#elidedText = metrics.elidedText(text, Qt.ElideRight, self.lineEdit().width())
-		#self.lineEdit().setText(elidedText)
+		text = ",".join(texts)
 		self.lineEdit().setText(text)
+
+	def get_datas(self):
+		res = []
+		for i in range(self.model().rowCount()):
+			item = self.model().item(i)
+			res.append(item.data())
+
+		return res
 
 	def addItem(self, text, data=None):
 		item = QStandardItem()
 		item.setText(text)
+		
 		if data is None:
 			item.setData(text)
+		
 		else:
 			item.setData(data)
+		
 		item.setFlags(Qt.ItemIsEnabled | Qt.ItemIsUserCheckable)
 		item.setData(Qt.Unchecked, Qt.CheckStateRole)
 		self.model().appendRow(item)
@@ -110,14 +110,17 @@ class CirchartCheckableComboBox(QComboBox):
 		for i, text in enumerate(texts):
 			try:
 				data = datalist[i]
+			
 			except (TypeError, IndexError):
 				data = None
+			
 			self.addItem(text, data)
 
 	def currentData(self):
 		res = []
 		for i in range(self.model().rowCount()):
 			item = self.model().item(i)
+
 			if item.checkState() == Qt.Checked:
 				res.append(item.data())
 		
@@ -126,9 +129,6 @@ class CirchartCheckableComboBox(QComboBox):
 	def setCurrentData(self, datas):
 		for i in range(self.model().rowCount()):
 			item = self.model().item(i)
-
-			print(item.data())
-			print(datas)
 
 			if item.data() in datas:
 				item.setData(Qt.Checked, Qt.CheckStateRole)
@@ -304,9 +304,11 @@ class CirchartChoicesParameter(CirchartParameterMixin, CirchartCheckableComboBox
 			self.dynamic = data
 
 	def showPopup(self):
+		datas = self.get_datas()
+
 		if self.dynamic:
 			for row in SqlControl.get_datas_by_type(self.dynamic):
-				if self.findData(row.id) < 0:
+				if row.id not in datas:
 					self.addItem(row.name, row.id)
 
 		super().showPopup()
@@ -1312,9 +1314,10 @@ class CirchartParameterAccordion(QWidget):
 	_closable = True
 	#deleted = Signal()
 
-	def __init__(self, key, parent=None):
+	def __init__(self, key, parent=None, **kwargs):
 		super().__init__(parent)
 		self.key = key
+		self.kwargs = kwargs
 		self.setVisible(self._visible)
 
 		self.box = QTabWidget(self)
@@ -1433,6 +1436,7 @@ class CirchartParameterPanel(QWidget):
 		super().__init__(parent)
 		self.key = key
 		self.params = {}
+		self.kcount = 0
 
 		self._set_layout()
 		self._init_widgets()
@@ -1453,6 +1457,9 @@ class CirchartParameterPanel(QWidget):
 
 	def set_key(self, key):
 		self.key = key
+
+	def set_kcount(self, kcount):
+		self.kcount = kcount
 
 	def set_spacing(self, space):
 		self.param_layout.setVerticalSpacing(space)
@@ -1530,7 +1537,10 @@ class CirchartParameterPanel(QWidget):
 					w = CirchartChoiceParameter(p.name, self)
 
 				case 'choices':
-					w = CirchartChoicesParameter(p.name, self)
+					if self.kcount > 1:
+						w = CirchartChoicesParameter(p.name, self)
+					else:
+						w = CirchartChoiceParameter(p.name, self)
 
 				case 'group':
 					w = CirchartGroupParameter(p.name, self)
@@ -1653,7 +1663,6 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 		self._create_label_panel()
 		self._create_space_panel()
 		self.space_count = 0
-		self.chroms = []
 
 	def _create_main_panel(self):
 		main_params = CIRCOS_PARAMS['ideogram']
@@ -1677,9 +1686,6 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 		self.space_panel.setContextMenuPolicy(Qt.CustomContextMenu)
 		self.space_panel.customContextMenuRequested.connect(open_menu)
 
-	def set_chroms(self, chroms):
-		self.chroms = chroms
-
 	def create_spacing(self, key):
 		space_params = CIRCOS_PARAMS['spaces']
 		space = CirchartChildAccordion(key, self.space_panel)
@@ -1695,8 +1701,6 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 		self.create_spacing(key)
 
 	def set_params(self, params):
-		print(params)
-
 		if 'ideogram' in params:
 			spaces = params['ideogram']['spaces']
 
@@ -1780,10 +1784,9 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self._create_axes_panel()
 		self._create_background_panel()
 
-		self.chroms = []
-
 	def _create_plot_panel(self):
 		self.plot_panel = self.create_panel('main', 'icons/chart.svg', "Track plot parameters")
+		self.plot_panel.set_kcount(self.kwargs['kcount'])
 		self.plot_params = CIRCOS_PARAMS['tracks']
 		ptypes = [k for k in self.plot_params]
 
@@ -1806,9 +1809,6 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.rule_panel.setContextMenuPolicy(Qt.CustomContextMenu)
 		self.rule_panel.customContextMenuRequested.connect(open_menu)
 
-	def set_chroms(self, chroms):
-		self.chroms = chroms
-
 	def create_rule(self, key, ptype):
 		plot_params = self.plot_params[ptype]
 		rule_params = self.rule_params[ptype]
@@ -1829,7 +1829,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		param.set_attrs(attrs)
 		param = panel.get_widget('condition')
 		param.set_tests(tests)
-		param.set_chroms(self.chroms)
+		param.set_chroms(self.kwargs['chroms'])
 
 		self.rule_panel.add_param(rule, group=True)
 
@@ -2050,20 +2050,21 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 	def new_circos_plot(self, params):
 		self.clear_widgets()
 		self.plot_id = params['general']['global']['plotid']
+		self.karyotype_count = len(params['general']['global']['karyotype'])
 
 		self.chroms = []
 		for k in params['general']['global']['karyotype']:
 			rows = SqlControl.get_data_objects('karyotype', k)
 
 			for row in rows:
-				self.chroms.append(row.uid)
+				self.chroms.append(row.name)
 
 		form = CirchartGeneralTrack('general', self)
 		form.set_params(params)
 		self.add_widget(form)
 
-		form = CirchartIdeogramTrack('ideogram', self)
-		form.set_chroms(self.chroms)
+		form = CirchartIdeogramTrack('ideogram', self, chroms=self.chroms)
+		#form.set_chroms(self.chroms)
 		form.set_params(params)
 		self.add_widget(form)
 
@@ -2074,8 +2075,9 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		return self.get_params()
 
 	def create_plot_track(self, key):
-		track = CirchartPlotTrack(key, self)
-		track.set_chroms(self.chroms)
+		track = CirchartPlotTrack(key, self, chroms=self.chroms,
+			kcount=self.karyotype_count)
+		#track.set_chroms(self.chroms)
 		self.add_widget(track)
 		return track
 
@@ -2099,6 +2101,7 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 					self.track_count = tid
 
 				track = self.add_plot_track(k)
+				params[k]['kcount'] = self.karyotype_count
 				track.set_params(params)
 
 class CirchartSnailGeneralForm(CirchartParameterAccordion):

@@ -173,7 +173,7 @@ class CirchartGCContentPrepareWorker(CirchartProcessWorker):
 		objs = SqlControl.get_data_objects('karyotype', self.params['karyotype'])
 
 		self.params['axes'] = {
-			obj.label: (obj.uid, obj.end)
+			obj.label: (obj.name, obj.end)
 			for obj in objs if obj.type == 'chr'
 		}
 		self.table_index = SqlControl.add_data(self.params['dataname'], 'plotdata')
@@ -195,7 +195,7 @@ class CirchartDensityPrepareWorker(CirchartProcessWorker):
 		objs = SqlControl.get_data_objects('karyotype', self.params['karyotype'])
 
 		self.params['axes'] = {
-			obj.label: (obj.uid, obj.end)
+			obj.label: (obj.name, obj.end)
 			for obj in objs if obj.type == 'chr'
 		}
 
@@ -243,16 +243,19 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 		for index in self.params['general']['global']['karyotype']:
 			outfile = "karyotype{}.txt".format(index)
 			data = SqlControl.get_data_content('karyotype', index)
-			save_circos_data(workdir, outfile, data)
+			save_circos_data(workdir, outfile, [data])
 
 		for k in self.params:
 			if k.startswith('track'):
 				ptype = self.params[k]['main']['type']
 				index = self.params[k]['main']['data']
-				outfile = "data{}.txt".format(index)
 
-				if os.path.isfile(outfile):
-					continue
+				if isinstance(index, int):
+					outfile = "data{}.txt".format(index)
+					kids = [index]
+				else:
+					outfile = "data{}.txt".format('-'.join(map(str, index)))
+					kids = index
 
 				if ptype == 'link':
 					tag = 'linkdata'
@@ -266,8 +269,11 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 				else:
 					tag = 'plotdata'
 
-				data = SqlControl.get_data_content(tag, index)
-				save_circos_data(workdir, outfile, data)
+				datas = []
+				for kid in kids:
+					data = SqlControl.get_data_content(tag, kid)
+					datas.append(datas)
+				save_circos_data(workdir, outfile, datas)
 
 		confile = os.path.join(workdir, 'plot.conf')
 		configer = CirchartCircosConfile(self.params)

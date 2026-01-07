@@ -77,7 +77,7 @@ class KaryotypeTable(SqlTable):
 	_index = True
 	type = str
 	parent = str
-	uid = str
+	name = str
 	label = str
 	start = int
 	end = int
