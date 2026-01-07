@@ -221,7 +221,7 @@ tracks:
   scatter:
     -
       name: data
-      type: choice
+      type: choices
       source: plotdata
     -
       name: r0r1
@@ -272,7 +272,7 @@ tracks:
   line:
     -
       name: data
-      type: choice
+      type: choices
       source: plotdata
     -
       name: r0r1
@@ -303,7 +303,7 @@ tracks:
   histogram:
     -
       name: data
-      type: choice
+      type: choices
       source: plotdata
     -
       name: r0r1
@@ -337,7 +337,7 @@ tracks:
   heatmap:
     -
       name: data
-      type: choice
+      type: choices
       source: plotdata
     -
       name: r0r1
@@ -352,7 +352,7 @@ tracks:
   tile:
     -
       name: data
-      type: choice
+      type: choices
       source: locidata
     -
       name: r0r1
@@ -413,7 +413,7 @@ tracks:
   text:
     -
       name: data
-      type: choice
+      type: choices
       source: textdata
     -
       name: r0r1
@@ -526,7 +526,7 @@ tracks:
   connector:
     -
       name: data
-      type: choice
+      type: choices
       source: locidata
     -
       name: r0r1
@@ -548,7 +548,7 @@ tracks:
   highlight:
     -
       name: data
-      type: choice
+      type: choices
       source: locidata
     -
       name: ideogram
@@ -586,7 +586,7 @@ tracks:
   link:
     -
       name: data
-      type: choice
+      type: choices
       source: linkdata
     -
       name: ribbon

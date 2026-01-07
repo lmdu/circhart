@@ -4,6 +4,7 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
+from config import *
 from backend import *
 
 __all__ = [
@@ -416,8 +417,44 @@ class CirchartKaryotypeTableModel(CirchartDataTableModel):
 		self.dataChanged.emit(sindex, eindex)
 
 	def update_default_color(self):
-		pass
+		#get chr colors from circos
+		color_file = CIRCOS_PATH / 'etc' / 'colors.ucsc.conf'
 
+		circos_colors = {}
+		with open(str(color_file)) as fh:
+			for line in fh:
+				if line.startswith('chr'):
+					cols = line.strip().split('=')
+					if ',' in cols[1]:
+						circos_colors[cols[0].strip().lower()] = cols[1].strip()
+
+		sql = SqlQuery(self._table)\
+			.update('color')\
+			.where('rowid=?')
+
+		for i in range(self.total_count):
+			name = self.createIndex(i, 3).data(Qt.DisplayRole)
+			label = self.createIndex(i, 4).data(Qt.DisplayRole)
+
+			if label.lower() in circos_colors:
+				color = circos_colors[label.lower()]
+
+			elif name.lower() in circos_colors:
+				color = circos_colors[name.lower()]
+
+			else:
+				temp = 'chr{}'.format(i+1)
+
+				if temp in circos_colors:
+					color = circos_colors[temp]
+				else:
+					color = circos_colors['chrun']
+
+			SqlBase.update_row(sql, color, i+1)
+
+		sindex = self.createIndex(0, 7)
+		eindex = self.createIndex(self.total_count-1, 7)
+		self.dataChanged.emit(sindex, eindex)
 
 class CirchartDataTreeModel(CirchartBaseTableModel):
 	_table = 'data'
