@@ -171,6 +171,12 @@ class CirchartBaseTableModel(QAbstractTableModel):
 			.first()
 
 	@property
+	def delete_sql(self):
+		return SqlQuery(self._table)\
+			.delete()\
+			.where('id=?')
+
+	@property
 	def read_sql(self):
 		remain_count = self.total_count - self.read_count
 		fetch_count = min(self.read_size, remain_count)
@@ -210,6 +216,16 @@ class CirchartBaseTableModel(QAbstractTableModel):
 
 	def get_table(self):
 		return self._table
+
+	def remove_row(self, index, parent=QModelIndex()):
+		row = index.row()
+		self.beginRemoveRows(parent, row, row)
+		SqlBase.delete_row(self.delete_sql, self.displays[row])
+		self.displays.pop(row)
+		self.total_count -= 1
+		self.read_count -= 1
+		self.endRemoveRows()
+		self.update_count()
 
 	def update_model(self):
 		self.beginResetModel()

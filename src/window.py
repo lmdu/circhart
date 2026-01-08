@@ -47,6 +47,7 @@ class CirchartMainWindow(QMainWindow):
 		self.plot_view = CirchartGraphicsViewWidget(self)
 		self.data_table = CirchartDataTableWidget(self)
 		self.data_tree = CirchartDataTreeWidget(self)
+		self.data_tree.data_removed.connect(self.data_table.clear_table)
 		self.data_tree.show_data.connect(self.data_table.change_table)
 		self.data_tree.clicked.connect(self.show_data_table)
 		self.plot_tree = CirchartPlotTreeWidget(self)
@@ -396,7 +397,9 @@ class CirchartMainWindow(QMainWindow):
 
 	def create_plot_panels(self):
 		self.circos_panel = CirchartCircosParameterManager(self)
+		self.plot_tree.plot_removed.connect(self.circos_panel.clear_params)
 		self.snail_panel = CirchartSnailParameterManager(self)
+		self.plot_tree.plot_removed.connect(self.snail_panel.clear_params)
 
 		self.param_stack.addWidget(self.circos_panel)
 		self.param_stack.addWidget(self.snail_panel)

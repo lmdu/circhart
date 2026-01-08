@@ -319,6 +319,10 @@ class DataBackend:
 		sql = SqlQuery(table).create(*fields)
 		self.query(sql)
 
+	def drop_table(self, table):
+		sql = SqlQuery(table).drop()
+		self.query(sql)
+
 	def insert_row(self, sql, *args):
 		cur = self.query(sql, args)
 		return cur.connection.last_insert_rowid()
@@ -327,6 +331,9 @@ class DataBackend:
 		self.cursor.executemany(str(sql), rows)
 
 	def update_row(self, sql, *args):
+		self.query(sql, args)
+
+	def delete_row(self, sql, *args):
 		self.query(sql, args)
 
 	def get_one(self, sql, *args):

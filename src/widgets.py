@@ -156,6 +156,11 @@ class CirchartIOTreeWidget(QTreeView):
 		self.create_model()
 		self.set_header_width()
 
+		self._init_widget()
+
+	def _init_widget(self):
+		pass
+
 	def sizeHint(self):
 		return QSize(200, 300)
 
@@ -180,6 +185,11 @@ class CirchartIOTreeWidget(QTreeView):
 
 class CirchartDataTreeWidget(CirchartIOTreeWidget):
 	show_data = Signal(str, int)
+	data_removed = Signal(str)
+
+	def _init_widget(self):
+		self.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.customContextMenuRequested.connect(self._show_context_menu)
 
 	def create_model(self):
 		self._model = CirchartDataTreeModel(self)
@@ -188,8 +198,40 @@ class CirchartDataTreeWidget(CirchartIOTreeWidget):
 	def emit_signal(self, table, rowid):
 		self.show_data.emit(table, rowid)
 
+	def _show_context_menu(self, pos):
+		delete_action = QAction("Delete")
+		delete_action.triggered.connect(self.delete_data)
+
+		menu = QMenu(self)
+		menu.addAction(delete_action)
+		menu.exec(self.mapToGlobal(pos))
+
+	def delete_data(self):
+		index = self.currentIndex()
+
+		if not index.isValid():
+			return
+
+		ret = QMessageBox.question(self, "Comfirmation",
+			"Are you sure you want to delete this data?")
+
+		if ret == QMessageBox.No:
+			return
+
+		data_id = self._model.get_id(index)
+		data_type = index.siblingAtColumn(1).data()
+		self._model.remove_row(index)
+		table = "{}_{}".format(data_type, data_id)
+		SqlBase.drop_table(table)
+		self.data_removed.emit(table)
+
 class CirchartPlotTreeWidget(CirchartIOTreeWidget):
 	show_plot = Signal(str, int)
+	plot_removed = Signal(int)
+
+	def _init_widget(self):
+		self.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.customContextMenuRequested.connect(self._show_context_menu)
 
 	def create_model(self):
 		self._model = CirchartPlotTreeModel(self)
@@ -197,6 +239,30 @@ class CirchartPlotTreeWidget(CirchartIOTreeWidget):
 
 	def emit_signal(self, ptype, rowid):
 		self.show_plot.emit(ptype, rowid)
+
+	def _show_context_menu(self, pos):
+		delete_action = QAction("Delete")
+		delete_action.triggered.connect(self.delete_plot)
+
+		menu = QMenu(self)
+		menu.addAction(delete_action)
+		menu.exec(self.mapToGlobal(pos))
+
+	def delete_plot(self):
+		index = self.currentIndex()
+
+		if not index.isValid():
+			return
+
+		ret = QMessageBox.question(self, "Comfirmation",
+			"Are you sure you want to delete this plot?")
+
+		if ret == QMessageBox.No:
+			return
+
+		plot_id = self._model.get_id(index)
+		self._model.remove_row(index)
+		self.plot_removed.emit(plot_id)
 
 class CirchartDataTableWidget(QTableView):
 	def __init__(self, parent=None):
@@ -227,6 +293,14 @@ class CirchartDataTableWidget(QTableView):
 		self._model.change_table(table)
 		self._model.update_model()
 		self.setModel(self._model)
+
+	def clear_table(self, table):
+		if self._model is None:
+			return
+
+		if table == self._model.get_table():
+			self._model = None
+			self.setModel(None)
 
 	def update_karyotype_color(self, method, color=None):
 		if type(self._model) != CirchartKaryotypeTableModel:

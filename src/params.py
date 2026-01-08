@@ -2007,6 +2007,11 @@ class CirchartParameterManager(QScrollArea):
 				if widget:
 					widget.deleteLater()
 
+	def clear_params(self, plot_id):
+		if self.plot_id == plot_id:
+			self.clear_widgets()
+			self.plot_id = 0
+
 	def get_params(self):
 		values = {}
 		count = self.main_layout.count()
