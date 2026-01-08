@@ -26,7 +26,7 @@ class CirchartCheckableComboBox(QComboBox):
 		self.close_popup = False
 
 		self.view().viewport().installEventFilter(self)
-		self.setMinimumWidth(100)
+		self.setMinimumWidth(120)
 
 	def resizeEvent(self, event):
 		self.update_text()

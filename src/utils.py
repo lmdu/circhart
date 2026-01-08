@@ -22,14 +22,12 @@ class AttrDict(dict):
 	def __setattr__(self, attr, val):
 		self[attr] = val
 
-def save_circos_data(workdir, filename, datas):
+def save_circos_data(workdir, filename, data):
 	outfile = os.path.join(workdir, filename)
 
-	with open(outfile, 'w', newline='') as fw:
+	with open(outfile, 'a', newline='', encoding='utf-8') as fw:
 		writer = csv.writer(fw, delimiter=' ', quoting=csv.QUOTE_NONE)
-
-		for data in datas:
-			writer.writerows(data)
+		writer.writerows(data)
 
 def save_snail_data(workdir, filename, data):
 	outfile = os.path.join(workdir, filename)

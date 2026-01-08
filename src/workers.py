@@ -76,7 +76,9 @@ class CirchartBaseWorker(QRunnable):
 
 	def make_tempdir(self):
 		self.tempdir = QTemporaryDir()
-		self.tempdir.setAutoRemove(False)
+
+		if APP_DEBUG:
+			self.tempdir.setAutoRemove(False)
 
 		if not self.tempdir.isValid():
 			raise Exception("Could not create temporary directory")
@@ -243,7 +245,7 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 		for index in self.params['general']['global']['karyotype']:
 			outfile = "karyotype{}.txt".format(index)
 			data = SqlControl.get_data_content('karyotype', index)
-			save_circos_data(workdir, outfile, [data])
+			save_circos_data(workdir, outfile, data)
 
 		for k in self.params:
 			if k.startswith('track'):
@@ -259,21 +261,19 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 
 				if ptype == 'link':
 					tag = 'linkdata'
-				
+
 				elif ptype == 'text':
 					tag = 'textdata'
-				
+
 				elif ptype in ['tile', 'connector', 'highlight']:
 					tag = 'locidata'
 
 				else:
 					tag = 'plotdata'
 
-				datas = []
 				for kid in kids:
 					data = SqlControl.get_data_content(tag, kid)
-					datas.append(datas)
-				save_circos_data(workdir, outfile, datas)
+					save_circos_data(workdir, outfile, data)
 
 		confile = os.path.join(workdir, 'plot.conf')
 		configer = CirchartCircosConfile(self.params)

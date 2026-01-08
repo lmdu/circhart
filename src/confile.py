@@ -136,7 +136,7 @@ class CirchartCircosConfile(Confile):
 								if isinstance(v, int):
 									self.option('file', 'data{}.txt'.format(v))
 								else:
-									self.option('file', 'data{}.txt'.format(map(str, v)))
+									self.option('file', 'data{}.txt'.format('-'.join(map(str, v))))
 
 							case 'type':
 								if v == 'highlight':
