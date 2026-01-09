@@ -586,6 +586,10 @@ class SqlControl:
 	@staticmethod
 	def get_data_objects(type, index):
 		table = '{}_{}'.format(type, index)
+
+		if not SqlBase.has_table(table):
+			return []
+
 		sql = SqlQuery(table)\
 			.select()
 
