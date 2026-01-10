@@ -183,6 +183,79 @@ class CirchartIOTreeWidget(QTreeView):
 		table = self._model.get_value(index.row(), 1)
 		self.emit_signal(table, rowid)
 
+class CirchartBrowseWidget(QWidget):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self._init_widget()
+		self._init_layout()
+
+	def _init_widget(self):
+		self.input = QLineEdit(self)
+		self.input.setReadOnly(True)
+		self.browse = QPushButton(self)
+		self.browse.setFlat(True)
+		self.browse.setIcon(QIcon('icons/folder.svg'))
+		self.browse.clicked.connect(self.select_path)
+
+	def _init_layout(self):
+		self.main_layout = QHBoxLayout()
+		self.main_layout.setSpacing(0)
+		self.main_layout.setContentsMargins(0, 0, 0, 0)
+		self.main_layout.addWidget(self.input, 1)
+		self.main_layout.addWidget(self.browse)
+
+		self.setLayout(self.main_layout)
+
+	def select_path(self):
+		path, _ = QFileDialog.getOpenFileName(self)
+
+		if path:
+			self.set_path(path)
+
+	def set_path(self, path):
+		self.input.setText(path)
+
+	def get_path(self):
+		return self.input.text()
+
+class CirchartDataMetaViewer(QDialog):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.setWindowTitle("Data Meta Information")
+
+		self._init_widget()
+		self._init_layout()
+
+	def sizeHint(self):
+		return QSize(300, 10)
+
+	def _init_widget(self):
+		self.btn_box = QDialogButtonBox(
+			QDialogButtonBox.StandardButton.Cancel |
+			QDialogButtonBox.StandardButton.Ok
+		)
+		self.btn_box.accepted.connect(self.accept)
+		self.btn_box.rejected.connect(self.reject)
+
+	def _init_layout(self):
+		self.main_layout = QVBoxLayout()
+		self.form_layout = QFormLayout()
+		self.form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
+		self.main_layout.addLayout(self.form_layout)
+		self.main_layout.addWidget(self.btn_box)
+		self.setLayout(self.main_layout)
+
+	def show_meta(self, meta):
+		for k, v in meta.items():
+			if k == 'path':
+				widget = CirchartBrowseWidget(self)
+				widget.set_path(v)
+			else:
+				widget = QLabel(v, self)
+			
+			self.form_layout.addRow(k.title(), widget)
+
 class CirchartDataTreeWidget(CirchartIOTreeWidget):
 	show_data = Signal(str, int)
 	data_removed = Signal(str)
@@ -224,7 +297,14 @@ class CirchartDataTreeWidget(CirchartIOTreeWidget):
 
 	def view_meta(self):
 		index = self.currentIndex()
-		did = self.get_id(index)
+		did = self._model.get_id(index)
+
+		meta_data = SqlControl.get_data_meta(did)
+
+		if meta_data:
+			dlg = CirchartDataMetaViewer(self)
+			dlg.show_meta(meta_data)
+			dlg.exec()
 
 	def delete_data(self):
 		index = self.currentIndex()
