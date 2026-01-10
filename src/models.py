@@ -477,6 +477,13 @@ class CirchartDataTreeModel(CirchartBaseTableModel):
 	_fields = ['name', 'type']
 	_headers = ['Name', 'Type']
 
+	def rename_data(self, index, data_name):
+		data_id = self.get_id(index)
+		SqlControl.rename_data(data_id, data_name)
+		uindex = index.siblingAtColumn(0)
+		self.dataChanged.emit(uindex, index)
+		self.update_cache(index.row())
+
 class CirchartPlotTreeModel(CirchartBaseTableModel):
 	_table = 'plot'
 	_fields = ['name', 'type']

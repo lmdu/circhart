@@ -199,12 +199,32 @@ class CirchartDataTreeWidget(CirchartIOTreeWidget):
 		self.show_data.emit(table, rowid)
 
 	def _show_context_menu(self, pos):
+		meta_action = QAction("View meta")
+		meta_action.triggered.connect(self.view_meta)
+		rename_action = QAction("Rename")
+		rename_action.triggered.connect(self.rename_data)
 		delete_action = QAction("Delete")
 		delete_action.triggered.connect(self.delete_data)
 
 		menu = QMenu(self)
+		menu.addAction(rename_action)
 		menu.addAction(delete_action)
+		menu.addSeparator()
+		menu.addAction(meta_action)
+
 		menu.exec(self.mapToGlobal(pos))
+
+	def rename_data(self):
+		new_name, ok = QInputDialog.getText(self, "Rename data", "Input new name:")
+		new_name = new_name.strip()
+
+		if ok and new_name:
+			index = self.currentIndex()
+			self._model.rename_data(index, new_name)
+
+	def view_meta(self):
+		index = self.currentIndex()
+		did = self.get_id(index)
 
 	def delete_data(self):
 		index = self.currentIndex()

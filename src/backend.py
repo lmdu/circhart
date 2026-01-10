@@ -422,6 +422,14 @@ class SqlControl:
 		return SqlBase.insert_row(sql, name, type, meta)
 
 	@staticmethod
+	def rename_data(did, name):
+		sql = SqlQuery('data')\
+			.update('name')\
+			.where('id=?')
+
+		SqlBase.update_row(sql, name, did)
+
+	@staticmethod
 	def get_data_meta(did):
 		sql = SqlQuery('data')\
 			.select('meta')\
