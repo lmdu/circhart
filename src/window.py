@@ -127,6 +127,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_link_data
 		)
 
+		self.import_loci_act = QAction("&Import Loci Data...", self,
+			triggered = self.do_import_loci_data
+		)
+
 		self.import_text_act = QAction("&Import Text Data...", self,
 			triggered = self.do_import_text_data
 		)
@@ -555,6 +559,9 @@ class CirchartMainWindow(QMainWindow):
 		pass
 
 	def do_import_link_data(self):
+		pass
+
+	def do_import_loci_data(self):
 		pass
 
 	def do_import_text_data(self):

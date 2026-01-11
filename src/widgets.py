@@ -219,18 +219,20 @@ class CirchartBrowseWidget(QWidget):
 	def get_path(self):
 		return self.input.text()
 
-class CirchartDataMetaViewer(QDialog):
+class CirchartFileBrowseDialog(QDialog):
 	def __init__(self, parent=None):
 		super().__init__(parent)
-		self.setWindowTitle("Data Meta Information")
+		self.setWindowTitle("Change File Path")
 
 		self._init_widget()
 		self._init_layout()
 
 	def sizeHint(self):
-		return QSize(300, 10)
+		return QSize(450, 10)
 
 	def _init_widget(self):
+		self.file_browse = CirchartBrowseWidget(self)
+
 		self.btn_box = QDialogButtonBox(
 			QDialogButtonBox.StandardButton.Cancel |
 			QDialogButtonBox.StandardButton.Ok
@@ -240,21 +242,18 @@ class CirchartDataMetaViewer(QDialog):
 
 	def _init_layout(self):
 		self.main_layout = QVBoxLayout()
-		self.form_layout = QFormLayout()
-		self.form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
-		self.main_layout.addLayout(self.form_layout)
+		self.main_layout.addWidget(QLabel("File Path:", self))
+		self.main_layout.addWidget(self.file_browse)
 		self.main_layout.addWidget(self.btn_box)
 		self.setLayout(self.main_layout)
 
-	def show_meta(self, meta):
-		for k, v in meta.items():
-			if k == 'path':
-				widget = CirchartBrowseWidget(self)
-				widget.set_path(v)
-			else:
-				widget = QLabel(v, self)
-			
-			self.form_layout.addRow(k.title(), widget)
+	@classmethod
+	def get_path(cls, parent=None, path=''):
+		dlg = cls(parent)
+		dlg.file_browse.set_path(path)
+
+		if dlg.exec() == QDialog.Accepted:
+			return dlg.file_browse.get_path()
 
 class CirchartDataTreeWidget(CirchartIOTreeWidget):
 	show_data = Signal(str, int)
@@ -272,8 +271,8 @@ class CirchartDataTreeWidget(CirchartIOTreeWidget):
 		self.show_data.emit(table, rowid)
 
 	def _show_context_menu(self, pos):
-		meta_action = QAction("View meta")
-		meta_action.triggered.connect(self.view_meta)
+		path_action = QAction("Change Path")
+		path_action.triggered.connect(self.change_path)
 		rename_action = QAction("Rename")
 		rename_action.triggered.connect(self.rename_data)
 		delete_action = QAction("Delete")
@@ -283,28 +282,38 @@ class CirchartDataTreeWidget(CirchartIOTreeWidget):
 		menu.addAction(rename_action)
 		menu.addAction(delete_action)
 		menu.addSeparator()
-		menu.addAction(meta_action)
+		menu.addAction(path_action)
 
 		menu.exec(self.mapToGlobal(pos))
 
 	def rename_data(self):
+		index = self.currentIndex()
+
+		if not index.isValid():
+			return
+
 		new_name, ok = QInputDialog.getText(self, "Rename data", "Input new name:")
 		new_name = new_name.strip()
 
 		if ok and new_name:
-			index = self.currentIndex()
 			self._model.rename_data(index, new_name)
 
-	def view_meta(self):
+	def change_path(self):
 		index = self.currentIndex()
-		did = self._model.get_id(index)
 
+		if not index.isValid():
+			return
+
+		did = self._model.get_id(index)
 		meta_data = SqlControl.get_data_meta(did)
 
-		if meta_data:
-			dlg = CirchartDataMetaViewer(self)
-			dlg.show_meta(meta_data)
-			dlg.exec()
+		if meta_data and 'path' in meta_data:
+			new_path = CirchartFileBrowseDialog.get_path(self, meta_data['path'])
+
+			if new_path is not None:
+				if new_path != meta_data['path']:
+					meta_data['path'] = new_path
+					SqlControl.update_data_meta(did, meta_data)
 
 	def delete_data(self):
 		index = self.currentIndex()
