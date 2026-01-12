@@ -107,6 +107,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_genome_annotation
 		)
 
+		self.import_gbands_act = QAction("&Import Genome Bands...", self,
+			triggered = self.do_import_genome_bands
+		)
+
 		self.import_collinearity_act = QAction("&Import Collinearity File...", self,
 			triggered = self.do_import_mcscanx_collinearity
 		)
@@ -117,6 +121,10 @@ class CirchartMainWindow(QMainWindow):
 
 		self.import_kdata_act = QAction("&Import Karyotype Data...", self,
 			triggered = self.do_import_karyotype_data
+		)
+
+		self.import_band_act = QAction("&Import Band Data...", self,
+			triggered = self.do_import_band_data
 		)
 
 		self.import_pdata_act = QAction("&Import Plot Data...", self,
@@ -271,9 +279,12 @@ class CirchartMainWindow(QMainWindow):
 		self.import_menu.addAction(self.import_bed_act)
 		self.import_menu.addSeparator()
 		self.import_menu.addAction(self.import_kdata_act)
+		self.import_menu.addAction(self.import_band_act)
 		self.import_menu.addAction(self.import_pdata_act)
 		self.import_menu.addAction(self.import_link_act)
+		self.import_menu.addAction(self.import_loci_act)
 		self.import_menu.addAction(self.import_text_act)
+		self.import_menu.addSeparator()
 		self.file_menu.addAction(self.export_image_act)
 
 		self.file_menu.addSeparator()
@@ -519,6 +530,21 @@ class CirchartMainWindow(QMainWindow):
 		worker.signals.success.connect(self.data_tree.update_tree)
 		self.submit_new_worker(worker)
 
+	def do_import_genome_bands(self):
+		bfile, _ = QFileDialog.getOpenFileName(self, "Select Genome Bands File",
+			filter = (
+				"Band file (*.tsv *.txt);;"
+				"All files (*.*)"
+			)
+		)
+
+		if not bfile:
+			return
+
+		worker = CirchartImportBandsWorker({'path': bfile})
+		worker.signals.success.connect(self.data_tree.update_tree)
+		self.submit_new_worker(worker)
+
 	def do_import_mcscanx_collinearity(self):
 		cfile, _ = QFileDialog.getOpenFileName(self, "Select MCSCANX Collinearity File",
 			filter = (
@@ -537,35 +563,47 @@ class CirchartMainWindow(QMainWindow):
 	def do_import_bed_file(self):
 		pass
 
-	def do_import_busco_full_table(self):
-		bfile, _ = QFileDialog.getOpenFileName(self, "Select BUSCO Full Table File",
+	def import_plot_data(self, dtype, column):
+		dfile, _ = QFileDialog.getOpenFileName(self, "Select Data File",
 			filter = (
-				"TSV file (*.tsv);;"
+				"Data file (*.tsv *.csv *.txt);;"
 				"All files (*.*)"
 			)
 		)
 
-		if not bfile:
+		if not dfile:
 			return
 
-		worker = CirchartImportBuscoWorker({'buscofile': bfile})
+		dformat = dfile.split('.')[0].lower()
+
+		params = {
+			'path': dfile,
+			'format': dformat,
+			'type': dtype,
+			'column': column
+		}
+
+		worker = CirchartImportDataWorker(params)
 		worker.signals.success.connect(self.data_tree.update_tree)
 		self.submit_new_worker(worker)
 
 	def do_import_karyotype_data(self):
-		pass
+		self.import_plot_data('karyotype', 7)
+
+	def do_import_band_data(self):
+		self.import_plot_data('banddata', 7)
 
 	def do_import_plot_data(self):
-		pass
+		self.import_plot_data('plotdata', 4)
 
 	def do_import_link_data(self):
-		pass
+		self.import_plot_data('linkdata', 6)
 
 	def do_import_loci_data(self):
-		pass
+		self.import_plot_data('locidata', 3)
 
 	def do_import_text_data(self):
-		pass
+		self.import_plot_data('textdata', 4)
 
 	def do_export_image(self):
 		ifile, ext = QFileDialog.getSaveFileName(self,
@@ -713,12 +751,16 @@ class CirchartMainWindow(QMainWindow):
 		self.draw_snail_plot(params)
 
 	def do_update_plot(self):
+		widget = self.param_stack.currentWidget()
+
+		if widget.plot_id == 0:
+			return
+
 		if self.param_stack.currentIndex() == 0:
 			self.do_update_circos_plot()
 
 		else:
 			self.do_update_snail_plot()
-
 
 	def go_to_about(self):
 		QMessageBox.about(self, "About", APP_DESCRIPTION)

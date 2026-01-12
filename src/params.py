@@ -1978,6 +1978,7 @@ class CirchartParameterManager(QScrollArea):
 
 		self.track_count = 0
 		self.plot_id = 0
+		self.plot_type = None
 
 	def sizeHint(self):
 		return QSize(250, 0)
@@ -2055,6 +2056,7 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 	def new_circos_plot(self, params):
 		self.clear_widgets()
 		self.plot_id = params['general']['global']['plotid']
+		self.plot_type = params['general']['global']['plottype']
 		self.karyotype_count = len(params['general']['global']['karyotype'])
 
 		self.chroms = []
@@ -2087,6 +2089,9 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		return track
 
 	def add_plot_track(self, key=None):
+		if self.plot_type != 'circos' or self.plot_id == 0:
+			return
+
 		if key is None:
 			self.track_count += 1
 			key = 'track{}'.format(self.track_count)
@@ -2140,6 +2145,7 @@ class CirchartSnailParameterManager(CirchartParameterManager):
 	def new_snail_plot(self, params):
 		self.clear_widgets()
 		self.plot_id = params['general']['global']['plotid']
+		self.plot_type = params['general']['global']['plottype']
 
 		form = CirchartSnailGeneralForm('general', self)
 		form.set_params(params)

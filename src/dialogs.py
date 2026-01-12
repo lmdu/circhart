@@ -47,7 +47,7 @@ class CirchartBaseDialog(QDialog):
 			QDialogButtonBox.StandardButton.Cancel |
 			QDialogButtonBox.StandardButton.Ok
 		)
-		self.btn_box.accepted.connect(self.accept)
+		self.btn_box.accepted.connect(self._on_accepted)
 		self.btn_box.rejected.connect(self.reject)
 		self.main_layout.addWidget(self.btn_box)
 
@@ -56,6 +56,9 @@ class CirchartBaseDialog(QDialog):
 
 	def _init_layouts(self):
 		pass
+
+	def _on_accepted(self):
+		self.accept()
 
 class CirchartImportForGenomeDialog(CirchartBaseDialog):
 	_title = "Select Genome"
@@ -381,18 +384,31 @@ class CirchartCreateCircosPlotDialog(QDialog):
 			QDialogButtonBox.StandardButton.Cancel |
 			QDialogButtonBox.StandardButton.Ok
 		)
-		self.btn_box.accepted.connect(self.accept)
+		self.btn_box.accepted.connect(self._on_ok_clicked)
 		self.btn_box.rejected.connect(self.reject)
 
 		layout = QVBoxLayout()
 		layout.addWidget(QLabel("Select karyotype data:", self))
 		layout.addWidget(self.tree)
-		layout.addWidget(QLabel("Specify circos plot name:", self))
+		layout.addWidget(QLabel("Circos plot name:", self))
 		layout.addWidget(self.input)
 		layout.addWidget(self.btn_box)
 		self.setLayout(layout)
 
 		self.fill_karyotype_data()
+
+	def _on_ok_clicked(self):
+		ks = self.get_selected_karyotype()
+
+		if not ks:
+			return QMessageBox.critical(self, 'Error', "No karyotype data selected")
+
+		pn = self.input.text().strip()
+
+		if not pn:
+			return QMessageBox.critical(self, 'Error', "No circos plot name input")
+
+		self.accept()
 
 	def fill_karyotype_data(self):
 		for k in SqlControl.get_datas_by_type('karyotype'):
@@ -420,6 +436,7 @@ class CirchartCreateCircosPlotDialog(QDialog):
 
 		if dlg.exec() == QDialog.Accepted:
 			return {
+				'plottype': 'circos',
 				'plotname': dlg.input.text(),
 				'karyotype': dlg.get_selected_karyotype()
 			}
@@ -443,16 +460,32 @@ class CirchartCreateSnailPlotDialog(CirchartBaseDialog):
 		self.main_layout.addWidget(QLabel("Snail plot name:", self))
 		self.main_layout.addWidget(self.plot_name)
 
+	def _on_accepted(self):
+		gi = self.select_genome.currentData()
+		pn = self.plot_name.text().strip()
+
+		if not gi:
+			return QMessageBox.critical(self, 'Error', "No genome data selected")
+
+		if not pn:
+			return QMessageBox.critical(self, 'Error', "No snail plot name input")
+
+		self.accept()
+
 	@classmethod
 	def create_plot(cls, parent):
 		dlg = cls(parent)
 
 		if dlg.exec() == QDialog.Accepted:
 			genome = dlg.select_genome.currentData()
-			name = dlg.plot_name.text()
+			name = dlg.plot_name.text().strip()
 
 			if genome and name:
-				return {'genome': genome, 'plotname': name}
+				return {
+					'plottype': 'snail',
+					'plotname': name,
+					'genome': genome
+				}
 
 class CirchartCircosColorSelectDialog(QDialog):
 	def __init__(self, initials=[], parent=None, multiple=False):

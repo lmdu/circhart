@@ -118,7 +118,7 @@ class CirchartBaseTableModel(QAbstractTableModel):
 
 		if order == Qt.SortOrder.DescendingOrder:
 			self.order_asc = False
-		
+
 		elif order == Qt.AscendingOrder:
 			self.order_asc = True
 

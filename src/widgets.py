@@ -378,6 +378,7 @@ class CirchartDataTableWidget(QTableView):
 		super().__init__(parent)
 		self.verticalHeader().hide()
 		#self.horizontalHeader().setStretchLastSection(True)
+		self.setSortingEnabled(True)
 		self._model = None
 
 	def create_model(self, table):

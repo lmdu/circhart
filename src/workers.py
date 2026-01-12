@@ -17,6 +17,7 @@ __all__ = [
 	'CirchartImportGenomeWorker',
 	'CirchartImportAnnotationWorker',
 	'CirchartImportCollinearityWorker',
+	'CirchartImportDataWorker',
 	'CirchartGCContentPrepareWorker',
 	'CirchartGCSkewPrepareWorker',
 	'CirchartDensityPrepareWorker',
@@ -166,6 +167,33 @@ class CirchartImportCollinearityWorker(CirchartProcessWorker):
 
 	def save_result(self, res):
 		SqlControl.add_collinearity_data(self.table_index, res)
+
+class CirchartImportBandsWorker(CirchartProcessWorker):
+	processor = CirchartImportBandsProcess
+
+	def preprocess(self):
+		qf = QFileInfo(self.params['path'])
+		name = qf.completeBaseName()
+		meta = dict_to_str(self.params)
+		self.table_index = SqlControl.add_data(name, 'bands', meta)
+		SqlControl.create_bands_table(self.table_index)
+
+	def save_result(self, res):
+		SqlControl.add_bands_data(self.table_index, res)
+
+class CirchartImportDataWorker(CirchartProcessWorker):
+	processor = CirchartImportDataProcess
+
+	def preprocess(self):
+		qf = QFileInfo(self.params['path'])
+		name = qf.completeBaseName()
+		meta = dict_to_str(self.params)
+		self.table_index = SqlControl.add_data(name, self.params['type'], meta)
+	
+
+
+	def save_result(self, res):
+		pass
 
 
 class CirchartGCContentPrepareWorker(CirchartProcessWorker):
