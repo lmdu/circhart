@@ -114,8 +114,15 @@ class BuscoTable(SqlTable):
 	status = str
 	contig = str
 
-class BandDataTable(KaryotypeTable):
-	pass
+class BandDataTable(SqlTable):
+	_index = True
+	type = str
+	parent = str
+	name = str
+	label = str
+	start = int
+	end = int
+	color = str
 
 class PlotDataTable(SqlTable):
 	_index = True

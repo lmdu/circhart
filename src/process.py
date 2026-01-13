@@ -267,7 +267,7 @@ class CirchartBandPrepareProcess(CirchartBaseProcess):
 				continue
 
 			color = band_colors.get(band[4])
-			rows.append(('band', parent, band[3], band[3], band[1], band[2], color))
+			rows.append(('band', parent[0], band[3], band[3], band[1], band[2], color))
 
 			if len(rows) == 200:
 				self.send('result', rows)

@@ -492,8 +492,8 @@ class CirchartCreateCircosPlotDialog(QDialog):
 
 		if dlg.exec() == QDialog.Accepted:
 			return {
-				'plottype': 'circos',
-				'plotname': dlg.input.text(),
+				'plot_type': 'circos',
+				'plot_name': dlg.input.text(),
 				'karyotype': dlg.get_selected_karyotype()
 			}
 
@@ -538,8 +538,8 @@ class CirchartCreateSnailPlotDialog(CirchartBaseDialog):
 
 			if genome and name:
 				return {
-					'plottype': 'snail',
-					'plotname': name,
+					'plot_type': 'snail',
+					'plot_name': name,
 					'genome': genome
 				}
 

@@ -1,9 +1,15 @@
 general:
   -
-    name: plotid
-    type: hidden
+    name: plot_id
+    type: readonly
   -
-    name: plotname
+    name: plot_type
+    type: readonly
+  -
+    name: plot_name
+    type: readonly
+  -
+    name: karyotypes
     type: readonly
   -
     name: karyotype
@@ -51,6 +57,15 @@ ideogram:
     name: stroke_color
     type: color
     default: 255,255,255
+  -
+    name: show_bands
+    type: group
+    default: 'no'
+  -
+    name: bands
+    type: choices
+    source: banddata
+    parent: show_bands
 
 spaces:
   -

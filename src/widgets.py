@@ -416,6 +416,11 @@ class CirchartDataTableWidget(QTableView):
 		if type(self._model) != CirchartKaryotypeTableModel:
 			return
 
+		table = self._model.get_table()
+
+		if table.startswith('banddata'):
+			return
+
 		match method:
 			case 'single':
 				self._model.update_single_color(color)

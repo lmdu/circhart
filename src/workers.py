@@ -346,7 +346,7 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 			content = content.replace('CMUBright-Roman', font_str)
 
 			params = dict_to_str(self.params)
-			plotid = self.params['general']['global']['plotid']
+			plotid = self.params['general']['global']['plot_id']
 			SqlControl.update_plot(params, content, plotid)
 
 			self.signals.result.emit(plotid)
@@ -522,7 +522,7 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 			content = content.replace(font_str1, font_str2)
 
 			params = dict_to_str(self.params)
-			plotid = self.params['general']['global']['plotid']
+			plotid = self.params['general']['global']['plot_id']
 			SqlControl.update_plot(params, content, plotid)
 
 			self.signals.result.emit(plotid)

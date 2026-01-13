@@ -721,10 +721,12 @@ class CirchartMainWindow(QMainWindow):
 		params = CirchartCreateCircosPlotDialog.create_plot(self)
 
 		if params:
-			params['plotid'] = SqlControl.add_plot(params['plotname'], 'circos')
+			params['plot_id'] = SqlControl.add_plot(params['plot_name'], 'circos')
+			plot_id = params['plot_id']
 			params = {'general': {'global': params}}
 			params = self.circos_panel.new_circos_plot(params)
 			self.draw_circos_plot(params)
+			self.show_plot_params('circos', plot_id)
 
 	def do_add_circos_track(self):
 		self.circos_panel.add_plot_track()
@@ -749,13 +751,12 @@ class CirchartMainWindow(QMainWindow):
 		params = CirchartCreateSnailPlotDialog.create_plot(self)
 
 		if params:
-			plot_name = params['plotname']
-			params['plotid'] = SqlControl.add_plot(plot_name, 'snail')
-			plot_id = params['plotid']
+			plot_name = params['plot_name']
+			params['plot_id'] = SqlControl.add_plot(plot_name, 'snail')
+			plot_id = params['plot_id']
 			params = {'general': {'global': params}}
 			params = self.snail_panel.new_snail_plot(params)
 			self.draw_snail_plot(params)
-			#self.param_dock.setWindowTitle("Snail:{}".format(plot_name))
 			self.show_plot_params('snail', plot_id)
 
 	def do_update_snail_plot(self):

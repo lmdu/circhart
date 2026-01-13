@@ -200,10 +200,14 @@ class CirchartHiddenParameter(CirchartParameterMixin, QWidget):
 
 class CirchartReadonlyParameter(CirchartParameterMixin, QLabel):
 	def set_value(self, value):
-		self.setText(value)
+		self._default = value
+		self.setText(str(value))
 
 	def get_value(self):
-		return self.text()
+		return self._default
+
+	def _init_widget(self):
+		self.setWordWrap(True)
 
 class CirchartTitleParameter(CirchartReadonlyParameter):
 	def get_param(self):
@@ -1468,16 +1472,17 @@ class CirchartParameterPanel(QWidget):
 		if label is None:
 			label = param.key.replace('_', ' ').title()
 
-		if group:
-			self.param_layout.addRow(param)
+		if not isinstance(param, CirchartHiddenParameter):
+			if group:
+				self.param_layout.addRow(param)
 
-		elif parent:
-			parent = self.params[parent]
-			param.setParent(parent)
-			parent.add_subparam(param, label)
+			elif parent:
+				parent = self.params[parent]
+				param.setParent(parent)
+				parent.add_subparam(param, label)
 
-		else:
-			self.param_layout.addRow(label, param)
+			else:
+				self.param_layout.addRow(label, param)
 
 		self.params[param.key] = param
 
@@ -1648,7 +1653,6 @@ class CirchartChildAccordion(CirchartParameterAccordion):
 
 class CirchartGeneralTrack(CirchartParameterAccordion):
 	_closable = False
-	_visible = False
 
 	def _init_panels(self):
 		panel = self.create_panel('global')
@@ -2055,9 +2059,16 @@ class CirchartParameterManager(QScrollArea):
 class CirchartCircosParameterManager(CirchartParameterManager):
 	def new_circos_plot(self, params):
 		self.clear_widgets()
-		self.plot_id = params['general']['global']['plotid']
-		self.plot_type = params['general']['global']['plottype']
+
+		self.plot_id = params['general']['global']['plot_id']
+		self.plot_type = params['general']['global']['plot_type']
 		self.karyotype_count = len(params['general']['global']['karyotype'])
+
+		karyotypes = []
+		for row in SqlControl.get_datas_by_type('karyotype'):
+			karyotypes.append(row.name)
+
+		params['general']['global']['karyotypes'] = ', '.join(karyotypes)
 
 		self.chroms = []
 		for k in params['general']['global']['karyotype']:
@@ -2079,7 +2090,8 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		form.set_params(params)
 		self.add_widget(form)
 
-		return self.get_params()
+		params = self.get_params()
+		return params
 
 	def create_plot_track(self, key):
 		track = CirchartPlotTrack(key, self, chroms=self.chroms,
@@ -2144,8 +2156,8 @@ class CirchartSnailBuscoForm(CirchartParameterAccordion):
 class CirchartSnailParameterManager(CirchartParameterManager):
 	def new_snail_plot(self, params):
 		self.clear_widgets()
-		self.plot_id = params['general']['global']['plotid']
-		self.plot_type = params['general']['global']['plottype']
+		self.plot_id = params['general']['global']['plot_id']
+		self.plot_type = params['general']['global']['plot_type']
 
 		form = CirchartSnailGeneralForm('general', self)
 		form.set_params(params)
