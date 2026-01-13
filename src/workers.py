@@ -17,7 +17,9 @@ __all__ = [
 	'CirchartImportGenomeWorker',
 	'CirchartImportAnnotationWorker',
 	'CirchartImportCollinearityWorker',
+	'CirchartImportBandsWorker',
 	'CirchartImportDataWorker',
+	'CirchartBandPrepareWorker',
 	'CirchartGCContentPrepareWorker',
 	'CirchartGCSkewPrepareWorker',
 	'CirchartDensityPrepareWorker',
@@ -33,6 +35,7 @@ class CirchartWorkerSignals(QObject):
 	error = Signal(str)
 	result = Signal(object)
 	toggle = Signal(bool)
+	warning = Signal(str)
 	message = Signal(str)
 	started = Signal()
 	stopped = Signal()
@@ -43,13 +46,16 @@ class CirchartWorkerSignals(QObject):
 class CirchartBaseWorker(QRunnable):
 	def __init__(self, params={}):
 		super().__init__()
-		self.params = params
+		self.params = AttrDict(params)
 		self.signals = CirchartWorkerSignals()
 
 	def preprocess(self):
 		pass
 
 	def process(self):
+		pass
+
+	def cleanup(self):
 		pass
 
 	def run(self):
@@ -71,6 +77,7 @@ class CirchartBaseWorker(QRunnable):
 		finally:
 			self.signals.finished.emit()
 			self.signals.toggle.emit(False)
+			self.cleanup()
 
 	def on_error_occurred(self, error):
 		self.signals.error.emit(str(error))
@@ -104,6 +111,9 @@ class CirchartProcessWorker(CirchartBaseWorker):
 			case 'error':
 				self.signals.error.emit(res['message'])
 
+			case 'warning':
+				self.signals.warning.emit(res['message'])
+
 			case 'message':
 				self.signals.message.emit(res['message'])
 
@@ -111,7 +121,7 @@ class CirchartProcessWorker(CirchartBaseWorker):
 				self.save_result(res['message'])
 
 			case 'finished':
-				self.signals.finished.emit()
+			#	self.signals.finished.emit()
 				self.queue.close()
 
 	def process(self):
@@ -126,75 +136,72 @@ class CirchartProcessWorker(CirchartBaseWorker):
 			except ValueError:
 				break
 
-class CirchartImportGenomeWorker(CirchartProcessWorker):
+class CirchartImportBaseWorker(CirchartProcessWorker):
+	data_type = None
+
+	def preprocess(self):
+		qf = QFileInfo(self.params['path'])
+		name = qf.completeBaseName()
+		meta = dict_to_str(self.params)
+		self.data_index = SqlControl.add_data(name, self.data_type, meta)
+		SqlControl.create_index_table(self.data_type, self.data_index)
+
+	def save_result(self, res):
+		SqlControl.add_index_data(self.data_type, self.data_index, res)
+
+class CirchartImportGenomeWorker(CirchartImportBaseWorker):
 	processor = CirchartImportFastaProcess
+	data_type = 'genome'
 
-	def preprocess(self):
-		qf = QFileInfo(self.params['path'])
-		name = qf.completeBaseName()
-		meta = dict_to_str(self.params)
-		self.table_index = SqlControl.add_data(name, 'genome', meta)
-		SqlControl.create_genome_table(self.table_index)
-
-	def save_result(self, res):
-		SqlControl.add_genome_data(self.table_index, res)
-
-class CirchartImportAnnotationWorker(CirchartProcessWorker):
+class CirchartImportAnnotationWorker(CirchartImportBaseWorker):
 	processor = CirchartImportAnnotationProcess
-
-	def preprocess(self):
-		qf = QFileInfo(self.params['path'])
-		name = qf.completeBaseName()
-		meta = dict_to_str(self.params)
-		self.table_index = SqlControl.add_data(name, 'annotation', meta)
-		SqlControl.create_annotation_table(self.table_index)
+	data_type = 'annotation'
 
 	def save_result(self, res):
-		data = res['data']
-		meta = res['meta']
-		SqlControl.add_annotation_data(self.table_index, data)
-		SqlControl.update_data_meta(self.table_index, meta)
+		super().save_result(res['data'])
+		SqlControl.update_data_meta(self.data_index, res['meta'])
 
-class CirchartImportCollinearityWorker(CirchartProcessWorker):
+class CirchartImportCollinearityWorker(CirchartImportBaseWorker):
 	processor = CirchartImportCollinearityProcess
+	data_type = 'collinearity'
 
-	def preprocess(self):
-		qf = QFileInfo(self.params['path'])
-		name = qf.completeBaseName()
-		meta = dict_to_str(self.params)
-		self.table_index = SqlControl.add_data(name, 'collinearity', meta)
-		SqlControl.create_collinearity_table(self.table_index)
-
-	def save_result(self, res):
-		SqlControl.add_collinearity_data(self.table_index, res)
-
-class CirchartImportBandsWorker(CirchartProcessWorker):
+class CirchartImportBandsWorker(CirchartImportBaseWorker):
 	processor = CirchartImportBandsProcess
+	data_type = 'bands'
 
-	def preprocess(self):
-		qf = QFileInfo(self.params['path'])
-		name = qf.completeBaseName()
-		meta = dict_to_str(self.params)
-		self.table_index = SqlControl.add_data(name, 'bands', meta)
-		SqlControl.create_bands_table(self.table_index)
-
-	def save_result(self, res):
-		SqlControl.add_bands_data(self.table_index, res)
-
-class CirchartImportDataWorker(CirchartProcessWorker):
+class CirchartImportDataWorker(CirchartImportBaseWorker):
 	processor = CirchartImportDataProcess
 
 	def preprocess(self):
-		qf = QFileInfo(self.params['path'])
-		name = qf.completeBaseName()
-		meta = dict_to_str(self.params)
-		self.table_index = SqlControl.add_data(name, self.params['type'], meta)
-	
+		self.data_type = self.params['type']
+		super().preprocess()
 
+class CirchartPrepareWorker(CirchartProcessWorker):
+	data_type = None
+
+	def preprocess(self):
+		objs = SqlControl.get_data_objects('karyotype', self.params.karyotype)
+
+		self.params.axes = {
+			obj.label: (obj.name, obj.end)
+			for obj in objs if obj.type == 'chr'
+		}
+
+		self.data_index = SqlControl.add_data(self.params.dataname, self.data_type)
+		SqlControl.create_index_table(self.data_type, self.data_index)
 
 	def save_result(self, res):
-		pass
+		SqlControl.add_index_data(self.data_type, self.data_index, res)
 
+class CirchartBandPrepareWorker(CirchartPrepareWorker):
+	processor = CirchartBandPrepareProcess
+	data_type = 'banddata'
+
+	def preprocess(self):
+		super().preprocess()
+
+		objs = SqlControl.get_data_content('bands', self.params.bands)
+		self.params.bands = list(objs)
 
 class CirchartGCContentPrepareWorker(CirchartProcessWorker):
 	processor = CirchartGCContentPrepareProcess

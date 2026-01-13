@@ -383,7 +383,7 @@ class CirchartDataTableWidget(QTableView):
 
 	def create_model(self, table):
 		match table:
-			case 'karyotype':
+			case 'karyotype' | 'banddata':
 				if type(self._model) != CirchartKaryotypeTableModel:
 					self._model = CirchartKaryotypeTableModel(self)
 

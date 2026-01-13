@@ -16,6 +16,9 @@ from utils import *
 __all__ = [
 	'CirchartImportFastaProcess',
 	'CirchartImportAnnotationProcess',
+	'CirchartImportBandsProcess',
+	'CirchartImportDataProcess',
+	'CirchartBandPrepareProcess',
 	'CirchartGCContentPrepareProcess',
 	'CirchartDensityPrepareProcess',
 	'CirchartCircosPlotProcess',
@@ -84,6 +87,7 @@ class CirchartImportFastaProcess(CirchartBaseProcess):
 
 			if len(rows) == 200:
 				self.send('result', rows)
+				rows = []
 
 		if rows:
 			self.send('result', rows)
@@ -139,6 +143,82 @@ class CirchartImportAnnotationProcess(CirchartBaseProcess):
 			}
 		})
 
+class CirchartImportBandsProcess(CirchartBaseProcess):
+	def do(self):
+		rows = []
+		ignore = 0
+
+		with open(self.params.path) as fh:
+			for line in fh:
+				line = line.strip()
+
+				if not line:
+					continue
+
+				if line.startswith('#'):
+					continue
+
+				cols = line.strip().split()
+
+				if len(cols) < 5:
+					ignore += 1
+					continue
+
+				rows.append(cols[:5])
+
+				if len(rows) == 200:
+					self.send('result', rows)
+					rows = []
+
+		if rows:
+			self.send('result', rows)
+
+		if ignore > 0:
+			self.send('warning', "Ignored {} lines due to missing columns".format(ignore))
+
+class CirchartImportDataProcess(CirchartBaseProcess):
+		def tsv_reader(self, fh):
+			for line in fh:
+				line = line.strip()
+
+				if not line:
+					continue
+
+				if line.startswith('#'):
+					continue
+
+				cols = line.strip().split()
+
+				yield cols
+
+		def do(self):
+			rows = []
+			ignore = 0
+
+			with open(self.params.path) as fh:
+				if self.params.format == 'csv':
+					reader = csv.reader(fh)
+				
+				else:
+					reader = self.tsv_reader(fh)
+
+				for row in reader:
+					if len(row) < self.params.column:
+						ignore += 1
+						continue
+
+					rows.append(row[:self.params.column])
+
+					if len(rows) == 200:
+						self.send('result', rows)
+						rows = []
+
+			if rows:
+				self.send('result', rows)
+
+			if ignore > 0:
+				self.send('warning', "Ignored {} lines due to missing columns".format(ignore))
+
 class CirchartImportCollinearityProcess(CirchartBaseProcess):
 	def do(self):
 		rows = []
@@ -155,6 +235,46 @@ class CirchartImportCollinearityProcess(CirchartBaseProcess):
 					break
 
 		self.send('result', rows)
+
+class CirchartBandPrepareProcess(CirchartBaseProcess):
+	def do(self):
+		#get band colors from circos
+		color_file = CIRCOS_PATH / 'etc' / 'colors.ucsc.conf'
+		comment_no = 0
+
+		band_colors = {}
+		with open(str(color_file)) as fh:
+			for line in fh:
+				if line[0] == '#':
+					comment_no += 1
+
+					if comment_no > 1:
+						break
+					else:
+						continue
+
+				if not line.strip():
+					continue
+
+				cols = line.strip().split('=')
+				band_colors[cols[0].strip()] = cols[1].strip()
+
+		rows = []
+		for band in self.params.bands:
+			parent = self.params.axes.get(band[0], None)
+			
+			if parent is None:
+				continue
+
+			color = band_colors.get(band[4])
+			rows.append(('band', parent, band[3], band[3], band[1], band[2], color))
+
+			if len(rows) == 200:
+				self.send('result', rows)
+				rows = []
+
+		if rows:
+			self.send('result', rows)
 
 class CirchartGCContentPrepareProcess(CirchartBaseProcess):
 	def _calc_gc(self, seq, i, j):

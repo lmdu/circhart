@@ -177,6 +177,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_prepare_karyotype_data
 		)
 
+		self.prepare_band_act = QAction("&Prepare Band Data", self,
+			triggered = self.do_prepare_band_data
+		)
+
 		self.prepare_gc_act = QAction("&Prepare GC Content Data", self,
 			triggered = self.do_prepare_gccontent_data
 		)
@@ -275,6 +279,7 @@ class CirchartMainWindow(QMainWindow):
 		self.import_menu = self.file_menu.addMenu("&Import Data")
 		self.import_menu.addAction(self.import_genome_act)
 		self.import_menu.addAction(self.import_annot_act)
+		self.import_menu.addAction(self.import_gbands_act)
 		self.import_menu.addAction(self.import_collinearity_act)
 		self.import_menu.addAction(self.import_bed_act)
 		self.import_menu.addSeparator()
@@ -309,6 +314,7 @@ class CirchartMainWindow(QMainWindow):
 		self.tool_menu = self.menuBar().addMenu("&Tools")
 		self.prepare_menu = self.tool_menu.addMenu("&Prepare Data")
 		self.prepare_menu.addAction(self.prepare_kdata_act)
+		self.prepare_menu.addAction(self.prepare_band_act)
 		self.prepare_menu.addAction(self.prepare_gc_act)
 		self.prepare_menu.addAction(self.prepare_skew_act)
 		self.prepare_menu.addAction(self.prepare_pdata_act)
@@ -510,6 +516,7 @@ class CirchartMainWindow(QMainWindow):
 			return QMessageBox.warning(self, "Warning", "A task is already running")
 
 		worker.signals.error.connect(self.show_error_message)
+		worker.signals.warning.connect(self.show_warning_message)
 		worker.signals.started.connect(self.wait_spinner.start)
 		worker.signals.finished.connect(self.wait_spinner.stop)
 		worker.signals.toggle.connect(self.wait_action.setVisible)
@@ -574,7 +581,7 @@ class CirchartMainWindow(QMainWindow):
 		if not dfile:
 			return
 
-		dformat = dfile.split('.')[0].lower()
+		dformat = dfile.split('.')[-1].lower()
 
 		params = {
 			'path': dfile,
@@ -654,13 +661,18 @@ class CirchartMainWindow(QMainWindow):
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.make_karyotype(self)
 
+	def do_prepare_band_data(self):
+		params = CirchartBandPrepareDialog.prepare(self)
+
+		if params:
+			worker = CirchartBandPrepareWorker(params)
+			worker.signals.success.connect(self.data_tree.update_tree)
+			self.submit_new_worker(worker)
+
 	def do_prepare_gccontent_data(self):
 		params = CirchartGCContentPrepareDialog.prepare(self)
 
 		if params:
-			#if not os.path.isfile(params['genome']):
-			#	return self.show_error_message('{} does not exist'.format(params['genome']))
-
 			worker = CirchartGCContentPrepareWorker(params)
 			worker.signals.success.connect(self.data_tree.update_tree)
 			self.submit_new_worker(worker)
@@ -780,6 +792,10 @@ class CirchartMainWindow(QMainWindow):
 	@Slot(str)
 	def show_error_message(self, error):
 		QMessageBox.critical(self, "Error", error)
+
+	@Slot(str)
+	def show_warning_message(self, warns):
+		QMessageBox.warning(self, "Warning", warns)
 
 	def show_data_table(self):
 		if self.stack_widget.currentIndex() != 1:

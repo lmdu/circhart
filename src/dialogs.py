@@ -12,6 +12,7 @@ __all__ = [
 	'CirchartImportForGenomeDialog',
 	'CirchartCircosDependencyDialog',
 	'CirchartKaryotypePrepareDialog',
+	'CirchartBandPrepareDialog',
 	'CirchartGCContentPrepareDialog',
 	'CirchartGCSkewPrepareDialog',
 	'CirchartDensityPrepareDialog',
@@ -243,10 +244,65 @@ class CirchartKaryotypePrepareDialog(CirchartBaseDialog):
 
 			kname = "{}_{}".format(dlg.select.currentText(), prefix)
 			index = SqlControl.add_data(kname, 'karyotype', '')
-			SqlControl.create_karyotype_table(index)
-			SqlControl.add_karyotype_data(index, items)
-
+			SqlControl.create_index_table('karyotype', index)
+			SqlControl.add_index_data('karyotype', index, items)
 			parent.data_tree.update_tree()
+
+class CirchartBandPrepareDialog(CirchartBaseDialog):
+	_title = "Prepare Band Data"
+
+	def _create_widgets(self):
+		self.select_karyotype = QComboBox(self)
+		self.select_bands = QComboBox(self)
+		self.name_input = QLineEdit(self)
+		self.name_input.setPlaceholderText("Band data name")
+
+	def _init_layouts(self):
+		self.main_layout.addWidget(self.name_input)
+		self.main_layout.addWidget(QLabel("Select a karyotype:", self))
+		self.main_layout.addWidget(self.select_karyotype)
+		self.main_layout.addWidget(QLabel("Select genome bands", self))
+		self.main_layout.addWidget(self.select_bands)
+
+	def _init_widgets(self):
+		ks = SqlControl.get_datas_by_type('karyotype')
+
+		for k in ks:
+			self.select_karyotype.addItem(k.name, k.id)
+
+		bs = SqlControl.get_datas_by_type('bands')
+
+		for b in bs:
+			self.select_bands.addItem(b.name, b.id)
+
+	def _on_accepted(self):
+		kt = self.select_karyotype.currentData()
+
+		if not kt:
+			return QMessageBox.critical(self, 'Error', "No karyotype data selected")
+
+		bd = self.select_bands.currentData()
+
+		if not bd:
+			return QMessageBox.critical(self, 'Error', "No band data selected")
+
+		dn = self.name_input.text().strip()
+
+		if not dn:
+			return QMessageBox.critical(self, 'Error', "No band data name input")
+
+		self.accept()
+
+	@classmethod
+	def prepare(cls, parent=None):
+		dlg = cls(parent)
+
+		if dlg.exec() == QDialog.Accepted:
+			return {
+				'dataname': dlg.name_input.text().strip(),
+				'karyotype': dlg.select_karyotype.currentData(),
+				'bands': dlg.select_bands.currentData()
+			}
 
 class CirchartGCContentPrepareDialog(CirchartBaseDialog):
 	_title = "Prepare GC Content Data"
@@ -384,7 +440,7 @@ class CirchartCreateCircosPlotDialog(QDialog):
 			QDialogButtonBox.StandardButton.Cancel |
 			QDialogButtonBox.StandardButton.Ok
 		)
-		self.btn_box.accepted.connect(self._on_ok_clicked)
+		self.btn_box.accepted.connect(self._on_accepted)
 		self.btn_box.rejected.connect(self.reject)
 
 		layout = QVBoxLayout()
@@ -397,7 +453,7 @@ class CirchartCreateCircosPlotDialog(QDialog):
 
 		self.fill_karyotype_data()
 
-	def _on_ok_clicked(self):
+	def _on_accepted(self):
 		ks = self.get_selected_karyotype()
 
 		if not ks:

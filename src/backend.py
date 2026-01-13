@@ -73,6 +73,14 @@ class GenomeTable(SqlTable):
 	gc = float
 	ns = int
 
+class BandsTable(SqlTable):
+	_index = True
+	chrom = str
+	start = int
+	end = int
+	name = str
+	stain = str
+
 class KaryotypeTable(SqlTable):
 	_index = True
 	type = str
@@ -105,6 +113,9 @@ class BuscoTable(SqlTable):
 	busco = str
 	status = str
 	contig = str
+
+class BandDataTable(KaryotypeTable):
+	pass
 
 class PlotDataTable(SqlTable):
 	_index = True
@@ -414,6 +425,19 @@ class DataBackend:
 SqlBase = DataBackend()
 
 class SqlControl:
+	_models = {
+		'genome': GenomeTable,
+		'bands': BandsTable,
+		'annotation': AnnotationTable,
+		'karyotype': KaryotypeTable,
+		'collinearity': CollinearityTable,
+		'banddata': BandDataTable,
+		'plotdata': PlotDataTable,
+		'linkdata': LinkDataTable,
+		'locidata': LociDataTable,
+		'textdata': TextDataTable,
+	}
+
 	@staticmethod
 	def add_data(name, type, meta=''):
 		sql = SqlQuery('data')\
@@ -463,27 +487,17 @@ class SqlControl:
 		SqlBase.update_row(sql, mdata, did)
 
 	@staticmethod
-	def create_genome_table(index):
-		table, fields = GenomeTable.table(index)
+	def create_index_table(table, index):
+		model = SqlControl._models.get(table)
+		table, fields = model.table(index)
 		SqlBase.create_table(table, fields)
 
 	@staticmethod
-	def add_genome_data(index, data):
-		table, _ = GenomeTable.table(index)
+	def add_index_data(table, index, data):
+		model = SqlControl._models.get(table)
+		table, _ = model.table(index)
 		sql = SqlQuery(table)\
-			.insert(*GenomeTable.fields())
-		SqlBase.insert_rows(sql, data)
-
-	@staticmethod
-	def create_karyotype_table(index):
-		table, fields = KaryotypeTable.table(index)
-		SqlBase.create_table(table, fields)
-
-	@staticmethod
-	def add_karyotype_data(index, data):
-		table, _ = KaryotypeTable.table(index)
-		sql = SqlQuery(table)\
-			.insert(*KaryotypeTable.fields())
+			.insert(*model.fields())
 		SqlBase.insert_rows(sql, data)
 
 	@staticmethod
@@ -503,66 +517,6 @@ class SqlControl:
 			.where('id=?')
 
 		SqlBase.update_row(sql, color, kid)
-
-	@staticmethod
-	def create_annotation_table(index):
-		table, fields = AnnotationTable.table(index)
-		SqlBase.create_table(table, fields)
-
-	@staticmethod
-	def add_annotation_data(index, data):
-		table, _ = AnnotationTable.table(index)
-		sql = SqlQuery(table)\
-			.insert(*AnnotationTable.fields())
-		SqlBase.insert_rows(sql, data)
-
-	@staticmethod
-	def create_busco_table(index):
-		table, fields = BuscoTable.table(index)
-		SqlBase.create_table(table, fields)
-
-	@staticmethod
-	def add_busco_data(index, data):
-		table, _ = BuscoTable.table(index)
-		sql = SqlQuery(table)\
-			.insert(*BuscoTable.fields())
-		SqlBase.insert_rows(sql, data)
-
-	@staticmethod
-	def create_plot_data_table(index):
-		table, fields = PlotDataTable.table(index)
-		SqlBase.create_table(table, fields)
-
-	@staticmethod
-	def create_link_data_table(index):
-		table, fields = LinkDataTable.table(index)
-		SqlBase.create_table(table, fields)
-
-	@staticmethod
-	def add_plot_data(index, data):
-		table, _ = PlotDataTable.table(index)
-		sql = SqlQuery(table)\
-			.insert(*PlotDataTable.fields())
-		SqlBase.insert_rows(sql, data)
-
-	@staticmethod
-	def add_link_data(index, data):
-		table, _ = LinkDataTable.table(index)
-		sql = SqlQuery(table)\
-			.insert(*LinkDataTable.fields())
-		SqlBase.insert_rows(sql, data)
-
-	@staticmethod
-	def create_collinearity_table(index):
-		table, fields = CollinearityTable.table(index)
-		SqlBase.create_table(table, fields)
-
-	@staticmethod
-	def add_collinearity_data(index, data):
-		table, _ = CollinearityTable.table(index)
-		sql = SqlQuery(table)\
-			.insert(*CollinearityTable.fields())
-		SqlBase.insert_rows(sql, data)
 
 	@staticmethod
 	def get_data_by_id(did):
