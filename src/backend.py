@@ -103,6 +103,25 @@ class AnnotationTable(SqlTable):
 	frame = str
 	attribute = str
 
+class VariantsTable(SqlTable):
+	_index = True
+	chrom = str
+	pos = int
+	vid = str
+	ref = str
+	qual = str
+	filters = str
+	info = str
+	formats = str
+	samples = str
+
+class RegionsTable(SqlTable):
+	_index = True
+	chrom = str
+	start = int
+	end = int
+	extra = str
+
 class CollinearityTable(SqlTable):
 	_index = True
 	gene1 = str
@@ -435,6 +454,8 @@ class SqlControl:
 	_models = {
 		'genome': GenomeTable,
 		'bands': BandsTable,
+		'variants': VariantsTable,
+		'regions': RegionsTable,
 		'annotation': AnnotationTable,
 		'karyotype': KaryotypeTable,
 		'collinearity': CollinearityTable,

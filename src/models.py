@@ -1,3 +1,5 @@
+import random
+
 import distinctipy
 
 from PySide6.QtGui import *
@@ -419,6 +421,7 @@ class CirchartKaryotypeTableModel(CirchartDataTableModel):
 
 	def update_random_color(self):
 		colors = distinctipy.get_colors(self.total_count)
+		random.shuffle(colors)
 
 		sql = SqlQuery(self._table)\
 			.update('color')\

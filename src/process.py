@@ -18,6 +18,8 @@ __all__ = [
 	'CirchartImportAnnotationProcess',
 	'CirchartImportBandsProcess',
 	'CirchartImportDataProcess',
+	'CirchartImportVariationsProcess',
+	'CirchartImportRegionsProcess',
 	'CirchartBandPrepareProcess',
 	'CirchartGCContentPrepareProcess',
 	'CirchartDensityPrepareProcess',
@@ -127,11 +129,11 @@ class CirchartImportAnnotationProcess(CirchartBaseProcess):
 					a = split_attrs(attr)[0].strip()
 					attributes.add(a)
 
-				if len(rows) < 1000:
-					cols[3] = int(cols[3])
-					cols[4] = int(cols[4])
-					rows.append(cols)
-				else:
+				cols[3] = int(cols[3])
+				cols[4] = int(cols[4])
+				rows.append(cols)
+
+				if len(rows) >= 1000:
 					break
 
 		self.send('result', {
@@ -142,6 +144,65 @@ class CirchartImportAnnotationProcess(CirchartBaseProcess):
 				'attributes': list(attributes)
 			}
 		})
+
+class CirchartImportVariationsProcess(CirchartBaseProcess):
+	def do(self):
+		if self.params.path.endswith('.gz'):
+			fp = gzip.open(self.params.path)
+		else:
+			fp = open(self.params.path)
+
+		rows = []
+
+		with fp:
+			for line in fp:
+				if line.startswith('#'):
+					continue
+
+				line = line.strip()
+				if not line:
+					continue
+
+				cols = line.split('\t')
+				cols[1] = int(cols[1])
+				row = cols[0:9]
+				row.append('\t'.join(cols[9:]))
+				rows.append(row)
+
+				if len(rows) >= 1000:
+					break
+
+		self.send('result', rows)
+
+class CirchartImportRegionsProcess(CirchartBaseProcess):
+	def do(self):
+		if self.params.path.endswith('.gz'):
+			fp = gzip.open(self.params.path)
+		else:
+			fp = open(self.params.path)
+
+		rows = []
+
+		with fp:
+			for line in fp:
+				if line.startswith('#'):
+					continue
+
+				line = line.strip()
+				if not line:
+					continue
+
+				cols = line.split('\t')
+				cols[1] = int(cols[1])
+				cols[2] = int(cols[2])
+				row = cols[0:3]
+				row.append('\t'.join(cols[3:]))
+				rows.append(row)
+
+				if len(rows) >= 1000:
+					break
+
+		self.send('result', rows)
 
 class CirchartImportBandsProcess(CirchartBaseProcess):
 	def do(self):
@@ -328,6 +389,23 @@ class CirchartGCSkewPrepareProcess(CirchartGCContentPrepareProcess):
 		return gc
 
 class CirchartDensityPrepareProcess(CirchartBaseProcess):
+	def parse_gxf(self, cols):
+		if cols[2] != self.params.feature:
+			return
+
+		start = int(cols[3])
+		end = int(cols[4])
+		return start, end
+
+	def parse_vcf(self):
+		pos = int(cols[1])
+		return pos, pos
+
+	def parse_bed(self):
+		start = int(cols[1])
+		end = int(cols[2])
+		return start, end
+
 	def do(self):
 		wsize = self.params.window
 		step = self.params.step
@@ -363,6 +441,15 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 			location_mapping[chrom] = locus
 			counts_mapping[chrom] = counts
 
+		if self.params.datatype == 'gxf':
+			parse_func = self.parse_gxf
+
+		elif self.params.datatype == 'vcf':
+			parse_func = self.parse_vcf
+
+		else:
+			parse_func = self.parse_bed
+
 		if self.params.annotation.endswith('.gz'):
 			fp = gzip.open(self.params.annotation, 'rt')
 		else:
@@ -384,14 +471,11 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 				if chrom not in self.params.axes:
 					continue
 
-				feat = cols[2]
-				if feat != self.params.feature:
+				locus = parse_func(cols)
+				if locus is None:
 					continue
 
-				start = int(cols[3])
-				end = int(cols[4])
-
-				ilist = interval_mapping[chrom].overlap(chrom, start, end)
+				ilist = interval_mapping[chrom].overlap(chrom, locus[0], locus[1])
 
 				for _, _, index in ilist:
 					counts_mapping[chrom][index] += 1

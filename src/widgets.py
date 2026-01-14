@@ -440,6 +440,9 @@ class CirchartCheckTableWidget(CirchartDataTableWidget):
 		return self._model.get_selected_rows()
 
 	def is_selected(self):
+		if not self._model:
+			return False
+
 		return True if self._model.selected else False
 
 class CirchartGraphicsViewWidget(QGraphicsView):
@@ -704,9 +707,10 @@ class CirchartCircosColorTable(QTableView):
 			
 
 class CirchartCollinearityIdmappingWidget(QWidget):
-	def __init__(self, title=None, parent=None):
+	def __init__(self, title=None, parent=None, label=True):
 		super().__init__(parent)
 		self.title = title
+		self.label = label
 		self.features = {}
 		self.attributes = {}
 
@@ -717,17 +721,16 @@ class CirchartCollinearityIdmappingWidget(QWidget):
 	def _create_widgets(self):
 		self.title_label = QLabel("<b>{}</b>".format(self.title), self)
 
-		self.kary_label = QLabel("Karyotype", self)
-		self.kary_select = QComboBox(self)
+		if self.label:
+			self.kary_label = QLabel("Karyotype", self)
+			self.anno_label = QLabel("Annotation", self)
+			self.feat_label = QLabel("Feature", self)
+			self.attr_label = QLabel("Attirbute", self)
 
-		self.anno_label = QLabel("Annotation", self)
+		self.kary_select = QComboBox(self)
 		self.anno_select = QComboBox(self)
 		self.anno_select.currentIndexChanged.connect(self._on_annotation_changed)
-
-		self.feat_label = QLabel("Feature", self)
 		self.feat_select = QComboBox(self)
-
-		self.attr_label = QLabel("Attirbute", self)
 		self.attr_select = QComboBox(self)
 
 	def _init_layouts(self):
@@ -735,19 +738,27 @@ class CirchartCollinearityIdmappingWidget(QWidget):
 		layout.setContentsMargins(0, 0, 0, 0)
 		self.setLayout(layout)
 
-		layout.addWidget(self.title_label, 1, 0)
+		if self.label:
+			layout.addWidget(self.title_label, 1, 0)
 
-		layout.addWidget(self.kary_label, 0, 1)
-		layout.addWidget(self.kary_select, 1, 1)
+			layout.addWidget(self.kary_label, 0, 1)
+			layout.addWidget(self.kary_select, 1, 1)
 
-		layout.addWidget(self.anno_label, 0, 2)
-		layout.addWidget(self.anno_select, 1, 2)
+			layout.addWidget(self.anno_label, 0, 2)
+			layout.addWidget(self.anno_select, 1, 2)
 
-		layout.addWidget(self.feat_label, 0, 3)
-		layout.addWidget(self.feat_select, 1, 3)
+			layout.addWidget(self.feat_label, 0, 3)
+			layout.addWidget(self.feat_select, 1, 3)
 
-		layout.addWidget(self.attr_label, 0, 4)
-		layout.addWidget(self.attr_select, 1, 4)
+			layout.addWidget(self.attr_label, 0, 4)
+			layout.addWidget(self.attr_select, 1, 4)
+
+		else:
+			layout.addWidget(self.title_label, 0, 0)
+			layout.addWidget(self.kary_select, 0, 1)
+			layout.addWidget(self.anno_select, 0, 2)
+			layout.addWidget(self.feat_select, 0, 3)
+			layout.addWidget(self.attr_select, 0, 4)
 
 	def _init_widgets(self):
 		ks = SqlControl.get_datas_by_type('karyotype')

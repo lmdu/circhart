@@ -19,6 +19,8 @@ __all__ = [
 	'CirchartImportCollinearityWorker',
 	'CirchartImportBandsWorker',
 	'CirchartImportDataWorker',
+	'CirchartImportVariationsWorker',
+	'CirchartImportRegionsWorker',
 	'CirchartBandPrepareWorker',
 	'CirchartGCContentPrepareWorker',
 	'CirchartGCSkewPrepareWorker',
@@ -169,6 +171,14 @@ class CirchartImportBandsWorker(CirchartImportBaseWorker):
 	processor = CirchartImportBandsProcess
 	data_type = 'bands'
 
+class CirchartImportVariationsWorker(CirchartImportBaseWorker):
+	processor = CirchartImportVariationsProcess
+	data_type = 'variants'
+
+class CirchartImportRegionsWorker(CirchartImportBaseWorker):
+	processor = CirchartImportRegionsProcess
+	data_type = 'regions'
+
 class CirchartImportDataWorker(CirchartImportBaseWorker):
 	processor = CirchartImportDataProcess
 
@@ -177,7 +187,7 @@ class CirchartImportDataWorker(CirchartImportBaseWorker):
 		super().preprocess()
 
 class CirchartPrepareWorker(CirchartProcessWorker):
-	data_type = None
+	data_type = 'plotdata'
 
 	def preprocess(self):
 		objs = SqlControl.get_data_objects('karyotype', self.params.karyotype)
@@ -203,54 +213,33 @@ class CirchartBandPrepareWorker(CirchartPrepareWorker):
 		objs = SqlControl.get_data_content('bands', self.params.bands)
 		self.params.bands = list(objs)
 
-class CirchartGCContentPrepareWorker(CirchartProcessWorker):
+class CirchartGCContentPrepareWorker(CirchartPrepareWorker):
 	processor = CirchartGCContentPrepareProcess
 
 	def preprocess(self):
-		objs = SqlControl.get_data_objects('karyotype', self.params['karyotype'])
+		super().preprocess()
 
-		self.params['axes'] = {
-			obj.label: (obj.name, obj.end)
-			for obj in objs if obj.type == 'chr'
-		}
-		self.table_index = SqlControl.add_data(self.params['dataname'], 'plotdata')
-		SqlControl.create_plot_data_table(self.table_index)
-
-		gmeta = SqlControl.get_data_meta(self.params['genome'])
+		gmeta = SqlControl.get_data_meta(self.params.genome)
 		self.params['genome'] = gmeta['path']
-
-	def save_result(self, res):
-		SqlControl.add_plot_data(self.table_index, res)
 
 class CirchartGCSkewPrepareWorker(CirchartGCContentPrepareWorker):
 	processor = CirchartGCSkewPrepareProcess
 
-class CirchartDensityPrepareWorker(CirchartProcessWorker):
+class CirchartDensityPrepareWorker(CirchartPrepareWorker):
 	processor = CirchartDensityPrepareProcess
 
 	def preprocess(self):
-		objs = SqlControl.get_data_objects('karyotype', self.params['karyotype'])
+		super().preprocess()
 
-		self.params['axes'] = {
-			obj.label: (obj.name, obj.end)
-			for obj in objs if obj.type == 'chr'
-		}
-
-		self.table_index = SqlControl.add_data(self.params['dataname'], 'plotdata')
-		SqlControl.create_plot_data_table(self.table_index)
-
-		ameta = SqlControl.get_data_meta(self.params['annotation'])
+		ameta = SqlControl.get_data_meta(self.params.annotation)
 		self.params['annotation'] = ameta['path']
-
-	def save_result(self, res):
-		SqlControl.add_plot_data(self.table_index, res)
 
 class CirchartLinkPrepareWorker(CirchartProcessWorker):
 	processor = CirchartLinkPrepareProcess
+	data_type = 'linkdata'
 
 	def preprocess(self):
 		cmeta = SqlControl.get_data_meta(self.params['collinearity'])
-
 		self.params['collinearity'] = cmeta['path']
 
 		for k in self.params:
@@ -264,12 +253,8 @@ class CirchartLinkPrepareWorker(CirchartProcessWorker):
 			self.params[k]['annotation'] = ameta['path']
 			self.params[k]['annoformat'] = ameta['format']
 
-		self.table_index = SqlControl.add_data(self.params['dataname'], 'linkdata')
-		SqlControl.create_link_data_table(self.table_index)
-
-	def save_result(self, res):
-		SqlControl.add_link_data(self.table_index, res)
-
+		self.data_index = SqlControl.add_data(self.params.dataname, self.data_type)
+		SqlControl.create_index_table(self.data_type, self.data_index)
 
 class CirchartCircosPlotWorker(CirchartBaseWorker):
 	processor = CirchartCircosPlotProcess

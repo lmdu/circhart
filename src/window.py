@@ -111,12 +111,16 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_genome_bands
 		)
 
-		self.import_collinearity_act = QAction("&Import Collinearity File...", self,
-			triggered = self.do_import_mcscanx_collinearity
+		self.import_variant_act = QAction("&Import Genome Variations...", self,
+			triggered = self.do_import_genome_variations
 		)
 
-		self.import_bed_act = QAction("&Import Bed File...", self,
-			triggered = self.do_import_bed_file
+		self.import_region_act = QAction("&Import Genome Regions...", self,
+			triggered = self.do_import_genome_regions
+		)
+
+		self.import_collinearity_act = QAction("&Import Collinearity File...", self,
+			triggered = self.do_import_mcscanx_collinearity
 		)
 
 		self.import_kdata_act = QAction("&Import Karyotype Data...", self,
@@ -211,22 +215,6 @@ class CirchartMainWindow(QMainWindow):
 		)
 		self.add_track_act.setIconVisibleInMenu(False)
 
-		self.add_rule_act = QAction("&Add Track Rule", self,
-			triggered = self.do_add_circos_rule
-		)
-
-		self.add_background_act = QAction("&Add Track Background", self,
-			triggered = self.do_add_circos_background
-		)
-
-		self.add_axis_act = QAction("&Add Track Axis", self,
-			triggered = self.do_add_circos_axis
-		)
-
-		self.add_grid_act = QAction("&Add Track Grid", self,
-			triggered = self.do_add_circos_grid
-		)
-
 		self.update_circos_act = QAction(QIcon('icons/refresh.svg'), "&Update Circos Plot", self,
 			triggered = self.do_update_circos_plot
 		)
@@ -280,8 +268,9 @@ class CirchartMainWindow(QMainWindow):
 		self.import_menu.addAction(self.import_genome_act)
 		self.import_menu.addAction(self.import_annot_act)
 		self.import_menu.addAction(self.import_gbands_act)
+		self.import_menu.addAction(self.import_variant_act)
+		self.import_menu.addAction(self.import_region_act)
 		self.import_menu.addAction(self.import_collinearity_act)
-		self.import_menu.addAction(self.import_bed_act)
 		self.import_menu.addSeparator()
 		self.import_menu.addAction(self.import_kdata_act)
 		self.import_menu.addAction(self.import_band_act)
@@ -325,11 +314,6 @@ class CirchartMainWindow(QMainWindow):
 		self.circos_menu.addAction(self.new_circos_act)
 		self.circos_menu.addSeparator()
 		self.circos_menu.addAction(self.add_track_act)
-		self.circos_menu.addSeparator()
-		self.circos_menu.addAction(self.add_rule_act)
-		self.circos_menu.addAction(self.add_background_act)
-		self.circos_menu.addAction(self.add_axis_act)
-		self.circos_menu.addAction(self.add_grid_act)
 		self.circos_menu.addSeparator()
 		self.circos_menu.addAction(self.update_circos_act)
 
@@ -552,6 +536,36 @@ class CirchartMainWindow(QMainWindow):
 		worker.signals.success.connect(self.data_tree.update_tree)
 		self.submit_new_worker(worker)
 
+	def do_import_genome_variations(self):
+		vfile, _ = QFileDialog.getOpenFileName(self, "Select Genome Variations File",
+			filter = (
+				"Variation file (*.vcf *.vcf.gz);;"
+				"All files (*.*)"
+			)
+		)
+
+		if not vfile:
+			return
+
+		worker = CirchartImportVariationsWorker({'path': vfile})
+		worker.signals.success.connect(self.data_tree.update_tree)
+		self.submit_new_worker(worker)
+
+	def do_import_genome_regions(self):
+		rfile, _ = QFileDialog.getOpenFileName(self, "Select Genome Regions File",
+			filter = (
+				"Region file (*.bed *.bed.gz *.txt *.tsv);;"
+				"All files (*.*)"
+			)
+		)
+
+		if not rfile:
+			return
+
+		worker = CirchartImportRegionsWorker({'path': rfile})
+		worker.signals.success.connect(self.data_tree.update_tree)
+		self.submit_new_worker(worker)
+
 	def do_import_mcscanx_collinearity(self):
 		cfile, _ = QFileDialog.getOpenFileName(self, "Select MCSCANX Collinearity File",
 			filter = (
@@ -659,7 +673,7 @@ class CirchartMainWindow(QMainWindow):
 		self.data_table.update_karyotype_color('single', color)
 
 	def do_prepare_karyotype_data(self):
-		CirchartKaryotypePrepareDialog.make_karyotype(self)
+		CirchartKaryotypePrepareDialog.prepare(self)
 
 	def do_prepare_band_data(self):
 		params = CirchartBandPrepareDialog.prepare(self)
@@ -730,18 +744,6 @@ class CirchartMainWindow(QMainWindow):
 
 	def do_add_circos_track(self):
 		self.circos_panel.add_plot_track()
-
-	def do_add_circos_rule(self):
-		self.circos_panel.add_plot_rule()
-
-	def do_add_circos_background(self):
-		self.circos_panel.add_plot_background()
-
-	def do_add_circos_axis(self):
-		pass
-
-	def do_add_circos_grid(self):
-		pass
 
 	def do_update_circos_plot(self):
 		params = self.circos_panel.get_params()
