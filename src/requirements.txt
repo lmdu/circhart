@@ -4,3 +4,4 @@ pyfastx==2.3.0
 pygros==0.2.0
 pyside6-essentials==6.10.1
 pyyaml==6.0.3
+pyinstaller==6.18.0
