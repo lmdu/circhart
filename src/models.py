@@ -1,7 +1,5 @@
 import random
 
-import distinctipy
-
 from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
@@ -420,15 +418,19 @@ class CirchartKaryotypeTableModel(CirchartDataTableModel):
 		self.dataChanged.emit(sindex, eindex)
 
 	def update_random_color(self):
-		colors = distinctipy.get_colors(self.total_count)
-		random.shuffle(colors)
+		colors = []
+
+		for i in range(self.total_count):
+			r = random.randint(0, 255)
+			g = random.randint(0, 255)
+			b = random.randint(0, 255)
+			colors.append('{},{},{}'.format(r, g, b))
 
 		sql = SqlQuery(self._table)\
 			.update('color')\
 			.where('rowid=?')
 
 		for i, c in enumerate(colors, 1):
-			c = ','.join(map(str, distinctipy.get_rgb256(c)))
 			SqlBase.update_row(sql, c, i)
 
 		sindex = self.createIndex(0, 7)

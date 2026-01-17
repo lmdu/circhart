@@ -147,12 +147,12 @@ class CirchartCircosDependencyDialog(CirchartBaseDialog):
 
 				if cols and cols[0] == 'ok':
 					item = QTreeWidgetItem([cols[2], cols[1], cols[0]])
-					item.setIcon(0, QIcon('icons/ok.svg'))
+					item.setIcon(0, QIcon(':/icons/ok.svg'))
 					self.tree.addTopLevelItem(item)
 
 				elif cols and cols[0] == 'missing':
 					item = QTreeWidgetItem([cols[1], '', ''])
-					item.setIcon(0, QIcon('icons/no.svg'))
+					item.setIcon(0, QIcon(':/icons/no.svg'))
 					self.tree.addTopLevelItem(item)
 
 					install_btn = QPushButton('Install', self.tree)

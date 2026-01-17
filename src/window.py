@@ -34,7 +34,12 @@ class CirchartApplication(QApplication):
 		return super().event(event)
 
 	def load_style(self):
-		self.setStyleSheet('file:///style.qss')
+		file = QFile(':/style.qss')
+
+		if file.open(QIODevice.ReadOnly | QIODevice.Text):
+			stream = QTextStream(file)
+
+		self.setStyleSheet(stream.readAll())
 
 
 class CirchartMainWindow(QMainWindow):
@@ -42,7 +47,7 @@ class CirchartMainWindow(QMainWindow):
 		super().__init__()
 
 		self.set_window_title()
-		self.setWindowIcon(QIcon('icons/logo.svg'))
+		self.setWindowIcon(QIcon(':/icons/logo.svg'))
 
 		self.plot_view = CirchartGraphicsViewWidget(self)
 		self.data_table = CirchartDataTableWidget(self)
@@ -147,16 +152,16 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_text_data
 		)
 
-		self.export_image_act = QAction(QIcon("icons/save.svg"), "&Export Image...", self,
+		self.export_image_act = QAction(QIcon(":/icons/save.svg"), "&Export Image...", self,
 			triggered = self.do_export_image
 		)
 		self.export_image_act.setIconVisibleInMenu(False)
 
-		self.zoom_in_act = QAction(QIcon("icons/zoomin.svg"), "&Zoom In", self,
+		self.zoom_in_act = QAction(QIcon(":/icons/zoomin.svg"), "&Zoom In", self,
 			triggered = self.do_zoom_in
 		)
 
-		self.zoom_out_act = QAction(QIcon("icons/zoomout.svg"), "&Zoom Out", self,
+		self.zoom_out_act = QAction(QIcon(":/icons/zoomout.svg"), "&Zoom Out", self,
 			triggered = self.do_zoom_out
 		)
 
@@ -205,22 +210,22 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_circos_dependency_check
 		)
 
-		self.new_circos_act = QAction(QIcon('icons/new.svg'), "&Create Circos Plot", self,
+		self.new_circos_act = QAction(QIcon(':/icons/new.svg'), "&Create Circos Plot", self,
 			triggered = self.do_create_circos_plot
 		)
 		self.new_circos_act.setIconVisibleInMenu(False)
 
-		self.add_track_act = QAction(QIcon('icons/track.svg'), "&Add Circos Track", self,
+		self.add_track_act = QAction(QIcon(':/icons/track.svg'), "&Add Circos Track", self,
 			triggered = self.do_add_circos_track
 		)
 		self.add_track_act.setIconVisibleInMenu(False)
 
-		self.update_circos_act = QAction(QIcon('icons/refresh.svg'), "&Update Circos Plot", self,
+		self.update_circos_act = QAction(QIcon(':/icons/refresh.svg'), "&Update Circos Plot", self,
 			triggered = self.do_update_circos_plot
 		)
 		self.update_circos_act.setIconVisibleInMenu(False)
 
-		self.new_snail_act = QAction(QIcon('icons/spiral.svg'), "&Create Snail Plot", self,
+		self.new_snail_act = QAction(QIcon(':/icons/spiral.svg'), "&Create Snail Plot", self,
 			triggered = self.do_create_snail_plot
 		)
 		self.new_snail_act.setIconVisibleInMenu(False)
@@ -229,7 +234,7 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_update_snail_plot
 		)
 
-		self.update_plot_act = QAction(QIcon('icons/refresh.svg'), "&Update Plot", self,
+		self.update_plot_act = QAction(QIcon(':/icons/refresh.svg'), "&Update Plot", self,
 			triggered = self.do_update_plot
 		)
 
@@ -241,7 +246,7 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.go_to_document
 		)
 
-		self.cite_act = QAction(QIcon('icons/citation.svg'), "&Citation", self,
+		self.cite_act = QAction(QIcon(':/icons/citation.svg'), "&Citation", self,
 			triggered = self.go_to_citation
 		)
 		self.cite_act.setIconVisibleInMenu(False)

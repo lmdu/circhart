@@ -514,7 +514,7 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 	def add_button(self, row, col):
 		btn = QPushButton(self)
 		btn.setFixedSize(16, 16)
-		btn.setIcon(QIcon('icons/color.svg'))
+		btn.setIcon(QIcon(':/icons/color.svg'))
 		btn.setStyleSheet("border: 1px solid black;border-radius:none;")
 		btn.clicked.connect(self._on_add_color)
 		self.main_layout.addWidget(btn, row, col)
@@ -1086,9 +1086,9 @@ class CirchartAddDelButton(QPushButton):
 		self.setFixedSize(QSize(20, 20))
 
 		if btype == 'add':
-			self.setIcon(QIcon('icons/add.svg'))
+			self.setIcon(QIcon(':/icons/add.svg'))
 		else:
-			self.setIcon(QIcon('icons/delete.svg'))
+			self.setIcon(QIcon(':/icons/delete.svg'))
 
 class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
@@ -1270,8 +1270,8 @@ class CirchartAccordionHeader(QFrame):
 		super().__init__(parent)
 		self.closable = closable
 
-		self.expand_icon = QIcon('icons/down.svg')
-		self.collapse_icon = QIcon('icons/right.svg')
+		self.expand_icon = QIcon(':/icons/down.svg')
+		self.collapse_icon = QIcon(':/icons/right.svg')
 
 		self.title_btn = QPushButton(self)
 		self.title_btn.setCheckable(True)
@@ -1280,7 +1280,7 @@ class CirchartAccordionHeader(QFrame):
 	
 		if closable:
 			self.close_btn = QPushButton(self)
-			self.close_btn.setIcon(QIcon('icons/close.svg'))
+			self.close_btn.setIcon(QIcon(':/icons/close.svg'))
 			self.close_btn.setIconSize(QSize(12, 12))
 			self.close_btn.setFixedSize(32, 16)
 			self.close_btn.clicked.connect(self._on_closed)
@@ -1670,16 +1670,16 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 
 	def _create_main_panel(self):
 		main_params = CIRCOS_PARAMS['ideogram']
-		ideogram_panel = self.create_panel('main', 'icons/dna.svg', "Ideogram Parameters")
+		ideogram_panel = self.create_panel('main', ':/icons/dna.svg', "Ideogram Parameters")
 		ideogram_panel.create_params(main_params)
 
 	def _create_label_panel(self):
 		label_params = CIRCOS_PARAMS['labels']
-		label_panel = self.create_panel('label', 'icons/label.svg', "Show ideogram labels")
+		label_panel = self.create_panel('label', ':/icons/label.svg', "Show ideogram labels")
 		label_panel.create_params(label_params)
 
 	def _create_space_panel(self):
-		self.space_panel = self.create_panel('spaces', 'icons/space.svg', "Spacing between specific chromosomes")
+		self.space_panel = self.create_panel('spaces', ':/icons/space.svg', "Spacing between specific chromosomes")
 
 		menu = QMenu(self.space_panel)
 		space_act = QAction("Add Spacing", self.space_panel)
@@ -1732,11 +1732,11 @@ class CirchartTickTrack(CirchartParameterAccordion):
 	def _create_main_panel(self):
 		self.tick_params = CIRCOS_PARAMS['ticks']
 		tick_level0 = [p for p in self.tick_params if p['level'] == 0]
-		self.main_panel = self.create_panel('main', 'icons/mark.svg', "Tick display parameters")
+		self.main_panel = self.create_panel('main', ':/icons/mark.svg', "Tick display parameters")
 		self.main_panel.create_params(tick_level0)
 
 	def _create_ticks_panel(self):
-		self.ticks_panel = self.create_panel('ticks', 'icons/tick.svg', "Ticks")
+		self.ticks_panel = self.create_panel('ticks', ':/icons/tick.svg', "Ticks")
 
 		menu = QMenu(self.ticks_panel)
 		tick_act = QAction("Add Tick", self.ticks_panel)
@@ -1789,7 +1789,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self._create_background_panel()
 
 	def _create_plot_panel(self):
-		self.plot_panel = self.create_panel('main', 'icons/chart.svg', "Track plot parameters")
+		self.plot_panel = self.create_panel('main', ':/icons/chart.svg', "Track plot parameters")
 		self.plot_panel.set_kcount(self.kwargs['kcount'])
 		self.plot_params = CIRCOS_PARAMS['tracks']
 		ptypes = [k for k in self.plot_params]
@@ -1800,7 +1800,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.type_param.set_data(ptypes)
 
 	def _create_rule_panel(self):
-		self.rule_panel = self.create_panel('rules', 'icons/rule.svg', "Track display rules")
+		self.rule_panel = self.create_panel('rules', ':/icons/rule.svg', "Track display rules")
 		self.rule_params = CIRCOS_PARAMS['rules']
 		self.type_param.currentIndexChanged.connect(self.rule_panel.clear_params)
 
@@ -1844,7 +1844,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.create_rule(key, ptype)
 
 	def _create_axes_panel(self):
-		self.axes_panel = self.create_panel('axes', 'icons/axis.svg', "Track Axes")
+		self.axes_panel = self.create_panel('axes', ':/icons/axis.svg', "Track Axes")
 
 		menu = QMenu(self.axes_panel)
 		axes_space_act = QAction("Add Spacing Axis", self.axes_panel)
@@ -1879,7 +1879,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.create_axis(key, by)
 
 	def _create_background_panel(self):
-		self.bgs_panel = self.create_panel('backgrounds', 'icons/bg.svg', "Track Backgrounds")
+		self.bgs_panel = self.create_panel('backgrounds', ':/icons/bg.svg', "Track Backgrounds")
 
 		menu = QMenu(self.bgs_panel)
 		bg_act = QAction("Add Background", self.bgs_panel)

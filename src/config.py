@@ -3,6 +3,7 @@ from pathlib import Path
 
 import yaml
 import PySide6
+from PySide6.QtCore import *
 
 __all__ = [
 	'APP_ID',
@@ -25,7 +26,7 @@ __all__ = [
 ROOT_PATH = Path(__file__).parent
 
 APP_NAME = "Circhart"
-APP_BUILD = "20250702"
+APP_BUILD = "20260120"
 APP_VERSION = "0.1.0"
 
 APP_DEBUG = True
@@ -58,6 +59,7 @@ if os.name == 'nt':
 else:
 	CIRCOS_COMMAND = str(CIRCOS_PATH / 'bin' / 'circos')
 
-with open(str(ROOT_PATH / 'plots.yml')) as stream:
-	CIRCOS_PARAMS = yaml.safe_load(stream)
-
+file = QFile(':/plots.yml')
+file.open(QIODevice.ReadOnly | QIODevice.Text)
+stream = QTextStream(file)
+CIRCOS_PARAMS = yaml.safe_load(stream.readAll())

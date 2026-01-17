@@ -195,7 +195,7 @@ class CirchartBrowseWidget(QWidget):
 		self.input.setReadOnly(True)
 		self.browse = QPushButton(self)
 		self.browse.setFlat(True)
-		self.browse.setIcon(QIcon('icons/folder.svg'))
+		self.browse.setIcon(QIcon(':/icons/folder.svg'))
 		self.browse.clicked.connect(self.select_path)
 
 	def _init_layout(self):
