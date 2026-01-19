@@ -18,6 +18,11 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Prepare circos
+        run: |
+          wget https://circos.ca/distribution/circos-0.69-10.tgz
+          tar xzvf circos-0.69-10.tgz
+
       - name: Install blobtk
         if: matrix.os == 'windows-2022'
         run: pip install https://github.com/lmdu/blobtk-wheel/releases/download/0.7.10.post1/blobtk-0.7.10.post1-cp312-cp312-win_amd64.whl
