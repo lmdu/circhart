@@ -34,7 +34,7 @@ jobs:
       - name: Prepare circos
         if: runner.os != 'Windows'
         run: |
-          wget https://circos.ca/distribution/circos-0.69-10.tgz
+          wget --no-check-certificate --quiet https://circos.ca/distribution/circos-0.69-10.tgz
           tar xzvf circos-0.69-10.tgz
           mv circos-0.69-10 circos
 
