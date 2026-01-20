@@ -60,35 +60,35 @@ jobs:
       - name: Build executable
         run: pyinstaller package/build.spec
 
-      - name: Package
+      - name: Windows Package
         if: runner.os == 'Windows'
         run: |
           $line = Select-String -Path src\config.py -Pattern 'APP_VERSION =' | Out-String
           $version = $line.Split('"')[1]
           iscc /DMyAppVersion=$version package/build_win_installer.iss
 
-      #- name: Package
-      #  if: matrix.os == 'almalinux:8'
-      #  run: |
-      #    version=`awk '/^APP_VERSION/{print $NF}' src/config.py | sed 's/\"//g'`
-      #    chmod a+x package/build_linux_installer.sh
-      #    package/build_linux_installer.sh $version rpm
+      - name: Almalinux Package
+        if: matrix.os == 'almalinux:8'
+        run: |
+          version=`awk '/^APP_VERSION/{print $NF}' src/config.py | sed 's/\"//g'`
+          chmod a+x package/build_linux_installer.sh
+          package/build_linux_installer.sh $version rpm
 
-      - name: Package
+      - name: Ubuntu Package
         if: matrix.os == 'ubuntu-22.04'
         run: |
           version=`awk '/^APP_VERSION/{print $NF}' src/config.py | sed 's/\"//g'`
-          chmod package/build_linux_installer.sh
+          chmod a+x package/build_linux_installer.sh
           package/build_linux_installer.sh $version deb
 
-      - name: Package
+      - name: MacOS ARM Package
         if: matrix.os == 'macos-15'
         run: |
           version=`awk '/^APP_VERSION/{print $NF}' src/config.py | sed 's/\"//g'`
           chmod a+x package/build_mac_installer.sh
           package/build_mac_installer.sh $version arm64
 
-      - name: Package
+      - name: MacOS X64 Package
         if: matrix.os == 'macos-15-intel'
         run: |
           version=`awk '/^APP_VERSION/{print $NF}' src/config.py | sed 's/\"//g'`
