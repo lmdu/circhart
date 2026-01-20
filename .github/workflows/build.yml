@@ -19,7 +19,7 @@ jobs:
           python-version: '3.12'
 
       - uses: msys2/setup-msys2@v2
-        if runner.os == 'Windows'
+        if: runner.os == 'Windows'
         with:
           msystem: MINGW64
 
