@@ -8,7 +8,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-2022, ubuntu-22.04, macos-15, macos-15-intel]
+        os: [almalinux:8, windows-2022, ubuntu-22.04, macos-15, macos-15-intel]
 
     steps:
       - uses: actions/checkout@v6
@@ -19,6 +19,7 @@ jobs:
           python-version: '3.12'
 
       - uses: msys2/setup-msys2@v2
+        if runner.os == 'Windows'
         with:
           msystem: MINGW64
 
@@ -26,7 +27,7 @@ jobs:
         if: runner.os == 'Windows'
         shell: msys2 {0}
         run: |
-          wget --no-check-certificate https://circos.ca/distribution/circos-0.69-10.tgz
+          wget --no-check-certificate --quiet https://circos.ca/distribution/circos-0.69-10.tgz
           tar xzvf circos-0.69-10.tgz
           mv circos-0.69-10 circos
 
@@ -67,21 +68,32 @@ jobs:
           iscc /DMyAppVersion=$version package/build_win_installer.iss
 
       - name: Package
-        if: runner.os == 'Linux'
+        if: matrix.os == 'almalinux:8'
         run: |
           version=`awk '/^APP_VERSION/{print $NF}' src/config.py | sed 's/\"//g'`
-          cd dist
-          chmod a+x ../package/build_linux_desktop.sh
-          ../package/build_linux_desktop.sh $version
+          chmod a+x ../package/build_linux_installer.sh
+          ../package/build_linux_installer.sh $version rpm
 
       - name: Package
-        if: runner.os == 'macOS'
+        if: matrix.os == 'ubuntu-22.04'
         run: |
           version=`awk '/^APP_VERSION/{print $NF}' src/config.py | sed 's/\"//g'`
-          npm install --global create-dmg
-          cd dist
-          create-dmg Circhart.app || test -f Circhart\ 0.0.0.dmg
-          mv Circhart\ 0.0.0.dmg Circhart-v${version}-macos-x64.dmg
+          chmod a+x ../package/build_linux_installer.sh
+          ../package/build_linux_installer.sh $version deb
+
+      - name: Package
+        if: matrix.os == 'macos-15'
+        run: |
+          version=`awk '/^APP_VERSION/{print $NF}' src/config.py | sed 's/\"//g'`
+          chmod a+x ../package/build_mac_installer.sh
+          ../package/build_mac_installer.sh $version arm64
+
+      - name: Package
+        if: matrix.os == 'macos-15-intel'
+        run: |
+          version=`awk '/^APP_VERSION/{print $NF}' src/config.py | sed 's/\"//g'`
+          chmod a+x ../package/build_mac_installer.sh
+          ../package/build_mac_installer.sh $version x64
 
       - uses: actions/upload-artifact@v4
         with:
@@ -89,6 +101,7 @@ jobs:
           path: |
             dist/*.exe
             dist/*.deb
+            dist/*.rpm
             dist/*.tar.gz
             dist/*.AppImage
             dist/*.dmg
@@ -99,6 +112,7 @@ jobs:
           files: |
             dist/*.exe
             dist/*.deb
+            dist/*.rpm
             dist/*.tar.gz
             dist/*.AppImage
             dist/*.dmg

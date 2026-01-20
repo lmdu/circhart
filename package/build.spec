@@ -1,8 +1,16 @@
 from PyInstaller.compat import is_win, is_darwin
 
-datas = [
-    ('../src/circos', 'circos')
-]
+if is_win:
+    icons = ['../src/icons/logo.ico', '../src/icons/alogo.ico']
+    datas = [('../src/circos', 'circos')]
+
+elif is_darwin:
+    icons = ['../src/icons/logo.icns']
+    datas = [('../src/circos', 'circos'), ('../src/icons/alogo.icns', '.')]
+
+else:
+    icons = ['../src/icons/logo.ico']
+    datas = [('../src/circos', 'circos')]
 
 a = Analysis(
     ['../src/main.py'],
@@ -35,6 +43,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=icons,
 )
 coll = COLLECT(
     exe,
@@ -45,3 +54,32 @@ coll = COLLECT(
     upx_exclude=[],
     name='Circhart',
 )
+
+if is_darwin:
+    app = BUNDLE(
+        coll,
+        name = 'Circhart.app',
+        icon = icons[0],
+        bundle_identifier=None,
+        info_plist={
+            'CFBundleDocumentTypes': [
+                {
+                    'CFBundleTypeName': 'Circhart Project File',
+                    'CFBundleTypeIconFile': 'alogo.icns',
+                    'CFBundleTypeRole': 'Editor',
+                    'LSHandlerRank': 'Owner',
+                    'LSItemContentTypes': ['app.Circhart.circ']
+                }
+            ],
+            'UTExportedTypeDeclarations': [
+                {
+                    'UTTypeIdentifier': 'app.Circhart.circ',
+                    'UTTypeTagSpecification': {
+                        'public.filename-extension': ['circ']
+                    },
+                    'UTTypeConformsTo': ['public.data'],
+                    'UTTypeDescription': 'Circhart Project File',
+                    'UTTypeIconFile': 'alogo.icns'
+            }]
+        }
+    )

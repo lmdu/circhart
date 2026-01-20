@@ -1,78 +1,27 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 512 512">
+  <!-- Generator: Adobe Illustrator 30.0.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 123)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #fff;
+      }
 
-<svg
-   width="256"
-   height="256"
-   viewBox="0 0 67.733334 67.733333"
-   version="1.1"
-   id="svg1"
-   sodipodi:docname="logo.svg"
-   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="px"
-     inkscape:zoom="2.0283687"
-     inkscape:cx="135.57693"
-     inkscape:cy="147.6556"
-     inkscape:window-width="1920"
-     inkscape:window-height="956"
-     inkscape:window-x="0"
-     inkscape:window-y="25"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="layer1" />
-  <defs
-     id="defs1" />
-  <g
-     inkscape:label="图层 1"
-     inkscape:groupmode="layer"
-     id="layer1">
-    <circle
-       style="fill:#2c5aa0;stroke-width:0.418866"
-       id="path1"
-       cx="33.866665"
-       cy="33.866665"
-       r="33.866665" />
-    <circle
-       style="fill:#ffffff;stroke-width:0.258519"
-       id="path1-2"
-       cx="33.866665"
-       cy="33.866665"
-       r="20.902082" />
-    <circle
-       style="fill:#2c5aa0;stroke-width:0.160347"
-       id="path1-2-8"
-       cx="33.866665"
-       cy="33.866665"
-       r="12.964583" />
-    <circle
-       style="fill:#ffffff;stroke-width:0.0998078"
-       id="path1-2-8-0"
-       cx="33.866665"
-       cy="33.866665"
-       r="8.0697918" />
-    <circle
-       style="fill:#2c5aa0;stroke-width:0.0621753"
-       id="path1-2-8-0-4"
-       cx="33.866665"
-       cy="33.866665"
-       r="5.0270834" />
-    <circle
-       style="fill:#ffffff;stroke-width:0.0376324"
-       id="path1-2-8-0-4-8"
-       cx="33.866665"
-       cy="33.866665"
-       r="3.0427084" />
+      .st1 {
+        fill: #2c5aa0;
+      }
+    </style>
+  </defs>
+  <circle class="st1" cx="256" cy="256" r="256"/>
+  <path class="st0" d="M256,195.5c-33.4,0-60.5,27.1-60.5,60.5s27.1,60.5,60.5,60.5,60.5-27.1,60.5-60.5-27.1-60.5-60.5-60.5ZM256,293.5c-20.7,0-37.5-16.8-37.5-37.5s16.8-37.5,37.5-37.5,37.5,16.8,37.5,37.5-16.8,37.5-37.5,37.5Z"/>
+  <g>
+    <path class="st0" d="M180.96,319.02c-10.63-12.64-18.12-28.01-21.28-44.9-.44-2.38-2.5-4.12-4.92-4.12h-48.29c-4.25,0-7.53,3.76-6.94,7.98,4.44,31.89,18.39,60.73,38.9,83.57l42.52-42.52Z"/>
+    <path class="st0" d="M270,106.47v48.29c0,2.42,1.74,4.47,4.12,4.92,16.89,3.16,32.26,10.65,44.9,21.28l42.52-42.52c-22.84-20.51-51.68-34.47-83.57-38.9-4.21-.59-7.98,2.69-7.98,6.94Z"/>
+    <path class="st0" d="M192.98,180.96c12.64-10.63,28.01-18.12,44.9-21.28,2.38-.44,4.12-2.5,4.12-4.92v-48.29c0-4.25-3.76-7.53-7.98-6.94-31.89,4.44-60.73,18.39-83.57,38.9l42.52,42.52Z"/>
+    <path class="st0" d="M159.68,237.88c3.16-16.89,10.65-32.26,21.28-44.9l-42.52-42.52c-20.51,22.84-34.47,51.68-38.9,83.57-.59,4.21,2.69,7.98,6.94,7.98h48.29c2.42,0,4.47-1.74,4.92-4.12Z"/>
+    <path class="st0" d="M331.04,192.98c10.63,12.64,18.12,28.01,21.28,44.9.44,2.38,2.5,4.12,4.92,4.12h48.29c4.25,0,7.53-3.76,6.94-7.98-4.44-31.89-18.39-60.73-38.9-83.57l-42.52,42.52Z"/>
+    <path class="st0" d="M237.88,352.32c-16.89-3.16-32.26-10.65-44.9-21.28l-42.52,42.52c22.84,20.51,51.68,34.47,83.57,38.9,4.21.59,7.98-2.69,7.98-6.94v-48.29c0-2.42-1.74-4.47-4.12-4.92Z"/>
+    <path class="st0" d="M352.32,274.12c-3.16,16.89-10.65,32.26-21.28,44.9l42.52,42.52c20.51-22.84,34.47-51.68,38.9-83.57.59-4.21-2.69-7.98-6.94-7.98h-48.29c-2.42,0-4.47,1.74-4.92,4.12Z"/>
+    <path class="st0" d="M319.02,331.04c-12.64,10.63-28.01,18.12-44.9,21.28-2.38.44-4.12,2.5-4.12,4.92v48.29c0,4.25,3.76,7.53,7.98,6.94,31.89-4.44,60.73-18.39,83.57-38.9l-42.52-42.52Z"/>
   </g>
 </svg>

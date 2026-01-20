@@ -433,7 +433,7 @@ class CirchartMainWindow(QMainWindow):
 				if ret == QMessageBox.Yes:
 					self.do_saveas_project()
 
-			pfile, _ = QFileDialog.getOpenFileName(self, filter="Circhart Project File (*.cpf)")
+			pfile, _ = QFileDialog.getOpenFileName(self, filter="Circhart Project File (*.circ)")
 
 		if not pfile:
 			return
@@ -449,7 +449,7 @@ class CirchartMainWindow(QMainWindow):
 
 	def do_save_project(self):
 		if self.project_file is None:
-			sfile, _ = QFileDialog.getSaveFileName(self, filter="Circhart Project File (*.cpf)")
+			sfile, _ = QFileDialog.getSaveFileName(self, filter="Circhart Project File (*.circ)")
 
 			if not sfile:
 				return
@@ -464,7 +464,7 @@ class CirchartMainWindow(QMainWindow):
 			SqlBase.save()
 
 	def do_saveas_project(self):
-		sfile, _ = QFileDialog.getSaveFileName(self, filter="Circhart Project File (*.cpf)")
+		sfile, _ = QFileDialog.getSaveFileName(self, filter="Circhart Project File (*.circ)")
 
 		if not sfile:
 			return
