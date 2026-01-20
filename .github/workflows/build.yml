@@ -97,7 +97,7 @@ jobs:
 
       - uses: actions/upload-artifact@v4
         with:
-          name: Circhart-x64
+          name: Circhart-${{ matrix.os }}
           path: |
             dist/*.exe
             dist/*.deb
