@@ -18,10 +18,24 @@ jobs:
         with:
           python-version: '3.12'
 
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: MINGW64
+
       - name: Prepare circos
+        if: runner.os == 'Windows'
+        shell: msys2 {0}
+        run: |
+          wget --no-check-certificate https://circos.ca/distribution/circos-0.69-10.tgz
+          tar xzvf circos-0.69-10.tgz
+          mv circos-0.69-10 circos
+
+      - name: Prepare circos
+        if: runner.os != 'Windows'
         run: |
           wget https://circos.ca/distribution/circos-0.69-10.tgz
           tar xzvf circos-0.69-10.tgz
+          mv circos-0.69-10 circos
 
       - name: Install blobtk
         if: matrix.os == 'windows-2022'
