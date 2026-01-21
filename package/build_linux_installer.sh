@@ -176,7 +176,7 @@ AppImage:
 
 EOF
 
-mv Circhart AppDirk
+mv Circhart AppDir
 icon_file=../src/icons/logo.svg
 icon_dir=./AppDir/usr/share/icons/hicolor
 mkdir -p ${icon_dir}/{scalable,64x64,128x128,256x256}/apps
