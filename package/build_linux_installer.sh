@@ -183,7 +183,21 @@ AppImage:
 EOF
 
 mv Circhart AppDir
-cp ../src/icons/logo.svg ./AppDir/circhart.svg
+icon_file=../src/icons/logo.svg
+icon_dir=./AppDir/usr/share/icons/hicolor
+mkdir -p ${icon_dir}/{scalable,64x64,128x128,256x256}/apps
+cp ${icon_file} ${icon_dir}/scalable/apps/circhart-icon.svg
+cp ${icon_file} ./AppDir/circhart-icon.svg
+
+sudo apt install imagemagick
+
+for s in 64 128 256
+do
+  convert -size ${s}x${s} ${icon_file} ${icon_dir}/${s}x${s}/apps/circhart-icon.png
+done
+
+appimage-builder --recipe AppImageBuilder.yml --skip-test
+
 #cp circhart.desktop Circhart
 #cp logo.svg Circhart/circhart.svg
 
@@ -236,4 +250,3 @@ cp ../src/icons/logo.svg ./AppDir/circhart.svg
 #</component>
 #EOF
 
-appimage-builder --recipe AppImageBuilder.yml --skip-test
