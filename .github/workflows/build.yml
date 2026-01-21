@@ -65,7 +65,6 @@ jobs:
 
       - name: Build executable
         run: |
-          ls -l
           echo ${{env.BLOBTK_WHEEL}}
           python -m venv cct_venv
           source cct_venv/bin/activate
