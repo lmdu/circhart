@@ -105,6 +105,8 @@ AppDir:
       - amd64
     
     allow_unauthenticated: true
+
+    sources:
       - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy main restricted universe multiverse
       - sourceline: deb http://archive.ubuntu.com/ubuntu/ jammy-updates main restricted universe multiverse
       - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security main restricted universe multiverse
@@ -177,6 +179,7 @@ AppImage:
   file_name: Circhart-v${version}-linux-x64.AppImage
   update-information: guess
   comp: gzip
+
 EOF
 
 mv Circhart AppDir
