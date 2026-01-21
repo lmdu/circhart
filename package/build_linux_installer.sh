@@ -95,7 +95,7 @@ AppDir:
   app_info:
     id: dulab.big.circhart
     name: Circhart
-    icon: circhart.svg
+    icon: circhart-icon.svg
     version: ${version}
     exec: Circhart
     exec_args: $@
