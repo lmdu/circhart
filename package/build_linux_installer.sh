@@ -108,7 +108,7 @@ AppDir:
     icon: circhart-icon.svg
     version: ${version}
     exec: Circhart
-    exec_args: $@
+    exec_args: \$@
   apt:
     arch:
       - amd64
@@ -140,13 +140,13 @@ AppDir:
       - usr/lib/x86_64-linux-gnu/libssl.so*
   runtime:
     env:
-      APPDIR_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
-      LD_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
-      PYTHONPATH: "$APPDIR"
-      GDK_PIXBUF_MODULEDIR: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
-      GDK_PIXBUF_MODULE_FILE: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
+      APPDIR_LIBRARY_PATH: "\$APPDIR:\$APPDIR/runtime/compat/:\$APPDIR/usr/lib/x86_64-linux-gnu:\$APPDIR/lib/x86_64-linux-gnu:\$APPDIR/usr/lib:\$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
+      LD_LIBRARY_PATH: "\$APPDIR:\$APPDIR/runtime/compat/:\$APPDIR/usr/lib/x86_64-linux-gnu:\$APPDIR/lib/x86_64-linux-gnu:\$APPDIR/usr/lib:\$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
+      PYTHONPATH: "\$APPDIR"
+      GDK_PIXBUF_MODULEDIR: \$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
+      GDK_PIXBUF_MODULE_FILE: \$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
     path_mappings:
-      - /usr/share:$APPDIR/usr/share
+      - /usr/share:\$APPDIR/usr/share
   test:
     fedora-30:
       image: appimagecrafters/tests-env:fedora-30
@@ -176,7 +176,7 @@ AppImage:
 
 EOF
 
-mv Circhart AppDir
+mv Circhart AppDirk
 icon_file=../src/icons/logo.svg
 icon_dir=./AppDir/usr/share/icons/hicolor
 mkdir -p ${icon_dir}/{scalable,64x64,128x128,256x256}/apps
