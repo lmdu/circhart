@@ -40,25 +40,35 @@ jobs:
 
       - name: Install blobtk
         if: matrix.os == 'windows-2022'
-        run: wget --no-check-certificate --quiet https://github.com/lmdu/blobtk-wheel/releases/download/0.7.10.post1/blobtk-0.7.10.post1-cp312-cp312-win_amd64.whl -O blobtk.whl
+        run: |
+          BLOBTK_WHEEL=blobtk-0.7.10.post1-cp312-cp312-win_amd64.whl
+          wget --no-check-certificate --quiet https://github.com/lmdu/blobtk-wheel/releases/download/0.7.10.post1/$BLOBTK_WHEEL
 
       - name: Install blobtk
         if: matrix.os == 'ubuntu-22.04'
-        run: wget --no-check-certificate --quiet https://github.com/lmdu/blobtk-wheel/releases/download/0.7.10.post1/blobtk-0.7.10.post1-cp312-cp312-manylinux_2_28_x86_64.whl -O blobtk.whl
-  
+        run: |
+          BLOBTK_WHEEL=blobtk-0.7.10.post1-cp312-cp312-manylinux_2_28_x86_64.whl
+          wget --no-check-certificate --quiet https://github.com/lmdu/blobtk-wheel/releases/download/0.7.10.post1/$BLOBTK_WHEEL
+          
+
       - name: Install blobtk
         if: matrix.os == 'macos-15'
-        run: wget --no-check-certificate --quiet https://github.com/lmdu/blobtk-wheel/releases/download/0.7.10.post1/blobtk-0.7.10.post1-cp312-cp312-macosx_11_0_arm64.whl -O blobtk.whl
+        run: |
+          BLOBTK_WHEEL=blobtk-0.7.10.post1-cp312-cp312-macosx_11_0_arm64.whl
+          wget --no-check-certificate --quiet https://github.com/lmdu/blobtk-wheel/releases/download/0.7.10.post1/$BLOBTK_WHEEL
+          
 
       - name: Install blobtk
         if: matrix.os == 'macos-15-intel'
-        run: wget --no-check-certificate --quiet https://github.com/lmdu/blobtk-wheel/releases/download/0.7.10.post1/blobtk-0.7.10.post1-cp312-cp312-macosx_10_13_x86_64.whl -O blobtk.whl
+        run: |
+          BLOBTK_WHEEL=blobtk-0.7.10.post1-cp312-cp312-macosx_10_13_x86_64.whl
+          wget --no-check-certificate --quiet https://github.com/lmdu/blobtk-wheel/releases/download/0.7.10.post1/$BLOBTK_WHEEL
 
       - name: Build executable
         run: |
           python -m venv cct_venv
           source cct_venv/bin/activate
-          pip install blobtk.whl
+          pip install $BLOBTK_WHEEL
           pip install -r src/requirements.txt
           pyinstaller package/build.spec
 
