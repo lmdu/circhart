@@ -127,7 +127,7 @@ AppDir:
   
   files:
     include: []
-    
+
     exclude:
       - usr/share/man
       - usr/share/doc/*/README.*
@@ -135,7 +135,7 @@ AppDir:
       - usr/share/doc/*/NEWS.*
       - usr/share/doc/*/TODO.*
       - usr/lib/x86_64-linux-gnu/libssl.so*
-  
+
   runtime:
     env:
       APPDIR_LIBRARY_PATH: "$APPDIR:$APPDIR/runtime/compat/:$APPDIR/usr/lib/x86_64-linux-gnu:$APPDIR/lib/x86_64-linux-gnu:$APPDIR/usr/lib:$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
@@ -143,7 +143,7 @@ AppDir:
       PYTHONPATH: "$APPDIR"
       GDK_PIXBUF_MODULEDIR: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
       GDK_PIXBUF_MODULE_FILE: $APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
-    
+
     path_mappings:
       - /usr/share:$APPDIR/usr/share
 
@@ -152,7 +152,7 @@ AppDir:
       image: appimagecrafters/tests-env:fedora-30
       command: ./AppRun
       use_host_x: True
-    
+
     debian-stable:
       image: appimagecrafters/tests-env:debian-stable
       command: ./AppRun
