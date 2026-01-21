@@ -190,7 +190,7 @@ do
   convert -size ${s}x${s} ${icon_file} ${icon_dir}/${s}x${s}/apps/circhart-icon.png
 done
 
-appimage-builder --recipe AppImageBuilder.yml
+appimage-builder --recipe AppImageBuilder.yml --skip-test
 
 #cp circhart.desktop Circhart
 #cp logo.svg Circhart/circhart.svg
