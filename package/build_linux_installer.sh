@@ -143,6 +143,9 @@ AppDir:
       APPDIR_LIBRARY_PATH: "\$APPDIR:\$APPDIR/runtime/compat/:\$APPDIR/usr/lib/x86_64-linux-gnu:\$APPDIR/lib/x86_64-linux-gnu:\$APPDIR/usr/lib:\$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
       LD_LIBRARY_PATH: "\$APPDIR:\$APPDIR/runtime/compat/:\$APPDIR/usr/lib/x86_64-linux-gnu:\$APPDIR/lib/x86_64-linux-gnu:\$APPDIR/usr/lib:\$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders"
       PYTHONPATH: "\$APPDIR"
+      QT_PLUGIN_PATH: "\$APPDIR/qt/plugins"
+      QT_QPA_PLATFORMTHEME: xdgdesktopportal
+      QT_QPA_PLATFORM: xcb
       GDK_PIXBUF_MODULEDIR: \$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
       GDK_PIXBUF_MODULE_FILE: \$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
     path_mappings:
