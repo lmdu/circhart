@@ -64,8 +64,15 @@ jobs:
           wget --no-check-certificate --quiet https://github.com/lmdu/blobtk-wheel/releases/download/0.7.10.post1/blobtk-0.7.10.post1-cp312-cp312-macosx_10_13_x86_64.whl
 
       - name: Build executable
+        if: runner.os == 'Windows'
         run: |
-          echo ${{env.BLOBTK_WHEEL}}
+          pip install ${{env.BLOBTK_WHEEL}}
+          pip install -r src/requirements.txt
+          pyinstaller package/build.spec
+
+      - name: Build executable
+        if: runner.os != 'Windows'
+        run: |
           python -m venv cct_venv
           source cct_venv/bin/activate
           pip install ${{env.BLOBTK_WHEEL}}
