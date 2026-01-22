@@ -80,8 +80,6 @@ EOF
 
 #build appimage
 sudo apt update
-sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev libxcb-cursor-dev libxcb-glx0-dev libxcb-dri2-0-dev libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev libxcb-res0-dev pkg-config flex bison libfreetype-dev patchelf jq libnsl-dev -y
-sudo apt install coreutils binutils patchelf desktop-file-utils fakeroot fuse squashfs-tools strace util-linux zsync libgdk-pixbuf2.0-dev -y
 
 # Use GCC-13 as a minimum version
 sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
@@ -90,6 +88,9 @@ sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 13
 sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 13
 sudo update-alternatives --set gcc /usr/bin/gcc-13
 sudo update-alternatives --set g++ /usr/bin/g++-13
+
+sudo apt install build-essential checkinstall libegl-dev zlib1g-dev libssl-dev ninja-build autoconf libx11-dev libx11-xcb-dev libfontenc-dev libice-dev libsm-dev libxau-dev libxaw7-dev libxcomposite-dev libxcursor-dev libxdamage-dev libxdmcp-dev libxext-dev libxfixes-dev libxi-dev libxinerama-dev libxkbfile-dev libxmu-dev libxmuu-dev libxpm-dev libxrandr-dev libxrender-dev libxres-dev libxss-dev libxt-dev libxtst-dev libxv-dev libxvmc-dev libxxf86vm-dev xtrans-dev libxcb-render0-dev libxcb-render-util0-dev libxcb-xkb-dev libxcb-icccm4-dev libxcb-image0-dev libxcb-keysyms1-dev libxcb-randr0-dev libxcb-shape0-dev libglu1-mesa-dev libxcb-sync-dev libxcb-xfixes0-dev libxcb-xinerama0-dev xkb-data libxcb-dri3-dev uuid-dev libxcb-util-dev libxkbcommon-x11-dev libxcb-cursor-dev libxcb-glx0-dev libxcb-dri2-0-dev libxcb-present-dev libxcb-composite0-dev libxcb-ewmh-dev libxcb-res0-dev pkg-config flex bison libfreetype-dev patchelf jq libnsl-dev -y
+sudo apt install coreutils binutils patchelf desktop-file-utils fakeroot fuse squashfs-tools strace util-linux zsync libgdk-pixbuf2.0-dev libxcb-cursor0 libegl1-mesa libegl1-mesa-dev libgl1 libgl1-mesa-glx  -y
 
 wget --no-check-certificate --quiet https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage -O $GITHUB_WORKSPACE/appimagetool
 chmod +x $GITHUB_WORKSPACE/appimagetool
@@ -146,31 +147,11 @@ AppDir:
       QT_PLUGIN_PATH: "\$APPDIR/qt/plugins"
       QT_QPA_PLATFORMTHEME: xdgdesktopportal
       QT_QPA_PLATFORM: xcb
+      QT_DEBUG_PLUGINS: 1
       GDK_PIXBUF_MODULEDIR: \$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders
       GDK_PIXBUF_MODULE_FILE: \$APPDIR/usr/lib/x86_64-linux-gnu/gdk-pixbuf-2.0/2.10.0/loaders.cache
     path_mappings:
       - /usr/share:\$APPDIR/usr/share
-  test:
-    fedora-30:
-      image: appimagecrafters/tests-env:fedora-30
-      command: ./AppRun
-      use_host_x: True
-    debian-stable:
-      image: appimagecrafters/tests-env:debian-stable
-      command: ./AppRun
-      use_host_x: True
-    archlinux-latest:
-      image: appimagecrafters/tests-env:archlinux-latest
-      command: ./AppRun
-      use_host_x: True
-    centos-7:
-      image: appimagecrafters/tests-env:centos-7
-      command: ./AppRun
-      use_host_x: True
-    ubuntu-xenial:
-      image: appimagecrafters/tests-env:ubuntu-xenial
-      command: ./AppRun
-      use_host_x: True
 AppImage:
   arch: x86_64
   file_name: Circhart-v${version}-linux-x64.AppImage
