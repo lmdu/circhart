@@ -120,6 +120,8 @@ AppDir:
       - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security main restricted universe multiverse
     include:
       - xdg-desktop-portal-kde
+      - libgl1-mesa-glx
+      - libegl1-mesa
       - libgtk-3-0
       - librsvg2-2
       - librsvg2-common
