@@ -120,6 +120,7 @@ AppDir:
       - sourceline: deb http://security.ubuntu.com/ubuntu jammy-security main restricted universe multiverse
     include:
       - xdg-desktop-portal-kde
+      - libxcb-cursor0
       - libgl1-mesa-glx
       - libegl1-mesa
       - libgtk-3-0
@@ -131,9 +132,7 @@ AppDir:
       - shared-mime-info
       - gnome-icon-theme-symbolic
       - hicolor-icon-theme
-    exclude:
-      - qt5-common
-      - libqt5core5a
+    exclude: []
   files:
     include: []
     exclude:
