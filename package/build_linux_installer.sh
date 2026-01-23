@@ -121,8 +121,8 @@ AppDir:
     include:
       - xdg-desktop-portal-kde
       - libxcb-cursor0
-      - libglx-mesa0
-      - libegl-mesa0
+      - libgl1
+      - libegl1
       - libgtk-3-0
       - librsvg2-2
       - librsvg2-common
