@@ -153,7 +153,7 @@ QComboBox::drop-down {
 }
 
 QComboBox::down-arrow {
-	image: url('icons/arrow.svg');
+	image: url(':/icons/arrow.svg');
 	width: 16px;
 }
 
@@ -221,14 +221,14 @@ QDoubleSpinBox::down-button:pressed {
 QSpinBox::up-arrow,
 QDoubleSpinBox::up-arrow {
 	subcontrol-origin: content;
-	image: url('icons/plus.svg');
+	image: url(':/icons/plus.svg');
 	width: 10px;
 }
 
 QSpinBox::down-arrow,
 QDoubleSpinBox::down-arrow {
 	subcontrol-origin: content;
-	image: url('icons/minus.svg');
+	image: url(':/icons/minus.svg');
 	height: 10px;
 }
 
