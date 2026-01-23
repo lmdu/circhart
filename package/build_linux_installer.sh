@@ -123,6 +123,7 @@ AppDir:
       - libxcb-cursor0
       - libgl1
       - libegl1
+      - libdbus-1-3
       - libgtk-3-0
       - librsvg2-2
       - librsvg2-common
