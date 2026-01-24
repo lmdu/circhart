@@ -46,6 +46,8 @@ class CirchartMainWindow(QMainWindow):
 	def __init__(self):
 		super().__init__()
 
+		self.project_file = None
+
 		self.set_window_title()
 		self.setWindowIcon(QIcon(':/icons/logo.svg'))
 
@@ -60,11 +62,9 @@ class CirchartMainWindow(QMainWindow):
 		self.plot_tree.show_plot.connect(self.show_plot_image)
 		self.plot_tree.clicked.connect(self.show_plot_view)
 
-
 		self.stack_widget = QStackedWidget(self)
 		self.stack_widget.addWidget(self.plot_view)
 		self.stack_widget.addWidget(self.data_table)
-
 
 		self.create_sidebar()
 		self.create_actions()
@@ -74,10 +74,29 @@ class CirchartMainWindow(QMainWindow):
 		self.create_plot_panels()
 
 		self.setCentralWidget(self.stack_widget)
-		self.resize(QSize(800, 600))
+		
+		self.read_settings()
 		self.show()
 
-		self.project_file = None
+	def closeEvent(self, event):
+		self.write_settings()
+		event.accept()
+
+	def read_settings(self):
+		settings = QSettings()
+		settings.beginGroup('Window')
+		self.resize(settings.value('size', QSize(900, 600)))
+		self.move(settings.value('pos', QPoint(200, 200)))
+		settings.endGroup()
+
+	def write_settings(self):
+		settings = QSettings()
+
+		if not self.isMaximized():
+			settings.beginGroup('Window')
+			settings.setValue('size', self.size())
+			settings.setValue('pos', self.pos())
+			settings.endGroup()
 
 	def set_window_title(self, pfile=None):
 		if pfile is None:
@@ -93,10 +112,12 @@ class CirchartMainWindow(QMainWindow):
 		)
 
 		self.save_project_act = QAction("&Save Project", self,
+			shortcut = QKeySequence.Save,
 			triggered = self.do_save_project
 		)
 
 		self.saveas_project_act = QAction("&Save Project As...", self,
+			shortcut = QKeySequence.SaveAs,
 			triggered = self.do_saveas_project
 		)
 
@@ -158,10 +179,12 @@ class CirchartMainWindow(QMainWindow):
 		self.export_image_act.setIconVisibleInMenu(False)
 
 		self.zoom_in_act = QAction(QIcon(":/icons/zoomin.svg"), "&Zoom In", self,
+			shortcut = QKeySequence.ZoomIn,
 			triggered = self.do_zoom_in
 		)
 
 		self.zoom_out_act = QAction(QIcon(":/icons/zoomout.svg"), "&Zoom Out", self,
+			shortcut = QKeySequence.ZoomOut,
 			triggered = self.do_zoom_out
 		)
 
@@ -204,6 +227,10 @@ class CirchartMainWindow(QMainWindow):
 
 		self.prepare_ldata_act = QAction("&Prepare Link Data", self,
 			triggered = self.do_prepare_link_data
+		)
+
+		self.prepare_tdata_act = QAction("&Prepare Text Data", self,
+			triggered = self.do_prepare_text_data
 		)
 
 		self.check_circos_act = QAction("&Check Circos Dependencies", self,
@@ -313,6 +340,7 @@ class CirchartMainWindow(QMainWindow):
 		self.prepare_menu.addAction(self.prepare_skew_act)
 		self.prepare_menu.addAction(self.prepare_pdata_act)
 		self.prepare_menu.addAction(self.prepare_ldata_act)
+		self.prepare_menu.addAction(self.prepare_tdata_act)
 
 		self.plot_menu = self.menuBar().addMenu("&Plot")
 		self.circos_menu = self.plot_menu.addMenu("&Circos Plot")
@@ -347,7 +375,7 @@ class CirchartMainWindow(QMainWindow):
 		
 		self.toolbar_act = self.tool_bar.toggleViewAction()
 		
-		self.tool_bar.addSeparator()
+		#self.tool_bar.addSeparator()
 
 		self.tool_bar.addAction(self.new_circos_act)
 		self.tool_bar.addAction(self.add_track_act)
@@ -649,10 +677,10 @@ class CirchartMainWindow(QMainWindow):
 		self.plot_view.save_plot(ifile, iformat)
 
 	def do_zoom_in(self):
-		print('zoom in')
+		self.plot_view.scale(1.15, 1.15)
 
 	def do_zoom_out(self):
-		print('zoom out')
+		self.plot_view.scale(1.0/1.15, 1.0/1.15)
 
 	def do_set_karyotype_default_color(self):
 		if self.stack_widget.currentIndex() != 1:
@@ -717,6 +745,14 @@ class CirchartMainWindow(QMainWindow):
 
 		if params:
 			worker = CirchartLinkPrepareWorker(params)
+			worker.signals.success.connect(self.data_tree.update_tree)
+			self.submit_new_worker(worker)
+
+	def do_prepare_text_data(self):
+		params = CirchartTextPrepareDialog.prepare(self)
+
+		if params:
+			worker = CirchartTextPrepareWorker(params)
 			worker.signals.success.connect(self.data_tree.update_tree)
 			self.submit_new_worker(worker)
 

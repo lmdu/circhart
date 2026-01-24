@@ -1,7 +1,6 @@
 import os
 import sys
 import multiprocessing
-from pathlib import Path
 
 from PySide6.QtGui import *
 from PySide6.QtCore import *
@@ -31,7 +30,7 @@ if __name__ == "__main__":
 
 	args = app.arguments()
 	if len(args) > 1:
-		if Path(args[1]).is_file():
+		if os.path.isfile(args[1]):
 			win.do_open_project(args[1])
 
 	sys.exit(app.exec())

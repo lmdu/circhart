@@ -27,6 +27,7 @@ __all__ = [
 	'CirchartSnailPlotProcess',
 	'CirchartImportCollinearityProcess',
 	'CirchartLinkPrepareProcess',
+	'CirchartTextPrepareProcess',
 	'CirchartGCSkewPrepareProcess',
 ]
 
@@ -99,42 +100,20 @@ class CirchartImportAnnotationProcess(CirchartBaseProcess):
 		aformat = get_gxf_format(self.params.path)
 		assert aformat is not None, "the annotation format is not gtf or gff"
 
-		if aformat == 'gtf':
-			split_attrs = lambda x: x.split('"')
-		else:
-			split_attrs = lambda x: x.split('=')
-
 		rows = []
 		features = set()
 		attributes = set()
 
-		if self.params.path.endswith('.gz'):
-			fp = gzip.open(self.params.path, 'rt')
-		else:
-			fp = open(self.params.path)
+		for record in GXFParser(self.params.path, aformat):
+			features.add(record.feature)
 
-		with fp:
-			for line in fp:
-				if line.startswith('#'):
-					continue
-
-				line = line.strip()
-				if not line:
-					continue
-
-				cols = line.split('\t')
-				features.add(cols[2])
-
-				for attr in cols[8].split(';'):
-					a = split_attrs(attr)[0].strip()
+			for a in record.attrs.keys():
+				if a not in attributes:
 					attributes.add(a)
 
-				cols[3] = int(cols[3])
-				cols[4] = int(cols[4])
-				rows.append(cols)
-
-				if len(rows) >= 1000:
-					break
+			rows.append(record.raw)
+			if len(rows) >= 1000:
+				break
 
 		self.send('result', {
 			'data': rows,
@@ -552,6 +531,42 @@ class CirchartLinkPrepareProcess(CirchartBaseProcess):
 				if len(rows) == 200:
 					self.send('result', rows)
 					rows = []
+
+		if rows:
+			self.send('result', rows)
+
+class CirchartTextPrepareProcess(CirchartBaseProcess):
+	def do(self):
+		rows = []
+
+		if 'matches' in self.params:
+			matches = {m.strip().lower() for m in self.params.matches.split('\n')}
+		else:
+			matches = {}
+
+		attr = self.params.attribute
+
+		for record in GXFParser(self.params.annotation):
+			if record.chrom not in self.params.axes:
+				continue
+
+			if record.feature != self.params.feature:
+				continue
+
+			if attr not in record.attrs:
+				continue
+
+			a = record.attrs[attr]
+
+			if matches and a.lower() not in matches:
+				continue
+
+			chrom = self.params.axes[record.chrom][0]
+			rows.append((chrom, record.start, record.end, a))
+
+			if len(rows) == 200:
+				self.send('result', rows)
+				rows = []
 
 		if rows:
 			self.send('result', rows)

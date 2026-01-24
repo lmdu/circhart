@@ -26,6 +26,7 @@ __all__ = [
 	'CirchartGCSkewPrepareWorker',
 	'CirchartDensityPrepareWorker',
 	'CirchartLinkPrepareWorker',
+	'CirchartTextPrepareWorker',
 	'CirchartCircosPlotWorker',
 	'CirchartProjectSaveWorker',
 	'CirchartCircosColorWorker',
@@ -255,6 +256,16 @@ class CirchartLinkPrepareWorker(CirchartProcessWorker):
 
 		self.data_index = SqlControl.add_data(self.params.dataname, self.data_type)
 		SqlControl.create_index_table(self.data_type, self.data_index)
+
+class CirchartTextPrepareWorker(CirchartPrepareWorker):
+	processor = CirchartTextPrepareProcess
+	data_type = 'textdata'
+
+	def preprocess(self):
+		super().preprocess()
+
+		ameta = SqlControl.get_data_meta(self.params['annotation'])
+		self.params['annotation'] = ameta['path']
 
 class CirchartCircosPlotWorker(CirchartBaseWorker):
 	processor = CirchartCircosPlotProcess

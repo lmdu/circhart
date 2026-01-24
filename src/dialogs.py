@@ -4,6 +4,7 @@ from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 
+from utils import *
 from config import *
 from widgets import *
 from backend import *
@@ -16,6 +17,7 @@ __all__ = [
 	'CirchartGCContentPrepareDialog',
 	'CirchartGCSkewPrepareDialog',
 	'CirchartDensityPrepareDialog',
+	'CirchartTextPrepareDialog',
 	'CirchartCreateCircosPlotDialog',
 	'CirchartCreateSnailPlotDialog',
 	'CirchartCircosColorSelectDialog',
@@ -492,6 +494,126 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 
 			params.update(window_size)
 			return params
+
+class CirchartTextPrepareDialog(CirchartBaseDialog):
+	_title = "Prepare Text Data"
+
+	def _create_widgets(self):
+		self.dataname_input = QLineEdit(self)
+		self.dataname_input.setPlaceholderText("input name for generated data")
+		self.annot_select = QComboBox(self)
+		self.select_karyotype = QComboBox(self)
+		self.feat_select = QComboBox(self)
+		self.attr_select = QComboBox(self)
+		self.match_text = QTextEdit(self)
+		self.match_text.setVisible(False)
+		self.match_text.setPlaceholderText("One attribute value per line")
+		self.match_check = QCheckBox("Only extract records whose attribute value in below list")
+		self.match_check.toggled.connect(self._on_method_changed)
+
+		self.annot_select.currentIndexChanged.connect(self._on_annotation_changed)
+
+	def _init_widgets(self):
+		self.features = {}
+		self.attributes = {}
+
+		ks = SqlControl.get_datas_by_type('karyotype')
+		for k in ks:
+			self.select_karyotype.addItem(k.name, k.id)
+
+		ans = SqlControl.get_datas_by_type('annotation')
+		for a in ans:
+			meta = str_to_dict(a.meta)
+			self.features[a.id] = meta['features']
+			self.attributes[a.id] = meta['attributes']
+
+			self.annot_select.addItem(a.name, a.id)
+
+	def _init_layouts(self):
+		self.main_layout.addWidget(self.dataname_input)
+		self.main_layout.addWidget(QLabel("Select a karyotype:", self))
+		self.main_layout.addWidget(self.select_karyotype)
+		self.main_layout.addWidget(QLabel("Select an annotation:", self))
+		self.main_layout.addWidget(self.annot_select)
+
+		subs_layout = QGridLayout()
+		subs_layout.setContentsMargins(0, 0, 0, 0)
+		subs_layout.addWidget(QLabel("Select a feature:", self), 0, 0)
+		subs_layout.addWidget(self.feat_select, 1, 0)
+		subs_layout.addWidget(QLabel("Select an attribute:"), 0, 1)
+		subs_layout.addWidget(self.attr_select, 1, 1)
+		
+		self.main_layout.addLayout(subs_layout)
+		self.main_layout.addWidget(self.match_check)
+		self.main_layout.addWidget(self.match_text)
+
+	def _on_annotation_changed(self, index):
+		aid = self.annot_select.currentData()
+		
+		self.feat_select.clear()
+		self.feat_select.addItems(self.features[aid])
+
+		self.attr_select.clear()
+		self.attr_select.addItems(self.attributes[aid])
+
+	def _on_method_changed(self, checked):
+		self.match_text.setVisible(checked)
+		self.adjustSize()
+
+	def _on_accepted(self):
+		dn = self.dataname_input.text().strip()
+		if not dn:
+			return QMessageBox.critical(self, 'Error', "No data name input")
+
+		ki = self.select_karyotype.currentData()
+		if not ki:
+			return QMessageBox.critical(self, 'Error', "No karyotype selected")
+
+		ai = self.annot_select.currentData()
+		if not ai:
+			return QMessageBox.critical(self, 'Error', "No annotation selected")
+
+		ft = self.feat_select.currentText()
+		if not ft:
+			return QMessageBox.critical(self, 'Error', "No feature selected")
+		
+		at = self.attr_select.currentText()
+		if not at:
+			return QMessageBox.critical(self, 'Error', "No attribute selected")
+
+		if self.match_check.isChecked():
+			mt = self.match_text.toPlainText().strip()
+			if not mt:
+				return QMessageBox.critical(self, 'Error', "No attribute value list input")
+
+		self.accept()
+
+	@classmethod
+	def prepare(cls, parent=None):
+		dlg = cls(parent)
+
+		if dlg.exec() == QDialog.Accepted:
+			annotation_id = dlg.annot_select.currentData()
+			karyotype_id = dlg.select_karyotype.currentData()
+			feature = dlg.feat_select.currentText()
+			dataname = dlg.dataname_input.text().strip()
+			attribute = dlg.attr_select.currentText()
+			matches = dlg.match_text.toPlainText()
+			method = dlg.match_check.isChecked()
+
+			params = {
+				'annotation': annotation_id,
+				'karyotype': karyotype_id,
+				'feature': feature,
+				'attribute': attribute,
+				'dataname': dataname
+			}
+
+			if method:
+				params['matches'] = matches
+
+			return params
+
 
 class CirchartCreateCircosPlotDialog(QDialog):
 	def __init__(self, parent=None):
