@@ -217,37 +217,37 @@ class CirchartImportBandsProcess(CirchartBaseProcess):
 			self.send('warning', "Ignored {} lines due to missing columns".format(ignore))
 
 class CirchartImportDataProcess(CirchartBaseProcess):
-		def tsv_reader(self, fh):
-			for line in fh:
-				line = line.strip()
+		def file_reader(self, fh):
+			if self.params.format == 'csv':
+				reader = csv.reader(fh)
+			else:
+				for line in fh:
+					line = line.strip()
 
-				if not line:
-					continue
+					if not line:
+						continue
 
-				if line.startswith('#'):
-					continue
+					if line.startswith('#'):
+						continue
 
-				cols = line.strip().split()
+					cols = line.strip().split()
 
-				yield cols
+					yield cols
 
 		def do(self):
 			rows = []
 			ignore = 0
 
 			with open(self.params.path) as fh:
-				if self.params.format == 'csv':
-					reader = csv.reader(fh)
-				
-				else:
-					reader = self.tsv_reader(fh)
+				reader = self.file_reader(fh)
 
 				for row in reader:
 					if len(row) < self.params.column:
 						ignore += 1
 						continue
 
-					rows.append(row[:self.params.column])
+					res = row[:self.params.column]
+					rows.append(res)
 
 					if len(rows) == 200:
 						self.send('result', rows)
@@ -258,6 +258,61 @@ class CirchartImportDataProcess(CirchartBaseProcess):
 
 			if ignore > 0:
 				self.send('warning', "Ignored {} lines due to missing columns".format(ignore))
+
+class CirchartImportLinkDataProcess(CirchartImportDataProcess):
+	def do(self):
+		rows = []
+		mappings = {}
+		ignore = 0
+
+		with open(self.params.path) as fh:
+			reader = self.file_reader(fh)
+
+			for row in reader:
+				if len(row) < self.params.column:
+					ignore += 1
+					continue
+
+				elif 4 <= len(row) < 6:
+					if row[0] not in mappings:
+						mappings[row[0]] = row[1:4]
+						mappings[row[0]].append('')
+						mappings[row[0]].append('')
+
+						if len(row) > 4:
+							mappings[row[0]].append(row[4])
+						else:
+							mappings[row[0]].append('')
+
+					else:
+						mappings[row[0]][4] = row[2]
+						mappings[row[0]][5] = row[3]
+
+						if len(row) > 4 and not mappings[row[0]][6]:
+							mappings[row[0]][6] = row[4]
+
+						rows.append(mappings[row[0]])
+
+						if len(rows) == 200:
+							self.send('result', rows)
+							rows = []
+
+				else:
+					res = row[:7]
+
+					if len(res) < 7:
+						res.append('')
+
+					rows.append(res)
+					if len(rows) == 200:
+						self.send('result', rows)
+						rows = []
+
+		if rows:
+			self.send('result', rows)
+
+		if ignore > 0:
+			self.send('warning', "Ignored {} lines due to missing columns".format(ignore))
 
 class CirchartImportCollinearityProcess(CirchartBaseProcess):
 	def do(self):

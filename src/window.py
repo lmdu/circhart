@@ -653,7 +653,7 @@ class CirchartMainWindow(QMainWindow):
 		self.import_plot_data('plotdata', 4)
 
 	def do_import_link_data(self):
-		self.import_plot_data('linkdata', 6)
+		self.import_plot_data('linkdata', 4)
 
 	def do_import_loci_data(self):
 		self.import_plot_data('locidata', 3)
