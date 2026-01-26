@@ -18,6 +18,7 @@ __all__ = [
 	'CirchartImportAnnotationProcess',
 	'CirchartImportBandsProcess',
 	'CirchartImportDataProcess',
+	'CirchartImportLinkDataProcess',
 	'CirchartImportVariationsProcess',
 	'CirchartImportRegionsProcess',
 	'CirchartBandPrepareProcess',
@@ -278,6 +279,7 @@ class CirchartImportLinkDataProcess(CirchartImportDataProcess):
 						mappings[row[0]] = row[1:4]
 						mappings[row[0]].append('')
 						mappings[row[0]].append('')
+						mappings[row[0]].append('')
 
 						if len(row) > 4:
 							mappings[row[0]].append(row[4])
@@ -285,6 +287,7 @@ class CirchartImportLinkDataProcess(CirchartImportDataProcess):
 							mappings[row[0]].append('')
 
 					else:
+						mappings[row[0]][3] = row[1]
 						mappings[row[0]][4] = row[2]
 						mappings[row[0]][5] = row[3]
 
@@ -402,7 +405,7 @@ class CirchartGCContentPrepareProcess(CirchartBaseProcess):
 					j = size
 
 				gc = self._calc_gc(seq, i, j)
-				rows.append((chrid, i+1, j, gc))
+				rows.append((chrid, i+1, j, gc, ''))
 
 				if j == size:
 					break
@@ -520,6 +523,7 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 
 			for idx, loci in enumerate(locus):
 				loci.append(counts[idx])
+				loci.append('')
 				rows.append(loci)
 
 			self.send('result', rows)
@@ -581,6 +585,7 @@ class CirchartLinkPrepareProcess(CirchartBaseProcess):
 				row = []
 				row.extend(gene_mappings[cols[2]])
 				row.extend(gene_mappings[cols[3]])
+				row.append('')
 				rows.append(row)
 
 				if len(rows) == 200:
@@ -617,7 +622,7 @@ class CirchartTextPrepareProcess(CirchartBaseProcess):
 				continue
 
 			chrom = self.params.axes[record.chrom][0]
-			rows.append((chrom, record.start, record.end, a))
+			rows.append((chrom, record.start, record.end, a, ''))
 
 			if len(rows) == 200:
 				self.send('result', rows)

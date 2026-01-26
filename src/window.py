@@ -639,7 +639,11 @@ class CirchartMainWindow(QMainWindow):
 			'column': column
 		}
 
-		worker = CirchartImportDataWorker(params)
+		if dtype == 'linkdata':
+			worker = CirchartImportLinkDataWorker(params)
+		else:
+			worker = CirchartImportDataWorker(params)
+
 		worker.signals.success.connect(self.data_tree.update_tree)
 		self.submit_new_worker(worker)
 

@@ -19,6 +19,7 @@ __all__ = [
 	'CirchartImportCollinearityWorker',
 	'CirchartImportBandsWorker',
 	'CirchartImportDataWorker',
+	'CirchartImportLinkDataWorker',
 	'CirchartImportVariationsWorker',
 	'CirchartImportRegionsWorker',
 	'CirchartBandPrepareWorker',
@@ -186,6 +187,9 @@ class CirchartImportDataWorker(CirchartImportBaseWorker):
 	def preprocess(self):
 		self.data_type = self.params['type']
 		super().preprocess()
+
+class CirchartImportLinkDataWorker(CirchartImportDataWorker):
+	processor = CirchartImportLinkDataProcess
 
 class CirchartPrepareWorker(CirchartProcessWorker):
 	data_type = 'plotdata'
