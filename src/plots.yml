@@ -589,11 +589,17 @@ tracks:
     -
       name: stroke_thickness
       type: int
+      range:
+        - 0
+        - 100
       default: 0
       tooltip: border thickness, if any, of the highlight slice
     -
       name: z
       type: int
+      range:
+        - 0
+        - 10000
       label: Z Depth
       default: 1
       tooltip: z-depth of the highlight, controlling the order in which highlights are drawn
@@ -654,6 +660,31 @@ tracks:
         - 1
       decimal: 2
       default: 0.75
+    -
+      name: stroke_color
+      type: color
+      mutex: ~ribbon
+      default: 202,202,202
+      tooltip: work with ribbon yes
+    -
+      name: stroke_thickness
+      type: int
+      mutex: ~ribbon
+      range:
+        - 0
+        - 100
+      default: 1
+      tooltip: work with ribbon yes
+    -
+      name: z
+      type: int
+      hide: true
+      range:
+        - 0
+        - 10000
+      label: Z Depth
+      default: 1
+      tooltip: z-depth of the links
 
 rules:
   scatter:
@@ -913,8 +944,14 @@ snail:
   #  tooltip: max scaffold length for snail plot
   general:
     -
-      name: plotid
-      type: hidden
+      name: plot_id
+      type: readonly
+    -
+      name: plot_name
+      type: readonly
+    -
+      name: plot_type
+      type: readonly
     -
       name: genome
       type: hidden

@@ -1595,9 +1595,15 @@ class CirchartParameterPanel(QWidget):
 						w.set_tooltip(p.tooltip)
 
 					case 'mutex':
-						parent = self.params[p.mutex]
-						w.setDisabled(parent.isChecked())
-						parent.toggled.connect(w.setDisabled)
+						if p.mutex.startswith('~'):
+							mname = p.mutex.strip('~')
+							parent = self.params[mname]
+							w.setEnabled(parent.isChecked())
+							parent.toggled.connect(w.setEnabled)
+						else:
+							parent = self.params[p.mutex]
+							w.setDisabled(parent.isChecked())
+							parent.toggled.connect(w.setDisabled)
 
 			if p.name in values:
 				w.set_value(values[p.name])
@@ -1607,6 +1613,9 @@ class CirchartParameterPanel(QWidget):
 
 			elif p.type == 'title':
 				self.add_param(w, group=True)
+
+			elif 'hide' in p:
+				continue
 
 			elif 'parent' in p:
 				self.add_param(w, parent=p.parent)
@@ -2128,7 +2137,7 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 
 class CirchartSnailGeneralForm(CirchartParameterAccordion):
 	_closable = False
-	_visible = False
+	_visible = True
 
 	def _init_panels(self):
 		panel = self.create_panel('global')

@@ -128,6 +128,7 @@ class CirchartCircosDependencyDialog(CirchartBaseDialog):
 		self.process.started.connect(self.spinner.start)
 		self.process.errorOccurred.connect(self.on_error_occurred)
 		self.process.errorOccurred.connect(self.spinner.stop)
+		self.process.readyReadStandardError.connect(self.on_monitor_stderr)
 		self.process.finished.connect(self.on_update_finished)
 		self.process.finished.connect(self.spinner.stop)
 		self.process.start()
@@ -135,6 +136,10 @@ class CirchartCircosDependencyDialog(CirchartBaseDialog):
 	def on_error_occurred(self):
 		error = self.process.errorString()
 		QMessageBox.critical(self, "Error", error)
+
+	def on_monitor_stderr(self):
+		data = self.process.readAllStandardError()
+		QMessageBox.critical(self, 'Error', data.data().decode())
 
 	def on_update_finished(self, code, status):
 		if status == QProcess.ExitStatus.NormalExit:
@@ -153,12 +158,9 @@ class CirchartCircosDependencyDialog(CirchartBaseDialog):
 					self.tree.addTopLevelItem(item)
 
 				elif cols and cols[0] == 'missing':
-					item = QTreeWidgetItem([cols[1], '', ''])
+					item = QTreeWidgetItem([cols[1], '', cols[0]])
 					item.setIcon(0, QIcon(':/icons/no.svg'))
 					self.tree.addTopLevelItem(item)
-
-					install_btn = QPushButton('Install', self.tree)
-					self.tree.setItemWidget(item, 2, install_btn)
 
 class CirchartKaryotypePrepareDialog(CirchartBaseDialog):
 	_title = "Prepare Karyotype Data"

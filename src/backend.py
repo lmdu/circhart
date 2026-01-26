@@ -149,6 +149,7 @@ class PlotDataTable(SqlTable):
 	start = int
 	end = int
 	value = float
+	options = str
 
 class LinkDataTable(SqlTable):
 	_index = True
@@ -158,6 +159,7 @@ class LinkDataTable(SqlTable):
 	chr2 = str
 	start2 = int
 	end2 = int
+	options = str
 
 class TextDataTable(SqlTable):
 	_index = True
@@ -165,12 +167,14 @@ class TextDataTable(SqlTable):
 	start = int
 	end = int
 	text = str
+	options = str
 
 class LociDataTable(SqlTable):
 	_index = True
 	chrid = str
 	start = int
 	end = int
+	options = str
 
 class SqlQuery:
 	def __init__(self, table):

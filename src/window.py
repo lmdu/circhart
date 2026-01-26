@@ -383,14 +383,16 @@ class CirchartMainWindow(QMainWindow):
 
 		self.tool_bar.addAction(self.new_snail_act)
 		self.tool_bar.addSeparator()
-
-		self.tool_bar.addAction(self.update_plot_act)
+		
 		self.tool_bar.addAction(self.zoom_in_act)
 		self.tool_bar.addAction(self.zoom_out_act)
 		self.tool_bar.addAction(self.export_image_act)
 		self.tool_bar.addSeparator()
 
 		self.tool_bar.addAction(self.cite_act)
+		self.tool_bar.addSeparator()
+
+		self.tool_bar.addAction(self.update_plot_act)
 
 		self.tool_bar.addWidget(CirchartSpacerWidget(self))
 		self.wait_spinner = CirchartSpinnerWidget(self)
