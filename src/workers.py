@@ -185,6 +185,7 @@ class CirchartImportDataWorker(CirchartImportBaseWorker):
 	processor = CirchartImportDataProcess
 
 	def preprocess(self):
+		self.params['colors'] = {c.name: c.color for c in SqlControl.get_custom_colors()}
 		self.data_type = self.params['type']
 		super().preprocess()
 

@@ -632,6 +632,7 @@ tracks:
       range:
         - 0
         - 1
+      step: 0.01
       decimal: 2
       default: 0.4
       tooltip: the radial position of the termination of the link
@@ -641,6 +642,7 @@ tracks:
       range:
         - 0
         - 10
+      step: 0.01
       decimal: 2
       default: 0
       tooltip:  the radial position of the third control point used to draw the Bezier curve
@@ -650,6 +652,7 @@ tracks:
       range:
         - 0
         - 10
+      step: 0.01
       decimal: 2
       default: 0.5
     -
@@ -658,6 +661,7 @@ tracks:
       range:
         - 0
         - 1
+      step: 0.01
       decimal: 2
       default: 0.75
     -

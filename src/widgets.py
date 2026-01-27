@@ -25,6 +25,7 @@ __all__ = [
 	'CirchartGenomeWindowSize',
 	'CirchartCircosColorTable',
 	'CirchartCollinearityIdmappingWidget',
+	'CirchartCustomColorTable',
 ]
 
 class CirchartEmptyTreeWidget(QTreeWidget):
@@ -660,6 +661,22 @@ class CirchartGenomeWindowSize(QWidget):
 			'window': window_size,
 			'step': step_size
 		}
+
+class CirchartCustomColorTable(QTableView):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		#self.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+		#self.horizontalHeader().hide()
+		self.horizontalHeader().setStretchLastSection(True)
+		self.verticalHeader().hide()
+		self.create_model()
+
+	def create_model(self):
+		self._model = CirchartCustomColorModel(self)
+		self.setModel(self._model)
+		self._model.update_model()
+
 
 class CirchartCircosColorTable(QTableView):
 	color_changed = Signal(list)

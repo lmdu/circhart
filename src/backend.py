@@ -59,6 +59,11 @@ class DataTable(SqlTable):
 	type = str
 	meta = str
 
+class ColorTable(SqlTable):
+	_index = False
+	name = str
+	color = str
+
 class PlotTable(SqlTable):
 	_index = False
 	name = str
@@ -531,6 +536,18 @@ class SqlControl:
 		sql = SqlQuery(table)\
 			.insert(*model.fields())
 		SqlBase.insert_rows(sql, data)
+
+	@staticmethod
+	def add_custom_colors(colors):
+		sql = SqlQuery('color')\
+			.insert('name', 'color')
+		SqlBase.insert_rows(sql, colors)
+
+	@staticmethod
+	def get_custom_colors():
+		sql = SqlQuery('color')\
+			.select('name', 'color')
+		return SqlBase.get_dicts(sql)
 
 	@staticmethod
 	def update_karyotype_name(index, kid, name):

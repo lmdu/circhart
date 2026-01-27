@@ -248,6 +248,13 @@ class CirchartImportDataProcess(CirchartBaseProcess):
 						continue
 
 					res = row[:self.params.column]
+
+					if self.params.type in ['plotdata', 'locidata', 'textdata']:
+						if len(row) > self.params.column:
+							res.append(row[self.params.column])
+						else:
+							res.append('')
+
 					rows.append(res)
 
 					if len(rows) == 200:

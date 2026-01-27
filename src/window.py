@@ -205,6 +205,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_set_karyotype_pure_color
 		)
 
+		self.color_list_act = QAction("Show Custom Colors", self,
+			triggered = self.do_show_custom_color
+		)
+
 		self.prepare_kdata_act = QAction("&Prepare Karyotype Data", self,
 			triggered = self.do_prepare_karyotype_data
 		)
@@ -331,6 +335,8 @@ class CirchartMainWindow(QMainWindow):
 		self.view_menu.addAction(self.data_dock_act)
 		self.view_menu.addAction(self.plot_dock_act)
 		self.view_menu.addAction(self.param_dock_act)
+		self.view_menu.addSeparator()
+		self.view_menu.addAction(self.color_list_act)
 
 		self.tool_menu = self.menuBar().addMenu("&Tools")
 		self.prepare_menu = self.tool_menu.addMenu("&Prepare Data")
@@ -710,6 +716,10 @@ class CirchartMainWindow(QMainWindow):
 			return
 
 		self.data_table.update_karyotype_color('single', color)
+
+	def do_show_custom_color(self):
+		dlg = CirchartCustomColorDialog(self)
+		dlg.exec()
 
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.prepare(self)

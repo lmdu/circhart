@@ -22,6 +22,7 @@ __all__ = [
 	'CirchartCreateSnailPlotDialog',
 	'CirchartCircosColorSelectDialog',
 	'CirchartLinkPrepareDialog',
+	'CirchartCustomColorDialog',
 ]
 
 class CirchartBaseDialog(QDialog):
@@ -62,6 +63,64 @@ class CirchartBaseDialog(QDialog):
 
 	def _on_accepted(self):
 		self.accept()
+
+class CirchartCustomColorDialog(CirchartBaseDialog):
+	_title = "Show Custom Colors"
+
+	def sizeHint(self):
+		return QSize(550, 400)
+
+	def _create_widgets(self):
+		self.table = CirchartCustomColorTable(self)
+		self.input = QTextEdit(self)
+		self.input.setPlaceholderText("Format: colorname = r,g,b one color per line")
+		self.button = QPushButton("Add Colors", self)
+		self.button.clicked.connect(self._on_add_colors)
+
+	def _create_buttons(self):
+		self.btn_box = QDialogButtonBox(
+			QDialogButtonBox.StandardButton.Ok
+		)
+		self.btn_box.accepted.connect(self._on_accepted)
+		self.main_layout.addWidget(self.btn_box)
+
+	def _init_layouts(self):
+		sub_layout = QHBoxLayout()
+		self.main_layout.addLayout(sub_layout)
+
+		left_layout = QVBoxLayout()
+		left_layout.addWidget(QLabel("Custom color list:", self))
+		left_layout.addWidget(self.table)
+
+		right_layout = QVBoxLayout()
+		right_layout.addWidget(QLabel("Input colors:", self))
+		right_layout.addWidget(self.input)
+		right_layout.addWidget(self.button)
+		
+		sub_layout.addLayout(left_layout)
+		sub_layout.addLayout(right_layout)
+
+	def _on_add_colors(self):
+		lines = self.input.toPlainText().strip()
+		count = 0
+
+		colors = []
+		for line in lines.split('\n'):
+			count += 1
+
+			cols = line.strip().split('=')
+
+			name = cols[0].strip()
+			color = cols[1].strip().replace(' ', '')
+
+			if not all(v.isdigit() for v in color.split(',')):
+				return QMessageBox.critical(self, 'Error', "Error in line {}".format(count))
+
+			colors.append((name, color))
+
+		if colors:
+			SqlControl.add_custom_colors(colors)
+			self.table._model.update_model()
 
 class CirchartImportForGenomeDialog(CirchartBaseDialog):
 	_title = "Select Genome"
