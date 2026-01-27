@@ -235,6 +235,57 @@ class CirchartImportDataProcess(CirchartBaseProcess):
 
 					yield cols
 
+		def prerun(self):
+			brewer_file = str(CIRCOS_PATH / 'etc' / 'colors.brewer.conf')
+
+			with open(brewer_file) as fh:
+				for line in fh:
+					if line.startswith('#'):
+						continue
+
+					if not line.strip():
+						continue
+
+					cols = line.strip().split('=')
+
+					if cols[1].count(',') != 2:
+						continue
+
+					cname = cols[0].strip()
+					crgb = cols[1].strip()
+
+					if cname not in self.params.colors:
+						self.params.colors[cname] = crgb
+
+			color_files = [
+				str(CIRCOS_PATH / 'etc' / 'colors.conf'),
+				str(CIRCOS_PATH / 'etc' / 'colors.ucsc.conf'),
+			]
+			for color_file in color_files:
+				with open(color_file) as fh:
+					for line in fh:
+						if line.startswith('#'):
+							continue
+
+						if not line.strip():
+							continue
+
+						if '=' not in line:
+							continue
+
+						cols = line.strip().split('=')
+						cname = cols[0].strip()
+						crgb = cols[1].strip()
+
+						if ',' in crgb:
+							if cname not in self.params.colors:
+								self.params.colors[cname] = crgb
+
+						else:
+							if cname not in self.params.colors:
+								if crgb in self.params.colors:
+									self.params.colors[cname] = self.params.colors[crgb]
+
 		def do(self):
 			rows = []
 			ignore = 0
@@ -249,7 +300,10 @@ class CirchartImportDataProcess(CirchartBaseProcess):
 
 					res = row[:self.params.column]
 
-					if self.params.type in ['plotdata', 'locidata', 'textdata']:
+					if self.params.type in ['karyotype', 'banddata']:
+						res[-1] = self.params.colors.get(res[-1], res[-1])
+
+					elif self.params.type in ['plotdata', 'locidata', 'textdata']:
 						if len(row) > self.params.column:
 							res.append(row[self.params.column])
 						else:
