@@ -519,19 +519,14 @@ class CirchartCircosColorModel(QAbstractTableModel):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 		self._colors = []
+		self._lens = []
 		self._rows = 0
 		self._cols = 0
 
-	def rowCount(self, parent=QModelIndex()):
-		if parent.isValid():
-			return 0
-
+	def rowCount(self, parent):
 		return self._rows
 
-	def columnCount(self, parent=QModelIndex()):
-		if parent.isValid():
-			return 0
-
+	def columnCount(self, parent):
 		return self._cols
 
 	def flags(self, index):
@@ -541,7 +536,7 @@ class CirchartCircosColorModel(QAbstractTableModel):
 		if col == 0:
 			return Qt.ItemIsEnabled
 
-		if col > 0 and col < len(self._colors[row]):
+		elif col > 0 and col < self._lens[row]:
 			return Qt.ItemIsEnabled | Qt.ItemIsSelectable
 
 		return Qt.NoItemFlags
@@ -553,20 +548,20 @@ class CirchartCircosColorModel(QAbstractTableModel):
 		row = index.row()
 		col = index.column()
 
-		if role == Qt.DisplayRole:
-			if col == 0:
-				return self._colors[row][col]
+		if col == 0 and role == Qt.DisplayRole:
+			return self._colors[row][col]
 
 		elif role == Qt.BackgroundRole:
-			if col > 0 and col < len(self._colors[row]):
+			if col > 0 and col < self._lens[row]:
 				return self._colors[row][col]
 
-	def set_data(self, colors):
-		self.beginResetModel()
+	def set_data(self, colors, lens):
+		self.beginInsertRows(QModelIndex(), 0, len(colors)-1)
 		self._colors = colors
 		self._rows = len(colors)
 		self._cols = 16
-		self.endResetModel()
+		self._lens = lens
+		self.endInsertRows()
 
 	def get_color(self, index):
 		row = index.row()

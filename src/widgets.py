@@ -704,7 +704,8 @@ class CirchartCircosColorTable(QTableView):
 		#QThreadPool.globalInstance().start(worker)
 		app = QApplication.instance()
 		colors = app.property('precolors')
-		self._model.set_data(colors)
+		colens = app.property('precolens')
+		self._model.set_data(colors, colens)
 
 	def selectionChanged(self, selected, deselected):
 		for index in selected.indexes():

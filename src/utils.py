@@ -1,3 +1,4 @@
+import re
 import os
 import csv
 import json
@@ -11,6 +12,7 @@ __all__ = [
 	'str_to_dict',
 	'get_gxf_format',
 	'GXFParser',
+	'color_rgb_valid',
 ]
 
 class AttrDict(dict):
@@ -164,4 +166,14 @@ class GXFParser:
 		k = ks[0].strip()
 		v = ks[1].strip().strip('"')
 		return k, v
+
+def color_rgb_valid(rgb):
+	pattern = r'\s*\d{1,3}\s*,\d{1,3}\s*,\d{1,3}\s*'
+	match = re.match(pattern, rgb)
+
+	if not match:
+		return False
+
+	return all(0 <= v <= 255 for v in map(int, match.groups()))
+
 

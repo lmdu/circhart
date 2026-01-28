@@ -821,7 +821,6 @@ class CirchartCircosColorSelectDialog(QDialog):
 			self.color_opacity = 1
 			self.setWindowTitle("Select color")
 
-		self.resize(QSize(500, 300))
 		self.multiple = multiple
 
 		self.color_table = CirchartCircosColorTable(self, self.multiple)
@@ -853,6 +852,9 @@ class CirchartCircosColorSelectDialog(QDialog):
 		self.selected_colors = initials
 		self.show_colors()
 
+	def sizeHint(self):
+		return QSize(500, 300)
+
 	def show_colors(self):
 		if not self.selected_colors:
 			return
@@ -866,10 +868,20 @@ class CirchartCircosColorSelectDialog(QDialog):
 		for c in self.selected_colors:
 			cw = QLabel(self)
 			cw.setFixedSize(16, 16)
+
+			if c.count(',') == 3:
+				c = ','.join(c.split(',')[0:3])
 			cw.setStyleSheet("background-color:rgb({});border:1px solid black;".format(c))
 			self.color_layout.addWidget(cw)
 
 		if not self.multiple:
+			c = self.selected_colors[0]
+
+			if c.count(',') == 3:
+				vs = c.split(',')
+				c = ','.join(vs[0:3])
+				self.color_opacity = float(vs[4].strip())
+
 			opacity_widget = QDoubleSpinBox(self)
 			opacity_widget.setRange(0, 1)
 			opacity_widget.setDecimals(2)
@@ -877,11 +889,23 @@ class CirchartCircosColorSelectDialog(QDialog):
 			opacity_widget.setValue(self.color_opacity)
 			opacity_widget.valueChanged.connect(self.on_opacity_changed)
 
+			self.rgb_widget = QLineEdit(self)
+			self.rgb_widget.setText(c)
+			self.rgb_widget.textChanged.connect(self.on_rgb_changed)
+
 			self.color_layout.addSpacing(20)
+			self.color_layout.addWidget(QLabel("RGB:", self))
+			self.color_layout.addWidget(self.rgb_widget)
 			self.color_layout.addWidget(QLabel("Opacity:", self))
 			self.color_layout.addWidget(opacity_widget)
 
 		self.color_layout.addWidget(CirchartSpacerWidget(self))
+
+	def on_rgb_changed(self, rgb):
+		if color_rgb_valid(rgb):
+			rgb = rgb.replace(' ', '')
+			self.selected_colors = [rgb]
+			self.change_color(rgb)
 
 	def on_opacity_changed(self, opacity):
 		self.color_opacity = opacity
@@ -899,7 +923,10 @@ class CirchartCircosColorSelectDialog(QDialog):
 		if self.multiple:
 			self.show_colors()
 		else:
-			self.change_color(c)
+			if self.selected_colors:
+				c = self.selected_colors[0]
+				self.rgb_widget.setText(c)
+				self.change_color(c)
 
 	def change_color(self, c):
 		item = self.color_layout.itemAt(1)
@@ -918,6 +945,7 @@ class CirchartCircosColorSelectDialog(QDialog):
 				self.selected_colors.append(c)
 				self.show_colors()
 			else:
+				self.rgb_widget.setText(c)
 				self.selected_colors = [c]
 				self.change_color(c)
 

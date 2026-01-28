@@ -99,9 +99,11 @@ class CirchartMainWindow(QMainWindow):
 			settings.setValue('pos', self.pos())
 			settings.endGroup()
 
-	def store_colors(self, colors):
+	def store_colors(self, result):
+		colors, colens = result
 		app = QApplication.instance()
 		app.setProperty('precolors', colors)
+		app.setProperty('precolens', colens)
 
 	def read_colors(self):
 		worker = CirchartCircosColorWorker()
@@ -731,7 +733,7 @@ class CirchartMainWindow(QMainWindow):
 	def do_show_custom_color(self):
 		#dlg = CirchartCustomColorDialog(self)
 		#dlg.exec()
-		CirchartCircosColorSelectDialog.get_color([], self)
+		CirchartCircosColorSelectDialog.get_color(['0,0,0'], self)
 
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.prepare(self)

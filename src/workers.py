@@ -601,7 +601,12 @@ class CirchartCircosColorWorker(CirchartBaseWorker):
 					color_list.append([cname, temp_color])
 
 		color_list.extend(brewer_colors.values())
-		self.signals.result.emit(color_list)
+
+		color_lens = []
+		for item in color_list:
+			color_lens.append(len(item))
+
+		self.signals.result.emit((color_list, color_lens))
 
 class CirchartSvgRenderWorker(CirchartBaseWorker):
 	def process(self):
