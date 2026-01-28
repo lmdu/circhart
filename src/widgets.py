@@ -699,9 +699,12 @@ class CirchartCircosColorTable(QTableView):
 		self.setModel(self._model)
 
 	def parse_colors(self):
-		worker = CirchartCircosColorWorker()
-		worker.signals.result.connect(self._model.set_data)
-		QThreadPool.globalInstance().start(worker)
+		#worker = CirchartCircosColorWorker()
+		#worker.signals.result.connect(self._model.set_data)
+		#QThreadPool.globalInstance().start(worker)
+		app = QApplication.instance()
+		colors = app.property('precolors')
+		self._model.set_data(colors)
 
 	def selectionChanged(self, selected, deselected):
 		for index in selected.indexes():

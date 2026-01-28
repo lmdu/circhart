@@ -544,6 +544,12 @@ class SqlControl:
 		SqlBase.insert_rows(sql, colors)
 
 	@staticmethod
+	def clear_custom_colors():
+		sql = SqlQuery('color')\
+			.delete()
+		SqlBase.delete_row(sql)
+
+	@staticmethod
 	def get_custom_colors():
 		sql = SqlQuery('color')\
 			.select('name', 'color')

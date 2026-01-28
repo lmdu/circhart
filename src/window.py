@@ -76,6 +76,7 @@ class CirchartMainWindow(QMainWindow):
 		self.setCentralWidget(self.stack_widget)
 		
 		self.read_settings()
+		self.read_colors()
 		self.show()
 
 	def closeEvent(self, event):
@@ -97,6 +98,15 @@ class CirchartMainWindow(QMainWindow):
 			settings.setValue('size', self.size())
 			settings.setValue('pos', self.pos())
 			settings.endGroup()
+
+	def store_colors(self, colors):
+		app = QApplication.instance()
+		app.setProperty('precolors', colors)
+
+	def read_colors(self):
+		worker = CirchartCircosColorWorker()
+		worker.signals.result.connect(self.store_colors)
+		QThreadPool.globalInstance().start(worker)
 
 	def set_window_title(self, pfile=None):
 		if pfile is None:
@@ -205,7 +215,7 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_set_karyotype_pure_color
 		)
 
-		self.color_list_act = QAction("Show Custom Colors", self,
+		self.color_list_act = QAction("Add Custom Colors", self,
 			triggered = self.do_show_custom_color
 		)
 
@@ -323,11 +333,14 @@ class CirchartMainWindow(QMainWindow):
 		self.edit_menu = self.menuBar().addMenu("&Edit")
 		self.edit_menu.addAction(self.zoom_in_act)
 		self.edit_menu.addAction(self.zoom_out_act)
+		self.edit_menu.addSeparator()
 
 		self.kcolor_menu = self.edit_menu.addMenu("&Karyotype Color")
 		self.kcolor_menu.addAction(self.kcolor_default_act)
 		self.kcolor_menu.addAction(self.kcolor_random_act)
 		self.kcolor_menu.addAction(self.kcolor_pure_act)
+
+		self.edit_menu.addAction(self.color_list_act)
 
 
 		self.view_menu = self.menuBar().addMenu("&View")
@@ -335,8 +348,6 @@ class CirchartMainWindow(QMainWindow):
 		self.view_menu.addAction(self.data_dock_act)
 		self.view_menu.addAction(self.plot_dock_act)
 		self.view_menu.addAction(self.param_dock_act)
-		self.view_menu.addSeparator()
-		self.view_menu.addAction(self.color_list_act)
 
 		self.tool_menu = self.menuBar().addMenu("&Tools")
 		self.prepare_menu = self.tool_menu.addMenu("&Prepare Data")
@@ -718,8 +729,9 @@ class CirchartMainWindow(QMainWindow):
 		self.data_table.update_karyotype_color('single', color)
 
 	def do_show_custom_color(self):
-		dlg = CirchartCustomColorDialog(self)
-		dlg.exec()
+		#dlg = CirchartCustomColorDialog(self)
+		#dlg.exec()
+		CirchartCircosColorSelectDialog.get_color([], self)
 
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.prepare(self)

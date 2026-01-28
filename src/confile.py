@@ -175,6 +175,19 @@ class CirchartCircosConfile(Confile):
 								else:
 									self.option(k, self.get_color(v))
 
+							case 'stroke_color':
+								self.option(k, self.get_color(v))
+
+							case 'fill_color':
+								self.option(k, self.get_color(v))
+
+							case 'fill':
+								if v.count(',') == 2:
+									self.option(k, self.get_color(v))
+
+								else:
+									self.option(k, v)
+
 							case _:
 								self.option(k, v)
 
@@ -268,7 +281,10 @@ class CirchartCircosConfile(Confile):
 		self.include('etc/colors_fonts_patterns.conf')
 		self.include('etc/housekeeping.conf')
 
-		if self.custom_colors:
+		if self.custom_colors or self.params['colors']:
 			with Tag('colors'):
 				for i, c in enumerate(self.custom_colors):
 					self.option('cc{}'.format(i), c)
+				
+				for n, c in self.params['colors'].items():
+					self.option(n, c)

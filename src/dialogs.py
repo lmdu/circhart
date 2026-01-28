@@ -74,8 +74,11 @@ class CirchartCustomColorDialog(CirchartBaseDialog):
 		self.table = CirchartCustomColorTable(self)
 		self.input = QTextEdit(self)
 		self.input.setPlaceholderText("Format: colorname = r,g,b one color per line")
-		self.button = QPushButton("Add Colors", self)
-		self.button.clicked.connect(self._on_add_colors)
+		self.del_btn = QPushButton("Clear Colors", self)
+		self.del_btn.clicked.connect(self._on_clear_colors)
+
+		self.add_btn = QPushButton("Add Colors", self)
+		self.add_btn.clicked.connect(self._on_add_colors)
 
 	def _create_buttons(self):
 		self.btn_box = QDialogButtonBox(
@@ -91,18 +94,26 @@ class CirchartCustomColorDialog(CirchartBaseDialog):
 		left_layout = QVBoxLayout()
 		left_layout.addWidget(QLabel("Custom color list:", self))
 		left_layout.addWidget(self.table)
+		left_layout.addWidget(self.del_btn)
 
 		right_layout = QVBoxLayout()
 		right_layout.addWidget(QLabel("Input colors:", self))
 		right_layout.addWidget(self.input)
-		right_layout.addWidget(self.button)
+		right_layout.addWidget(self.add_btn)
 		
 		sub_layout.addLayout(left_layout)
 		sub_layout.addLayout(right_layout)
 
+	def _on_clear_colors(self):
+		SqlControl.clear_custom_colors()
+		self.table._model.update_model()
+
 	def _on_add_colors(self):
 		lines = self.input.toPlainText().strip()
 		count = 0
+
+		if not lines:
+			return
 
 		colors = []
 		for line in lines.split('\n'):
@@ -110,8 +121,11 @@ class CirchartCustomColorDialog(CirchartBaseDialog):
 
 			cols = line.strip().split('=')
 
-			name = cols[0].strip()
-			color = cols[1].strip().replace(' ', '')
+			try:
+				name = cols[0].strip()
+				color = cols[1].strip().replace(' ', '')
+			except:
+				return QMessageBox.critical(self, 'Error', "Error in line {}".format(count))
 
 			if not all(v.isdigit() for v in color.split(',')):
 				return QMessageBox.critical(self, 'Error', "Error in line {}".format(count))
@@ -121,6 +135,7 @@ class CirchartCustomColorDialog(CirchartBaseDialog):
 		if colors:
 			SqlControl.add_custom_colors(colors)
 			self.table._model.update_model()
+			self.input.clear()
 
 class CirchartImportForGenomeDialog(CirchartBaseDialog):
 	_title = "Select Genome"

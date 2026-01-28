@@ -121,7 +121,7 @@ labels:
   -
     name: label_color
     type: color
-    default: 150,150,150
+    default: 0,0,0
   -
     name: label_parallel
     type: bool
@@ -617,7 +617,7 @@ tracks:
       name: color
       type: color
       default: 0,0,0
-      tooltip:  color of the link line
+      tooltip: color of the link line
     -
       name: thickness
       type: int
@@ -679,6 +679,12 @@ tracks:
         - 100
       default: 1
       tooltip: work with ribbon yes
+    -
+      name: flat
+      type: bool
+      mutex: ~ribbon
+      default: 'yes'
+      tooltip: all your ribbons untwisted
     -
       name: z
       type: int

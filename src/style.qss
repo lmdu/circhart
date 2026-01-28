@@ -135,6 +135,10 @@ QMainWindow::separator:pressed {
 	background: #a0a0a0;
 }
 
+QTextEdit {
+	border: 1px solid #c2c2c2;
+}
+
 QLineEdit,
 QComboBox {
 	border: 1px solid #c2c2c2;
@@ -353,4 +357,7 @@ CirchartChildAccordion QTabWidget:pane {
 	border: none;
 }
 
+CirchartCustomColorTable {
+	border: 1px solid #c2c2c2;
+}
 

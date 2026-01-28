@@ -278,6 +278,8 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 	def preprocess(self):
 		workdir = self.make_tempdir()
 
+		self.params['colors'] = {c.name: c.color  for c in SqlControl.get_custom_colors()}
+
 		for index in self.params['general']['global']['karyotype']:
 			outfile = "karyotype{}.txt".format(index)
 			data = SqlControl.get_data_content('karyotype', index)
