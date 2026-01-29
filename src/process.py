@@ -290,6 +290,8 @@ class CirchartImportDataProcess(CirchartBaseProcess):
 			rows = []
 			ignore = 0
 
+			alphas = {'a1': 0.83, 'a2': 0.67, 'a3': 0.5, 'a4': 0.33, 'a5': 0.17}
+
 			with open(self.params.path) as fh:
 				reader = self.file_reader(fh)
 
@@ -301,7 +303,19 @@ class CirchartImportDataProcess(CirchartBaseProcess):
 					res = row[:self.params.column]
 
 					if self.params.type in ['karyotype', 'banddata']:
-						res[-1] = self.params.colors.get(res[-1], res[-1])
+						if res[-1] in self.params.colors:
+							res[-1] = self.params.colors.get(res[-1])
+
+						elif '_a' in res[-1]:
+							a = res[-1].strip().split('_')[-1]
+
+							if a in alphas:
+								alpha = alphas[a]
+
+								c = res[-1].rstrip('_{}'.format(a))
+
+								if c in self.params.colors:
+									res[-1] = "{},{}".format(self.params.colors[c], alpha)
 
 					elif self.params.type in ['plotdata', 'locidata', 'textdata']:
 						if len(row) > self.params.column:

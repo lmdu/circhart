@@ -285,6 +285,11 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 			data = SqlControl.get_data_content('karyotype', index)
 			save_circos_data(workdir, outfile, data)
 
+		print(self.params['ideogram'])
+
+		for index in self.params['ideogram']['main']['band_data']:
+			pass
+
 		for k in self.params:
 			if k.startswith('track'):
 				ptype = self.params[k]['main']['type']

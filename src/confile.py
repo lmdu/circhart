@@ -68,6 +68,9 @@ class CirchartCircosConfile(Confile):
 					case 'thickness':
 						self.option(k, v, 'p')
 
+					case 'band_data':
+						continue
+
 					case _:
 						self.option(k, v)
 

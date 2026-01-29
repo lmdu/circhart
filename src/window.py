@@ -731,9 +731,9 @@ class CirchartMainWindow(QMainWindow):
 		self.data_table.update_karyotype_color('single', color)
 
 	def do_show_custom_color(self):
-		#dlg = CirchartCustomColorDialog(self)
-		#dlg.exec()
-		CirchartCircosColorSelectDialog.get_color(['0,0,0'], self)
+		dlg = CirchartCustomColorDialog(self)
+		dlg.exec()
+		#CirchartCircosColorSelectDialog.get_color(['0,0,0'], self)
 
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.prepare(self)

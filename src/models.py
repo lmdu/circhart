@@ -363,8 +363,17 @@ class CirchartKaryotypeTableModel(CirchartDataTableModel):
 
 		elif role == Qt.BackgroundRole:
 			if col == 7:
-				r, g, b = self.get_value(row, col).split(',')
-				return QColor(int(r), int(g), int(b))
+				c = self.get_value(row, col)
+
+				if c.count(',') == 2:
+					r, g, b = c.split(',')
+					c = QColor(int(r), int(g), int(b))
+					return c
+				elif c.count(',') == 3:
+					r, g, b, a = c.split(',')
+					c = QColor(int(r), int(g), int(b))
+					c.setAlphaF(float(a))
+					return c
 
 	def flags(self, index):
 		flags = Qt.ItemIsEnabled | Qt.ItemIsSelectable

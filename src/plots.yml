@@ -62,7 +62,22 @@ ideogram:
     type: group
     default: 'no'
   -
-    name: bands
+    name: fill_bands
+    type: bool
+    default: 'yes'
+    parent: show_bands
+  -
+    name: band_transparency
+    type: float
+    range:
+      - 0
+      - 1
+    step: 0.01
+    decimal: 2
+    default: 1
+    parent: show_bands
+  -
+    name: band_data
     type: choices
     source: banddata
     parent: show_bands
