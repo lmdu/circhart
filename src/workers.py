@@ -280,16 +280,34 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 
 		self.params['colors'] = {c.name: c.color  for c in SqlControl.get_custom_colors()}
 
+		kmapping = {}
 		for index in self.params['general']['global']['karyotype']:
 			outfile = "karyotype{}.txt".format(index)
 			data = SqlControl.get_data_content('karyotype', index)
-			save_circos_data(workdir, outfile, data)
+
+			rows = []
+			for row in data:
+				kmapping[row[2]] = index
+				rows.append(row)
+
+			save_circos_data(workdir, outfile, rows)
 
 		bds = self.params['ideogram']['main']['band_data']
 
 		if bds:
 			for b in bds:
-				pass
+				bdata = SqlControl.get_data_content('banddata', b)
+
+				rows = []
+				for row in bdata:
+					rows.append(row)
+
+				ci = rows[0][1]
+
+				if ci in kmapping:
+					ki = kmapping[ci]
+					outfile = "karyotype{}.txt".format(ki)
+					save_circos_data(workdir, outfile, rows)
 
 		for k in self.params:
 			if k.startswith('track'):
