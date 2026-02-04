@@ -15,6 +15,8 @@ __all__ = [
 	'CirchartKaryotypeTableModel',
 	'CirchartCircosColorModel',
 	'CirchartCustomColorModel',
+	'CirchartDataFilterModel',
+	'CirchartDataFilterDelegate'
 ]
 
 class CirchartBaseTableModel(QAbstractTableModel):
@@ -577,9 +579,171 @@ class CirchartCircosColorModel(QAbstractTableModel):
 		col = index.column()
 		return self._colors[row][col]
 
-		
+class CirchartDataFilterModel(QAbstractTableModel):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self._headers = ['And/Or', 'Field', 'Condition', 'Value']
+		self._filters = []
+
+	def rowCount(self, parent=QModelIndex()):
+		return len(self._filters)
+
+	def columnCount(self, parent=QModelIndex()):
+		return 4
+
+	def data(self, index, role=Qt.DisplayRole):
+		if not index.isValid():
+			return None
+
+		if role == Qt.DisplayRole:
+			col = index.column()
+			row = index.row()
+			return self._filters[row][col]
+
+	def setData(self, index, value, role=Qt.ItemDataRole):
+		if role == Qt.EditRole:
+			col = index.column()
+			row = index.row()
+
+			self._filters[row][col] = value
+			self.dataChanged.emit(index, index)
+			return True
+
+		return False
+
+	def headerData(self, section, orientation, role=Qt.DisplayRole):
+		if role != Qt.DisplayRole:
+			return None
+
+		if orientation == Qt.Horizontal:
+			return self._headers[section]
+
+	def flags(self, index):
+		flags = Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemNeverHasChildren | Qt.ItemIsEditable
+
+		return flags
+
+	def add_filter(self):
+		row_num = len(self._filters)
+		self.beginInsertRows(QModelIndex(), row_num, row_num)
+		if row_num:
+			self._filters.append(['And', 'id', '>', 0])
+		else:
+			self._filters.append(['', 'id', '>', 0])
+		self.endInsertRows()
+
+	def delete_filter(self):
+		row_num = len(self._filters)
+
+		if row_num == 0:
+			return
+
+		row_num -= 1
+
+		self.beginRemoveRows(QModelIndex(), row_num, row_num)
+		self._filters.pop()
+		self.endRemoveRows()
+
+	def clear_filters(self):
+		self.beginResetModel()
+		self._filters = []
+		self.endResetModel()
+
+	def get_filters(self):
+		fs = []
+
+		for f in self._filters:
+			if f[2] == 'contains':
+				f[2] = 'like'
+				f[3] = "'%{}%'".format(f[3])
+			else:
+				f[3] = str(f[3])
+
+			fs.append(' '.join(f))
+
+		return ' '.join(fs)
 
 
+class CirchartDataFilterDelegate(QStyledItemDelegate):
+	def __init__(self, parent=None, table=None):
+		super().__init__(parent)
+
+		self._logics = ["And", "Or"]
+
+		table = table.split('_')[0]
+		fs, ft = SqlControl.get_field_types(table)
+		self._fields = ['id']
+		self._fields.extend(fs[:-1])
+		self._ftypes = [int]
+		self._ftypes.extend(ft[:-1])
+
+	def paint(self, painter, option, index):
+		QStyledItemDelegate.paint(self, painter, option, index)
+
+	def createEditor(self, parent, option, index):
+		col = index.column()
+		row = index.row()
+		val = index.data()
+		new_index = index.siblingAtColumn(1)
+		fname = new_index.data()
+		idx = self._fields.index(fname)
+
+		if col < 3:
+			editor = QComboBox(parent)
+
+			if col == 0 and index.row() > 0:
+				editor.addItems(self._logics)
+
+			elif col == 1:
+				editor.addItems(self._fields)
+
+			elif col == 2:
+				if self._ftypes[idx] in [int, float]:
+					editor.addItems(['>', '>=', '<', '<=', '='])
+
+				else:
+					editor.addItems(['=', 'contains'])
+
+		else:
+			if self._ftypes[idx] == float:
+				editor = QDoubleSpinBox(parent)
+				editor.setRange(-10000, 10000)
+
+			elif self._ftypes[idx] == int:
+				editor = QSpinBox(parent)
+				editor.setRange(0, 1000000000)
+
+			else:
+				editor = QStyledItemDelegate.createEditor(self, parent, option, index)
+
+		return editor
+
+	def setEditorData(self, editor, index):
+		col = index.column()
+		row = index.row()
+		val = index.data()
+
+		new_index = index.siblingAtColumn(1)
+		fname = new_index.data()
+		idx = self._fields.index(fname)
+
+		if col == 0 and row > 0:
+			idx = editor.findText(val)
+			editor.setCurrentIndex(idx)
+
+		elif col == 1 or col == 2:
+			idx = editor.findText(val)
+			editor.setCurrentIndex(idx)
+
+		elif col == 3 and self._ftypes[idx] in [float, int]:
+			editor.setValue(val)
+
+		else:
+			QStyledItemDelegate.setEditorData(self, editor, index)
+
+	def setModelData(self, editor, model, index):
+		QStyledItemDelegate.setModelData(self, editor, model, index)
 
 
 

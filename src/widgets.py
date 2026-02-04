@@ -26,6 +26,7 @@ __all__ = [
 	'CirchartCircosColorTable',
 	'CirchartCollinearityIdmappingWidget',
 	'CirchartCustomColorTable',
+	'CirchartDataFilterTree',
 ]
 
 class CirchartEmptyTreeWidget(QTreeWidget):
@@ -412,6 +413,10 @@ class CirchartDataTableWidget(QTableView):
 		if table == self._model.get_table():
 			self._model = None
 			self.setModel(None)
+
+	def get_table(self):
+		if self._model:
+			return self._model.get_table()
 
 	def update_karyotype_color(self, method, color=None):
 		if type(self._model) != CirchartKaryotypeTableModel:
@@ -813,3 +818,34 @@ class CirchartCollinearityIdmappingWidget(QWidget):
 			'feature': self.feat_select.currentText(),
 			'attribute': self.attr_select.currentText()
 		}
+
+class CirchartDataFilterTree(QTreeView):
+	def __init__(self, parent=None, table=None):
+		super().__init__(parent)
+
+		self.table = table
+
+		self._model = CirchartDataFilterModel(self)
+		self._delegate = CirchartDataFilterDelegate(self, self.table)
+		self.setModel(self._model)
+		self.setItemDelegate(self._delegate)
+
+	def add_filter(self):
+		self._model.add_filter()
+
+	def delete_filter(self):
+		self._model.delete_filter()
+
+	def clear_filters(self):
+		self._model.clear_filters()
+
+	def get_filters(self):
+		return self._model.get_filters()
+
+
+
+
+
+
+
+

@@ -221,6 +221,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_show_custom_color
 		)
 
+		self.assign_opt_act = QAction("Assign Plot Options", self,
+			triggered = self.do_assign_plot_option
+		)
+
 		self.prepare_kdata_act = QAction("&Prepare Karyotype Data", self,
 			triggered = self.do_prepare_karyotype_data
 		)
@@ -343,7 +347,7 @@ class CirchartMainWindow(QMainWindow):
 		self.kcolor_menu.addAction(self.kcolor_pure_act)
 
 		self.edit_menu.addAction(self.color_list_act)
-
+		self.edit_menu.addAction(self.assign_opt_act)
 
 		self.view_menu = self.menuBar().addMenu("&View")
 		self.view_menu.addAction(self.toolbar_act)
@@ -734,6 +738,17 @@ class CirchartMainWindow(QMainWindow):
 		dlg = CirchartCustomColorDialog(self)
 		dlg.exec()
 		#CirchartCircosColorSelectDialog.get_color(['0,0,0'], self)
+
+	def do_assign_plot_option(self):
+		if self.stack_widget.currentIndex() != 1:
+			return
+
+		table = self.data_table.get_table()
+
+		if not table:
+			return
+
+		CirchartDataFilterDialog.add_options(self, table)
 
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.prepare(self)

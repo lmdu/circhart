@@ -1056,3 +1056,4 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 		if dlg.exec() == QDialog.Accepted:
 			params = dlg.get_params()
 			return params
+

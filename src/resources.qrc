@@ -33,6 +33,7 @@
 	<file>icons/spiral.svg</file>
 	<file>icons/tick.svg</file>
 	<file>icons/track.svg</file>
+	<file>icons/trash.svg</file>
 	<file>icons/zoomin.svg</file>
 	<file>icons/zoomout.svg</file>
 </qresource>

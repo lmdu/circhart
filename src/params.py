@@ -5,11 +5,13 @@ from PySide6.QtWidgets import *
 from utils import *
 from config import *
 from backend import *
+from widgets import *
 from dialogs import *
 
 __all__ = [
 	'CirchartCircosParameterManager',
 	'CirchartSnailParameterManager',
+	'CirchartDataFilterDialog',
 ]
 
 #from https://gis.stackexchange.com/questions/350148/qcombobox-multiple-selection-pyqt5
@@ -1177,6 +1179,8 @@ class CirchartConditionParameter(CirchartParameterMixin, QWidget):
 
 
 class CirchartStyleParameter(CirchartParameterMixin, QWidget):
+	style_changed = Signal()
+
 	def _init_widget(self):
 		self.attrs = []
 
@@ -1209,6 +1213,7 @@ class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 		style_widget = CirchartRuleStyleWidget(self)
 		style_widget.set_data(self.attrs)
 		self.main_layout.addWidget(style_widget)
+		self.style_changed.emit()
 		return style_widget
 
 	def remove_style(self):
@@ -1222,6 +1227,8 @@ class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 			if widget:
 				widget.deleteLater()
 
+			self.style_changed.emit()
+
 	def clear_styles(self):
 		count = self.main_layout.count()
 
@@ -1231,6 +1238,8 @@ class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 
 			if widget:
 				widget.deleteLater()
+
+		self.style_changed.emit()
 
 	def get_value(self):
 		count = self.main_layout.count()
@@ -2185,8 +2194,135 @@ class CirchartSnailParameterManager(CirchartParameterManager):
 	def reset_params(self, params):
 		self.new_snail_plot(params)
 
+class CirchartDataFilterDialog(QDialog):
+	def __init__(self, parent=None, table=None):
+		super().__init__(parent)
 
+		self.table = table
+		self.setWindowTitle("Assign Plot Options")
 
+		self.main_layout = QVBoxLayout()
+		self.setLayout(self.main_layout)
 
+		self._create_widgets()
+		self._init_widgets()
+		self._init_layouts()
+
+	def sizeHint(self):
+		return QSize(500, 300)
+
+	def _create_widgets(self):
+		self.tree = CirchartDataFilterTree(self, self.table)
+
+		self.add_btn = QPushButton(self)
+		self.add_btn.setIcon(QIcon(':/icons/add.svg'))
+		self.add_btn.setToolTip("Add filter")
+		self.add_btn.setFixedSize(24, 24)
+		self.add_btn.clicked.connect(self.tree.add_filter)
+		self.del_btn = QPushButton(self)
+		self.del_btn.setFixedSize(24, 24)
+		self.del_btn.setToolTip("Delete filter")
+		self.del_btn.setIcon(QIcon(':/icons/delete.svg'))
+		self.del_btn.clicked.connect(self.tree.delete_filter)
+		self.clr_btn = QPushButton(self)
+		self.clr_btn.setFixedSize(24, 24)
+		self.clr_btn.setToolTip("Clear filters")
+		self.clr_btn.setIcon(QIcon(':/icons/trash.svg'))
+		self.clr_btn.clicked.connect(self.tree.clear_filters)
+
+		self.styles = CirchartStyleParameter('options', self)
+		self.styles.style_changed.connect(self.adjustSize)
+
+		self.select = QComboBox(self)
+		self.select.currentTextChanged.connect(self._on_plot_changed)
+
+		self.btn_box = QDialogButtonBox(
+			QDialogButtonBox.StandardButton.Cancel |
+			QDialogButtonBox.StandardButton.Ok
+		)
+		self.btn_box.accepted.connect(self._on_accepted)
+		self.btn_box.rejected.connect(self.reject)
+
+	def _init_widgets(self):
+		if self.table.startswith('linkdata'):
+			plots = ['link']
+
+		elif self.table.startswith('textdata'):
+			plots = ['text']
+
+		elif self.table.startswith('locidata'):
+			plots = ['tile', 'connector', 'highlight']
+
+		else:
+			plots = ['line', 'scatter', 'histogram', 'heatmap']
+
+		self.select.addItems(plots)
+
+	def _init_layouts(self):
+		btn_layout = QHBoxLayout()
+		btn_layout.addWidget(QLabel("Data filters:", self), 1)
+		btn_layout.addWidget(self.add_btn)
+		btn_layout.addWidget(self.del_btn)
+		btn_layout.addWidget(self.clr_btn)
+
+		sel_layout = QHBoxLayout()
+		sel_layout.addWidget(QLabel("Assign", self))
+		sel_layout.addWidget(self.select)
+		sel_layout.addWidget(QLabel("plot options to filtered data", self), 1)
+
+		self.main_layout.addLayout(btn_layout)
+		self.main_layout.addWidget(self.tree)
+		self.main_layout.addLayout(sel_layout)
+		self.main_layout.addWidget(self.styles)
+		self.main_layout.addWidget(self.btn_box)
+
+	def _on_plot_changed(self, ptype):
+		self.styles.clear_styles()
+
+		plot_params = CIRCOS_PARAMS['tracks'][ptype]
+		rule_params = CIRCOS_PARAMS['rules'][ptype]
+		attrs = [AttrDict(name='show', type='bool', default='yes')]
+
+		for p in plot_params:
+			p = AttrDict(p)
+
+			if p.name in rule_params[1]['attrs']:
+				attrs.append(p)
+
+		self.styles.set_attrs(attrs)
+
+	def _on_accepted(self):
+		options = self.get_options()
+
+		if not options:
+			return QMessageBox.critical(self, 'Error', 'No style options added')
+
+		self.accept()
+
+	def get_options(self):
+		values = self.styles.get_param()
+
+		options = []
+		for k, v in values['options']:
+			if v.count(',') > 1:
+				options.append("{}=({})".format(k, v))
+			else:
+				options.append("{}={}".format(k, v))
+
+		return ','.join(options)
+
+	def get_filters(self):
+		return self.tree.get_filters()
+
+	@classmethod
+	def add_options(cls, parent=None, table=None):
+		dlg = cls(parent, table)
+
+		if dlg.exec() == QDialog.Accepted:
+			options = dlg.get_options()
+			filters = dlg.get_filters()
+
+			print(options)
+			print(filters)
 
 

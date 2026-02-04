@@ -53,6 +53,10 @@ class SqlTable:
 	def fields(cls):
 		return [attr for attr in cls.__dict__ if not attr.startswith('_')]
 
+	@classmethod
+	def ftypes(cls):
+		return [cls.__dict__[attr] for attr in cls.__dict__ if not attr.startswith('_')]
+
 class DataTable(SqlTable):
 	_index = False
 	name = str
@@ -522,6 +526,13 @@ class SqlControl:
 			.where('id=?')
 
 		SqlBase.update_row(sql, mdata, did)
+
+	@staticmethod
+	def get_field_types(table):
+		model = SqlControl._models.get(table)
+		fields = model.fields()
+		ftypes = model.ftypes()
+		return fields, ftypes
 
 	@staticmethod
 	def create_index_table(table, index):

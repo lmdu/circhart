@@ -361,3 +361,7 @@ CirchartCustomColorTable {
 	border: 1px solid #c2c2c2;
 }
 
+CirchartDataFilterTree {
+	border: 1px solid #c2c2c2;
+	min-height: 120px;
+}
