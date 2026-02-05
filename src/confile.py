@@ -68,6 +68,12 @@ class CirchartCircosConfile(Confile):
 					case 'thickness':
 						self.option(k, v, 'p')
 
+					case 'stroke_color':
+						self.option(k, self.get_color(v))
+
+					case 'band_stroke_color':
+						self.option(k, self.get_color(v))
+
 					case 'band_data':
 						continue
 
@@ -165,6 +171,9 @@ class CirchartCircosConfile(Confile):
 
 								else:
 									self.option(k, v)
+
+							case 'padding' | 'rpadding':
+								self.option(k, v, 'p')
 
 							case 'color':
 								if isinstance(v, list):

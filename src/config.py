@@ -26,7 +26,7 @@ __all__ = [
 ROOT_PATH = Path(__file__).parent
 
 APP_NAME = "Circhart"
-APP_BUILD = "20260120"
+APP_BUILD = "20260205"
 APP_VERSION = "0.1.0"
 
 APP_DEBUG = False

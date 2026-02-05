@@ -218,11 +218,11 @@ class CirchartTitleParameter(CirchartReadonlyParameter):
 class CirchartAnnulusParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
 		self.radius0 = QDoubleSpinBox(self)
-		self.radius0.setRange(0, 1)
+		self.radius0.setRange(0, 10)
 		self.radius0.setDecimals(3)
 		self.radius0.setSingleStep(0.01)
 		self.radius1 = QDoubleSpinBox(self)
-		self.radius1.setRange(0, 1)
+		self.radius1.setRange(0, 10)
 		self.radius1.setDecimals(3)
 		self.radius1.setSingleStep(0.01)
 
@@ -2304,7 +2304,7 @@ class CirchartDataFilterDialog(QDialog):
 
 		options = []
 		for k, v in values['options']:
-			if v.count(',') > 1:
+			if str(v).count(',') > 1:
 				options.append("{}=({})".format(k, v))
 			else:
 				options.append("{}={}".format(k, v))
@@ -2321,8 +2321,7 @@ class CirchartDataFilterDialog(QDialog):
 		if dlg.exec() == QDialog.Accepted:
 			options = dlg.get_options()
 			filters = dlg.get_filters()
-
-			print(options)
-			print(filters)
+			counts = SqlControl.update_data_options(dlg.table, filters, options)
+			QMessageBox.information(self, 'Information', "Added options to {} rows".format(counts))
 
 

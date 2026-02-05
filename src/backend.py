@@ -549,6 +549,18 @@ class SqlControl:
 		SqlBase.insert_rows(sql, data)
 
 	@staticmethod
+	def update_data_options(table, filters, options):
+		sql = SqlQuery(table)\
+			.update('options')\
+			.where(filters)
+		SqlBase.update_row(sql, options)
+
+		sql = SqlQuery(table)\
+			.select("COUNT(1)")\
+			.where(filters)
+		return SqlBase.get_one(sql)
+
+	@staticmethod
 	def add_custom_colors(colors):
 		sql = SqlQuery('color')\
 			.insert('name', 'color')

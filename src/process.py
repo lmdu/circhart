@@ -281,10 +281,16 @@ class CirchartImportDataProcess(CirchartBaseProcess):
 							if cname not in self.params.colors:
 								self.params.colors[cname] = crgb
 
+								if cname.lower() not in self.params.colors:
+									self.params.colors[cname.lower()] = crgb
+
 						else:
 							if cname not in self.params.colors:
 								if crgb in self.params.colors:
 									self.params.colors[cname] = self.params.colors[crgb]
+
+									if cname.lower() not in self.params.colors:
+										self.params.colors[cname.lower()] = self.params.colors[crgb]
 
 		def do(self):
 			rows = []
