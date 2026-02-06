@@ -379,10 +379,6 @@ tracks:
       label: radius
       tooltip: the inner and outer radius of the plot track
     -
-      name: color
-      type: colors
-      label: colors
-    -
       name: stroke_thickness
       type: int
       range:
@@ -393,6 +389,10 @@ tracks:
       name: stroke_color
       type: color
       default: 255,255,255
+    -
+      name: color
+      type: colors
+      label: colors
 
   tile:
     -
