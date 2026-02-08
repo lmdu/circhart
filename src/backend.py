@@ -118,6 +118,7 @@ class VariantsTable(SqlTable):
 	pos = int
 	vid = str
 	ref = str
+	alt = str
 	qual = str
 	filters = str
 	info = str
@@ -133,8 +134,8 @@ class RegionsTable(SqlTable):
 
 class CollinearityTable(SqlTable):
 	_index = True
-	gene1 = str
-	gene2 = str
+	source = str
+	target = str
 
 class BuscoTable(SqlTable):
 	_index = True

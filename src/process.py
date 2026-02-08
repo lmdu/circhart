@@ -128,7 +128,7 @@ class CirchartImportAnnotationProcess(CirchartBaseProcess):
 class CirchartImportVariationsProcess(CirchartBaseProcess):
 	def do(self):
 		if self.params.path.endswith('.gz'):
-			fp = gzip.open(self.params.path)
+			fp = gzip.open(self.params.path, 'rt')
 		else:
 			fp = open(self.params.path)
 
@@ -157,7 +157,7 @@ class CirchartImportVariationsProcess(CirchartBaseProcess):
 class CirchartImportRegionsProcess(CirchartBaseProcess):
 	def do(self):
 		if self.params.path.endswith('.gz'):
-			fp = gzip.open(self.params.path)
+			fp = gzip.open(self.params.path, 'rt')
 		else:
 			fp = open(self.params.path)
 

@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-circhart documentation
+Circhart documentation
 ======================
 
 Add your content using ``reStructuredText`` syntax. See the
@@ -16,5 +16,8 @@ documentation for details.
    :caption: Contents:
 
    install
-   usage
-
+   overview
+   import
+   prepare
+   circos
+   snail
