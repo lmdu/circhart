@@ -3,12 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Circhart documentation
+Circhart Documentation
 ======================
 
-Add your content using ``reStructuredText`` syntax. See the
-`reStructuredText <https://www.sphinx-doc.org/en/master/usage/restructuredtext/index.html>`_
-documentation for details.
+.. figure:: _static/logo.svg
+   :width: 120
+   :align: center
 
 
 .. toctree::
@@ -21,3 +21,4 @@ documentation for details.
    prepare
    circos
    snail
+   project
