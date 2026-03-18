@@ -2,6 +2,7 @@ import os
 import sys
 import multiprocessing
 
+from PySide6.QtSvg import *
 from PySide6.QtGui import *
 from PySide6.QtCore import *
 from PySide6.QtWidgets import *
@@ -10,6 +11,26 @@ import resources
 
 from config import *
 from window import *
+
+
+def render_to_svg(widget):
+	g = QSvgGenerator()
+	g.setFileName('circhart_screen.svg')
+	g.setSize(widget.size())
+	g.setViewBox(widget.rect())
+	g.setTitle('circhart')
+	g.setDescription('bypy')
+
+	#p = QPainter()
+	#p.begin(g)
+	#widget.render(p,
+	#	targetOffset=None,
+	#	sourceRegion=None,
+	#	renderFlags=QWidget.RenderFlag.DrawChildren
+	#)
+	#p.end()
+	widget.render(g)
+
 
 if __name__ == "__main__":
 	multiprocessing.freeze_support()
@@ -32,5 +53,7 @@ if __name__ == "__main__":
 	if len(args) > 1:
 		if os.path.isfile(args[1]):
 			win.do_open_project(args[1])
+
+	render_to_svg(win)
 
 	sys.exit(app.exec())
