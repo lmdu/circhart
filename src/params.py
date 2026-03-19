@@ -1713,7 +1713,7 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 		panel = space.create_panel('space')
 		panel.create_params(space_params)
 		param = panel.get_widget('pairwise')
-		param.set_data(self.chroms)
+		param.set_data(self.kwargs['chroms'])
 		self.space_panel.add_param(space, group=True)
 
 	def add_spacing(self):
