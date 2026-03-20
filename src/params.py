@@ -2140,7 +2140,8 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 			rows = SqlControl.get_data_objects('karyotype', k)
 
 			for row in rows:
-				self.chroms.append(row.name)
+				if row.type == 'chr':
+					self.chroms.append(row.name)
 
 		form = CirchartGeneralTrack('general', self)
 		form.set_params(params)
