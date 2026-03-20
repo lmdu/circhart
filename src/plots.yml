@@ -96,7 +96,21 @@ spaces:
     type: int
     range:
       - 0
-      - 1000
+      - 500
+
+radiuses:
+  -
+    name: chrom
+    type: choice
+  -
+    name: radius
+    type: float
+    range:
+      - 0
+      - 5
+    decimal: 3
+    step: 0.01
+    default: 0
 
 labels:
   -
@@ -208,6 +222,7 @@ ticks:
     range:
       - 0
       - 200
+    default: 1
     level: 1
   -
     name: size
@@ -250,6 +265,11 @@ ticks:
     default: 0
     parent: show_label
     level: 1
+  -
+    name: suffix
+    type: str
+    parent: show_label
+    level: 1
 
 tracks:
   scatter:
@@ -259,6 +279,7 @@ tracks:
       source: plotdata
     -
       name: r0r1
+      label: position
       type: annulus
       tooltip: the inner and outer radius of the plot track
     -
@@ -311,7 +332,7 @@ tracks:
     -
       name: r0r1
       type: annulus
-      label: radius
+      label: position
       tooltip: the inner and outer radius of the plot track
     -
       name: color
@@ -342,7 +363,7 @@ tracks:
     -
       name: r0r1
       type: annulus
-      label: radius
+      label: position
       tooltip: the inner and outer radius of the plot track
     -
       name: color
@@ -368,6 +389,39 @@ tracks:
       default: 'no'
       tooltip: the bin's left and right sides are extended to the mid-point between this and the neighbouring bin
 
+  stacked:
+    -
+      name: data
+      type: choices
+      source: textdata
+    -
+      name: r0r1
+      type: annulus
+      label: position
+      tooltip: the inner and outer radius of the plot track
+    -
+      name: color
+      type: color
+      default: 0,0,0
+      tooltip: line color
+    -
+      name: stroke_thickness
+      type: int
+      range:
+        - 0
+        - 100
+      default: 1
+      tooltip: line width
+    -
+      name: fill_color
+      type: colors
+      tooltip: the bin fill color
+    -
+      name: extend_bin
+      type: bool
+      default: 'no'
+      tooltip: the bin's left and right sides are extended to the mid-point between this and the neighbouring bin
+
   heatmap:
     -
       name: data
@@ -376,7 +430,7 @@ tracks:
     -
       name: r0r1
       type: annulus
-      label: radius
+      label: position
       tooltip: the inner and outer radius of the plot track
     -
       name: stroke_thickness
@@ -402,7 +456,7 @@ tracks:
     -
       name: r0r1
       type: annulus
-      label: radius
+      label: position
       tooltip: the inner and outer radius of the plot track
     -
       name: color
@@ -463,7 +517,7 @@ tracks:
     -
       name: r0r1
       type: annulus
-      label: radius
+      label: position
       tooltip: the inner and outer radius of the plot track
     -
       name: label_font
@@ -576,7 +630,7 @@ tracks:
     -
       name: r0r1
       type: annulus
-      label: radius
+      label: position
       tooltip: the inner and outer radius of the plot track
     -
       name: thickness
@@ -604,7 +658,7 @@ tracks:
       name: r0r1
       type: annulus
       mutex: ideogram
-      label: radius
+      label: position
       tooltip: the inner and outer radius of the plot track
     -
       name: fill_color
@@ -639,10 +693,6 @@ tracks:
       name: data
       type: choices
       source: linkdata
-    -
-      name: ribbon
-      type: bool
-      default: 'no'
     -
       name: color
       type: color
@@ -695,11 +745,16 @@ tracks:
       decimal: 2
       default: 0.75
     -
+      name: ribbon
+      type: group
+      default: 'no'
+    -
       name: stroke_color
       type: color
       mutex: ~ribbon
       default: 202,202,202
       tooltip: work with ribbon yes
+      parent: ribbon
     -
       name: stroke_thickness
       type: int
@@ -709,12 +764,14 @@ tracks:
         - 100
       default: 1
       tooltip: work with ribbon yes
+      parent: ribbon
     -
       name: flat
       type: bool
       mutex: ~ribbon
       default: 'yes'
       tooltip: all your ribbons untwisted
+      parent: ribbon
     -
       name: z
       type: int

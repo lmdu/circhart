@@ -572,6 +572,9 @@ class CirchartGroupParameter(CirchartParameterMixin, QWidget):
 		self.check_box.toggled.connect(self.content_box.setVisible)
 		self.set_layout()
 
+		self.isChecked = self.check_box.isChecked
+		self.toggled = self.check_box.toggled
+
 	def set_tooltip(self, tip):
 		self.check_box.setToolTip(tip)
 
@@ -1030,11 +1033,11 @@ class CirchartRuleStyleWidget(CirchartRuleWidget):
 			case 'str':
 				w = CirchartStringParameter(p.name, self)
 
-			case 'color':
+			case 'color' | 'colors':
 				w = CirchartColorParameter(p.name, self)
 
-			case 'colors':
-				w = CirchartColorsParameter(p.name, self)
+			#case 'colors':
+			#	w = CirchartColorsParameter(p.name, self)
 
 			case 'choice':
 				w = CirchartChoiceParameter(p.name, self)
@@ -1478,7 +1481,9 @@ class CirchartParameterPanel(QWidget):
 
 	def add_param(self, param, label=None, group=False, parent=None):
 		if label is None:
-			label = param.key.replace('_', ' ').title()
+			label = param.key.replace('_', ' ')
+
+		label = label.title()
 
 		if not isinstance(param, CirchartHiddenParameter):
 			if group:
@@ -1519,6 +1524,9 @@ class CirchartParameterPanel(QWidget):
 			p = AttrDict(param)
 
 			if 'disable' in p:
+				continue
+
+			if 'hide' in p:
 				continue
 
 			match p.type:
@@ -1576,6 +1584,10 @@ class CirchartParameterPanel(QWidget):
 				case 'chroms':
 					w = CirchartChromsParameter(p.name, self)
 
+			param_label = None
+			param_group = False
+			param_parent = None
+
 			for k in p:
 				match k:
 					case 'range':
@@ -1613,30 +1625,25 @@ class CirchartParameterPanel(QWidget):
 							w.setDisabled(parent.isChecked())
 							parent.toggled.connect(w.setDisabled)
 
-			if p.name in values:
-				w.set_value(values[p.name])
+					case 'name':
+						if p.name in values:
+							w.set_value(values[p.name])
 
-			elif p.type == 'group':
-				self.add_param(w, group=True)
+					case 'type': 
+						if p.type in ['group', 'title']:
+							param_group = True
 
-			elif p.type == 'title':
-				self.add_param(w, group=True)
+					case 'parent':
+						param_parent = p.parent
 
-			elif 'hide' in p:
-				continue
+					case 'label':
+						if p.label:
+							param_label = p.label
 
-			elif 'parent' in p:
-				self.add_param(w, parent=p.parent)
+						else:
+							param_group = True
 
-			elif 'label' in p:
-				if p.label:
-					self.add_param(w, p.label)
-
-				else:
-					self.add_param(w, group=True)
-
-			else:
-				self.add_param(w)
+			self.add_param(w, param_label, param_group, param_parent)
 
 	def get_widget(self, key):
 		return self.params[key]
@@ -1683,7 +1690,9 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 		self._create_main_panel()
 		self._create_label_panel()
 		self._create_space_panel()
+		self._create_radius_panel()
 		self.space_count = 0
+		self.radius_count = 0
 
 	def _create_main_panel(self):
 		main_params = CIRCOS_PARAMS['ideogram']
@@ -1721,6 +1730,32 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 		key = 'spacing{}'.format(self.space_count)
 		self.create_spacing(key)
 
+	def _create_radius_panel(self):
+		self.radius_panel = self.create_panel('radiuses', ':/icons/radius.svg', "Radius for specific chromosomes")
+
+		menu = QMenu(self.radius_panel)
+		radius_act = QAction("Add Radius", self.radius_panel)
+		radius_act.triggered.connect(self.add_radius)
+		menu.addAction(radius_act)
+
+		open_menu = lambda x: (menu.move(QCursor().pos()), (menu.show()))
+		self.radius_panel.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.radius_panel.customContextMenuRequested.connect(open_menu)
+
+	def create_radius(self, key):
+		radius_params = CIRCOS_PARAMS['radiuses']
+		radius = CirchartChildAccordion(key, self.radius_panel)
+		panel = radius.create_panel('radius')
+		panel.create_params(radius_params)
+		param = panel.get_widget('chrom')
+		param.set_data(self.kwargs['chroms'])
+		self.radius_panel.add_param(radius, group=True)
+
+	def add_radius(self):
+		self.radius_count += 1
+		key = 'radius{}'.format(self.radius_count)
+		self.create_radius(key)
+
 	def set_params(self, params):
 		if 'ideogram' in params:
 			spaces = params['ideogram']['spaces']
@@ -1735,6 +1770,19 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 					self.space_count = sid
 
 				self.create_spacing(s)
+
+			radiuses = params['ideogram']['radiuses']
+
+			self.radius_panel.clear_params()
+			self.radius_count = 0
+
+			for r in radiuses:
+				rid = int(r.lstrip('radius'))
+
+				if rid > self.radius_count:
+					self.radius_count = rid
+
+				self.create_radius(r)
 
 		super().set_params(params)
 
@@ -2321,6 +2369,6 @@ class CirchartDataFilterDialog(QDialog):
 			options = dlg.get_options()
 			filters = dlg.get_filters()
 			counts = SqlControl.update_data_options(dlg.table, filters, options)
-			QMessageBox.information(self, 'Information', "Added options to {} rows".format(counts))
+			QMessageBox.information(parent, 'Information', "Added options to {} rows".format(counts))
 
 

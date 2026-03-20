@@ -324,7 +324,7 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 				if ptype == 'link':
 					tag = 'linkdata'
 
-				elif ptype == 'text':
+				elif ptype in ['text', 'stacked']:
 					tag = 'textdata'
 
 				elif ptype in ['tile', 'connector', 'highlight']:

@@ -815,6 +815,7 @@ class CirchartCreateSnailPlotDialog(CirchartBaseDialog):
 class CirchartCircosColorSelectDialog(QDialog):
 	def __init__(self, initials=[], parent=None, multiple=False):
 		super().__init__(parent)
+
 		if multiple:
 			self.setWindowTitle("Select colors")
 		else:

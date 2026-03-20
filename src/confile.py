@@ -48,6 +48,7 @@ class CirchartCircosConfile(Confile):
 		main_params = params['main']
 		label_params = params['label']
 		space_params = params['spaces']
+		radius_params = params['radiuses']
 
 		with Tag('ideogram'):
 			for k, v in main_params.items():
@@ -92,6 +93,14 @@ class CirchartCircosConfile(Confile):
 					
 					case _:
 						self.option(k, v)
+
+		radius_list = []
+		for rs in radius_params.values():
+			r = rs['radius']
+			radius_list.append('{}:{}r'.format(r['chrom'], r['radius']))
+
+		if radius_list:
+			self.option('chromosomes_radius', ';'.join(radius_list))
 
 	def parse_ticks(self, params):
 		main_params = params['main']
@@ -154,6 +163,9 @@ class CirchartCircosConfile(Confile):
 								elif v == 'link':
 									pass
 
+								elif v == 'stacked':
+									self.option(k, 'histogram')
+
 								else:
 									self.option(k, v)
 
@@ -175,7 +187,7 @@ class CirchartCircosConfile(Confile):
 							case 'padding' | 'rpadding':
 								self.option(k, v, 'p')
 
-							case 'color':
+							case 'color' | 'fill_color' | 'stroke_color':
 								if isinstance(v, list):
 									cs = []
 
@@ -186,12 +198,6 @@ class CirchartCircosConfile(Confile):
 
 								else:
 									self.option(k, self.get_color(v))
-
-							case 'stroke_color':
-								self.option(k, self.get_color(v))
-
-							case 'fill_color':
-								self.option(k, self.get_color(v))
 
 							case 'fill':
 								if v.count(',') == 2:

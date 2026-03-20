@@ -562,6 +562,12 @@ class SqlControl:
 		return SqlBase.get_one(sql)
 
 	@staticmethod
+	def clear_data_options(table):
+		sql = SqlQuery(table)\
+			.update('options')
+		SqlBase.update_row(sql, '')
+
+	@staticmethod
 	def add_custom_colors(colors):
 		sql = SqlQuery('color')\
 			.insert('name', 'color')

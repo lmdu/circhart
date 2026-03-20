@@ -81,8 +81,18 @@ class CirchartMainWindow(QMainWindow):
 		self.show()
 
 	def closeEvent(self, event):
+		self.render_to_svg()
 		self.write_settings()
 		event.accept()
+
+	def render_to_svg(self):
+		g = QSvgGenerator()
+		g.setFileName('circhart_screen.svg')
+		g.setSize(self.size())
+		g.setViewBox(self.rect())
+		#g.setTitle('circhart')
+		#g.setDescription('bypy')
+		self.render(g)
 
 	def read_settings(self):
 		settings = QSettings()
@@ -226,6 +236,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_assign_plot_option
 		)
 
+		self.clear_opt_act = QAction("Clear Plot Options", self,
+			triggered = self.do_clear_plot_option
+		)
+
 		self.prepare_kdata_act = QAction("&Prepare Karyotype Data", self,
 			triggered = self.do_prepare_karyotype_data
 		)
@@ -348,7 +362,9 @@ class CirchartMainWindow(QMainWindow):
 		self.kcolor_menu.addAction(self.kcolor_pure_act)
 
 		self.edit_menu.addAction(self.color_list_act)
+		self.edit_menu.addSeparator()
 		self.edit_menu.addAction(self.assign_opt_act)
+		self.edit_menu.addAction(self.clear_opt_act)
 
 		self.view_menu = self.menuBar().addMenu("&View")
 		self.view_menu.addAction(self.toolbar_act)
@@ -750,6 +766,17 @@ class CirchartMainWindow(QMainWindow):
 			return
 
 		CirchartDataFilterDialog.add_options(self, table)
+
+	def do_clear_plot_option(self):
+		if self.stack_widget.currentIndex() != 1:
+			return
+
+		table = self.data_table.get_table()
+
+		if not table:
+			return
+
+		SqlControl.clear_data_options(table)
 
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.prepare(self)

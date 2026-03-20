@@ -532,7 +532,7 @@ class CirchartCircosColorModel(QAbstractTableModel):
 		self._colors = []
 		self._lens = []
 		self._rows = 0
-		self._cols = 0
+		self._cols = 16
 
 	def rowCount(self, parent):
 		return self._rows
@@ -570,7 +570,7 @@ class CirchartCircosColorModel(QAbstractTableModel):
 		self.beginInsertRows(QModelIndex(), 0, len(colors)-1)
 		self._colors = colors
 		self._rows = len(colors)
-		self._cols = 16
+		#self._cols = 16
 		self._lens = lens
 		self.endInsertRows()
 
