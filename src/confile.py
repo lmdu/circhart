@@ -219,11 +219,19 @@ class CirchartCircosConfile(Confile):
 											cl[1] = '"{}"'.format(cl[1])
 											c = ' eq '.join(cl)
 
-										self.option('condition', c)
+										if c.startswith('flow'):
+											self.option('flow', c.split('=')[1])
+
+										else:
+											self.option('condition', c)
 
 									for a, s in v['main'].get('style', []):
 										if a == 'color':
 											self.option(a, self.get_color(s))
+
+										elif a in ['radius1', 'radius2']:
+											self.option(a, s, 'r')
+
 										else:
 											self.option(a, s)
 

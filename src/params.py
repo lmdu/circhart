@@ -751,7 +751,7 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 		if self._number:
 			self.sign_widget.addItems(['=', '>', '>=', '<', '<='])
 		else:
-			self.sign_widget.addItems(['='])
+			self.sign_widget.addItems(['=', '!=', '=~'])
 
 		self.val_widget = QLineEdit(self)
 
@@ -775,11 +775,18 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 		if sign == '=':
 			sign = 'eq'
 
+		elif sign == '!=':
+			sign = 'ne'
+
 		val = self.val_widget.text().strip()
 
 		if self._unit:
 			unit = self.unit_widget.currentText().replace('bp', '')
 			ret = "{} {}{}".format(sign, val, unit)
+
+		elif sign == '=~':
+			ret = "{} /{}/i".format(sign, val)
+		
 		else:
 			ret = "{} {}".format(sign, val)
 
@@ -791,9 +798,16 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 		if sign == 'eq':
 			sign = '='
 
+		elif sign == 'ne':
+			sign = '!='
+
+		if sign == '=~':
+			val = value.split('/')[1]
+
 		if val.endswith(('bp', 'kb', 'mb', 'gb')):
 			unit = val[-2:]
 			val = val[0:-2]
+
 		elif self._unit:
 			unit = 'bp'
 
@@ -912,6 +926,21 @@ class CirchartRulePositionWidget(CirchartRuleWidget):
 		self.end_widget.setText(end)
 		self.unit_widget.setCurrentText(unit)
 
+class CirchartRuleFlowWidget(CirchartRuleWidget):
+	def _init_widget(self):
+		self.flow_widget = QComboBox(self)
+		self.flow_widget.addItems(['stop', 'continue', 'restart'])
+
+	def _set_layout(self):
+		super()._set_layout()
+		self.main_layout.addWidget(self.flow_widget, 1)
+
+	def get_value(self):
+		return self.flow_widget.currentText()
+
+	def set_value(self, value):
+		self.flow_widget.setCurrentText(value)
+
 class CirchartRuleFieldWidget(CirchartRuleWidget):
 	def _init_widget(self):
 		self.field_widget = QComboBox(self)
@@ -931,6 +960,8 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 
 		for f in fields:
 			self.field_widget.addItem(f.name, f)
+
+		self.field_widget.addItem('flow', AttrDict(type='flow'))
 
 	def _on_field_changed(self, index):
 		f = self.field_widget.itemData(index)
@@ -961,6 +992,9 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 				w = CirchartRulePositionWidget(self)
 				w.set_data(self.chroms)
 
+			case 'flow':
+				w = CirchartRuleFlowWidget(self)
+
 			case _:
 				w = CirchartRuleEmptyWidget(self)
 
@@ -981,6 +1015,9 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 		elif field in noval:
 			return "var({})".format(field)
 
+		elif field == 'flow':
+			return "flow={}".format(rule)
+
 		else:
 			return "var({}) {}".format(field, rule)
 
@@ -990,6 +1027,11 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 		if value.startswith(funcs):
 			field, rule = value.split('(')
 			rule = rule.strip(')')
+
+		elif value.startswith('flow'):
+			field = 'flow'
+			rule = value.split('=')[1]
+
 		else:
 			field, rule = value.split(')')
 			field = field.split('(')[1]
@@ -1880,7 +1922,11 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 
 	def create_rule(self, key, ptype):
 		plot_params = self.plot_params[ptype]
-		rule_params = self.rule_params[ptype]
+		rule_params = self.rule_params.get(ptype, [])
+
+		if not rule_params:
+			return
+
 		tests = [AttrDict(p) for p in rule_params[0]['tests']]
 		attrs = [AttrDict(name='show', type='bool', default='yes')]
 
