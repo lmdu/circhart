@@ -187,6 +187,9 @@ class CirchartCircosConfile(Confile):
 							case 'padding' | 'rpadding':
 								self.option(k, v, 'p')
 
+							case 'margin':
+								self.option(k, v, 'u')
+
 							case 'color' | 'fill_color' | 'stroke_color':
 								if isinstance(v, list):
 									cs = []
