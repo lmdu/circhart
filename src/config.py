@@ -29,7 +29,7 @@ APP_NAME = "Circhart"
 APP_BUILD = "20260320"
 APP_VERSION = "0.2.0"
 
-APP_DEBUG = False
+APP_DEBUG = True
 
 APP_ISSUE_URL = "https://github.com/lmdu/circhart/issues"
 APP_DOCUMENT_URL = "https://circhart.readthedocs.io"

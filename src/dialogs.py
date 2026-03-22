@@ -881,7 +881,7 @@ class CirchartCircosColorSelectDialog(QDialog):
 			if c.count(',') == 3:
 				vs = c.split(',')
 				c = ','.join(vs[0:3])
-				self.color_opacity = float(vs[4].strip())
+				self.color_opacity = float(vs[3].strip())
 
 			opacity_widget = QDoubleSpinBox(self)
 			opacity_widget.setRange(0, 1)

@@ -40,7 +40,7 @@ ideogram:
     type: int
     range:
       - 0
-      - 200
+      - 1000
     default: 30
   -
     name: fill
