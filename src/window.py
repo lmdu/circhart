@@ -81,7 +81,7 @@ class CirchartMainWindow(QMainWindow):
 		self.show()
 
 	def closeEvent(self, event):
-		self.render_to_svg()
+		#self.render_to_svg()
 		self.write_settings()
 		event.accept()
 

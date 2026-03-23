@@ -209,6 +209,9 @@ class CirchartCircosConfile(Confile):
 								else:
 									self.option(k, v)
 
+							case 'max_snuggle_distance' | 'snuggle_tolerance':
+								self.option(k, v, 'r')
+
 							case _:
 								self.option(k, v)
 

@@ -289,6 +289,8 @@ tracks:
         - circle
         - rectangle
         - triangle
+        - square
+        - cross
       tooltip: shape of glyph to use for the scatter plot
     -
       name: glyph_size

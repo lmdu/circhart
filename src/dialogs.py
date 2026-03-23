@@ -897,7 +897,7 @@ class CirchartCircosColorSelectDialog(QDialog):
 			self.color_layout.addSpacing(20)
 			self.color_layout.addWidget(QLabel("RGB:", self))
 			self.color_layout.addWidget(self.rgb_widget)
-			self.color_layout.addWidget(QLabel("Opacity:", self))
+			self.color_layout.addWidget(QLabel("Transparency:", self))
 			self.color_layout.addWidget(opacity_widget)
 
 		self.color_layout.addWidget(CirchartSpacerWidget(self))
@@ -959,11 +959,16 @@ class CirchartCircosColorSelectDialog(QDialog):
 				return dlg.selected_colors
 			else:
 				if dlg.selected_colors:
-					if dlg.color_opacity < 1:
-						return "{},{}".format(dlg.selected_colors[0], dlg.color_opacity)
+					c = dlg.selected_colors[0]
+
+					if c.count(',') == 3:
+						c = ','.join(c.split(',')[0:3])
+
+					if dlg.color_opacity > 0:
+						return "{},{}".format(c, dlg.color_opacity)
 
 					else:
-						return dlg.selected_colors[0]
+						return c
 
 
 class CirchartLinkPrepareDialog(CirchartBaseDialog):
