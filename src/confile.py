@@ -158,7 +158,8 @@ class CirchartCircosConfile(Confile):
 
 							case 'type':
 								if v == 'highlight':
-									pass
+									if main_params['topmost'] == 'yes':
+										self.option(k, v)
 
 								elif v == 'link':
 									pass
@@ -211,6 +212,16 @@ class CirchartCircosConfile(Confile):
 
 							case 'max_snuggle_distance' | 'snuggle_tolerance':
 								self.option(k, v, 'r')
+
+							case 'topmost':
+								pass
+
+							case 'ideogram':
+								if main_params['topmost'] == 'yes':
+									pass
+
+								else:
+									self.option(k, v)
 
 							case _:
 								self.option(k, v)
@@ -292,7 +303,10 @@ class CirchartCircosConfile(Confile):
 					link_tracks.append(ps)
 
 				elif ps['main']['type'] == 'highlight':
-					highlight_tracks.append(ps)
+					if ps['main']['topmost'] == 'yes':
+						plot_tracks.append(ps)
+					else:
+						highlight_tracks.append(ps)
 
 				else:
 					plot_tracks.append(ps)

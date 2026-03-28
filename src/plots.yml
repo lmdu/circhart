@@ -711,6 +711,9 @@ tracks:
         - 100
       default: 0
       tooltip: border thickness, if any, of the highlight slice
+    - name: topmost
+      type: bool
+      default: 'no'
     -
       name: z
       type: int
