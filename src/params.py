@@ -228,7 +228,7 @@ class CirchartRadialParameter(CirchartParameterMixin, QWidget):
 
 		self.radial_check = QPushButton(self)
 		self.radial_check.setCheckable(True)
-		self.radial_check.setFixedSize(QSize(20, 20))
+		#self.radial_check.setFixedSize(QSize(20, 20))
 		self.radial_check.setIcon(QIcon(':/icons/offset.svg'))
 		self.radial_check.toggled.connect(self.radial_offset.setVisible)
 
@@ -237,7 +237,7 @@ class CirchartRadialParameter(CirchartParameterMixin, QWidget):
 		layout.setContentsMargins(0, 0, 0, 0)
 		layout.setSpacing(2)
 		layout.addWidget(self.radial_distance)
-		layout.addWidget(self.radial_check)
+		layout.addWidget(self.radial_check, alignment=Qt.AlignVCenter)
 		layout.addWidget(self.radial_offset)
 		self.setLayout(layout)
 
