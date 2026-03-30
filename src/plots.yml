@@ -277,11 +277,13 @@ tracks:
       name: data
       type: choices
       source: plotdata
+    - name: r0
+      type: radial
+      tooltip: the inner radius of the plot track
     -
-      name: r0r1
-      label: position
-      type: annulus
-      tooltip: the inner and outer radius of the plot track
+      name: r1
+      type: radial
+      tooltip: the outer radius of the plot track
     -
       name: glyph
       type: choice
@@ -332,10 +334,13 @@ tracks:
       type: choices
       source: plotdata
     -
-      name: r0r1
-      type: annulus
-      label: position
-      tooltip: the inner and outer radius of the plot track
+      name: r0
+      type: radial
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: radial
+      tooltip: the outer radius of the plot track
     -
       name: color
       type: color
@@ -363,10 +368,13 @@ tracks:
       type: choices
       source: plotdata
     -
-      name: r0r1
-      type: annulus
-      label: position
-      tooltip: the inner and outer radius of the plot track
+      name: r0
+      type: radial
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: radial
+      tooltip: the outer radius of the plot track
     -
       name: color
       type: color
@@ -403,10 +411,13 @@ tracks:
       type: choices
       source: textdata
     -
-      name: r0r1
-      type: annulus
-      label: position
-      tooltip: the inner and outer radius of the plot track
+      name: r0
+      type: radial
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: radial
+      tooltip: the outer radius of the plot track
     -
       name: color
       type: color
@@ -443,10 +454,13 @@ tracks:
       type: choices
       source: plotdata
     -
-      name: r0r1
-      type: annulus
-      label: position
-      tooltip: the inner and outer radius of the plot track
+      name: r0
+      type: radial
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: radial
+      tooltip: the outer radius of the plot track
     -
       name: stroke_thickness
       type: int
@@ -478,10 +492,13 @@ tracks:
       type: choices
       source: locidata
     -
-      name: r0r1
-      type: annulus
-      label: position
-      tooltip: the inner and outer radius of the plot track
+      name: r0
+      type: radial
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: radial
+      tooltip: the outer radius of the plot track
     -
       name: color
       type: color
@@ -548,10 +565,13 @@ tracks:
       type: choices
       source: textdata
     -
-      name: r0r1
-      type: annulus
-      label: position
-      tooltip: the inner and outer radius of the plot track
+      name: r0
+      type: radial
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: radial
+      tooltip: the outer radius of the plot track
     -
       name: label_font
       type: choice
@@ -661,10 +681,13 @@ tracks:
       type: choices
       source: locidata
     -
-      name: r0r1
-      type: annulus
-      label: position
-      tooltip: the inner and outer radius of the plot track
+      name: r0
+      type: radial
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: radial
+      tooltip: the outer radius of the plot track
     -
       name: thickness
       type: int
@@ -688,11 +711,15 @@ tracks:
       default: 'no'
       tooltip: toggles the position of the highlight to be within the ideogram extent
     -
-      name: r0r1
-      type: annulus
+      name: r0
+      type: radial
       mutex: ideogram
-      label: position
-      tooltip: the inner and outer radius of the plot track
+      tooltip: the inner radius of the plot track
+    -
+      name: r1
+      type: radial
+      mutex: ideogram
+      tooltip: the outer radius of the plot track
     -
       name: fill_color
       type: color

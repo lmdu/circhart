@@ -215,6 +215,70 @@ class CirchartTitleParameter(CirchartReadonlyParameter):
 	def get_param(self):
 		return {}
 
+class CirchartRadialParameter(CirchartParameterMixin, QWidget):
+	def _init_widget(self):
+		self.radial_distance = QDoubleSpinBox(self)
+		self.radial_distance.setRange(0, 10)
+		self.radial_distance.setSingleStep(0.01)
+		self.radial_distance.setDecimals(3)
+
+		self.radial_offset = QSpinBox(self)
+		self.radial_offset.setVisible(False)
+		self.radial_offset.setRange(-1000, 1000)
+
+		self.radial_check = QPushButton(self)
+		self.radial_check.setCheckable(True)
+		self.radial_check.setFixedSize(QSize(20, 20))
+		self.radial_check.setIcon(QIcon(':/icons/offset.svg'))
+		self.radial_check.toggled.connect(self.radial_offset.setVisible)
+
+	def _set_layout(self):
+		layout = QHBoxLayout()
+		layout.setContentsMargins(0, 0, 0, 0)
+		layout.setSpacing(2)
+		layout.addWidget(self.radial_distance)
+		layout.addWidget(self.radial_check)
+		layout.addWidget(self.radial_offset)
+		self.setLayout(layout)
+
+	def get_value(self):
+		radial = self.radial_distance.value()
+
+		if self.radial_check.isChecked():
+			offset = self.radial_offset.value()
+
+		else:
+			offset = 0
+
+		if offset > 0:
+			return "{}r + {}p".format(radial, offset)
+
+		elif offset < 0:
+			return "{}r {}p".format(radial, offset)
+
+		else:
+			return "{}r".format(radial)
+
+	def set_value(self, value):
+		if '+' in value:
+			radial, offset = value.split(' + ')
+
+		elif '-' in value:
+			radial, offset = value.split(' - ')
+
+		else:
+			radial = value
+			offset = '0'
+
+		radial = float(radial.strip('r'))
+		offset = int(offset.strip('p'))
+
+		self.radial_distance.setValue(radial)
+		self.radial_offset.setValue(offset)
+
+		if offset != 0:
+			self.radial_check.setChecked(True)
+
 class CirchartAnnulusParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
 		self.radius0 = QDoubleSpinBox(self)
@@ -1616,6 +1680,9 @@ class CirchartParameterPanel(QWidget):
 
 				case 'title':
 					w = CirchartTitleParameter(p.name, self)
+
+				case 'radial':
+					w = CirchartRadialParameter(p.name, self)
 
 				case 'radius':
 					w = CirchartRadiusParameter(p.name, self)

@@ -178,6 +178,13 @@ class CirchartCircosConfile(Confile):
 									self.option('r0', v[0], 'r')
 									self.option('r1', v[1], 'r')
 
+							case 'r0' | 'r1':
+								if main_params['type'] == 'highlight' and main_params['ideogram'] == 'yes':
+									pass
+
+								else:
+									self.option(k, v)
+
 							case 'radius' | 'bezier_radius':
 								if main_params['type'] == 'link':
 									self.option(k, v, 'r')

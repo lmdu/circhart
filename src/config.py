@@ -27,17 +27,17 @@ ROOT_PATH = Path(__file__).parent
 
 APP_NAME = "Circhart"
 APP_BUILD = "20260323"
-APP_VERSION = "0.2.0"
+APP_VERSION = "0.3.0"
 
-APP_DEBUG = True
+APP_DEBUG = False
 
 APP_ISSUE_URL = "https://github.com/lmdu/circhart/issues"
 APP_DOCUMENT_URL = "https://circhart.readthedocs.io"
 APP_UPDATE_URL = "https://github.com/lmdu/circhart/releases"
 
 APP_DESCRIPTION = """
-<p>Circhart is a user-friendly graphical tool for assisting circos
-running.</p>
+<p>Circhart is a user-friendly and flexible graphical tool for facilitating the creation of circos
+and snail plots.</p>
 """
 
 APP_CITATION = """
