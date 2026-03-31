@@ -57,6 +57,7 @@ QToolButton:hover {
 	background: #dedede;
 }
 
+QToolButton:checked,
 QToolButton:pressed {
 	background: #b7b7b7;
 }

@@ -34,3 +34,5 @@ Every time you modify the drawing parameters, you should redraw the circos plot 
 
 #. Or click **Update Plot** icon on the toolbar to redraw circos plot.
 
+Circos Ideogram
+---------------

@@ -226,10 +226,11 @@ class CirchartRadialParameter(CirchartParameterMixin, QWidget):
 		self.radial_offset.setVisible(False)
 		self.radial_offset.setRange(-1000, 1000)
 
-		self.radial_check = QPushButton(self)
+		self.radial_check = QToolButton(self)
 		self.radial_check.setCheckable(True)
 		#self.radial_check.setFixedSize(QSize(20, 20))
 		self.radial_check.setIcon(QIcon(':/icons/offset.svg'))
+		self.radial_check.setToolButtonStyle(Qt.ToolButtonIconOnly)
 		self.radial_check.toggled.connect(self.radial_offset.setVisible)
 
 	def _set_layout(self):
@@ -2086,12 +2087,16 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		params = self.plot_params[ptype]
 
 		ks = []
+		vs = {}
 		for k, p in panel.params.items():
 			if k != 'type':
 				ks.append(k)
 
+			if k in ['data', 'r0', 'r1']:
+				vs[k] = p.get_value()
+
 		panel.remove_params(ks)
-		panel.create_params(params)
+		panel.create_params(params, vs)
 
 	def set_params(self, params):
 		self.rule_panel.clear_params()
