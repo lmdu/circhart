@@ -69,11 +69,11 @@ class CirchartCircosConfile(Confile):
 					case 'thickness':
 						self.option(k, v, 'p')
 
-					case 'stroke_color':
-						self.option(k, self.get_color(v))
+					#case 'stroke_color':
+					#	self.option(k, self.get_color(v))
 
-					case 'band_stroke_color':
-						self.option(k, self.get_color(v))
+					#case 'band_stroke_color':
+					#	self.option(k, self.get_color(v))
 
 					case 'band_data':
 						continue
@@ -124,8 +124,8 @@ class CirchartCircosConfile(Confile):
 							case 'spacing':
 								self.option(x, y, 'u')
 
-							case 'color':
-								self.option(x, self.get_color(y))
+							#case 'color':
+							#	self.option(x, self.get_color(y))
 
 							case 'format':
 								if y > 0:
@@ -208,14 +208,14 @@ class CirchartCircosConfile(Confile):
 									self.option(k, ','.join(cs))
 
 								else:
-									self.option(k, self.get_color(v))
-
-							case 'fill':
-								if v.count(',') == 2:
-									self.option(k, self.get_color(v))
-
-								else:
 									self.option(k, v)
+
+							#case 'fill':
+							#	if v.count(',') == 2:
+							#		self.option(k, self.get_color(v))
+
+							#	else:
+							#		self.option(k, v)
 
 							case 'max_snuggle_distance' | 'snuggle_tolerance':
 								self.option(k, v, 'r')
@@ -250,10 +250,10 @@ class CirchartCircosConfile(Confile):
 											self.option('condition', c)
 
 									for a, s in v['main'].get('style', []):
-										if a == 'color':
-											self.option(a, self.get_color(s))
+										#if a == 'color':
+										#	self.option(a, self.get_color(s))
 
-										elif a in ['radius1', 'radius2']:
+										if a in ['radius1', 'radius2']:
 											self.option(a, s, 'r')
 
 										else:

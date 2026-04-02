@@ -82,6 +82,7 @@ class CirchartMainWindow(QMainWindow):
 
 	def closeEvent(self, event):
 		#self.render_to_svg()
+		SqlBase.commit()
 		self.write_settings()
 		event.accept()
 

@@ -369,8 +369,8 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 			with open(svg_file) as fh:
 				content = fh.read()
 
-			font_str = "Arial, Helvetica Neue, Helvetica, sans-serif"
-			content = content.replace('CMUBright-Roman', font_str)
+			#font_str = "Arial, Helvetica Neue, Helvetica, sans-serif"
+			#content = content.replace('CMUBright-Roman', font_str)
 
 			params = dict_to_str(self.params)
 			plotid = self.params['general']['global']['plot_id']

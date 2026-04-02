@@ -454,6 +454,12 @@ class DataBackend:
 			self.commit()
 			self.begin()
 
+	def close(self):
+		self.commit()
+
+		if self.conn:
+			self.conn.close()
+
 	@property
 	def changed(self):
 		return self.conn.changes() > 0
