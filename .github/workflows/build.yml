@@ -38,6 +38,9 @@ jobs:
           tar xzvf circos-0.69-10.tgz
           mv circos-0.69-10 src/circos
 
+      - name: Fix circos
+        run: python package/fix_circos_font.py
+
       - name: Install blobtk
         if: matrix.os == 'windows-2022'
         run: pip install https://github.com/lmdu/blobtk-wheel/releases/download/0.8.0.post1/blobtk-0.8.0.post1-cp312-cp312-win_amd64.whl

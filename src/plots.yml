@@ -131,14 +131,10 @@ labels:
     name: label_font
     type: choice
     source:
-      - light
-      - normal
       - default
-      - semibold
       - bold
       - italic
       - bolditalic
-      - italicbold
     default: default
   -
     name: label_center
@@ -326,7 +322,6 @@ tracks:
       source:
         - out
         - in
-      disable: true
 
   line:
     -
@@ -360,7 +355,6 @@ tracks:
       source:
         - out
         - in
-      disable: true
 
   histogram:
     -
@@ -402,8 +396,8 @@ tracks:
       name: orientation
       type: choice
       source:
-        - in
         - out
+        - in
 
   stacked:
     -
@@ -445,8 +439,8 @@ tracks:
       name: orientation
       type: choice
       source:
-        - in
         - out
+        - in
 
   heatmap:
     -
@@ -577,13 +571,9 @@ tracks:
       type: choice
       source:
         - default
-        - light
-        - normal
-        - semibold
         - bold
         - italic
         - bolditalic
-        - italicbold
     -
       name: label_size
       type: int

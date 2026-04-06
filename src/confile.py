@@ -327,7 +327,6 @@ class CirchartCircosConfile(Confile):
 		if highlight_tracks:
 			self.parse_track(highlight_tracks, 'highlight')
 
-
 		with Tag('image'):
 			self.include('etc/image.conf')
 

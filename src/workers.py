@@ -351,6 +351,12 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 			if APP_DEBUG:
 				print(error_str)
 
+	def process_output(self):
+		if APP_DEBUG:
+			out_data = self.runner.readAllStandardOutput()
+			out_str = out_data.data().decode()
+			print(out_str)
+
 	def process(self):
 		parent = QObject()
 		self.runner = self.processor(parent, self.tempdir.path())
@@ -359,6 +365,7 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 		self.runner.finished.connect(self.save_result)
 		self.runner.errorOccurred.connect(loop.quit)
 		self.runner.readyReadStandardError.connect(self.process_error)
+		self.runner.readyReadStandardOutput.connect(self.process_output)
 		self.runner.start()
 		loop.exec()
 
