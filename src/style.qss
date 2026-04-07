@@ -163,6 +163,11 @@ QComboBox::down-arrow {
 	width: 16px;
 }
 
+/*QComboBox QAbstractItemView {
+    border: 2px solid darkgray;
+    selection-background-color: lightgray;
+}*/
+
 /*QComboBox {
 	max-width: 120px;
 }*/

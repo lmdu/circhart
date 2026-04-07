@@ -200,6 +200,14 @@ ticks:
       - in
     level: 0
   -
+    name: spacing
+    type: int
+    range:
+      - 0
+      - 200
+    default: 1
+    level: 1
+  -
     name: color
     type: color
     default: 0,0,0
@@ -211,14 +219,6 @@ ticks:
     range:
       - 0
       - 100
-    level: 1
-  -
-    name: spacing
-    type: int
-    range:
-      - 0
-      - 200
-    default: 1
     level: 1
   -
     name: size
