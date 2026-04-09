@@ -322,6 +322,9 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.go_to_update
 		)
 
+		self.screen_act = QAction("Screenshot", self,
+			triggered = self.render_to_svg
+		)
 
 
 	def create_menus(self):
@@ -405,6 +408,7 @@ class CirchartMainWindow(QMainWindow):
 		self.help_menu.addAction(self.doc_act)
 		self.help_menu.addAction(self.issue_act)
 		self.help_menu.addAction(self.update_act)
+		self.help_menu.addAction(self.screen_act)
 
 
 	def create_toolbar(self):

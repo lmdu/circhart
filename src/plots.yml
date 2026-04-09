@@ -120,7 +120,6 @@ labels:
   -
     name: label_radius
     type: radius
-    label: Label position
   -
     name: label_format
     type: choice
