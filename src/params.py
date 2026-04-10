@@ -1914,7 +1914,7 @@ class CirchartTickTrack(CirchartParameterAccordion):
 		self.ticks_panel = self.create_panel('ticks', ':/icons/tick.svg', "Ticks")
 
 		menu = QMenu(self.ticks_panel)
-		tick_act = QAction("Add Tick", self.ticks_panel)
+		tick_act = QAction("Add Tick Mark", self.ticks_panel)
 		tick_act.triggered.connect(self.add_tick)
 		menu.addAction(tick_act)
 

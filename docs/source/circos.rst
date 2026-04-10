@@ -34,52 +34,232 @@ Every time you modify the drawing parameters, you should redraw the circos plot 
 
 #. Or click **Update Plot** icon on the toolbar to redraw circos plot.
 
-Circos Plot Parameters
-----------------------
+Circos Ideogram Parameters
+--------------------------
 
-Ideogram
-^^^^^^^^
+Ideogram Style
+^^^^^^^^^^^^^^
 
 The parameters for drawing ideograms can be found in Circos documentation: `https://circos.ca/documentation/tutorials/reference/ideogram/ <https://circos.ca/documentation/tutorials/reference/ideogram/>`_
 
-	.. figure:: _static/ideogram_params.svg
-		:align: center
+.. figure:: _static/ideogram_params.svg
+	:align: center
 
-		Ideogram parameters
+	Ideogram parameters
+
+.. tip::
+
+	Generally, we set radius < 1.0 to leave some blank space for putting the ideogram labels and ticks.
 
 Ideogram Bands
 ^^^^^^^^^^^^^^
 
+.. figure:: _static/ideogram_bands.svg
+	:align: center
 
+	Ideogram band parameters
+
+You can toggle ``Show Bands`` to show or hide ideogram bands. If you have no bands information in your karyotype data. You can prepare it and then select it in ``Band Data``.
+
+.. note::
+
+	``Band Data`` is an optional. Sometimes, your imported karyotype may contains genome band information.
 
 Ideogram Labels
 ^^^^^^^^^^^^^^^
 
-	.. figure:: _static/ideogram_label.svg
-		:align: center
+.. figure:: _static/ideogram_label.svg
+	:align: center
 
-		Ideogram label parameters
+	Ideogram label parameters
 
-.. list-table:: Confusing label parameters
-	:widths: 20 80
-	:width: 100%
-	:header-rows: 1
+You can toggle ``Show Label`` to show or hide ideogram labels.
 
-	* - Parameter
-	  - Description
-	* - Label radius
-	  - Radial position of ideogram label. The label can be put to the ideogram outer, inner, or inside radius. You are allowed to set offset.
-	* - Label format
-	  - Show text of label or name column in karyotype data.
-	* - Label center
-	  - The label to be centered at the radius.
-	* - Label parallel
-	  - Toggles the ideogram label to be parallel to the ideogram segment.
+Some parameters that require special explanation:
 
+#. ``Label radius``: radial position of ideogram label. The label can be put to the outer, inner, or inside ideogram.
+
+	.. tip::
+
+		You are allowed to set an offset (pixel) to fine-tune the label position.
+	
+
+#. ``Label format``: show text of label or name column in karyotype data.
+#. ``Label center``: the label to be centered at the radius.
+#. ``Label parallel``: toggles the ideogram label to be parallel to the ideogram segment.
 
 Ideogram Specific Spacing
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
+You are allowed to set specific spacing between adjacent ideograms. You can use right-click menu on the ideogram specific spacing panel to add spacing. You can select two ideograms or chromosomes to add specific space between them.
+
+.. figure:: _static/ideogram_spaces.svg
+	:align: center
+
+	Specific ideogram spacing parameters
+
+#. ``Between``: select two adjacent ideograms.
+
+	.. tip::
+
+		If the two ideograms you select are the same, the space will be added on both sides of that ideogram.
+
+#. ``Spacing``: its value represents a multiple of the default spacing.
+
 Ideogram Specific Radius
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
+You are allowed to set specific radius for selected ideograms. You can use right-click menu on the ideogram specific radius panel to add radius. You can select a chromosome to add specific radius.
+
+.. figure:: _static/ideogram_radius.svg
+	:align: center
+
+	Specific ideogram radius parameters
+
+#. ``Chrom``: select a chromosome or ideogram.
+#. ``Radius``: the specific radius value.
+
+Circos Tick Parameters
+----------------------
+
+Tick Display
+^^^^^^^^^^^^
+
+The tick parameters for circos can be found in `Circos documentation <https://circos.ca/documentation/tutorials/ticks_and_labels/basics/>`_.
+
+.. figure:: _static/tick_params.svg
+	:width: 400
+	:align: center
+
+	Tick parameters
+
+#. ``Show ticks``: toggle to show or hide ticks
+#. ``Show tick labels``: toggle to show or hide tick labels
+#. ``Chromosome units``: it is an important parameter for drawing tick marks. Default value of 1000000 means 1 unit(u) = 1Mb.
+#. ``Tick radius``: it is the same with ``Label radius``, control the tick position.
+#. ``Label multiplier``: it is a constant used to multiply the tick value to obtain the tick label. For example, the default multiplier is 1e-6 (10\ :sup:`-6`), then the tick mark at position 10,000,000 will have a label of 10.
+#. ``Orientation``: controls whether the ticks and labels face out (orientation=out) or in (orientation=in)
+
+Tick Marks
+^^^^^^^^^^
+
+Even if you turn on ``Show ticks`` and ``Show tick labels``, you may not see any tick marks unless you add them. On the tick mark panel, you can use right-click menu to add tick mark.
+
+.. figure:: _static/tick_marks.svg
+	:align: center
+
+	Tick mark parameters
+
+#. ``Spacing``: the most important parameter to control tick mark display. It is a multiplier of ``chromosome units``, for example chromosome units = 1Mb, spacing = 50 indicates that a mark is drawed every 50 Mb.
+#. ``Show label``: toggle to show or hide tick mark label.
+#. ``Suffix``: add suffix for tick mark label, the label is obtained by ``position * label multiplier``, when multiplier = 1e-6, the obtained label can be added with unit (mb).
+
+Circos Plot Parameters
+----------------------
+
+Plot Track Panel
+^^^^^^^^^^^^^^^^
+
+Circhart allows you to draw scatter, line, histogram, stacked (histogram), heatmap, tile, text, connector, highlight and link plot tracks. You can adjust the plot parameters in track panel.
+
+.. figure:: _static/plot_track.svg
+	:width: 400
+	:align: center
+
+	Plot track parameter panel
+
+**Track Tabs**
+
+The track panel contains four tabs:
+
+.. list-table:: The description of tabs
+	:header-rows: 1
+	:align: center
+	
+	* - Tab
+	  - Description
+	* - |chart|
+	  - main paramter tab for drawing plot
+	* - |rule|
+	  - rule tab for controlling plot display using conditions
+	* - |axis|
+	  - axes tab for adding axis grids to plot track
+	* - |background|
+	  - background tab for adding background color to plot track
+
+**Track Radius**
+
+In main tab, you can change the plot ``Type`` and select plot ``Data``. Except for link track, the other tracks require a specified position. Circos uses two radius: radius0 (``R0``) and radius1 (``R1``) to control the position and thickness of the plot tracks.
+
+.. figure:: _static/track_radius.svg
+	:align: center
+
+	Radius of plot track
+
+**Track Radius Offset**
+
+The radius supports setting an offset value to fine-tune the radius position. You can click the |offset| button to open offset input box where you can input a number (pixel).
+
+.. figure:: _static/track_offset.svg
+	:align: center
+
+	Radius offset of plot track
+
+**Track Rules**
+
+
+**Track Axes**
+
+
+**Track Background**
+
+
+
+Scatter Plot Track
+^^^^^^^^^^^^^^^^^^
+
+Line Plot Track
+^^^^^^^^^^^^^^^
+
+Histogram Plot Track
+^^^^^^^^^^^^^^^^^^^^
+
+Stacked Plot Track
+^^^^^^^^^^^^^^^^^^
+
+Heatmap Plot Track
+^^^^^^^^^^^^^^^^^^
+
+Tile Plot Track
+^^^^^^^^^^^^^^^
+
+Text Plot Track
+^^^^^^^^^^^^^^^
+
+Connector Plot Track
+^^^^^^^^^^^^^^^^^^^^
+
+Highlight Plot Track
+^^^^^^^^^^^^^^^^^^^^
+
+Link Plot Track
+^^^^^^^^^^^^^^^
+
+
+
+
+
+.. |chart| image:: _static/chart.svg
+	:width: 24
+
+.. |rule| image:: _static/rule.svg
+	:width: 24
+
+.. |axis| image:: _static/axis.svg
+	:width: 24
+
+.. |background| image:: _static/bg.svg
+	:width: 24
+
+.. |offset| image:: _static/offset.svg
+	:width: 24

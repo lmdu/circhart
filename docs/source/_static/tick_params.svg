@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层_1" xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" version="1.2" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 322.01 271.6">
+  <!-- Generator: Adobe Illustrator 30.0.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 123)  -->
+  <defs>
+    <image id="image" width="26" height="26" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAZCAYAAAAv3j5gAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAbklEQVRIie3NsQmAMBBG4ddKtnAAl7CzyU4OZu1MaWJzgRCDXCBXeQ9Cmvv5wPN+1wIc8ltuOIEMXEBQ3Ae5zbJVtwNJidVIku1QUYG1SBxFNNg05AubjvSwW950pIeZITVWIDOktAKbNeJ53rsHC30rWa70eNgAAAAASUVORK5CYII="/>
+    <image id="image1" width="20" height="20" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAATCAYAAACQjC21AAAACXBIWXMAABYlAAAWJQFJUiTwAAAATElEQVQ4jWNgGAVDFmgwMDBoUcswWwYGhv9QbEsNw74gGfiFEkNhhsEMQedTZBghcbIMI9vQ40Qohhl6nBgDNaCYGHXqxBg4CoYbAACJaBoGWzZw8QAAAABJRU5ErkJggg=="/>
+    <image id="image2" width="20" height="20" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAATCAYAAACQjC21AAAACXBIWXMAABYlAAAWJQFJUiTwAAAAYklEQVQ4je3SsQ2AIBCF4T9xBJjAiiWYn2Wws8cCSIgRL3KNxb2EBt591wCW32V7uAuAB7IwGwAHHNKSBJxAfOnE1kkSNpZnqPT+CV3CZsMq7I6WdlTYiHZQjfXs1G9isQAXD2AbsscaZgUAAAAASUVORK5CYII="/>
+  </defs>
+  <rect x="11.4" y="12.24" width="303" height="1" fill="#c2c2c2"/>
+  <rect x="11.4" y="54.24" width="303" height="207" fill="#fff"/>
+  <rect x="11.4" y="260.24" width="303" height="1" fill="#c2c2c2"/>
+  <rect x="11.4" y="54.24" width="303" height="1" fill="#eee"/>
+  <path d="M139.4,75.24c0-5.52,4.48-10,10-10h30c5.52,0,10,4.48,10,10s-4.48,10-10,10h-30c-5.52,0-10-4.48-10-10" vector-effect="none" fill="#4caf50" fill-rule="evenodd"/>
+  <text transform="translate(144.4 79.42)" fill="#fff" font-family="MicrosoftYaHeiUI-Bold, &apos;Microsoft YaHei UI&apos;" font-size="12" font-weight="700" isolation="isolate"><tspan x="0" y="0">YES</tspan></text>
+  <circle cx="179.4" cy="75.24" r="6" fill="#fff"/>
+  <text transform="translate(16.4 79.8)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Show Ticks</tspan></text>
+  <path d="M139.4,100.24c0-5.52,4.48-10,10-10h30c5.52,0,10,4.48,10,10s-4.48,10-10,10h-30c-5.52,0-10-4.48-10-10" vector-effect="none" fill="#4caf50" fill-rule="evenodd"/>
+  <text transform="translate(144.4 104.42)" fill="#fff" font-family="MicrosoftYaHeiUI-Bold, &apos;Microsoft YaHei UI&apos;" font-size="12" font-weight="700" isolation="isolate"><tspan x="0" y="0">YES</tspan></text>
+  <circle cx="179.4" cy="100.24" r="6" fill="#fff"/>
+  <text transform="translate(16.4 104.8)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Show Tick Labels</tspan></text>
+  <path d="M142.4,115.74h88c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-88c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+  <rect x="142.4" y="136.24" width="88" height="1" fill="#c2c2c2"/>
+  <g>
+    <path d="M142.4,136.74c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M230.4,136.74c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="232.4" y="118.24" width="1" height="16" fill="#c2c2c2"/>
+  <g>
+    <path d="M232.17,116.47c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M232.17,136c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="139.4" y="118.24" width="1" height="16" fill="#c2c2c2"/>
+  <g>
+    <path d="M140.64,116.47c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M139.9,134.24c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="142.4" y="115.24" width="88" height="1" fill="#c2c2c2"/>
+  <g>
+    <path d="M140.64,116.47c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M232.17,116.47c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <use image-rendering="optimizeQuality" transform="translate(220.4 115.24) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+  <use image-rendering="optimizeQuality" transform="translate(220.4 126.24) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+  <text transform="translate(153.4 131.42)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">1000000</tspan></text>
+  <text transform="translate(16.4 130.8)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Chromosomes Units</tspan></text>
+  <path d="M142.4,142.74h115c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-115c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+  <rect x="142.4" y="163.24" width="115" height="1" fill="#c2c2c2"/>
+  <g>
+    <path d="M142.4,163.74c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M257.4,163.74c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="259.4" y="145.24" width="1" height="16" fill="#c2c2c2"/>
+  <g>
+    <path d="M259.17,143.47c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M259.17,163c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="139.4" y="145.24" width="1" height="16" fill="#c2c2c2"/>
+  <g>
+    <path d="M140.64,143.47c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M139.9,161.24c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="142.4" y="142.24" width="115" height="1" fill="#c2c2c2"/>
+  <g>
+    <path d="M140.64,143.47c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M259.17,143.47c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <use image-rendering="optimizeQuality" transform="translate(240.4 147.24) scale(.5)" xlink:href="#image" isolation="isolate"/>
+  <text transform="translate(145.4 157.8)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">outer ideogram</tspan></text>
+  <path d="M192.4,169.74h55c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-55c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+  <rect x="192.4" y="190.24" width="55" height="1" fill="#c2c2c2"/>
+  <g>
+    <path d="M192.4,190.74c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M247.4,190.74c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="249.4" y="172.24" width="1" height="16" fill="#c2c2c2"/>
+  <g>
+    <path d="M249.17,170.47c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M249.17,190c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="189.4" y="172.24" width="1" height="16" fill="#c2c2c2"/>
+  <g>
+    <path d="M190.64,170.47c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M189.9,188.24c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="192.4" y="169.24" width="55" height="1" fill="#c2c2c2"/>
+  <g>
+    <path d="M190.64,170.47c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M249.17,170.47c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <use image-rendering="optimizeQuality" transform="translate(237.4 169.24) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+  <use image-rendering="optimizeQuality" transform="translate(237.4 180.24) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+  <text transform="translate(192.4 185.42)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">+0</tspan></text>
+  <text transform="translate(139.4 184.8)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Offset</tspan></text>
+  <text transform="translate(16.4 160.8)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Tick Radius</tspan></text>
+  <path d="M142.4,196.74h112c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-112c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+  <rect x="142.4" y="217.24" width="112" height="1" fill="#c2c2c2"/>
+  <g>
+    <path d="M142.4,217.74c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M254.4,217.74c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="256.4" y="199.24" width="1" height="16" fill="#c2c2c2"/>
+  <g>
+    <path d="M256.17,197.47c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M256.17,217c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="139.4" y="199.24" width="1" height="16" fill="#c2c2c2"/>
+  <g>
+    <path d="M140.64,197.47c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M139.9,215.24c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="142.4" y="196.24" width="112" height="1" fill="#c2c2c2"/>
+  <g>
+    <path d="M140.64,197.47c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M256.17,197.47c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <text transform="translate(147.4 212.42)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">1e-6</tspan></text>
+  <text transform="translate(16.4 211.8)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Label Multiplier</tspan></text>
+  <path d="M142.4,223.74h43c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-43c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+  <rect x="142.4" y="244.24" width="43" height="1" fill="#c2c2c2"/>
+  <g>
+    <path d="M142.4,244.74c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M185.4,244.74c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="187.4" y="226.24" width="1" height="16" fill="#c2c2c2"/>
+  <g>
+    <path d="M187.17,224.47c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M187.17,244c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="139.4" y="226.24" width="1" height="16" fill="#c2c2c2"/>
+  <g>
+    <path d="M140.64,224.47c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M139.9,242.24c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <rect x="142.4" y="223.24" width="43" height="1" fill="#c2c2c2"/>
+  <g>
+    <path d="M140.64,224.47c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <path d="M187.17,224.47c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+  </g>
+  <use image-rendering="optimizeQuality" transform="translate(168.4 228.24) scale(.5)" xlink:href="#image" isolation="isolate"/>
+  <text transform="translate(145.4 238.8)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">out</tspan></text>
+  <text transform="translate(16.4 238.8)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Orientation</tspan></text>
+  <rect x="47.4" y="36.24" width="35" height="19" fill="#fafafa"/>
+  <rect x="47.4" y="54.24" width="35" height="1" fill="#eee"/>
+  <image width="32" height="32" image-rendering="optimizeQuality" transform="translate(50.4 37.24) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAYAAACGVs+MAAAACXBIWXMAABYlAAAWJQFJUiTwAAABgUlEQVRIie2WsU7DQAyGPxBSt7Jlr2Do0I6dmZEQUrb0EWDjDXgAZvoKbF2rjhm6ZGXoAGLo1qUNWyYY4lOPq9NeSgII5ZcsKz7n/Mfn+AwNfhlHBfYOEAEty28AzIF3y+9M9KtlawNdIAE+xJYBT8CbD6kOsJaXq5S17P0FxwqBCDgFhkBfJJS1kWXrAy8itm0kvqFlG8qekRvsRCFg0v4sYmPp2DLL1/ZBiLnvt5xnNQMaFkAMzDx8Z+K78NlYy4ApzHMreApcKL4rxTYV8YJGYCB6LDouCA5w5RuoDIE5cEleTEt2pz2tg4D5zx/ZLqLKoREog0BkH3qiM3fhOwTugAf8/6SUvBvuJWDa65gN4xV5wZkzDyR4Akw8ghe24kMzEJB/+QS4P3CPQgLmYgn5gSL0Pb//S0A7grboWzaNyLu1VkGgK/pGdFwnAe0IEtHmPr+uKzjoGTBjlHafV44/WYSm+/WUNZy1rd5eBXyHUnXILAvfsdxFqTG7QYNd+ATgNmfBkAx21QAAAABJRU5ErkJggg==" isolation="isolate"/>
+  <rect x="11.4" y="36.24" width="36" height="19" fill="#fff"/>
+  <rect x="11.4" y="54.24" width="36" height="1" fill="#fff"/>
+  <rect x="46.4" y="36.24" width="1" height="19" fill="#eee"/>
+  <image width="32" height="32" image-rendering="optimizeQuality" transform="translate(14.4 37.24) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAYAAACGVs+MAAAACXBIWXMAABYlAAAWJQFJUiTwAAAA5klEQVRIie2WQQ6CMBBFn2gCcQ9cROLWlSuIpyN6KxK9j7pgEpqKpdQhKuElf8P8/BZapoU/Zyf62uB3UfAkIg9PDNSi2Hi+sjTkD6YEHqLSqu1FJkeHP4gMuIkyD/8WuI7w/x4x7adLFTNTyfTaEzXt+jWKE2gks7YLfX9B5KiFMiozAU5ArjiBXDITxcyZMnVvd+ar9PaBwV/yN4bB7Olmb9fCK7+vt2sydf5MWM6C5Sz4OVLaNWzw25hj/YNUdJfMyqr19faDwx9EAlxE5hq+OzvWwLnHr05B96bFlAO5WHr7xzwBMikys1J64vIAAAAASUVORK5CYII=" isolation="isolate"/>
+  <rect x="11.4" y="35.24" width="303" height="1" fill="#c2c2c2"/>
+  <path d="M16.4,13.24h293c2.76,0,5,2.24,5,5v12c0,2.76-2.24,5-5,5H16.4c-2.76,0-5-2.24-5-5v-12c0-2.76,2.24-5,5-5" vector-effect="none" fill="#066fd1" fill-opacity=".04" fill-rule="evenodd"/>
+  <image width="32" height="32" image-rendering="optimizeQuality" transform="translate(23.4 16.24) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAfCAYAAACGVs+MAAAACXBIWXMAABYlAAAWJQFJUiTwAAAA+0lEQVRIie3Su0oDQRiG4ccjHlBQkOQGrLwHFQsFC+20DKQyl5U2pYKFVmIjNoKINyGIoAgiGgtnYFmW6O4mWDgvDAz/fIe/GBKJROK/M/HD+xpaeMBjyexVtPEU/KVp4gV9PGO9hHcjeKK3WWWBrRAQzyu2f+HbCdqsd7PKArO4zwW9YW+AZz9osp67kFWJBm5zge84KNAehres9gYrVcsjy7jOBX/4/pyRVphlNVdYqlseWcRlrqCPI3QK5hdYGFZ5ZB7nBWX5c4a5YZdHZnAyoPw4aEbKNHoF5T1Mjbo8MoluprwbZqUZq7HEOHbD/RSfNbISiUTi7/gC8xhZSYJ2NLgAAAAASUVORK5CYII=" isolation="isolate"/>
+  <text transform="translate(43.4 28.8)" fill="#066fd1" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Ticks</tspan></text>
+  <line x1="11.4" y1="12.24" x2="11.4" y2="261.24" fill="none" stroke="#ccc" stroke-miterlimit="10"/>
+  <line x1="314.4" y1="12.24" x2="314.4" y2="261.24" fill="none" stroke="#ccc" stroke-miterlimit="10"/>
+</svg>

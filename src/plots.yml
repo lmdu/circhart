@@ -16,6 +16,9 @@ general:
     type: hidden
 
 ideogram:
+  - name: show
+    type: bool
+    default: 'yes'
   -
     name: spacing
     label: Default spacing
@@ -95,8 +98,9 @@ spaces:
     name: spacing
     type: int
     range:
-      - 0
+      - 1
       - 500
+    default: 1
 
 radiuses:
   -
@@ -184,7 +188,7 @@ ticks:
   -
     name: radius
     type: radius
-    label: Tick position
+    label: Tick radius
     level: 0
   -
     name: label_multiplier

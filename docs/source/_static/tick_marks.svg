@@ -1,0 +1,480 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层_1" xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" version="1.2" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 789.79 842">
+  <!-- Generator: Adobe Illustrator 30.0.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 123)  -->
+  <defs>
+    <image id="image" width="32" height="32" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAgCAYAAACcuBHKAAAACXBIWXMAABYlAAAWJQFJUiTwAAAA/UlEQVRYhe3STysEYQDH8Y+/LaIo7b4BJ+8BOVAO3DhuOfGy9rpHyoGTXOSiJG9CSZGSWAfPU9M0bTszu6Keb01Nz/x+v+d7GBKJRCLxj5gYILOKNh7xVHJ/BYd4Dv1KtPCKHl6wVqK7Hjqx26oqsRlG4vOGrQF62yGb7W5UlZjBQ27sHbt9Onshk+3ch63KNHGXG/3AfkH2IHzLZm+xXEcgsoSb3Pinnx820g5n2cw1FochEFnAVe6SHo5wXHB+iflhCkTmcFFwYf45x+woBCINnPYROAmZkTONboFAF1O/IRCZRCcj0AlnpRmrKTKOnfB+hq+ae4lEIvF3+Qb6ZFlJwa2EWgAAAABJRU5ErkJggg=="/>
+    <image id="image1" width="20" height="20" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAACXBIWXMAABYlAAAWJQFJUiTwAAAATUlEQVQ4jWNgGAWjgBigwcDAoEVNA20ZGBj+Q7EttQz8gmToF0oNhhkIMwidT7GBhMTJNpAig48ToQFm8HFiDdWAYmLUqRNr6CgYCQAAUcUaBveLMwwAAAAASUVORK5CYII="/>
+    <image id="image2" width="24" height="24" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAYCAYAAAAPtVbGAAAACXBIWXMAABYlAAAWJQFJUiTwAAACZUlEQVRIibWWv04bQRCHv7mT7yh4giRCCTTUeYwgQxoqIhJH4dA1J56AiFdwt2dZCihpTBECgsdImwoCkUCUluKCM15PCt9Zx3H+E0f5lbs7883s7OyuMEHGmAVgVUReAUvAk3TqBjhX1TPgeHt7+9coHzJqotFoPFPVPeAd4EyIpQ98stbuhmF4PRWk0WisqepnYH6C86I6wEYQBMf5wUcRGmMiVf06A4DU5sgYE+UHH2SSZnA0g/OiFHidZTSEpDX4wWwZlKljrV0Ow/B6uF1pkcsACtyNcXaXrilq3nXdPUgzMcYsiMhPHtdIgZeVSuWy2+0eiEj1waTqied5m/f398+B7zw+SH1VfZE5XS0BACSVSuWyVqu1kyRZV9WTPCBJkvVardbu9XpXQFJi7ziOU3UA0kYr01y32z2o1+t+FEVJBsoAURQl9Xrdd113H5grc6CqK1n0SyMgiEjV9/3DPCgDtFotz/f9w+I2FiCLAhDH8W8mnKp89ACtVstrt9stYG2cHdCZdF2M1O3trajqVPbZoptxi4o1KNZogu2wT86nBfi+f1is0TiQiFw4qaOzEWvuPM/bzANEpFo8DNbat4xoWBE5naoZe73eleu6+7M243AwjuMm8L4kGGXQaKV9kGbglwAAmkEQfBhGbq3dZfAeFCVjAKRzZYCOtfYj5LYnDMNrEXlD+WX3t1JgI3slH9Rga2vrm6ru/CNIVXUn/zqWPr9xHK8CX/hfzy9AEATH1tploMngkzBJfaBprV0uAmDMbyWTMWbBcZyqqq6o6qKIPIVBJ4vIhYic9vv9k3Ffoj/h5mh5G8tSqwAAAABJRU5ErkJggg=="/>
+    <image id="image3" width="20" height="20" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAYklEQVQ4je3SsQ2AIBBA0Z84gk5gxRLMzzLa2UshlxCSAxQ77ic0cDwawJq3Rdl3wAYcjfsOWIGz57EAXICvzPg0E3rA/IIGt85fw59BDRgGS/hOaxjMYUF/AaWd5wtZVqUIWhUbsnkFJhIAAAAASUVORK5CYII="/>
+  </defs>
+  <image width="322" height="40" image-rendering="optimizeQuality" transform="translate(606.72 784.5) scale(.05 .38)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUEAAAElCAYAAAB6a1B9AAAACXBIWXMAAN7XAADe1wFXzAnJAAACcElEQVR4nO3cOw7CMBBAQczN9uQ+WmhTIQTipzfTrZXYrl7pywUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA+Kj1jk333sd5npm3nAPwquu3LwDwTSIIpIkgkCaCQJoIAmkiCKSJIJAmgkCaCAJpIgikiSCQJoJAmggCaSIIpIkgkCaCQJoIAmkiCKSJIJAmgkCaCAJpIgikiSCQJoJAmggCaSIIpIkgkCaCQJoIAgAAAAAAAAAAAAAAAAAAAAAAAMD/Wa/8vPc+zvPMrHvrAL/Go6pAmggCaSIIpIkgkCaCQJoIAmkiCKSJIJAmgkCaCAJpIgikiSCQJoJAmggCaSIIpIkgkCaCQJoIAmkiCKSJIJAmgkCaCAJpIgikiSCQJoJAmggCaSIIpIkgkCaCAAAAAAAAAAAAAAAAAAAAAAAAAPB/1iMf7b2P8zwz65l1gF/jUVUgTQSBNBEE0kQQSBNBIE0EgTQRBNJEEEgTQSBNBIE0EQTSRBBIE0EgTQSBNBEE0kQQSBNBIE0EgTQRBNJEEEgTQSBNBIE0EQTSRBBIE0EgTQSBNBEE0kQQSBNBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHjCDdCYGLL4+mJJAAAAAElFTkSuQmCC" isolation="isolate"/>
+  <g>
+    <rect x="471.22" y="119.87" width="303" height="1" fill="#c2c2c2"/>
+    <rect x="471.22" y="161.87" width="303" height="506" fill="#fff"/>
+    <rect x="471.22" y="666.87" width="303" height="1" fill="#c2c2c2"/>
+    <rect x="471.22" y="161.87" width="303" height="1" fill="#eee"/>
+    <rect x="476.22" y="195.87" width="293" height="277" fill="#fff"/>
+    <path d="M546.22,206.37h39c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-39c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="546.22" y="226.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M546.22,227.37c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M585.22,227.37c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="587.22" y="208.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M586.99,207.1c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M586.99,226.64c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="543.22" y="208.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M544.45,207.1c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M543.72,224.87c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="546.22" y="205.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M544.45,207.1c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M586.99,207.1c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(575.22 205.87) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(575.22 216.87) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <text transform="translate(550.22 222.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">50</tspan></text>
+    <text transform="translate(481.22 221.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Spacing</tspan></text>
+    <rect x="543.22" y="232.87" width="18" height="18"/>
+    <rect x="543.22" y="249.87" width="18" height="1"/>
+    <rect x="560.22" y="232.87" width="1" height="18"/>
+    <rect x="543.22" y="232.87" width="1" height="18"/>
+    <rect x="543.22" y="232.87" width="18" height="1"/>
+    <text transform="translate(481.22 246.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Color</tspan></text>
+    <path d="M546.22,256.37h39c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-39c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="546.22" y="276.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M546.22,277.37c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M585.22,277.37c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="587.22" y="258.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M586.99,257.1c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M586.99,276.64c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="543.22" y="258.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M544.45,257.1c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M543.72,274.87c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="546.22" y="255.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M544.45,257.1c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M586.99,257.1c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(575.22 255.87) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(575.22 266.87) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <text transform="translate(553.22 272.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">3</tspan></text>
+    <text transform="translate(481.22 271.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Thickness</tspan></text>
+    <path d="M546.22,283.37h39c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-39c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="546.22" y="303.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M546.22,304.37c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M585.22,304.37c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="587.22" y="285.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M586.99,284.1c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M586.99,303.64c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="543.22" y="285.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M544.45,284.1c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M543.72,301.87c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="546.22" y="282.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M544.45,284.1c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M586.99,284.1c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(575.22 282.87) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(575.22 293.87) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <text transform="translate(550.22 299.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">15</tspan></text>
+    <text transform="translate(481.22 298.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Size</tspan></text>
+    <image width="26" height="26" image-rendering="optimizeQuality" transform="translate(481.22 312.87) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAaCAYAAABGiCfwAAAACXBIWXMAABYlAAAWJQFJUiTwAAABR0lEQVRIie3WIW/CQBjG8f/bgKDqBB+gYnJmAjEHaqnbN1iXzMMcjjCFW/BLKJ+CORBzCMw+wJk5RNUQS7iJtqNsYYXSY2aPai5v+svTtL0TsgkmHkgbIwEYxXHRCDMwfUJfA0gGCjDOYwnI90Q40mF0NZYE8jDOwgK0AcVcOPG19CxCAAqkHWOGpkWIxAiSZnjWMVBO/kx5+cdyo9wK026D0d35zplKmZByq9w+ve6cO7pZFmoN5ujlyg52CJSL9a7PWDxcotyfT/tQKBcbv7yh3Gpy0w1YBMrF9HJFazDfAotCkG4xN8/mtyGvXmPabRC9fwAUgmDPFyTbsCgEezZL49VrX3iRHPRRF0XS/MW/UaITWDrGhPAE2Cxpth7abScRYvoxFvoaWd/bASXC0CH0tWytBxMPIz2gydHnEonAhIgZpofUT5KEgVpsjbCpAAAAAElFTkSuQmCC" isolation="isolate"/>
+    <text transform="translate(499.22 324.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Show Label</tspan></text>
+    <rect x="486.22" y="454.87" width="273" height="1" fill="#e2e2e2"/>
+    <g>
+      <path d="M486.22,455.37c-1.24,0-2.37-.5-3.18-1.32" vector-effect="none" fill="none" stroke="#e2e2e2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M759.22,455.37c1.24,0,2.37-.5,3.18-1.32" vector-effect="none" fill="none" stroke="#e2e2e2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="763.22" y="337.87" width="1" height="113" fill="#e2e2e2"/>
+    <g>
+      <path d="M762.4,334.69c.81.81,1.32,1.94,1.32,3.18" vector-effect="none" fill="none" stroke="#e2e2e2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M762.4,454.05c.81-.81,1.32-1.94,1.32-3.18" vector-effect="none" fill="none" stroke="#e2e2e2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="481.22" y="337.87" width="1" height="113" fill="#e2e2e2"/>
+    <g>
+      <path d="M483.04,334.69c-.81.81-1.32,1.94-1.32,3.18" vector-effect="none" fill="none" stroke="#e2e2e2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M481.72,450.87c0,1.24.5,2.37,1.32,3.18" vector-effect="none" fill="none" stroke="#e2e2e2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="486.22" y="332.87" width="273" height="1" fill="#e2e2e2"/>
+    <g>
+      <path d="M483.04,334.69c.81-.81,1.94-1.32,3.18-1.32" vector-effect="none" fill="none" stroke="#e2e2e2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M762.4,334.69c-.81-.81-1.94-1.32-3.18-1.32" vector-effect="none" fill="none" stroke="#e2e2e2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <text transform="translate(491.22 358.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Label Size</tspan></text>
+    <path d="M586.22,343.37h39c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-39c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="586.22" y="363.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M586.22,364.37c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M625.22,364.37c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="627.22" y="345.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M626.99,344.1c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M626.99,363.64c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="583.22" y="345.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M584.45,344.1c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M583.72,361.87c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="586.22" y="342.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M584.45,344.1c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M626.99,344.1c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(615.22 342.87) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(615.22 353.87) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <text transform="translate(590.22 359.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">20</tspan></text>
+    <text transform="translate(491.22 385.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Label Offset</tspan></text>
+    <path d="M586.22,370.37h39c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-39c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="586.22" y="390.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M586.22,391.37c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M625.22,391.37c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="627.22" y="372.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M626.99,371.1c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M626.99,390.64c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="583.22" y="372.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M584.45,371.1c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M583.72,388.87c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="586.22" y="369.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M584.45,371.1c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M626.99,371.1c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(615.22 369.87) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(615.22 380.87) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <text transform="translate(590.22 386.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">20</tspan></text>
+    <text transform="translate(491.22 412.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Label Decimals</tspan></text>
+    <path d="M586.22,397.37h25c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-25c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="586.22" y="417.87" width="25" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M586.22,418.37c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M611.22,418.37c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="613.22" y="399.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M612.99,398.1c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M612.99,417.64c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="583.22" y="399.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M584.45,398.1c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M583.72,415.87c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="586.22" y="396.87" width="25" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M584.45,398.1c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M612.99,398.1c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(601.22 396.87) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(601.22 407.87) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <text transform="translate(586.22 413.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">0</tspan></text>
+    <text transform="translate(491.22 439.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Suffix</tspan></text>
+    <path d="M586.22,424.37h112c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-112c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="586.22" y="444.87" width="112" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M586.22,445.37c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M698.22,445.37c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="700.22" y="426.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M699.99,425.1c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M699.99,444.64c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="583.22" y="426.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M584.45,425.1c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M583.72,442.87c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="586.22" y="423.87" width="112" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M584.45,425.1c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M699.99,425.1c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <text transform="translate(591.22 440.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">mb</tspan></text>
+    <rect x="486.22" y="195.87" width="273" height="1" fill="#ccc"/>
+    <g>
+      <path d="M486.22,196.37c-2.62,0-5-1.06-6.72-2.78" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M759.22,196.37c2.62,0,5-1.06,6.72-2.78" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="768.22" y="182.87" width="1" height="4" fill="#ccc"/>
+    <g>
+      <path d="M765.94,176.15c1.72,1.72,2.78,4.09,2.78,6.72" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M765.94,193.59c1.72-1.72,2.78-4.09,2.78-6.72" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="476.22" y="182.87" width="1" height="4" fill="#ccc"/>
+    <g>
+      <path d="M479.5,176.15c-1.72,1.72-2.78,4.09-2.78,6.72" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M476.72,186.87c0,2.62,1.06,5,2.78,6.72" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="486.22" y="172.87" width="273" height="1" fill="#ccc"/>
+    <g>
+      <path d="M479.5,176.15c1.72-1.72,4.09-2.78,6.72-2.78" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M765.94,176.15c-1.72-1.72-4.1-2.78-6.72-2.78" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <path d="M482.22,173.87h249c2.76,0,5,2.24,5,5v12c0,2.76-2.24,5-5,5h-249c-2.76,0-5-2.24-5-5v-12c0-2.76,2.24-5,5-5" vector-effect="none" fill="#066fd1" fill-opacity=".04" fill-rule="evenodd"/>
+    <use image-rendering="optimizeQuality" transform="translate(489.22 176.87) scale(.5)" xlink:href="#image" isolation="isolate"/>
+    <text transform="translate(509.22 189.43)" fill="#066fd1" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Tick1</tspan></text>
+    <use image-rendering="optimizeQuality" transform="translate(748.22 178.87) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+    <rect x="476.22" y="500.87" width="293" height="151" fill="#fff"/>
+    <path d="M546.22,511.37h39c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-39c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="546.22" y="531.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M546.22,532.37c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M585.22,532.37c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="587.22" y="513.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M586.99,512.1c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M586.99,531.64c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="543.22" y="513.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M544.45,512.1c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M543.72,529.87c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="546.22" y="510.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M544.45,512.1c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M586.99,512.1c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(575.22 510.87) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(575.22 521.87) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <text transform="translate(553.22 527.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">5</tspan></text>
+    <text transform="translate(481.22 526.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Spacing</tspan></text>
+    <rect x="543.22" y="537.87" width="18" height="18"/>
+    <rect x="543.22" y="554.87" width="18" height="1"/>
+    <rect x="560.22" y="537.87" width="1" height="18"/>
+    <rect x="543.22" y="537.87" width="1" height="18"/>
+    <rect x="543.22" y="537.87" width="18" height="1"/>
+    <text transform="translate(481.22 551.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Color</tspan></text>
+    <path d="M546.22,561.37h39c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-39c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="546.22" y="581.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M546.22,582.37c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M585.22,582.37c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="587.22" y="563.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M586.99,562.1c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M586.99,581.64c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="543.22" y="563.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M544.45,562.1c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M543.72,579.87c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="546.22" y="560.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M544.45,562.1c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M586.99,562.1c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(575.22 560.87) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(575.22 571.87) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <text transform="translate(553.22 577.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">2</tspan></text>
+    <text transform="translate(481.22 576.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Thickness</tspan></text>
+    <path d="M546.22,588.37h39c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-39c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="546.22" y="608.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M546.22,609.37c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M585.22,609.37c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="587.22" y="590.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M586.99,589.1c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M586.99,608.64c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="543.22" y="590.87" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M544.45,589.1c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M543.72,606.87c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="546.22" y="587.87" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M544.45,589.1c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M586.99,589.1c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(575.22 587.87) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(575.22 598.87) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <text transform="translate(550.22 604.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">10</tspan></text>
+    <text transform="translate(481.22 603.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Size</tspan></text>
+    <image width="26" height="26" image-rendering="optimizeQuality" transform="translate(481.22 617.87) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAaCAYAAABGiCfwAAAACXBIWXMAABYlAAAWJQFJUiTwAAABCklEQVRIie3WMW6DMBSA4d9v84ZYs3ABht4gR7EQe3KDKCeosiNBb5IbdOACLKyWJ7w9dykpS9UBmMob7Sd9sqffsBjnXCEiF8ABGetmAJ6qeu+6bgAw801VVQ54t9ZmZVmS5/kqyXtP3/fEGENK6dq27YeB14s+T6dTVtf1amgJNk3DOI5BVd8EQERu1tpNIYA8z6nrGmttJiIX+T4/b/F1v4FlWQK4GSv2gJYgkMlfi1vOgR3YgR3Ygf1HLHjvd0O896SUhhnr+r5nD3AOH2PMUwBU9RFjDE3TbArOwTNNU1DV+yvlnHNORDZPuWmaAvCTcguwEJFbSulsjCnWYCmlYIzpVPUxR+oXpgN/ba49xwsAAAAASUVORK5CYII=" isolation="isolate"/>
+    <text transform="translate(499.22 629.43)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Show Label</tspan></text>
+    <rect x="486.22" y="500.87" width="273" height="1" fill="#ccc"/>
+    <g>
+      <path d="M486.22,501.37c-2.62,0-5-1.06-6.72-2.78" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M759.22,501.37c2.62,0,5-1.06,6.72-2.78" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="768.22" y="487.87" width="1" height="4" fill="#ccc"/>
+    <g>
+      <path d="M765.94,481.15c1.72,1.72,2.78,4.09,2.78,6.72" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M765.94,498.59c1.72-1.72,2.78-4.09,2.78-6.72" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="476.22" y="487.87" width="1" height="4" fill="#ccc"/>
+    <g>
+      <path d="M479.5,481.15c-1.72,1.72-2.78,4.09-2.78,6.72" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M476.72,491.87c0,2.62,1.06,5,2.78,6.72" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="486.22" y="477.87" width="273" height="1" fill="#ccc"/>
+    <g>
+      <path d="M479.5,481.15c1.72-1.72,4.09-2.78,6.72-2.78" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M765.94,481.15c-1.72-1.72-4.1-2.78-6.72-2.78" vector-effect="none" fill="none" stroke="#ccc" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <path d="M482.22,478.87h249c2.76,0,5,2.24,5,5v12c0,2.76-2.24,5-5,5h-249c-2.76,0-5-2.24-5-5v-12c0-2.76,2.24-5,5-5" vector-effect="none" fill="#066fd1" fill-opacity=".04" fill-rule="evenodd"/>
+    <use image-rendering="optimizeQuality" transform="translate(489.22 481.87) scale(.5)" xlink:href="#image" isolation="isolate"/>
+    <text transform="translate(509.22 494.43)" fill="#066fd1" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Tick2</tspan></text>
+    <use image-rendering="optimizeQuality" transform="translate(748.22 483.87) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+    <rect x="471.22" y="143.87" width="35" height="19" fill="#fafafa"/>
+    <rect x="471.22" y="161.87" width="35" height="1" fill="#eee"/>
+    <image width="32" height="32" image-rendering="optimizeQuality" transform="translate(474.22 144.87) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAgCAYAAACcuBHKAAAACXBIWXMAABYlAAAWJQFJUiTwAAAA5ElEQVRYhe2WzQqCQBSFPy1Q2qsvkrRt1Urp6aTeSqj3qRZeUAZ/ZqY7FOUHZ+Mcjldn5AgreuxFHx3gIfIeJLb0JUAjSgbXI0NL/reogKeoMtYOoiGnGb83OXAX5Rb+HXBz8H8vCd1rzBQzM8m0PiMN3X62ikO0ktmYC1NfR7yw7oNzZgqcgUJxiEIyU8XMPyB0Fyzmq3SBa/7WMA07IEIf6/yxLtAkdP4PsnaHeX3tjq8ko9vTFrvD6uq3oqb/ca2NtbEuOM74vUmBq2i4p1NdswEuI/4glPRPXIa+2RxrF6jxAih+MrNRzO82AAAAAElFTkSuQmCC" isolation="isolate"/>
+    <rect x="506.22" y="143.87" width="37" height="19" fill="#fff"/>
+    <rect x="506.22" y="161.87" width="37" height="1" fill="#fff"/>
+    <rect x="542.22" y="143.87" width="1" height="19" fill="#eee"/>
+    <rect x="506.22" y="143.87" width="1" height="19" fill="#eee"/>
+    <image width="32" height="32" image-rendering="optimizeQuality" transform="translate(510.22 144.87) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAgCAYAAACcuBHKAAAACXBIWXMAABYlAAAWJQFJUiTwAAABgklEQVRYhe2WIU/DUBDHfxCSueHqFxATm5xGkxCSuu4jgOMb8AHQ7CvgZpfJiplaxAQEMTezFVcFoveyt6433ktbMtF/crns3vX1l/du14NWrfZ1dmStB0RAx8odAUvg28q7Ev9pxbpAH0iAH4llwBvw5QrXA7ayQZ22lb33dK5ARMAlMAaGYqGsTazYEPgQs2MTyQ2t2Fj2jIovu1AgzBW8i9laF2KZlWvnIHDF5zuF3+pJlGkFxMDCIXchuSuXjbWTMAV7bQGkwE1J7qYkNhdzkgYxEj8VHysAAHeuL/OFWAK35AW25vgVpE1BmD7wymFh1S4NwkeB2F8aiM+KC1UhnoAX3P9lKXnXdIIwrXjKjnxDXoSmBgIBSICZA4DatqucREB+AjPgucI+KoT5GIX8Q2H6dMzGdBIQ2nV0xT+ya1bObbguiL74B/FxkxDadSTizTxw3xQA6CdhRrKyeaB2nXRhmi45UNbttYNvQV1yHXRLB1df+Yz8RXmP8K1aueoXg5xnwcaKXa0AAAAASUVORK5CYII=" isolation="isolate"/>
+    <rect x="471.22" y="142.87" width="303" height="1" fill="#c2c2c2"/>
+    <path d="M476.22,120.87h293c2.76,0,5,2.24,5,5v12c0,2.76-2.24,5-5,5h-293c-2.76,0-5-2.24-5-5v-12c0-2.76,2.24-5,5-5" vector-effect="none" fill="#066fd1" fill-opacity=".04" fill-rule="evenodd"/>
+    <use image-rendering="optimizeQuality" transform="translate(483.22 123.87) scale(.5)" xlink:href="#image" isolation="isolate"/>
+    <text transform="translate(503.22 136.43)" fill="#066fd1" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Ticks</tspan></text>
+    <line x1="471.22" y1="119.87" x2="471.22" y2="667.87" fill="none" stroke="#ccc" stroke-miterlimit="10"/>
+    <line x1="774.22" y1="119.87" x2="774.22" y2="667.87" fill="none" stroke="#ccc" stroke-miterlimit="10"/>
+  </g>
+  <path d="M13.47,79.23c39.47,102.02,65.38,208.77,77.06,317.53l99.43-10.68c-12.62-117.46-40.6-232.76-83.23-342.93L13.47,79.23Z" fill="#c00" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="106.79" y1="43.17" x2="120.69" y2="37.77" fill="none" stroke="#000" stroke-linecap="round" stroke-width="3"/>
+  <text transform="translate(143.09 40.37) rotate(-21.2)" font-family="ArialMT, Arial" font-size="26" isolation="isolate"><tspan x="0" y="0">0mb</tspan></text>
+  <line x1="110.09" y1="51.77" x2="119.39" y2="48.27" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="113.29" y1="60.47" x2="122.69" y2="56.97" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="116.49" y1="69.17" x2="125.89" y2="65.77" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="119.59" y1="77.87" x2="129.09" y2="74.47" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="122.69" y1="86.57" x2="132.19" y2="83.27" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="125.69" y1="95.37" x2="135.19" y2="92.07" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="128.69" y1="104.07" x2="138.19" y2="100.97" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="131.59" y1="112.87" x2="141.09" y2="109.77" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="134.39" y1="121.77" x2="143.89" y2="118.67" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="137.19" y1="130.57" x2="151.49" y2="126.07" fill="none" stroke="#000" stroke-linecap="round" stroke-width="3"/>
+  <text transform="translate(173.69 130.27) rotate(-17.2)" font-family="ArialMT, Arial" font-size="26" isolation="isolate"><tspan x="0" y="0">50mb</tspan></text>
+  <line x1="139.89" y1="139.37" x2="149.39" y2="136.47" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="142.49" y1="148.27" x2="152.09" y2="145.47" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="145.09" y1="157.17" x2="154.69" y2="154.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="147.59" y1="166.07" x2="157.29" y2="163.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="150.09" y1="174.97" x2="159.79" y2="172.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="152.49" y1="183.97" x2="162.19" y2="181.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="154.89" y1="192.87" x2="164.49" y2="190.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="157.09" y1="201.87" x2="166.79" y2="199.47" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="159.39" y1="210.87" x2="169.09" y2="208.47" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="161.49" y1="219.87" x2="176.09" y2="216.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="3"/>
+  <text transform="translate(197.99 222.07) rotate(-13.3)" font-family="ArialMT, Arial" font-size="26" isolation="isolate"><tspan x="0" y="0">100mb</tspan></text>
+  <line x1="163.59" y1="228.87" x2="173.39" y2="226.67" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="165.69" y1="237.87" x2="175.39" y2="235.77" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="167.59" y1="246.97" x2="177.39" y2="244.87" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="169.49" y1="255.97" x2="179.29" y2="253.97" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="171.39" y1="265.07" x2="181.19" y2="263.07" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="173.19" y1="274.17" x2="182.99" y2="272.27" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="174.89" y1="283.27" x2="184.69" y2="281.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="176.59" y1="292.37" x2="186.39" y2="290.57" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="178.19" y1="301.47" x2="187.99" y2="299.77" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="179.69" y1="310.57" x2="194.49" y2="308.17" fill="none" stroke="#000" stroke-linecap="round" stroke-width="3"/>
+  <line x1="285.58" y1="198.27" x2="300.18" y2="194.77" fill="none" stroke="#000" stroke-linecap="round" stroke-width="3"/>
+  <line x1="303.78" y1="288.97" x2="318.58" y2="286.57" fill="none" stroke="#000" stroke-linecap="round" stroke-width="3"/>
+  <text transform="translate(215.89 315.27) rotate(-9.4)" font-family="ArialMT, Arial" font-size="26" isolation="isolate"><tspan x="0" y="0">150mb</tspan></text>
+  <line x1="181.19" y1="319.77" x2="191.09" y2="318.17" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="182.59" y1="328.87" x2="192.49" y2="327.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="183.89" y1="338.07" x2="193.79" y2="336.57" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="185.19" y1="347.17" x2="195.09" y2="345.87" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="186.49" y1="356.37" x2="196.39" y2="355.07" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="187.59" y1="365.57" x2="197.49" y2="364.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="188.69" y1="374.77" x2="198.59" y2="373.57" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="189.69" y1="383.97" x2="199.69" y2="382.87" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <path d="M13.47,79.23c39.47,102.02,65.38,208.77,77.06,317.53l99.43-10.68c-12.62-117.46-40.6-232.76-83.23-342.93L13.47,79.23Z" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <path d="M97.38,502.64c2.29,103.49-8.29,206.85-31.48,307.73l97.46,22.41c25.05-108.95,36.47-220.59,34-332.35l-99.97,2.21Z" fill="red" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="197.39" y1="500.47" x2="212.39" y2="500.07" fill="none" stroke="#000" stroke-linecap="round" stroke-width="3"/>
+  <text transform="translate(232.59 510.17) rotate(-1.3)" font-family="ArialMT, Arial" font-size="26" isolation="isolate"><tspan x="0" y="0">0mb</tspan></text>
+  <line x1="197.49" y1="509.67" x2="207.49" y2="509.57" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="197.69" y1="518.97" x2="207.69" y2="518.87" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="197.69" y1="528.17" x2="207.69" y2="528.17" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="197.69" y1="537.47" x2="207.69" y2="537.47" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="197.59" y1="546.67" x2="207.59" y2="546.87" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="197.49" y1="555.97" x2="207.49" y2="556.17" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="197.19" y1="565.27" x2="207.19" y2="565.47" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="196.99" y1="574.47" x2="206.99" y2="574.77" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="196.59" y1="583.77" x2="206.59" y2="584.17" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="196.19" y1="592.97" x2="211.19" y2="593.67" fill="none" stroke="#000" stroke-linecap="round" stroke-width="3"/>
+  <text transform="translate(230.69 605.07) rotate(2.7)" font-family="ArialMT, Arial" font-size="26" isolation="isolate"><tspan x="0" y="0">50mb</tspan></text>
+  <line x1="195.79" y1="602.17" x2="205.79" y2="602.77" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="195.29" y1="611.47" x2="205.19" y2="612.07" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="194.69" y1="620.67" x2="204.59" y2="621.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="193.99" y1="629.97" x2="203.99" y2="630.67" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="193.29" y1="639.17" x2="203.29" y2="639.97" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="192.49" y1="648.37" x2="202.49" y2="649.27" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="191.69" y1="657.57" x2="201.59" y2="658.57" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="190.79" y1="666.77" x2="200.69" y2="667.87" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="189.79" y1="676.07" x2="199.79" y2="677.07" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="188.79" y1="685.27" x2="203.69" y2="686.97" fill="none" stroke="#000" stroke-linecap="round" stroke-width="3"/>
+  <text transform="translate(222.29 699.67) rotate(6.6)" font-family="ArialMT, Arial" font-size="26" isolation="isolate"><tspan x="0" y="0">100mb</tspan></text>
+  <line x1="187.69" y1="694.37" x2="197.59" y2="695.67" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="186.49" y1="703.57" x2="196.39" y2="704.87" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="185.29" y1="712.77" x2="195.19" y2="714.17" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="183.99" y1="721.97" x2="193.89" y2="723.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="182.69" y1="731.07" x2="192.59" y2="732.57" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="181.29" y1="740.27" x2="191.09" y2="741.77" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="179.79" y1="749.37" x2="189.69" y2="750.97" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="178.29" y1="758.47" x2="188.09" y2="760.17" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="176.69" y1="767.67" x2="186.49" y2="769.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="174.99" y1="776.77" x2="189.79" y2="779.47" fill="none" stroke="#000" stroke-linecap="round" stroke-width="3"/>
+  <text transform="translate(207.49 793.47) rotate(10.5)" font-family="ArialMT, Arial" font-size="26" isolation="isolate"><tspan x="0" y="0">150mb</tspan></text>
+  <line x1="173.29" y1="785.87" x2="183.09" y2="787.77" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="171.49" y1="794.97" x2="181.29" y2="796.87" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="169.69" y1="803.97" x2="179.49" y2="806.07" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="167.79" y1="813.07" x2="177.49" y2="815.17" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="165.79" y1="822.07" x2="175.49" y2="824.27" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <line x1="163.69" y1="831.17" x2="173.49" y2="833.37" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <path d="M97.38,502.64c2.29,103.49-8.29,206.85-31.48,307.73l97.46,22.41c25.05-108.95,36.47-220.59,34-332.35l-99.97,2.21Z" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+  <g>
+    <line x1="292.58" y1="203.76" x2="309.64" y2="279.68" fill="none" stroke="#000" stroke-linecap="round" stroke-width="2"/>
+    <polygon points="291.03 196.87 289.25 207.47 292.7 204.28 297.18 205.69 291.03 196.87"/>
+    <polygon points="311.18 286.57 305.04 277.76 309.52 279.17 312.97 275.97 311.18 286.57"/>
+  </g>
+  <g>
+    <line x1="471.26" y1="218.73" x2="332.45" y2="235.65" fill="none" stroke="#e60012" stroke-linecap="round" stroke-width="2"/>
+    <path d="M470.36,213.53c2.89-.35,5.51,1.7,5.86,4.59.35,2.89-1.7,5.51-4.59,5.86-2.89.35-5.51-1.7-5.86-4.59-.35-2.89,1.7-5.51,4.59-5.86Z" fill="#e60012"/>
+    <polygon points="322.64 236.84 335.78 229.51 333.19 235.56 337.16 240.81 322.64 236.84" fill="#e60012"/>
+  </g>
+  <g>
+    <line x1="479.84" y1="183.42" x2="247.1" y2="112.65" fill="none" stroke="#e60012" stroke-linecap="round" stroke-width="2"/>
+    <circle cx="479.59" cy="183.34" r="5.26" transform="translate(68.12 490.45) rotate(-57.66)" fill="#e60012"/>
+    <polygon points="237.64 109.77 252.63 108.38 247.81 112.86 249.32 119.27 237.64 109.77" fill="#e60012"/>
+  </g>
+  <g>
+    <line x1="479.73" y1="492.87" x2="224.95" y2="544.7" fill="none" stroke="#e60012" stroke-linecap="round" stroke-width="2"/>
+    <path d="M478.42,487.76c2.85-.58,5.63,1.26,6.21,4.11s-1.26,5.63-4.11,6.21c-2.85.58-5.63-1.26-6.21-4.11-.58-2.85,1.26-5.63,4.11-6.21Z" fill="#e60012"/>
+    <polygon points="215.26 546.67 227.78 538.32 225.67 544.55 230.05 549.47 215.26 546.67" fill="#e60012"/>
+  </g>
+  <g>
+    <path d="M483.72,382.95c-31.61-.89-203.99-7.18-251.14-39.57-5.64-3.88-10.21-12.27-13.14-18.88" fill="none" stroke="#e60012" stroke-linecap="round" stroke-width="2"/>
+    <path d="M483.65,377.62c2.9.1,5.18,2.55,5.07,5.45s-2.55,5.18-5.45,5.07c-2.9-.1-5.18-2.55-5.07-5.45s2.55-5.18,5.45-5.07Z" fill="#e60012"/>
+    <polygon points="215.89 315.27 226.3 326.14 219.79 325.15 215.71 330.32 215.89 315.27" fill="#e60012"/>
+  </g>
+</svg>
