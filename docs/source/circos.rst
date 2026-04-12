@@ -207,6 +207,15 @@ The radius supports setting an offset value to fine-tune the radius position. Yo
 
 **Track Rules**
 
+In the rule panel, you can control the display of plot according to specified conditions. You can use right-click menu to add rule. In rule conditions, you can click |add| to add a new condition, you can click |delete| to delete the last condition. Similarly, in rule styles, you can click |add| to add a new style, you can click |delete| to delete the last style.
+
+.. figure:: _static/track_rule.svg
+	:align: center
+
+	Display rules of plot track
+
+
+
 
 **Track Axes**
 
@@ -262,4 +271,10 @@ Link Plot Track
 	:width: 24
 
 .. |offset| image:: _static/offset.svg
+	:width: 24
+
+.. |add| image:: _static/add.svg
+	:width: 24
+
+.. |delete| image:: _static/delete.svg
 	:width: 24
