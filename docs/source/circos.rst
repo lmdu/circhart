@@ -209,38 +209,115 @@ The radius supports setting an offset value to fine-tune the radius position. Yo
 
 In the rule panel, you can control the display of plot according to specified conditions. You can use right-click menu to add rule. In rule conditions, you can click |add| to add a new condition, you can click |delete| to delete the last condition. Similarly, in rule styles, you can click |add| to add a new style, you can click |delete| to delete the last style.
 
-.. figure:: _static/track_rule.svg
+.. figure:: _static/track_rules.svg
 	:align: center
 
 	Display rules of plot track
 
-
-
-
 **Track Axes**
 
+In the axes panel, you can add the axis grids for the plot track.
+
+.. figure:: _static/track_axes.svg
+	:align: center
+
+	Axis grids of plot track
+
+There are two ways to add axis grids:
+
+#. Right-click menu -> Add Spacing Axis -> Input a spacing value. For example, spacing=0.2 means that the axis will be drawed every 20% thickness of plot track.
+#. Right-click menu -> Add Fixed Position Axis -> Input a position value. For example, position=0.5 means that the axis will be drawed at 50% thickness of plot track.
 
 **Track Background**
 
+In the background panel, you can add background with color for the plot track.
 
+.. figure:: _static/track_background.svg
+	:align: center
+
+	Background of plot track
+
+You can use ``y0`` (start position) and ``y1`` (end position) to control the background position. For example, y0=0 and y1=0.5 means that the background will be drawed from 0% thickness to 50% thickness of plot track.
 
 Scatter Plot Track
 ^^^^^^^^^^^^^^^^^^
 
+If you select plot type of **scatter**, you are only allowed to select data from type of *plotdata*. The parameter description can be found in `Circos Documentation <https://circos.ca/tutorials/lessons/2d_tracks/scatter_plots/>`_.
+
+.. figure:: _static/track_scatter.svg
+	:align: center
+
+	Scatter plot parameters
+
 Line Plot Track
 ^^^^^^^^^^^^^^^
+
+If you select plot type of **line**, you are only allowed to select data from type of *plotdata*. The parameter description can be found in `Circos Documentation <https://circos.ca/documentation/tutorials/2d_tracks/line_plots/>`_.
+
+.. figure:: _static/track_line.svg
+	:align: center
+
+	Line plot parameters
 
 Histogram Plot Track
 ^^^^^^^^^^^^^^^^^^^^
 
+If you select plot type of **histogram**, you are only allowed to select data from type of *plotdata*. The parameter description can be found in `Circos Documentation <https://circos.ca/documentation/tutorials/2d_tracks/histograms/>`_.
+
+.. figure:: _static/track_histogram.svg
+	:align: center
+
+	Histogram plot parameters
+
 Stacked Plot Track
 ^^^^^^^^^^^^^^^^^^
+
+Stacked plot is essentially a histogram plot as well. Whereas, you should select data from type of *textdata*. The value column has multiple values separated by comma like this:
+
+.. code::
+
+	hs1 0 1999999 113.0000,20.0000,7.0000,40.0000
+	hs1 2000000 3999999 34.0000,0.0000,0.0000,0.0000
+	hs1 4000000 5999999 2.0000,0.0000,0.0000,0.0000
+	hs1 6000000 7999999 1.0000,4.0000,0.0000,0.0000
+	hs1 8000000 9999999 2.0000,5.0000,4.0000,0.0000
+	hs1 10000000 11999999 0.0000,1.0000,0.0000,0.0000
+	hs1 12000000 13999999 148.0000,2.0000,0.0000,0.0000
+	hs1 14000000 15999999 2.0000,0.0000,0.0000,0.0000
+	hs1 16000000 17999999 162.0000,1.0000,5.0000,1.0000
+	hs1 18000000 19999999 2.0000,0.0000,0.0000,0.0000
+	...
+
+.. figure:: _static/track_stacked.svg
+	:align: center
+
+	Stacked histogram plot parameters
+
+In stacked plot panel, you can select a fill color for each value as different category. In ``Fill color``, you can click |addc| to add multiple colors. You are also allowed to use right-click menu on fill colors to remove colors.
 
 Heatmap Plot Track
 ^^^^^^^^^^^^^^^^^^
 
+If you select plot type of **heatmap**, you are only allowed to select data from type of *plotdata*. The parameter description can be found in `Circos Documentation <https://circos.ca/documentation/tutorials/2d_tracks/heat_maps/>`_.
+
+.. figure:: _static/track_heatmap.svg
+	:align: center
+
+	Heatmap plot parameters
+
+If you set ``scale_log_base``, the mapping will be logarithmic. If ``scale_log_base`` <1, the dynamic range of color mapping of small values will be increased. If ``scale_log_base`` >1, then dynamic range of large values will be increased.
+
+You can select multiple colors by clicking |addc| for value mapping. You are also allowed to use right-click menu on colors to remove colors.
+
 Tile Plot Track
 ^^^^^^^^^^^^^^^
+
+If you select plot type of **tile**, you are only allowed to select data from type of *locidata*. The parameter description can be found in `Circos Documentation <https://circos.ca/documentation/tutorials/2d_tracks/tiles/>`_.
+
+.. figure:: _static/track_tile.svg
+	:align: center
+
+	Tile plot parameters
 
 Text Plot Track
 ^^^^^^^^^^^^^^^
@@ -277,4 +354,7 @@ Link Plot Track
 	:width: 24
 
 .. |delete| image:: _static/delete.svg
+	:width: 24
+
+.. |addc| image:: _static/addc.svg
 	:width: 24

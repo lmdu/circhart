@@ -291,6 +291,7 @@ tracks:
         - rectangle
         - triangle
         - square
+        - cross
       tooltip: shape of glyph to use for the scatter plot
     -
       name: glyph_size
@@ -551,9 +552,9 @@ tracks:
       name: orientation
       type: choice
       source:
-        - in
         - out
         - center
+        - in
 
   text:
     -
@@ -961,6 +962,28 @@ rules:
       label: false
       attrs:
         - color
+
+  tile:
+    -
+      name: condition
+      type: condition
+      label: false
+      tests:
+        -
+          name: 'on'
+          type: chrom
+        -
+          name: size
+          type: size
+
+    -
+      name: style
+      type: style
+      label: false
+      attrs:
+        - color
+        - stroke_color
+        - stroke_thickness
 
   text:
     -

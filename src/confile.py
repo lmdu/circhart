@@ -208,7 +208,12 @@ class CirchartCircosConfile(Confile):
 									self.option(k, ','.join(cs))
 
 								else:
-									self.option(k, v)
+									#tile track like heatmap, color must use color names.
+									if main_params['type'] == 'tile':
+										self.option(k, self.get_color(v))
+
+									else:
+										self.option(k, v)
 
 							#case 'fill':
 							#	if v.count(',') == 2:
