@@ -322,18 +322,54 @@ If you select plot type of **tile**, you are only allowed to select data from ty
 Text Plot Track
 ^^^^^^^^^^^^^^^
 
+If you select plot type of **text**, you are only allowed to select data from type of *textdata*. The parameter description can be found in `Circos Documentation1 <https://circos.ca/documentation/tutorials/2d_tracks/text_1/>`_ and `Circos Documentation2 <https://circos.ca/documentation/tutorials/2d_tracks/text_2/>`_.
+
+.. figure:: _static/track_text.svg
+	:align: center
+
+	Text plot parameters
+
+You can toggle ``Show Links`` to show label links. You can toggle ``Label Snuggle`` to set parameters for lable snuggle.
+
 Connector Plot Track
 ^^^^^^^^^^^^^^^^^^^^
+
+Connectors are articulated line segments that link two points on an ideogram, with both points located between the same two radial positions.
+
+If you select plot type of **connector**, you are only allowed to select data from type of *locidata*. The parameter description can be found in `Circos Documentation <https://circos.ca/documentation/tutorials/2d_tracks/connectors/>`_.
+
+.. figure:: _static/track_connector.svg
+	:align: center
+
+	Connector plot parameters
 
 Highlight Plot Track
 ^^^^^^^^^^^^^^^^^^^^
 
+Highlights are a special type of track in Circos, used to mark or emphasize specific regions of the generated image.
+
+If you select plot type of **highlight**, you are only allowed to select data from type of *locidata*. The parameter description can be found in `Circos Documentation <https://circos.ca/documentation/tutorials/highlights/wedges/lesson/>`_.
+
+.. figure:: _static/track_highlight.svg
+	:align: center
+
+	Highlight plot parameters
+
+You can toggle ``Ideogram`` to put highlight plot onto ideograms. Highlights are drawn underneath any grids and other data, you can toggle ``Topmost`` to draw highlights on top of data.
+
 Link Plot Track
 ^^^^^^^^^^^^^^^
 
+The link track can be used to show the relationships between positions on chromosomes.
 
+If you select plot type of **link**, you are only allowed to select data from type of *linkdata*. The parameter description can be found in `Circos Documentation <https://circos.ca/documentation/tutorials/links/basic_links/>`_.
 
+.. figure:: _static/track_link.svg
+	:align: center
 
+	Link plot parameters
+
+You can toggle ``Ribbon`` to make a link to be a ribbon. Its thickness is variable and scaling smoothly across its length.
 
 .. |chart| image:: _static/chart.svg
 	:width: 24

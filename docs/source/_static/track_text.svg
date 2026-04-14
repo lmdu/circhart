@@ -1,0 +1,523 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层_1" xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" version="1.2" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 800.35 800.51">
+  <!-- Generator: Adobe Illustrator 30.0.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 123)  -->
+  <defs>
+    <image id="image" width="32" height="32" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAgCAYAAACcuBHKAAAACXBIWXMAABYlAAAWJQFJUiTwAAAA5UlEQVRYhe2WMQrCMBSGP6sHcBcH6eoNnLqUHqLH6DE8kUtB8ALiKkLF3QtYHXwFCWljyMM65INHoUn/fiUvpBCJ6JJLjcpRKohZ4PNJqIBaSChRouOvJVJgj872yyUr9ZFIgRrY9Iz7kkhWPSRiCjTAAyi/mH+SclFKZuMS8RXwkRgUmch1CVyAKXAD7paQFqiAnSEBsP64lwNb7Es5BxYiswKuGBOfrk9RpPddoy1HqIh6Y9pECgWJwiVga54zkAEH3s0YSitZmWSr49MTvfz12fFTokRH6D+mxu4Jlqg0JCIRkxcp7DqSQZNifQAAAABJRU5ErkJggg=="/>
+    <image id="image1" width="20" height="20" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAYklEQVQ4je3SsQ2AIBBA0Z8wgk5AxRLMzzLa2WMhJISIh0Ln/YQGjkcDaP/N3Ow5YAU24a4DFmDveSgAB+AfZnyaCT1geaEFS+ev4c9gCxgGazimNQyWcEangDnL9YU0TegEyM0bsmnVYiIAAAAASUVORK5CYII="/>
+    <image id="image2" width="26" height="26" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAaCAYAAABGiCfwAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAcElEQVRIie3NsQmAMBBG4ddKtnAAl7CzyU4OZu1MaWJzgRCCXMTT5h6ENPfzged5fzUBm/yWGwB2IAMHEBT3QW6zbIdagaQEayjJdrioAFsoPoE04KvQHWgC9cBTngnUA02hGiyYKVSageULyPO88S5jFStZ4XrZ2QAAAABJRU5ErkJggg=="/>
+    <image id="image3" width="20" height="20" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAUCAYAAABiS3YzAAAACXBIWXMAABYlAAAWJQFJUiTwAAAATUlEQVQ4jWNgGAWjgBDQYGBg0KKmgbYMDAz/odiWWgZ+QTL0C6UGwwyEGYTOp9hAQuJkG0iRwceJ0AAz+DixhmpAMTHq1Ik1dBSMFAAAudkaBhXu4cYAAAAASUVORK5CYII="/>
+  </defs>
+  <g>
+    <g id="bg">
+      <rect y=".51" width="800" height="800" fill="#fff"/>
+    </g>
+    <g id="ideograms">
+      <path d="M400,48.51c194.4.03,351.97,157.65,351.94,352.06-.03,194.4-157.65,351.97-352.06,351.94-194.4-.03-351.97-157.65-351.94-352.06.03-194.36,157.58-351.91,351.94-351.94v-8c-198.83.03-359.98,161.24-359.94,360.06.03,198.82,161.24,359.97,360.06,359.94,198.82-.03,359.97-161.24,359.94-360.06-.03-198.78-161.16-359.91-359.94-359.94v8Z" fill="#960" stroke="#000" stroke-linecap="round"/>
+      <path d="M400,48.51c194.4.03,351.97,157.65,351.94,352.06-.03,194.4-157.65,351.97-352.06,351.94-194.4-.03-351.97-157.65-351.94-352.06.03-194.36,157.58-351.91,351.94-351.94v-8c-198.83.03-359.98,161.24-359.94,360.06.03,198.82,161.24,359.97,360.06,359.94,198.82-.03,359.97-161.24,359.94-360.06-.03-198.78-161.16-359.91-359.94-359.94v8Z" fill="none" stroke="#000" stroke-linecap="round"/>
+    </g>
+    <g id="plot0">
+      <text transform="translate(626.08 302.5) rotate(-23.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MMACHC</tspan></text>
+      <text transform="translate(648.27 292.67) rotate(-23.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MMACHC</tspan></text>
+      <text transform="translate(469.39 164.08) rotate(-74.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">TARDBP</tspan></text>
+      <text transform="translate(473.81 165.41) rotate(-73.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">AGTRAP</tspan></text>
+      <text transform="translate(602.83 260.58) rotate(-35.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MANEAL</tspan></text>
+      <text transform="translate(475.52 142.53) rotate(-74.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">TARDBP</tspan></text>
+      <text transform="translate(480.35 144) rotate(-73.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">AGTRAP</tspan></text>
+      <text transform="translate(621.15 247.73) rotate(-35.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MANEAL</tspan></text>
+      <text transform="translate(539.36 197.31) rotate(-56)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">HNRNPR</tspan></text>
+      <text transform="translate(551.73 178.96) rotate(-56)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">HNRNPR</tspan></text>
+      <text transform="translate(608.13 532.4) rotate(31.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PRKACB</tspan></text>
+      <text transform="translate(626.69 543.95) rotate(31.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PRKACB</tspan></text>
+      <text transform="translate(499.95 175.28) rotate(-66.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CLCNKA</tspan></text>
+      <text transform="translate(517.28 135.73) rotate(-66.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CLCNKB</tspan></text>
+      <text transform="translate(368.96 133.96) rotate(83.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SCCPDH</tspan></text>
+      <text transform="translate(645.33 423.41) rotate(4.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LEPROT</tspan></text>
+      <text transform="translate(508.56 155.46) rotate(-66.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CLCNKA</tspan></text>
+      <text transform="translate(525.89 115.92) rotate(-66.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CLCNKB</tspan></text>
+      <text transform="translate(366.64 112.46) rotate(83.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SCCPDH</tspan></text>
+      <text transform="translate(666.85 425.25) rotate(4.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LEPROT</tspan></text>
+      <text transform="translate(232.16 608.3) rotate(-50.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SNAPAP</tspan></text>
+      <text transform="translate(218.61 624.78) rotate(-50.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SNAPAP</tspan></text>
+      <text transform="translate(136.32 443.69) rotate(-8.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RNASEL</tspan></text>
+      <text transform="translate(116.02 446.86) rotate(-8.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RNASEL</tspan></text>
+      <text transform="translate(670.93 341.28) rotate(-12.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MAGOH</tspan></text>
+      <text transform="translate(690.69 336.8) rotate(-12.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MAGOH</tspan></text>
+      <text transform="translate(622.91 295.49) rotate(-25.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PRNPIP</tspan></text>
+      <text transform="translate(640.45 287.06) rotate(-25.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PRNPIP</tspan></text>
+      <text transform="translate(230.36 631.64) rotate(-53.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">TDRKH</tspan></text>
+      <text transform="translate(636.83 246.18) rotate(-33.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MYCBP</tspan></text>
+      <text transform="translate(218.9 647.05) rotate(-53.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">TDRKH</tspan></text>
+      <text transform="translate(652.83 235.6) rotate(-33.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MYCBP</tspan></text>
+      <text transform="translate(426.11 645.52) rotate(83.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PHGDH</tspan></text>
+      <text transform="translate(567.15 162.69) rotate(-55.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">HMGCL</tspan></text>
+      <text transform="translate(555.01 208.98) rotate(-51.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">DHDDS</tspan></text>
+      <text transform="translate(628.05 307.22) rotate(-22.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">UQCRH</tspan></text>
+      <text transform="translate(428.29 664.32) rotate(83.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PHGDH</tspan></text>
+      <text transform="translate(577.92 147.15) rotate(-55.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">HMGCL</tspan></text>
+      <text transform="translate(566.8 194.16) rotate(-51.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">DHDDS</tspan></text>
+      <text transform="translate(645.52 299.89) rotate(-22.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">UQCRH</tspan></text>
+      <text transform="translate(211.57 587.09) rotate(-44.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">KIRREL</tspan></text>
+      <text transform="translate(198.21 600.13) rotate(-44.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">KIRREL</tspan></text>
+      <text transform="translate(179.23 594.95) rotate(-41)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NCSTN</tspan></text>
+      <text transform="translate(505.15 177.68) rotate(-65.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CROCC</tspan></text>
+      <text transform="translate(254.68 179.04) rotate(57.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">OBSCN</tspan></text>
+      <text transform="translate(165.34 607) rotate(-41)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NCSTN</tspan></text>
+      <text transform="translate(512.85 160.96) rotate(-65.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CROCC</tspan></text>
+      <text transform="translate(244.7 163.57) rotate(57.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">OBSCN</tspan></text>
+      <text transform="translate(143.73 336.98) rotate(14.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PTPRC</tspan></text>
+      <text transform="translate(273.59 169.04) rotate(61.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">TSNAX</tspan></text>
+      <text transform="translate(568.27 220.53) rotate(-47.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PTPRU</tspan></text>
+      <text transform="translate(581.09 233.41) rotate(-43.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">TXLNA</tspan></text>
+      <text transform="translate(606.53 266.13) rotate(-33.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RRAGC</tspan></text>
+      <text transform="translate(651.52 513.49) rotate(23.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PTGFR</tspan></text>
+      <text transform="translate(126.16 332.47) rotate(14.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PTPRC</tspan></text>
+      <text transform="translate(265.03 153.04) rotate(61.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">TSNAX</tspan></text>
+      <text transform="translate(580.56 207.17) rotate(-47.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PTPRU</tspan></text>
+      <text transform="translate(594.32 221.01) rotate(-43.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">TXLNA</tspan></text>
+      <text transform="translate(621.65 256.1) rotate(-33.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RRAGC</tspan></text>
+      <text transform="translate(668.13 520.77) rotate(23.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PTGFR</tspan></text>
+      <text transform="translate(416.35 124.19) rotate(-87.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PRKCZ</tspan></text>
+      <text transform="translate(149.72 315.52) rotate(19.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RNPEP</tspan></text>
+      <text transform="translate(260.43 176.04) rotate(58.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SPHAR</tspan></text>
+      <text transform="translate(570.03 207.71) rotate(-49)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PTAFR</tspan></text>
+      <text transform="translate(641.47 281.2) rotate(-26.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PTPRF</tspan></text>
+      <text transform="translate(417.28 106.35) rotate(-87.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PRKCZ</tspan></text>
+      <text transform="translate(132.84 309.63) rotate(19.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RNPEP</tspan></text>
+      <text transform="translate(251.12 160.79) rotate(58.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SPHAR</tspan></text>
+      <text transform="translate(581.73 194.21) rotate(-49)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PTAFR</tspan></text>
+      <text transform="translate(657.44 273.17) rotate(-26.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PTPRF</tspan></text>
+      <text transform="translate(189.11 241.64) rotate(37.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CENPF</tspan></text>
+      <text transform="translate(175.14 230.95) rotate(37.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CENPF</tspan></text>
+      <text transform="translate(153.96 303.93) rotate(21.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SNRPE</tspan></text>
+      <text transform="translate(137.88 297.45) rotate(21.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SNRPE</tspan></text>
+      <text transform="translate(212.8 616.52) rotate(-48.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LENEP</tspan></text>
+      <text transform="translate(159.88 235.53) rotate(34.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FLVCR</tspan></text>
+      <text transform="translate(641.65 214.29) rotate(-38)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CLSPN</tspan></text>
+      <text transform="translate(145.91 225.75) rotate(34.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FLVCR</tspan></text>
+      <text transform="translate(136.35 515.67) rotate(-23.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FASLG</tspan></text>
+      <text transform="translate(120.91 522.28) rotate(-23.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FASLG</tspan></text>
+      <text transform="translate(162.75 511.67) rotate(-24.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MYOC</tspan></text>
+      <text transform="translate(124.59 298.36) rotate(20.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MYOG</tspan></text>
+      <text transform="translate(95.45 285.02) rotate(21.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FMOD</tspan></text>
+      <text transform="translate(247.97 187.84) rotate(54.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ITPKB</tspan></text>
+      <text transform="translate(147.98 518.47) rotate(-24.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MYOC</tspan></text>
+      <text transform="translate(109.36 292.57) rotate(20.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MYOG</tspan></text>
+      <text transform="translate(238.61 174.53) rotate(54.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ITPKB</tspan></text>
+      <text transform="translate(482.59 632.67) rotate(70)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">HBXIP</tspan></text>
+      <text transform="translate(646.4 401.73) rotate(-.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">INADL</tspan></text>
+      <text transform="translate(488.05 647.68) rotate(70)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">HBXIP</tspan></text>
+      <text transform="translate(662.4 401.71) rotate(-.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">INADL</tspan></text>
+      <text transform="translate(199.53 611.24) rotate(-46)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">INSRR</tspan></text>
+      <text transform="translate(117.32 419.08) rotate(-3.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">OCLM</tspan></text>
+      <text transform="translate(154.14 310.82) rotate(20.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RABIF</tspan></text>
+      <text transform="translate(630.4 313.15) rotate(-21.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CMPK</tspan></text>
+      <text transform="translate(188.6 622.54) rotate(-46)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">INSRR</tspan></text>
+      <text transform="translate(101.61 420.01) rotate(-3.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">OCLM</tspan></text>
+      <text transform="translate(139.39 305.33) rotate(20.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RABIF</tspan></text>
+      <text transform="translate(645.07 307.44) rotate(-21.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CMPK</tspan></text>
+      <text transform="translate(217.14 659.31) rotate(-54.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">BNIPL</tspan></text>
+      <text transform="translate(223.76 592.82) rotate(-47.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LMNA</tspan></text>
+      <text transform="translate(154.09 542.72) rotate(-29.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">TIPRL</tspan></text>
+      <text transform="translate(239.02 149.12) rotate(57.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RHOU</tspan></text>
+      <text transform="translate(640.56 347.14) rotate(-13)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PODN</tspan></text>
+      <text transform="translate(598.93 592.98) rotate(43.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">GLMN</tspan></text>
+      <text transform="translate(213.23 604.13) rotate(-47.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LMNA</tspan></text>
+      <text transform="translate(140.65 550.37) rotate(-29.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">TIPRL</tspan></text>
+      <text transform="translate(230.78 136.03) rotate(57.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RHOU</tspan></text>
+      <text transform="translate(655.63 343.68) rotate(-13)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PODN</tspan></text>
+      <text transform="translate(610.13 603.65) rotate(43.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">GLMN</tspan></text>
+      <text transform="translate(477.76 119.89) rotate(-74.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CORT</tspan></text>
+      <text transform="translate(205.54 629.35) rotate(-49.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ADAR</tspan></text>
+      <text transform="translate(412.48 154.43) rotate(-87.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NADK</tspan></text>
+      <text transform="translate(333.28 133.17) rotate(76.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CHML</tspan></text>
+      <text transform="translate(616.88 231.97) rotate(-38.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NCDN</tspan></text>
+      <text transform="translate(674.61 267.63) rotate(-26.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ARTN</tspan></text>
+      <text transform="translate(578.27 570.61) rotate(43.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">BRDT</tspan></text>
+      <text transform="translate(481.71 105.2) rotate(-74.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CORT</tspan></text>
+      <text transform="translate(195.62 640.87) rotate(-49.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ADAR</tspan></text>
+      <text transform="translate(413.12 139.23) rotate(-87.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NADK</tspan></text>
+      <text transform="translate(329.71 118.4) rotate(76.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CHML</tspan></text>
+      <text transform="translate(628.83 222.56) rotate(-38.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NCDN</tspan></text>
+      <text transform="translate(589.33 581.01) rotate(43.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">BRDT</tspan></text>
+      <text transform="translate(485.87 169.55) rotate(-70.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PDPN</tspan></text>
+      <text transform="translate(208.88 660.27) rotate(-53.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RORC</tspan></text>
+      <text transform="translate(239.78 607.07) rotate(-51.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SMCP</tspan></text>
+      <text transform="translate(209.26 578.85) rotate(-42.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">DARC</tspan></text>
+      <text transform="translate(204.64 573.2) rotate(-41)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">COPA</tspan></text>
+      <text transform="translate(151.58 478.16) rotate(-16.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ASTN</tspan></text>
+      <text transform="translate(490.96 155.52) rotate(-70.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PDPN</tspan></text>
+      <text transform="translate(230.53 618.8) rotate(-51.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SMCP</tspan></text>
+      <text transform="translate(198.27 588.96) rotate(-42.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">DARC</tspan></text>
+      <text transform="translate(193.36 582.99) rotate(-41)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">COPA</tspan></text>
+      <text transform="translate(137.29 482.51) rotate(-16.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ASTN</tspan></text>
+      <text transform="translate(199.94 568.33) rotate(-39.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SDHC</tspan></text>
+      <text transform="translate(183.51 547.06) rotate(-33.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RXRG</tspan></text>
+      <text transform="translate(521.15 144.53) rotate(-65.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SDHB</tspan></text>
+      <text transform="translate(139.9 276.85) rotate(25.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LGTN</tspan></text>
+      <text transform="translate(584.11 236.74) rotate(-42.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">HPCA</tspan></text>
+      <text transform="translate(642.85 358.91) rotate(-10.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">BSND</tspan></text>
+      <text transform="translate(626.24 498.13) rotate(22.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NEXN</tspan></text>
+      <text transform="translate(188.63 577.66) rotate(-39.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SDHC</tspan></text>
+      <text transform="translate(171.3 555.17) rotate(-33.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RXRG</tspan></text>
+      <text transform="translate(527.31 131.22) rotate(-65.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SDHB</tspan></text>
+      <text transform="translate(126.7 270.45) rotate(25.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LGTN</tspan></text>
+      <text transform="translate(594.96 226.88) rotate(-42.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">HPCA</tspan></text>
+      <text transform="translate(657.31 356.32) rotate(-10.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">BSND</tspan></text>
+      <text transform="translate(639.73 503.84) rotate(22.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NEXN</tspan></text>
+      <text transform="translate(487.55 122.77) rotate(-72.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NPPB</tspan></text>
+      <text transform="translate(563.63 186.58) rotate(-53)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RHCE</tspan></text>
+      <text transform="translate(612.67 276.08) rotate(-30.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NFYC</tspan></text>
+      <text transform="translate(663.15 292.96) rotate(-22.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FAAH</tspan></text>
+      <text transform="translate(491.79 109.01) rotate(-72.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NPPB</tspan></text>
+      <text transform="translate(572.29 175.07) rotate(-53)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RHCE</tspan></text>
+      <text transform="translate(625.04 268.69) rotate(-30.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NFYC</tspan></text>
+      <text transform="translate(676.43 287.41) rotate(-22.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FAAH</tspan></text>
+      <text transform="translate(220.48 590.16) rotate(-46.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PRCC</tspan></text>
+      <text transform="translate(185.79 596.64) rotate(-42.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">APCS</tspan></text>
+      <text transform="translate(183.59 255.38) rotate(34.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NENF</tspan></text>
+      <text transform="translate(354.78 143.9) rotate(80.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ADSS</tspan></text>
+      <text transform="translate(593.36 247.76) rotate(-38.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SFPQ</tspan></text>
+      <text transform="translate(425.41 155.41) rotate(-84.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">DFFB</tspan></text>
+      <text transform="translate(638.32 262.9) rotate(-30.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CTPS</tspan></text>
+      <text transform="translate(210.69 600.35) rotate(-46.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PRCC</tspan></text>
+      <text transform="translate(175.31 606.11) rotate(-42.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">APCS</tspan></text>
+      <text transform="translate(171.91 247.43) rotate(34.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NENF</tspan></text>
+      <text transform="translate(352.44 129.95) rotate(80.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ADSS</tspan></text>
+      <text transform="translate(604.37 238.9) rotate(-38.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SFPQ</tspan></text>
+      <text transform="translate(426.77 141.36) rotate(-84.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">DFFB</tspan></text>
+      <text transform="translate(650.51 255.73) rotate(-30.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CTPS</tspan></text>
+      <text transform="translate(252.28 615.14) rotate(-55)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ENSA</tspan></text>
+      <text transform="translate(235.82 637.12) rotate(-54.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CTSS</tspan></text>
+      <text transform="translate(201.9 625.46) rotate(-48.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FDPS</tspan></text>
+      <text transform="translate(193.79 623.05) rotate(-46.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">VHLL</tspan></text>
+      <text transform="translate(163.86 291.03) rotate(25.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CTSE</tspan></text>
+      <text transform="translate(300.82 161.23) rotate(68)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LYST</tspan></text>
+      <text transform="translate(609.07 270.1) rotate(-32.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">HEYL</tspan></text>
+      <text transform="translate(617.89 285.44) rotate(-28.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PPCS</tspan></text>
+      <text transform="translate(440.53 157.47) rotate(-81)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ICMT</tspan></text>
+      <text transform="translate(446.32 130.32) rotate(-80.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ESPN</tspan></text>
+      <text transform="translate(453.57 160) rotate(-77.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RERE</tspan></text>
+      <text transform="translate(244.33 626.5) rotate(-55)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ENSA</tspan></text>
+      <text transform="translate(227.82 648.45) rotate(-54.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CTSS</tspan></text>
+      <text transform="translate(192.68 635.8) rotate(-48.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FDPS</tspan></text>
+      <text transform="translate(183.02 634.52) rotate(-46.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">VHLL</tspan></text>
+      <text transform="translate(151.36 285.08) rotate(25.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CTSE</tspan></text>
+      <text transform="translate(295.62 148.38) rotate(68)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LYST</tspan></text>
+      <text transform="translate(620.77 262.66) rotate(-32.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">HEYL</tspan></text>
+      <text transform="translate(630.08 278.85) rotate(-28.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PPCS</tspan></text>
+      <text transform="translate(442.69 143.76) rotate(-81)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ICMT</tspan></text>
+      <text transform="translate(448.56 116.64) rotate(-80.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ESPN</tspan></text>
+      <text transform="translate(456.45 146.42) rotate(-77.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RERE</tspan></text>
+      <text transform="translate(530.08 191.25) rotate(-58.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ALPL</tspan></text>
+      <text transform="translate(214.93 217.1) rotate(45.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">EPRS</tspan></text>
+      <text transform="translate(688.32 427.65) rotate(5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LEPR</tspan></text>
+      <text transform="translate(537.17 179.63) rotate(-58.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ALPL</tspan></text>
+      <text transform="translate(205.36 207.44) rotate(45.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">EPRS</tspan></text>
+      <text transform="translate(701.87 428.82) rotate(5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LEPR</tspan></text>
+      <text transform="translate(477.15 634.51) rotate(71.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CHIA</tspan></text>
+      <text transform="translate(171.03 521.83) rotate(-27.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SELL</tspan></text>
+      <text transform="translate(628.03 493.89) rotate(21.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PIGK</tspan></text>
+      <text transform="translate(481.17 646.37) rotate(71.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CHIA</tspan></text>
+      <text transform="translate(159.91 527.61) rotate(-27.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SELL</tspan></text>
+      <text transform="translate(639.65 498.56) rotate(21.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PIGK</tspan></text>
+      <text transform="translate(163.22 505.73) rotate(-23.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PIGC</tspan></text>
+      <text transform="translate(580.48 180.88) rotate(-51)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PIGV</tspan></text>
+      <text transform="translate(642.91 273.44) rotate(-28)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PPIH</tspan></text>
+      <text transform="translate(646.37 397.49) rotate(-1.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NFIA</tspan></text>
+      <text transform="translate(151.97 510.64) rotate(-23.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PIGC</tspan></text>
+      <text transform="translate(588.21 171.36) rotate(-51)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PIGV</tspan></text>
+      <text transform="translate(653.73 267.68) rotate(-28)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PPIH</tspan></text>
+      <text transform="translate(658.64 397.25) rotate(-1.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NFIA</tspan></text>
+      <text transform="translate(539.36 603.7) rotate(55.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">DBT</tspan></text>
+      <text transform="translate(456.43 640.35) rotate(76.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SIKE</tspan></text>
+      <text transform="translate(632.93 255.94) rotate(-32.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PPIE</tspan></text>
+      <text transform="translate(546.08 613.33) rotate(55.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">DBT</tspan></text>
+      <text transform="translate(459.2 651.76) rotate(76.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SIKE</tspan></text>
+      <text transform="translate(642.85 249.68) rotate(-32.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PPIE</tspan></text>
+      <text transform="translate(176.1 526.28) rotate(-28.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">DPT</tspan></text>
+      <text transform="translate(549.31 204.48) rotate(-53.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RHD</tspan></text>
+      <text transform="translate(606.8 218.13) rotate(-41.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ADC</tspan></text>
+      <text transform="translate(620.35 290.24) rotate(-27.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MPL</tspan></text>
+      <text transform="translate(640.51 454.08) rotate(12.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CTH</tspan></text>
+      <text transform="translate(463.04 162.29) rotate(-75.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LZIC</tspan></text>
+      <text transform="translate(166.07 531.82) rotate(-28.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">DPT</tspan></text>
+      <text transform="translate(556.19 195.31) rotate(-53.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">RHD</tspan></text>
+      <text transform="translate(615.36 210.48) rotate(-41.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">ADC</tspan></text>
+      <text transform="translate(630.56 285.01) rotate(-27.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">MPL</tspan></text>
+      <text transform="translate(651.73 456.45) rotate(12.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CTH</tspan></text>
+      <text transform="translate(465.87 151.2) rotate(-75.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LZIC</tspan></text>
+      <text transform="translate(249 609.66) rotate(-53.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CGN</tspan></text>
+      <text transform="translate(230.51 594.2) rotate(-48.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">GBA</tspan></text>
+      <text transform="translate(89.92 420.34) rotate(-3.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PDC</tspan></text>
+      <text transform="translate(525.2 188.29) rotate(-60)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CDA</tspan></text>
+      <text transform="translate(242.36 618.67) rotate(-53.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CGN</tspan></text>
+      <text transform="translate(223.07 602.57) rotate(-48.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">GBA</tspan></text>
+      <text transform="translate(78.75 420.98) rotate(-3.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">PDC</tspan></text>
+      <text transform="translate(530.83 178.59) rotate(-60)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CDA</tspan></text>
+      <text transform="translate(211.46 638.33) rotate(-51.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LOR</tspan></text>
+      <text transform="translate(143.78 417.79) rotate(-3.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">TPR</tspan></text>
+      <text transform="translate(204.61 646.84) rotate(-51.2)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LOR</tspan></text>
+      <text transform="translate(132.87 418.43) rotate(-3.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">TPR</tspan></text>
+      <text transform="translate(166.49 612.69) rotate(-41.9)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CRP</tspan></text>
+      <text transform="translate(147.66 351.31) rotate(11.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CFH</tspan></text>
+      <text transform="translate(238.41 201.27) rotate(51.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NVL</tspan></text>
+      <text transform="translate(560.59 213.63) rotate(-49.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FGR</tspan></text>
+      <text transform="translate(137.21 349.17) rotate(11.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">CFH</tspan></text>
+      <text transform="translate(231.77 192.95) rotate(51.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NVL</tspan></text>
+      <text transform="translate(590.53 178.19) rotate(-49.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FGR</tspan></text>
+      <text transform="translate(234.35 597.13) rotate(-49.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SHE</tspan></text>
+      <text transform="translate(178.67 531.31) rotate(-30.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SAC</tspan></text>
+      <text transform="translate(106 446.53) rotate(-8.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NPL</tspan></text>
+      <text transform="translate(244.18 196.75) rotate(53)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LBR</tspan></text>
+      <text transform="translate(608 209.12) rotate(-43.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LCK</tspan></text>
+      <text transform="translate(227.6 605.02) rotate(-49.4)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SHE</tspan></text>
+      <text transform="translate(169.68 536.51) rotate(-30.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">SAC</tspan></text>
+      <text transform="translate(95.7 448.08) rotate(-8.5)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">NPL</tspan></text>
+      <text transform="translate(237.94 188.43) rotate(53)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LBR</tspan></text>
+      <text transform="translate(615.6 202) rotate(-43.1)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">LCK</tspan></text>
+      <text transform="translate(645.71 382.21) rotate(-4.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">JUN</tspan></text>
+      <text transform="translate(655.81 381.36) rotate(-4.8)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">JUN</tspan></text>
+      <text transform="translate(671.01 284.19) rotate(-23.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">IPP</tspan></text>
+      <text transform="translate(678.85 280.75) rotate(-23.6)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">IPP</tspan></text>
+      <text transform="translate(225.51 624.66) rotate(-51.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">IVL</tspan></text>
+      <text transform="translate(220.36 631.14) rotate(-51.7)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">IVL</tspan></text>
+      <text transform="translate(337.85 154.92) rotate(76.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FH</tspan></text>
+      <text transform="translate(336.15 147.93) rotate(76.3)" fill="#2171b5" font-family="ArialMT, Arial" font-size="5.2" isolation="isolate"><tspan x="0" y="0">FH</tspan></text>
+    </g>
+  </g>
+  <g>
+    <rect x="275.17" y="220.75" width="250" height="1" fill="#c2c2c2"/>
+    <rect x="275.17" y="262.75" width="250" height="311" fill="#fff"/>
+    <rect x="275.17" y="572.75" width="250" height="1" fill="#c2c2c2"/>
+    <rect x="275.17" y="262.75" width="250" height="1" fill="#eee"/>
+    <text transform="translate(280.17 289.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Type</tspan></text>
+    <path d="M349.17,274.25h81c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-81c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="349.17" y="294.75" width="81" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M349.17,295.25c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M430.17,295.25c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="432.17" y="276.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M431.94,274.98c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M431.94,294.52c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="346.17" y="276.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,274.98c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M346.67,292.75c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="349.17" y="273.75" width="81" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,274.98c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M431.94,274.98c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(413.17 278.75) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+    <text transform="translate(352.17 289.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">text</tspan></text>
+    <path d="M349.17,301.25h93c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-93c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="349.17" y="321.75" width="93" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M349.17,322.25c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M442.17,322.25c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="444.17" y="303.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M443.94,301.98c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M443.94,321.52c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="346.17" y="303.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,301.98c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M346.67,319.75c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="349.17" y="300.75" width="93" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,301.98c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M443.94,301.98c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(425.17 305.75) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+    <text transform="translate(352.17 316.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">genes.labels</tspan></text>
+    <text transform="translate(280.17 316.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Data</tspan></text>
+    <path d="M349.17,328.25h56c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-56c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="349.17" y="348.75" width="56" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M349.17,349.25c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M405.17,349.25c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="407.17" y="330.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M406.94,328.98c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M406.94,348.52c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="346.17" y="330.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,328.98c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M346.67,346.75c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="349.17" y="327.75" width="56" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,328.98c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M406.94,328.98c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(395.17 327.75) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(395.17 338.75) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <text transform="translate(349.17 343.94)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">0.700</tspan></text>
+    <use image-rendering="optimizeQuality" transform="translate(411.17 329.75) scale(.5)" xlink:href="#image" isolation="isolate"/>
+    <text transform="translate(280.17 343.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">R0</tspan></text>
+    <path d="M349.17,355.25h56c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-56c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="349.17" y="375.75" width="56" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M349.17,376.25c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M405.17,376.25c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="407.17" y="357.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M406.94,355.98c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M406.94,375.52c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="346.17" y="357.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,355.98c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M346.67,373.75c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="349.17" y="354.75" width="56" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,355.98c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M406.94,355.98c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(395.17 354.75) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(395.17 365.75) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <text transform="translate(349.17 370.94)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">0.950</tspan></text>
+    <use image-rendering="optimizeQuality" transform="translate(411.17 356.75) scale(.5)" xlink:href="#image" isolation="isolate"/>
+    <text transform="translate(280.17 370.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">R1</tspan></text>
+    <path d="M349.17,382.25h75c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-75c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="349.17" y="402.75" width="75" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M349.17,403.25c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M424.17,403.25c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="426.17" y="384.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M425.94,382.98c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M425.94,402.52c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="346.17" y="384.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,382.98c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M346.67,400.75c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="349.17" y="381.75" width="75" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,382.98c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M425.94,382.98c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(407.17 386.75) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+    <text transform="translate(352.17 397.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">default</tspan></text>
+    <text transform="translate(280.17 397.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Label Font</tspan></text>
+    <path d="M349.17,409.25h39c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-39c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="349.17" y="429.75" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M349.17,430.25c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M388.17,430.25c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="390.17" y="411.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M389.94,409.98c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M389.94,429.52c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="346.17" y="411.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,409.98c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M346.67,427.75c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="349.17" y="408.75" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,409.98c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M389.94,409.98c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(378.17 408.75) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(378.17 419.75) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <text transform="translate(353.17 424.94)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">15</tspan></text>
+    <text transform="translate(280.17 424.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Label Size</tspan></text>
+    <rect x="346.17" y="435.75" width="18" height="18" fill="#2171b5"/>
+    <rect x="346.17" y="452.75" width="18" height="1"/>
+    <rect x="363.17" y="435.75" width="1" height="18"/>
+    <rect x="346.17" y="435.75" width="1" height="18"/>
+    <rect x="346.17" y="435.75" width="18" height="1"/>
+    <text transform="translate(280.17 449.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Color</tspan></text>
+    <path d="M349.17,459.25h39c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-39c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="349.17" y="479.75" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M349.17,480.25c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M388.17,480.25c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="390.17" y="461.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M389.94,459.98c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M389.94,479.52c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="346.17" y="461.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,459.98c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M346.67,477.75c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="349.17" y="458.75" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,459.98c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M389.94,459.98c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(378.17 458.75) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(378.17 469.75) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <text transform="translate(356.17 474.94)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">0</tspan></text>
+    <text transform="translate(280.17 474.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Padding</tspan></text>
+    <path d="M349.17,486.25h39c1.38,0,2.5,1.12,2.5,2.5v16c0,1.38-1.12,2.5-2.5,2.5h-39c-1.38,0-2.5-1.12-2.5-2.5v-16c0-1.38,1.12-2.5,2.5-2.5" vector-effect="none" fill="#fff" fill-rule="evenodd"/>
+    <rect x="349.17" y="506.75" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M349.17,507.25c-.69,0-1.32-.28-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M388.17,507.25c.69,0,1.32-.28,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="390.17" y="488.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M389.94,486.98c.45.45.73,1.08.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M389.94,506.52c.45-.45.73-1.08.73-1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="346.17" y="488.75" width="1" height="16" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,486.98c-.45.45-.73,1.08-.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M346.67,504.75c0,.69.28,1.32.73,1.77" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <rect x="349.17" y="485.75" width="39" height="1" fill="#c2c2c2"/>
+    <g>
+      <path d="M347.41,486.98c.45-.45,1.08-.73,1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+      <path d="M389.94,486.98c-.45-.45-1.08-.73-1.77-.73" vector-effect="none" fill="none" stroke="#c2c2c2" stroke-linecap="square" stroke-linejoin="bevel"/>
+    </g>
+    <use image-rendering="optimizeQuality" transform="translate(378.17 485.75) scale(.5)" xlink:href="#image3" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(378.17 496.75) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <text transform="translate(356.17 501.94)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">0</tspan></text>
+    <text transform="translate(280.17 501.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Rpadding</tspan></text>
+    <text transform="translate(298.17 527.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Show Links</tspan></text>
+    <image width="26" height="26" image-rendering="optimizeQuality" transform="translate(280.17 540.75) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAaCAYAAABGiCfwAAAACXBIWXMAABYlAAAWJQFJUiTwAAABD0lEQVRIie3Wv22EMBSA8c+vc4dor2EBimxwo1iIPtngdBNE1yPhbHIbpGABGlrLFXTPKQIKRVIBVXilZekn/yk+wzzOuUJEXgEHZGybHniq6t173y+LBqCqKge8W2uzsizJ83yTFEKg6zqmaYoppbe2bT8AzHyiz8vlktV1vRlag03TMAxDVNUX730vInKz1u4KAeR5Tl3XWGuz+XkQ4LrH1f0FlmUJ3/8AAYojoDXI/OHkMOWXObETO7ETO7H/hsUQwmFACIGUUr9gvus6jgCX8DHGPAFEVR/TNMWmaXYFl+AZxzGq6h3mlHPOORHZPeXGcYzAT8otG+aku6WUrsaYYguWUorGGK+qj3WkfgGZaoItJkFnjgAAAABJRU5ErkJggg==" isolation="isolate"/>
+    <image width="26" height="26" image-rendering="optimizeQuality" transform="translate(280.17 518.18) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABsAAAAZCAYAAADAHFVeAAAACXBIWXMAABYlAAAWJQFJUiTwAAAA6klEQVRIie3WoXHEMBCF4bfLxDyiJm5AIB1cKQLiSQc3qSBzXDNWOkkHAWrAxHRHSGarkChzOGeHxH8B+82yR977iZk/x3EcQgiw1mKPRAQxRqzrWlT1KaW0MDNfjTG7QgBgrUUIAcaYgZmfAYABXJxzu0L3oHMOAHzHpiOgexDA0LE/68RO7MRO7MT+G1ZE5DBARNBaWzqWcs44AhQR5JxBRB8AwKp627atxBh3BfvgqbUWVX0FAAIA771n5jdjzLDHHukf1VoLgJd5nt9/sG9wYuZra+1CRNMjWGutEFFS1VtKaXnk1q/7AlayZitLumvYAAAAAElFTkSuQmCC" isolation="isolate"/>
+    <text transform="translate(298.17 552.31)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Label Snuggle</tspan></text>
+    <rect x="311.17" y="244.75" width="35" height="19" fill="#fafafa"/>
+    <rect x="311.17" y="262.75" width="35" height="1" fill="#eee"/>
+    <image width="32" height="32" image-rendering="optimizeQuality" transform="translate(314.17 245.75) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAgCAYAAACcuBHKAAAACXBIWXMAABYlAAAWJQFJUiTwAAABr0lEQVRYhe3WP2gVQRDH8U98CSJYSNBCTBQLCyEgiJWinVYhtlqZxNqUlnZWqQTBwsLCQkwsLAQtgzZqnSLYPkUxRRIiCIn/it0lz+N83L3bU4v84DgYdma+zMztHLva1e8aKrGNYwZ7Muf6gQfoVjl8Cz9bel6VJRwusaUKXMVyFeoKmsAjLFWFSFrOCJH0vcxY1vcv8b03Y/J98b1e1eGs0L+Hyge3robxNMY8XcfxSXS6nQFgIca6V9d5P95E57kBAUZ6AB7rP39/1EGsCN/3lQEAFpsCJB3De2zhYg2A1M6FpgBJE1jDJs7UBBjJAZB0Dl/xGSf6nLsfARZzAyRN6nP1Rs1HkFYAkrry36K1N+VGboBBIOrqvLC4XuMujuQIWmepXRYW1hZWhXn6gEPFg21WYg3PcComvobDuNk0cNP1/g5vi8a2Z6JXJ3Ecn5oG6leJUUzjUsF+FHeE6/8bLuSGGMUsnmNbGL6XBZ8b0d7FVFOABPER1/GiJ/F2BJnBgYJPR1iE2Vq/aefPOSWeFSry1zQ/QOJxoSWdtqCqaE74MRr7lxAdoRr/t34B8qd0qiRtaKAAAAAASUVORK5CYII=" isolation="isolate"/>
+    <rect x="346.17" y="244.75" width="35" height="19" fill="#fafafa"/>
+    <rect x="346.17" y="262.75" width="35" height="1" fill="#eee"/>
+    <image width="32" height="32" image-rendering="optimizeQuality" transform="translate(349.17 245.75) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAgCAYAAACcuBHKAAAACXBIWXMAABYlAAAWJQFJUiTwAAACZUlEQVRYhe3XT0uUURQG8N8oBgVDSiBIEIktWgku2gktKrQIixaBG7O9goEL3eoiQVf5AfoCQeCqVhEI/Vm6MJCgEhQLIqFFmIzT4t7B19dx5p13Qlz4wGVmnnvuueeec+65ZzjFCUKhyfXz6McmvuA13uJvk3obNuJb3LQcxzZmUTxOQ6AFPRjDcjTmO4aO25AKChjAKvYwrfmw50YRS4JXpmoJ5rWwHTdwKW6yhjf4k5JrxUvcxf1oVNPowCJ27CdiZfzGnMMJWRRCs1VlrmF0CycuYwUT6EMvRvAxzq1G2SQG49xMMwYU8QkljKoexgKGo8ya4LXk3LJwfdvyGjEnnGQ4g+zjKPssxY9H/mYeA84J8f7gsAc640iiIIRrB+cTfE80YiGPEXfi4pEU/0RwfSl+T2IirnmQ4Fqwixf1NpyPo5rC3gTXGTd/H0fJQY9cwHNcSelax7v0pi2p3/14mOIqIWitaf5B/BRy43MW4bQRm+hK8evx83qC+4FJXItjMnL19urCRj2jFgTX9yS4diHJVmRLzKOQOTFvRcGxFL8Y+dGMG1ZD5it6Rigoyw6eukMoQCWhVjT65jRcrGYFiwdSfLdQNctCiX4k3Jg+XK2js+GyXRQaklXVH6OnQvFKPl6/6ujL9YANCQ3JkupX8yxuCzVkwtFxbo069uTssqaFUy7J9wRnbmpqoRAX7wnuHJQtIQtRttLeTWVcVxP3hBwpCxk+Ltz5ZEGrNLrj9hvdLf+50S0Kmb1tPxl3hWq6Hr8nW/4ZDYSwUTe1CeV7EJdxMfIb+IpXwp+f3Qb1nuLk4B+I0Zx+K3j//QAAAABJRU5ErkJggg==" isolation="isolate"/>
+    <rect x="381.17" y="244.75" width="35" height="19" fill="#fafafa"/>
+    <rect x="381.17" y="262.75" width="35" height="1" fill="#eee"/>
+    <image width="32" height="32" image-rendering="optimizeQuality" transform="translate(384.17 245.75) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAgCAYAAACcuBHKAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAZUlEQVRYhe2UMQ6AIADEOvgNn8jDeKUOsBJRz+DQbuQS0wQsiDxjAwqwf7RPCVTg6B9K77cEaj8ndwX+LwDt8SwVgPYblZUCIxJXFOvE2yuyEwrYCTthJxRY0onEPsWoE6ld5JIT42qUmyVnee0AAAAASUVORK5CYII=" isolation="isolate"/>
+    <rect x="275.17" y="244.75" width="36" height="19" fill="#fff"/>
+    <rect x="275.17" y="262.75" width="36" height="1" fill="#fff"/>
+    <rect x="310.17" y="244.75" width="1" height="19" fill="#eee"/>
+    <image width="32" height="32" image-rendering="optimizeQuality" transform="translate(278.17 245.75) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAgCAYAAACcuBHKAAAACXBIWXMAABYlAAAWJQFJUiTwAAABlUlEQVRYhe3VP0scURQF8J9/QEgEqwSbTbXgghBIZyxShvS2NmKRJpbpQkBbrfwGgXwHIVXSBVOkcTFCEBEbTboQibCwKeYuDsO4zrizu1N44PJ4d8557/DmvXu5R42xHTFWHESMFJOj3jAPtTAxfUfdElaxGPM2PuJrFaZuuxMT2EU34jyiN98NzlBNbMVmn9FK5VuR62JzmCbWY5N9PMj5/hDfgrM+DBOv0MEJ5vvo54PTCU0lJibwGlf4hYUCa7TwG/9CW/qOHOIYK3iHI8nxHrp+CUWwiB+hPYq1VvAcc7eJ/7q+6V2c4T1mSxjoYTa0Z5k1v2SJ2aM6wQze4BTfJf93EEzjGZ5EtPGpn6Bs73gZMRDuWjF72Inx6ThNVNJ7atHAipqYwgYaBbiN4E5VbWJB0pzWCnDXgluksJUyMZkZq+KWIw6IOUmRyn3OozLRwAssj9NEX9TCRLZ3HEg6YDuTn0FT0s4vUvlmjD9Tucd4FLmrHP0HvE0vnq2YezeY7eAyIo0/OdweL934btLfo374D7GCXO4lhW9ZAAAAAElFTkSuQmCC" isolation="isolate"/>
+    <rect x="275.17" y="243.75" width="250" height="1" fill="#c2c2c2"/>
+    <path d="M280.17,221.75h208c2.76,0,5,2.24,5,5v12c0,2.76-2.24,5-5,5h-208c-2.76,0-5-2.24-5-5v-12c0-2.76,2.24-5,5-5" vector-effect="none" fill="#066fd1" fill-opacity=".04" fill-rule="evenodd"/>
+    <image width="32" height="32" image-rendering="optimizeQuality" transform="translate(287.17 224.75) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAgCAYAAACcuBHKAAAACXBIWXMAABYlAAAWJQFJUiTwAAAA/UlEQVRYhe3STytEURzG8Y+/+RNFybwBK+8BWVAW7FhOWfGyZjtLyoKVbGSjJG9CSZGSGAvn1O12G+bcGVHnW6duv/N7nvNdXDKZTCbzjxj55n4ZTdzjocfuJezjMeSTaOAZHTxhpYfsasjEbCNVYj2UxPOCjR/kNsNuMbuWKjGJu1LZK7a7ZHbCTjFzG7qSWcRNqfQNuxW7e+GuuHuNhToCkXlclcrfff2wkWaYFXcuMdcPgcgsLkqPdHCAw4r5OWb6KRCZxlnFg+VziqlBCEQmcNxF4CjsDJxxtCsE2hj7DYHIKFoFgVaYJTFUQ2QYW+H7BB81ujKZTObv8wlfkllJbMuFYAAAAABJRU5ErkJggg==" isolation="isolate"/>
+    <text transform="translate(307.17 237.31)" fill="#066fd1" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Track2</tspan></text>
+    <image width="24" height="24" image-rendering="optimizeQuality" transform="translate(505.17 226.75) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAYCAYAAAAPtVbGAAAACXBIWXMAABYlAAAWJQFJUiTwAAACbklEQVRIibWWz04TURSHv3Pb6bBgoUuUoIENax5DUnTDCqPUyJBuJjwBhlfogmTaNKjRzbBQ2+CruIKoCYZlFywY4M5x0Rmsw+0UMP520zPnfD05/0YoURRFc8CKiDwBFoAHmekXcKiqX4He5ubmz7I44vqx0+nMquoOsA6YsgBACry11m43m83jG0E6nc5TVf0ATE8IXtQpsBYEQa9o+OtfRlEUquqnOwDIfD5HURQWDVeZZBl8vkPwohR4NpqRZIBZVf3G3TJw6dRau5jXyABkRXYBFDgrCXaWvVPUdKVS2ckfTNam62MAS57nzahq/5pRte953gywNAbUyGJjgBXcbZp4nve90WgMkiRZHQWpaj9JktVGozG4vLz8ASQOf2OMqQOYbNBcmjo/P3/farX8MAyTHJQDwjBMWq2WX6lU3gFTrgCqupxnsjAGgojUfd/fHwXlgDiOa77v74tIfZy/qs4DVPmzKiaBVsMwTADiOK4NBoO4DJD5PswzubVOTk5EVW/saxguu7Eq1qBYowm+V3NyeFOA7/v7xRqVgUTkCMBk69qls1qt9mIUICL1YjNYa18yZmBF5CDPpMdwXRflX1xcPN7d3b1f7KIctLe3d69arT4CfId/mqZpH7Ld1W63u8Arx4vKcNCcc5Bl4OO+S90gCF7nmWCt3WZ4D4qSEgCZzQU4tda+yR8MQLPZPBaR57h30G2lwNrolbzq9Y2NjS+quvWPIFXVreJ1vJZqu91eAT7yv84vQBAEPWvtItDF3XVFpUDXWrvoAsCYr5VcURTNGWPqqrqsqvP5LlLVYxE5EpGDNE37kz6JfgNUFFV5I0XlbAAAAABJRU5ErkJggg==" isolation="isolate"/>
+    <line x1="275.17" y1="220.75" x2="275.17" y2="573.75" fill="none" stroke="#ccc" stroke-miterlimit="10"/>
+    <line x1="525.17" y1="220.75" x2="525.17" y2="573.75" fill="none" stroke="#ccc" stroke-miterlimit="10"/>
+  </g>
+</svg>
