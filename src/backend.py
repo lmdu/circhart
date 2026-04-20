@@ -568,6 +568,14 @@ class SqlControl:
 		return SqlBase.get_one(sql)
 
 	@staticmethod
+	def update_data_chrid(table, old, new, field='chrid'):
+		sql = SqlQuery(table)\
+			.update(field)\
+			.where('{}=?'.format(field))
+
+		SqlBase.update_row(sql, new, old)
+
+	@staticmethod
 	def clear_data_options(table):
 		sql = SqlQuery(table)\
 			.update('options')

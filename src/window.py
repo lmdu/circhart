@@ -241,6 +241,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_clear_plot_option
 		)
 
+		self.replace_chrom_act = QAction("Replace Chrid", self,
+			triggered = self.do_replace_chrom_ids
+		)
+
 		self.prepare_kdata_act = QAction("&Prepare Karyotype Data", self,
 			triggered = self.do_prepare_karyotype_data
 		)
@@ -782,6 +786,17 @@ class CirchartMainWindow(QMainWindow):
 			return
 
 		SqlControl.clear_data_options(table)
+
+	def do_replace_chrom_ids(self):
+		if self.stack_widget.currentIndex() != 1:
+			return
+
+		table = self.data_table.get_table()
+
+		if not table:
+			return
+
+		CirchartReplaceChridDialog.replace(self, table)
 
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.prepare(self)

@@ -23,6 +23,7 @@ __all__ = [
 	'CirchartCircosColorSelectDialog',
 	'CirchartLinkPrepareDialog',
 	'CirchartCustomColorDialog',
+	'CirchartReplaceChridDialog',
 ]
 
 class CirchartBaseDialog(QDialog):
@@ -1062,4 +1063,61 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 		if dlg.exec() == QDialog.Accepted:
 			params = dlg.get_params()
 			return params
+
+class CirchartReplaceChridDialog(CirchartBaseDialog):
+	_title = "Replace Chrids"
+
+	def __init__(self, parent, table):
+		super().__init__(parent)
+
+		self.table = table
+		self.is_link = table.startswith('linkdata')
+
+	def _create_widgets(self):
+		self.chr1_label = "Replace chrid in column two with"
+		self.chr1_select = QComboBox(self)
+
+		if self.is_link:
+			self.chr2_label = "Replace chrid in column five with"
+			self.chr2_select = QComboBox(self)
+
+	def _init_layouts(self):
+		self.main_layout.addWidget(self.chr1_label)
+		self.main_layout.addWidget(self.chr1_select)
+
+		if self.is_link:
+			self.main_layout.addWidget(self.chr2_label)
+			self.main_layout.addWidget(self.chr2_select)
+
+	def _init_widgets(self):
+		ks = SqlControl.get_datas_by_type('karyotype')
+
+		for k in ks:
+			self.chr1_select.addItem(k.name, k.id)
+
+			if self.is_link:
+				self.chr2_select.addItem(k.name, k.id)
+
+	def replace_chrids(self):
+		if 
+			kid = self.chr1_select.currentData()
+
+			SqlControl.update_data_chrid()
+
+		if self.is_link:
+			kid = self.chr2_select.currentData()
+
+		
+
+	@classmethod
+	def replace(cls, parent):
+		dlg = cls(parent)
+
+		if dlg.exec() == QDialog.Accepted:
+			dlg.replace_chrids()
+
+
+
+
+
 
