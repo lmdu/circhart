@@ -241,7 +241,7 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_clear_plot_option
 		)
 
-		self.replace_chrom_act = QAction("Replace Chrid", self,
+		self.replace_chrom_act = QAction("Replace Chrom IDs", self,
 			triggered = self.do_replace_chrom_ids
 		)
 
@@ -373,6 +373,8 @@ class CirchartMainWindow(QMainWindow):
 		self.edit_menu.addSeparator()
 		self.edit_menu.addAction(self.assign_opt_act)
 		self.edit_menu.addAction(self.clear_opt_act)
+		self.edit_menu.addSeparator()
+		self.edit_menu.addAction(self.replace_chrom_act)
 
 		self.view_menu = self.menuBar().addMenu("&View")
 		self.view_menu.addAction(self.toolbar_act)

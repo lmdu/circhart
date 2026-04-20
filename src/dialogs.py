@@ -29,8 +29,10 @@ __all__ = [
 class CirchartBaseDialog(QDialog):
 	_title = ""
 
-	def __init__(self, parent=None):
+	def __init__(self, parent=None, **kwargs):
 		super().__init__(parent)
+		self.kwargs = kwargs
+
 		self.setWindowTitle(self._title)
 
 		self.main_layout = QVBoxLayout()
@@ -1065,20 +1067,21 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 			return params
 
 class CirchartReplaceChridDialog(CirchartBaseDialog):
-	_title = "Replace Chrids"
+	_title = "Replace Chrom IDs"
 
 	def __init__(self, parent, table):
-		super().__init__(parent)
-
-		self.table = table
-		self.is_link = table.startswith('linkdata')
+		super().__init__(parent, table=table)
 
 	def _create_widgets(self):
-		self.chr1_label = "Replace chrid in column two with"
+		self.table = self.kwargs.get('table')
+		self.is_link = self.table.startswith('linkdata')
+
+		self.chr1_label = QLabel("Replace chrid in column two with karyotype:", self)
 		self.chr1_select = QComboBox(self)
 
 		if self.is_link:
-			self.chr2_label = "Replace chrid in column five with"
+			self.chr1_label.setText("Replace chr1 in column two with karyotype:")
+			self.chr2_label = QLabel("Replace chr2 in column five with karyotype:", self)
 			self.chr2_select = QComboBox(self)
 
 	def _init_layouts(self):
@@ -1099,19 +1102,30 @@ class CirchartReplaceChridDialog(CirchartBaseDialog):
 				self.chr2_select.addItem(k.name, k.id)
 
 	def replace_chrids(self):
-		if 
+		if self.is_link:
+			kid = self.chr1_select.currentData()
+			ks = SqlControl.get_data_objects('karyotype', kid)
+
+			for k in ks:
+				SqlControl.update_data_chrid(self.table, k.label, k.name, 'chr1')
+
+			kid = self.chr2_select.currentData()
+			ks = SqlControl.get_data_objects('karyotype', kid)
+
+			for k in ks:
+				SqlControl.update_data_chrid(self.table, k.label, k.name, 'chr2')
+
+		else:
 			kid = self.chr1_select.currentData()
 
-			SqlControl.update_data_chrid()
+			ks = SqlControl.get_data_objects('karyotype', kid)
 
-		if self.is_link:
-			kid = self.chr2_select.currentData()
-
-		
+			for k in ks:
+				SqlControl.update_data_chrid(self.table, k.label, k.name)
 
 	@classmethod
-	def replace(cls, parent):
-		dlg = cls(parent)
+	def replace(cls, parent, table):
+		dlg = cls(parent, table)
 
 		if dlg.exec() == QDialog.Accepted:
 			dlg.replace_chrids()
