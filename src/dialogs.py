@@ -545,7 +545,8 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 			return QMessageBox.critical(self, 'Error', "No source data selected")
 
 		if self.select_datatype.currentIndex() == 0:
-			fi = self.select_feature.currentData()
+			fi = self.select_feature.currentText()
+
 			if not fi:
 				return QMessageBox.critical(self, 'Error', "No feature selected")
 
