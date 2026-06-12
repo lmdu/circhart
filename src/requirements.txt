@@ -1,6 +1,6 @@
 apsw==3.51.1.0
-pyfastx==2.3.0
-pygros==0.2.0
-pyside6-essentials==6.10.1
+pyfastx==2.3.1
+pygros==0.3.0
+pyside6-essentials==6.10.3
 pyyaml==6.0.3
-pyinstaller==6.18.0
+pyinstaller==6.20.0

@@ -43,19 +43,19 @@ jobs:
 
       - name: Install blobtk
         if: matrix.os == 'windows-2022'
-        run: pip install https://github.com/lmdu/blobtk-wheel/releases/download/0.8.0.post1/blobtk-0.8.0.post1-cp312-cp312-win_amd64.whl
+        run: pip install https://github.com/lmdu/blobtk-wheel/releases/download/0.8.1.post1/blobtk-0.8.1.post1-cp312-cp312-win_amd64.whl
 
       - name: Install blobtk
         if: matrix.os == 'ubuntu-22.04'
-        run: pip install https://github.com/lmdu/blobtk-wheel/releases/download/0.8.0.post1/blobtk-0.8.0.post1-cp312-cp312-manylinux_2_28_x86_64.whl
+        run: pip install https://github.com/lmdu/blobtk-wheel/releases/download/0.8.1.post1/blobtk-0.8.1.post1-cp312-cp312-manylinux_2_28_x86_64.whl
   
       - name: Install blobtk
         if: matrix.os == 'macos-15'
-        run: pip install https://github.com/lmdu/blobtk-wheel/releases/download/0.8.0.post1/blobtk-0.8.0.post1-cp312-cp312-macosx_11_0_arm64.whl
+        run: pip install https://github.com/lmdu/blobtk-wheel/releases/download/0.8.1.post1/blobtk-0.8.1.post1-cp312-cp312-macosx_11_0_arm64.whl
 
       - name: Install blobtk
         if: matrix.os == 'macos-15-intel'
-        run: pip install https://github.com/lmdu/blobtk-wheel/releases/download/0.8.0.post1/blobtk-0.8.0.post1-cp312-cp312-macosx_10_13_x86_64.whl
+        run: pip install https://github.com/lmdu/blobtk-wheel/releases/download/0.8.1.post1/blobtk-0.8.1.post1-cp312-cp312-macosx_10_13_x86_64.whl
           
       - name: Install requirements
         run: pip install -r src/requirements.txt
@@ -91,21 +91,21 @@ jobs:
           chmod a+x package/build_mac_installer.sh
           package/build_mac_installer.sh $version x64
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: artifact-${{ matrix.os }}
           path: |
             dist/*.exe
             dist/*.AppImage
             dist/*.dmg
-            dist/*-macos.*.pkg
+            dist/*-macos-*.pkg
 
-      - uses: softprops/action-gh-release@v2
+      - uses: softprops/action-gh-release@v3
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
             dist/*.exe
             dist/*.AppImage
             dist/*.dmg
-            dist/*-macos.*.pkg
+            dist/*-macos-*.pkg
 
