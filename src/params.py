@@ -1374,6 +1374,118 @@ class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 	def get_param(self):
 		return {self.key: self.get_value()}
 
+class CirchartKaryotypeParameter(CirchartParameterMixin, QListWidget):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self.setDragEnabled(True)
+		self.setAcceptDrops(True)
+		self.viewport().setAcceptDrops(True)
+		self.setDragDropMode(QAbstractItemView.DragDropMode.InternalMove)
+		self.setSelectionMode(QAbstractItemView.SingleSelection)
+		self.setDefaultDropAction(Qt.DropAction.MoveAction)
+		self.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.customContextMenuRequested.connect(self._show_context_menu)
+
+	def _show_context_menu(self, pos):
+		menu = QMenu(self)
+
+		display_act = QAction("Display All", self)
+		display_act.triggered.connect(self.display_all)
+
+		hide_act = QAction("Hide All", self)
+		hide_act.triggered.connect(self.hide_all)
+
+		reverse_act = QAction("Reverse Order", self)
+		reverse_act.triggered.connect(self.reverse_order)
+
+		moveup_act = QAction("Move Up", self)
+		moveup_act.triggered.connect(self.move_up)
+
+		movedown_act = QAction("Move Down", self)
+		movedown_act.triggered.connect(self.move_down)
+
+		menu.addAction(self.display_act)
+		menu.addAction(self.hide_act)
+		menu.addSeparator()
+		menu.addAction(self.reverse_act)
+		menu.addAction(self.moveup_act)
+		menu.addAction(self.movedown_act)
+
+		menu.exec(self.mapToGlobal(pos))
+
+	def add_items(self, texts, displays=[]):
+		self.clear()
+
+		for text in texts:
+			item = QListWidgetItem(text)
+			item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+
+			if text in displays:
+				item.setCheckState(Qt.Checked)
+
+			else:
+				item.setCheckState(Qt.Unchecked)
+
+	def display_all(self):
+		for i in range(self.count()):
+			item = self.item(i)
+
+			if item.checkState() == Qt.Unchecked:
+				item.setCheckState(Qt.Checked)
+
+	def hide_all(self):
+		for i in range(self.count()):
+			item = self.item(i)
+
+			if item.checkState() == Qt.Checked:
+				item.setCheckState(Qt.Unchecked)
+
+	def reverse_order(self):
+		count = self.count()
+		for i in range(count // 2):
+			first = self.takeItem(i)
+			last = self.takeItem(count-1-i)
+			self.insertItem(i, last)
+			self.insertItem(count-1-i, first)
+
+	def move_up(self):
+		i = self.currentRow()
+
+		if i <= 0:
+			return
+
+		item = self.takeItem(i)
+		self.insertItem(i-1, item)
+		self.setCurrentRow(i-1)
+
+	def move_down(self):
+		i = self.currentRow()
+
+		if i < 0 or i >= self.count() - 1:
+			return
+
+		item = self.takeItem(i)
+		self.insertItem(i+1, item)
+		self.setCurrentRow(i+1)
+
+	def get_value(self):
+		orders = []
+		displays = []
+
+		for i in range(self.count()):
+			item = self.item(i)
+
+			orders.append(item.text())
+
+			if item.checkState() == Qt.Checked:
+				displays.append(item.text())
+
+		return orders, displays
+
+	def set_value(self, values):
+		orders, displays = values
+		self.add_items(orders, displays)
 
 class CirchartEmptyWidget(QFrame):
 	def __init__(self, parent=None):
@@ -1785,6 +1897,9 @@ class CirchartChildAccordion(CirchartParameterAccordion):
 	def _init_panels(self):
 		pass
 
+class CirchartKaryotypeAccordion(CirchartChildAccordion):
+	_closable = False
+
 class CirchartGeneralTrack(CirchartParameterAccordion):
 	_closable = False
 
@@ -1799,6 +1914,7 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 	def _init_panels(self):
 		self._create_main_panel()
 		self._create_label_panel()
+		self._create_karyotype_panel()
 		self._create_space_panel()
 		self._create_radius_panel()
 		self.space_count = 0
@@ -1813,6 +1929,21 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 		label_params = CIRCOS_PARAMS['labels']
 		label_panel = self.create_panel('label', ':/icons/label.svg', "Show ideogram labels")
 		label_panel.create_params(label_params)
+
+	def _create_karyotype_panel(self):
+		self.karyotype_panel = self.create_panel('karyotype', 'icons/karyotype.svg', "Karyotype display and order")
+
+		for k in self.kwargs['karyotypes']:
+			kbox = CirchartKaryotypeAccordion(k, self.karyotype_panel)
+			kpanel = kbox.create_panel('main')
+			kpanel.add_param
+
+
+		
+
+	
+
+
 
 	def _create_space_panel(self):
 		self.space_panel = self.create_panel('spaces', ':/icons/space.svg', "Spacing between specific chromosomes")
@@ -2247,25 +2378,28 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		self.plot_type = params['general']['global']['plot_type']
 		self.karyotype_count = len(params['general']['global']['karyotype'])
 
-		karyotypes = []
+		karyotypes = {}
 		for row in SqlControl.get_datas_by_type('karyotype'):
-			karyotypes.append(row.name)
+			karyotypes[row.id] = row.name
 
-		params['general']['global']['karyotypes'] = ', '.join(karyotypes)
+		#params['general']['global']['karyotypes'] = ', '.join(karyotypes)
 
 		self.chroms = []
+		self.karyotypes = {}
 		for k in params['general']['global']['karyotype']:
 			rows = SqlControl.get_data_objects('karyotype', k)
+			self.karyotypes[karyotypes[k]] = []
 
 			for row in rows:
 				if row.type == 'chr':
 					self.chroms.append(row.name)
+					self.karyotypes[karyotypes[k]].append(row.name)
 
 		form = CirchartGeneralTrack('general', self)
 		form.set_params(params)
 		self.add_widget(form)
 
-		form = CirchartIdeogramTrack('ideogram', self, chroms=self.chroms)
+		form = CirchartIdeogramTrack('ideogram', self, chroms=self.chroms, karyotypes=self.karyotypes)
 		#form.set_chroms(self.chroms)
 		form.set_params(params)
 		self.add_widget(form)
