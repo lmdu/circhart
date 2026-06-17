@@ -9,9 +9,6 @@ general:
     name: plot_name
     type: readonly
   -
-    name: karyotypes
-    type: readonly
-  -
     name: karyotype
     type: hidden
 

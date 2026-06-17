@@ -1375,9 +1375,7 @@ class CirchartStyleParameter(CirchartParameterMixin, QWidget):
 		return {self.key: self.get_value()}
 
 class CirchartKaryotypeParameter(CirchartParameterMixin, QListWidget):
-	def __init__(self, parent=None):
-		super().__init__(parent)
-
+	def _init_widget(self):
 		self.setDragEnabled(True)
 		self.setAcceptDrops(True)
 		self.viewport().setAcceptDrops(True)
@@ -1399,20 +1397,28 @@ class CirchartKaryotypeParameter(CirchartParameterMixin, QListWidget):
 		reverse_act = QAction("Reverse Order", self)
 		reverse_act.triggered.connect(self.reverse_order)
 
+		reset_act = QAction("Reset Order", self)
+		reset_act.triggered.connect(self.reset_order)
+
 		moveup_act = QAction("Move Up", self)
 		moveup_act.triggered.connect(self.move_up)
 
 		movedown_act = QAction("Move Down", self)
 		movedown_act.triggered.connect(self.move_down)
 
-		menu.addAction(self.display_act)
-		menu.addAction(self.hide_act)
+		menu.addAction(display_act)
+		menu.addAction(hide_act)
 		menu.addSeparator()
-		menu.addAction(self.reverse_act)
-		menu.addAction(self.moveup_act)
-		menu.addAction(self.movedown_act)
+		menu.addAction(reverse_act)
+		menu.addAction(reset_act)
+		menu.addAction(moveup_act)
+		menu.addAction(movedown_act)
 
 		menu.exec(self.mapToGlobal(pos))
+
+	def set_data(self, chroms):
+		self.chroms = chroms
+		self.add_items(chroms, chroms)
 
 	def add_items(self, texts, displays=[]):
 		self.clear()
@@ -1426,6 +1432,8 @@ class CirchartKaryotypeParameter(CirchartParameterMixin, QListWidget):
 
 			else:
 				item.setCheckState(Qt.Unchecked)
+
+			self.addItem(item)
 
 	def display_all(self):
 		for i in range(self.count()):
@@ -1445,9 +1453,12 @@ class CirchartKaryotypeParameter(CirchartParameterMixin, QListWidget):
 		count = self.count()
 		for i in range(count // 2):
 			first = self.takeItem(i)
-			last = self.takeItem(count-1-i)
+			last = self.takeItem(count-2-i)
 			self.insertItem(i, last)
 			self.insertItem(count-1-i, first)
+
+	def reset_order(self):
+		self.add_items(self.chroms, self.chroms)
 
 	def move_up(self):
 		i = self.currentRow()
@@ -1481,7 +1492,7 @@ class CirchartKaryotypeParameter(CirchartParameterMixin, QListWidget):
 			if item.checkState() == Qt.Checked:
 				displays.append(item.text())
 
-		return orders, displays
+		return [orders, displays]
 
 	def set_value(self, values):
 		orders, displays = values
@@ -1931,19 +1942,16 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 		label_panel.create_params(label_params)
 
 	def _create_karyotype_panel(self):
-		self.karyotype_panel = self.create_panel('karyotype', 'icons/karyotype.svg', "Karyotype display and order")
+		self.karyotype_panel = self.create_panel('karyotypes', ':/icons/karyotype.svg', "Karyotype display and order")
 
-		for k in self.kwargs['karyotypes']:
-			kbox = CirchartKaryotypeAccordion(k, self.karyotype_panel)
+		for k, kname in self.kwargs['karyotypes']:
+			kbox = CirchartKaryotypeAccordion(str(k), self.karyotype_panel)
+			kbox.set_title("Karyotype: {}".format(kname))
+			self.karyotype_panel.add_param(kbox, group=True)
 			kpanel = kbox.create_panel('main')
-			kpanel.add_param
-
-
-		
-
-	
-
-
+			param = CirchartKaryotypeParameter(str(k))
+			param.set_data(self.kwargs['karyotypes'][(k, kname)])
+			kpanel.add_param(param, group=True)
 
 	def _create_space_panel(self):
 		self.space_panel = self.create_panel('spaces', ':/icons/space.svg', "Spacing between specific chromosomes")
@@ -2378,9 +2386,9 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		self.plot_type = params['general']['global']['plot_type']
 		self.karyotype_count = len(params['general']['global']['karyotype'])
 
-		karyotypes = {}
+		knames = {}
 		for row in SqlControl.get_datas_by_type('karyotype'):
-			karyotypes[row.id] = row.name
+			knames[row.id] = row.name
 
 		#params['general']['global']['karyotypes'] = ', '.join(karyotypes)
 
@@ -2388,12 +2396,12 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 		self.karyotypes = {}
 		for k in params['general']['global']['karyotype']:
 			rows = SqlControl.get_data_objects('karyotype', k)
-			self.karyotypes[karyotypes[k]] = []
+			self.karyotypes[(k, knames[k])] = []
 
 			for row in rows:
 				if row.type == 'chr':
 					self.chroms.append(row.name)
-					self.karyotypes[karyotypes[k]].append(row.name)
+					self.karyotypes[(k, knames[k])].append(row.name)
 
 		form = CirchartGeneralTrack('general', self)
 		form.set_params(params)

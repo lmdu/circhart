@@ -49,6 +49,7 @@ class CirchartCircosConfile(Confile):
 		label_params = params['label']
 		space_params = params['spaces']
 		radius_params = params['radiuses']
+		karyotype_params = params['karyotypes']
 
 		with Tag('ideogram'):
 			for k, v in main_params.items():
@@ -93,6 +94,22 @@ class CirchartCircosConfile(Confile):
 					
 					case _:
 						self.option(k, v)
+
+		order_list = []
+		display_list = []
+		for k, v in karyotype_params.items():
+			os, ds = v['main'][k]
+
+			order_list.extend(os)
+			display_list.extend(ds)
+
+		self.option('chromosomes_order', ','.join(order_list))
+
+		if len(order_list) != len(display_list):
+			self.option('chromosomes_display_default', 'no')
+
+			if display_list:
+				self.option('chromosomes', ';'.join(display_list))
 
 		radius_list = []
 		for rs in radius_params.values():

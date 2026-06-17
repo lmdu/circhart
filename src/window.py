@@ -883,6 +883,7 @@ class CirchartMainWindow(QMainWindow):
 
 	def do_update_circos_plot(self):
 		params = self.circos_panel.get_params()
+		#print(params)
 		self.draw_circos_plot(params)
 
 	def do_create_snail_plot(self):
