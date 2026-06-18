@@ -1,5 +1,6 @@
 import apsw
-import threading
+from PySide6.QtCore import *
+#import threading
 
 __all__ = [
 	'SqlTable',
@@ -327,7 +328,8 @@ class SqlQuery:
 
 class DataBackend:
 	conn = None
-	lock = threading.RLock()
+	#lock = threading.RLock()
+	lock = QMutex()
 
 	def __init__(self):
 		self.connect()
@@ -335,6 +337,10 @@ class DataBackend:
 	def __del__(self):
 		if self.conn is not None:
 			self.conn.close()
+
+	def _optimize(self):
+		self.query("PRAGMA synchronous=OFF")
+		self.query("BEGIN")
 
 	def connect(self, file=':memory:'):
 		if self.conn is not None:
@@ -350,7 +356,8 @@ class DataBackend:
 
 	@property
 	def cursor(self):
-		with self.lock:
+		#with self.lock:
+		with QMutexLocker(self.lock):
 			cur = self.conn.cursor()
 
 		return cur
@@ -446,8 +453,8 @@ class DataBackend:
 		self.query("BEGIN")
 
 	def commit(self):
-		if not self.autocommit:
-			self.query("COMMIT")
+		#if not self.autocommit:
+		self.query("COMMIT")
 
 	def save(self):
 		if self.changed:

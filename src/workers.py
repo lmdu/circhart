@@ -565,7 +565,7 @@ class CirchartProjectSaveWorker(CirchartBaseWorker):
 	def process(self):
 		self.signals.message.emit("Saving to {}".format(self.params['sfile']))
 		progress = 0
-		SqlBase.commit()
+		SqlBase.save()
 
 		with SqlBase.save_to_file(self.params['sfile']) as backup:
 			while not backup.done:

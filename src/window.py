@@ -82,7 +82,13 @@ class CirchartMainWindow(QMainWindow):
 
 	def closeEvent(self, event):
 		#self.render_to_svg()
-		SqlBase.commit()
+
+		if SqlBase.changed:
+			ret = QMessageBox.question(self, "Confirmation", "Would you like to save the project before closing?")
+
+			if ret == QMessageBox.Yes:
+				self.do_save_project()
+
 		self.write_settings()
 		event.accept()
 

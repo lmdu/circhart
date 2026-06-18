@@ -494,6 +494,8 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		self.svg_item = QGraphicsSvgItem()
 		self.svg_item.setSharedRenderer(self.svg_render)
 		self.svg_item.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
+		self.svg_item.setCacheMode(QGraphicsItem.DeviceCoordinateCache)
+		self.svg_item.setMaximumCacheSize(50 * 1024 * 1024)
 		self.scene().addItem(self.svg_item)
 		self.fitInView(self.svg_item, Qt.KeepAspectRatio)
 
