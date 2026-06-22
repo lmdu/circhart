@@ -459,10 +459,8 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
 		self.setDragMode(QGraphicsView.ScrollHandDrag)
 		self.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
-
 		self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 		self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-
 		self.setRenderHints(QPainter.Antialiasing | QPainter.SmoothPixmapTransform)
 
 		self.plot_id = 0
@@ -493,9 +491,8 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		self.svg_render = QSvgRenderer()
 		self.svg_item = QGraphicsSvgItem()
 		self.svg_item.setSharedRenderer(self.svg_render)
-		self.svg_item.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIsMovable)
+		self.svg_item.setFlag(QGraphicsItem.ItemIsMovable)
 		self.svg_item.setCacheMode(QGraphicsItem.DeviceCoordinateCache)
-		self.svg_item.setMaximumCacheSize(50 * 1024 * 1024)
 		self.scene().addItem(self.svg_item)
 		self.fitInView(self.svg_item, Qt.KeepAspectRatio)
 

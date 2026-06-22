@@ -348,11 +348,13 @@ class DataBackend:
 
 		self.conn = apsw.Connection(file)
 		self.create_tables()
+		self._optimize()
 
 	def reconnect(self, file):
 		_conn = self.conn
 		self.conn = apsw.Connection(file)
 		_conn.close()
+		self._optimize()
 
 	@property
 	def cursor(self):
@@ -453,8 +455,8 @@ class DataBackend:
 		self.query("BEGIN")
 
 	def commit(self):
-		#if not self.autocommit:
-		self.query("COMMIT")
+		if not self.autocommit:
+			self.query("COMMIT")
 
 	def save(self):
 		if self.changed:
@@ -462,7 +464,7 @@ class DataBackend:
 			self.begin()
 
 	def close(self):
-		self.commit()
+		self.save()
 
 		if self.conn:
 			self.conn.close()
