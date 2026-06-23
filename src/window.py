@@ -740,10 +740,12 @@ class CirchartMainWindow(QMainWindow):
 		self.plot_view.save_plot(ifile, iformat)
 
 	def do_zoom_in(self):
-		self.plot_view.scale(1.15, 1.15)
+		#self.plot_view.scale(1.15, 1.15)
+		self.plot_view.zoom_in()
 
 	def do_zoom_out(self):
-		self.plot_view.scale(1.0/1.15, 1.0/1.15)
+		#self.plot_view.scale(1.0/1.15, 1.0/1.15)
+		self.plot_view.zoom_out()
 
 	def do_set_karyotype_default_color(self):
 		if self.stack_widget.currentIndex() != 1:

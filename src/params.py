@@ -923,7 +923,7 @@ class CirchartRuleChromWidget(CirchartRuleWidget):
 			else:
 				return val
 		else:
-			return "{}, {}".fomrat(
+			return "{}, {}".format(
 				self.chr1_widget.currentText(),
 				self.chr2_widget.currentText()
 			)

@@ -457,8 +457,8 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 
 		self.setScene(QGraphicsScene(self))
 		self.setTransformationAnchor(QGraphicsView.AnchorUnderMouse)
-		self.setDragMode(QGraphicsView.ScrollHandDrag)
-		self.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
+		#self.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
+		self.setViewportUpdateMode(QGraphicsView.SmartViewportUpdate)
 		self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 		self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
 		self.setRenderHints(QPainter.Antialiasing | QPainter.SmoothPixmapTransform)
@@ -466,14 +466,41 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		self.plot_id = 0
 		self.create_svg_item()
 
+		self.scale_factor = 1.0
+		self.debounce_timer = QTimer(self)
+		self.debounce_timer.setSingleShot(True)
+		self.debounce_timer.setInterval(100)
+		self.debounce_timer.timeout.connect(self.do_scale)
+
+	def mousePressEvent(self, event):
+		self.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
+		super().mousePressEvent(event)
+
+	def mouseReleaseEvent(self, event):
+		self.setDragMode(QGraphicsView.DragMode.NoDrag)
+		super().mouseReleaseEvent(event)
+
 	def wheelEvent(self, event):
-		if event.angleDelta().y() > 0:
-			self.scale(1.15, 1.15)
+		self.debounce_timer.stop()
+		factor = 1.1 if event.angleDelta().y() > 0 else 0.9
+		self.scale_factor *= factor
+		self.debounce_timer.start()
 
-		else:
-			self.scale(1.0/1.15, 1.0/1.15)
+		super().wheelEvent(event)
 
-		event.accept()
+	def do_scale(self):
+		self.scale(self.scale_factor, self.scale_factor)
+		self.scale_factor = 1.0
+
+	def zoom_in(self):
+		self.debounce_timer.stop()
+		self.scale_factor *= 1.15
+		self.debounce_timer.start()
+
+	def zoom_out(self):
+		self.debounce_timer.stop()
+		self.scale_factor *= 1.0/1.15
+		self.debounce_timer.start()
 
 	def fit_view(self):
 		view_rect = self.viewport().rect()
@@ -493,6 +520,7 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 		self.svg_item.setSharedRenderer(self.svg_render)
 		self.svg_item.setFlag(QGraphicsItem.ItemIsMovable)
 		self.svg_item.setCacheMode(QGraphicsItem.DeviceCoordinateCache)
+		self.svg_item.setMaximumCacheSize(QSize(3000, 3000))
 		self.scene().addItem(self.svg_item)
 		self.fitInView(self.svg_item, Qt.KeepAspectRatio)
 

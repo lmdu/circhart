@@ -631,7 +631,40 @@ class CirchartCircosColorWorker(CirchartBaseWorker):
 					temp_color = brewer_colors[temp_name][int(temp[-1])]
 					color_list.append([cname, temp_color])
 
+		color_dict = {
+			'grey': ['grey'],
+			'red': ['red'],
+			'green': ['green'],
+			'blue': ['blue'],
+			'purple': ['purple'],
+			'orange': ['orange'],
+			'yellow': ['yellow'],
+		}
+
+		for col, val in color_list:
+			for k in color_dict:
+				if col.endswith(k):
+					color_dict[k].append(val)
+					break
+
+			else:
+				color_dict['grey'].append(val)
+
+		
+		color_list = list(color_dict.values())
 		color_list.extend(brewer_colors.values())
+
+		color_file = str(CIRCOS_PATH / 'etc' / 'colors.ucsc.conf')
+
+		with open(color_file) as fh:
+			for line in fh:
+				if line.startswith('chrs'):
+					continue
+
+				elif line.startswith(('chr', 'lum')) and ',' in line:
+					c = line.strip().split('=')[0].strip()
+					r, g, b = line.strip().split('=')[1].strip().split(',')
+					color_list.append([c, QColor(int(r), int(g), int(b))])
 
 		color_lens = []
 		for item in color_list:
