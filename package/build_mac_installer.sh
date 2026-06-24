@@ -9,11 +9,11 @@ create-dmg \
 	--volname "Circhart Installer" \
 	--volicon "../src/icons/logo.icns" \
 	--background "../package/dmg_bg.png" \
-	--window-pos 640 360 \
-	--window-size 690 503 \
-	--icon-size 120 \
-	--icon "Circhart.app" 196 281 \
-	--app-drop-link 544 281 \
+	--window-pos 600 300 \
+	--window-size 600 400 \
+	--icon-size 80 \
+	--icon "Circhart.app" 140 185 \
+	--app-drop-link 475 185 \
 	--hdiutil-quiet \
 	"Circhart-v${version}-macos-${arch}.dmg" \
 	"Circhart.app"

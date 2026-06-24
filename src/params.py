@@ -1676,6 +1676,15 @@ class CirchartParameterAccordion(QWidget):
 		self.add_panel(panel, icon, tip)
 		return panel
 
+class CirchartSubparamPanel(QListWidget):
+	def __init__(self, key, parent=None):
+		super().__init__(parent)
+		self.key = key
+
+		
+
+
+
 class CirchartParameterPanel(QWidget):
 	def __init__(self, key, parent=None):
 		super().__init__(parent)
