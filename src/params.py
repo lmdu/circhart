@@ -1571,8 +1571,9 @@ class CirchartParameterAccordion(QWidget):
 		self.box.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
 		self.header = CirchartAccordionHeader(self, self._closable)
 		self.header.collapsed.connect(self.box.setVisible)
-		self.header.collapsed.connect(self._on_collapsed)
+		#self.header.collapsed.connect(self._on_collapsed)
 		self.header.closed.connect(self._on_closed)
+		self.collapsed = self.header.collapsed
 
 		self.set_title(self.key.replace('_', ' ').title())
 
@@ -1614,11 +1615,13 @@ class CirchartParameterAccordion(QWidget):
 
 	def _on_closed(self):
 		#self.deleted.emit()
-		self.animation.setEndValue(0)
-		self.animation.start()
+		#self.animation.setEndValue(0)
+		#self.animation.start()
 
 		#if self.key in self.parent().params:
 		#	self.params
+
+		self.parent().remove_param(self.key)
 
 		try:
 			self.parent().remove_param(self.key)
@@ -1676,14 +1679,64 @@ class CirchartParameterAccordion(QWidget):
 		self.add_panel(panel, icon, tip)
 		return panel
 
+	def create_list(self, key, icon=None, tip=None):
+		panel = CirchartSubparamPanel(key, self)
+		self.add_panel(panel, icon, tip)
+		return panel
+
 class CirchartSubparamPanel(QListWidget):
 	def __init__(self, key, parent=None):
 		super().__init__(parent)
 		self.key = key
 
-		
+		self.setSpacing(3)
+		self.setDragEnabled(True)
+		self.setAcceptDrops(True)
+		self.viewport().setAcceptDrops(True)
+		self.setDragDropMode(QAbstractItemView.DragDropMode.InternalMove)
+		self.setSelectionMode(QAbstractItemView.SingleSelection)
+		self.setDefaultDropAction(Qt.DropAction.MoveAction)
+		self.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
 
+	def add_param(self, param):
+		item = QListWidgetItem()
+		self.addItem(item)
+		self.setItemWidget(item, param)
+		item.setSizeHint(param.sizeHint())
+		param.collapsed.connect(lambda : item.setSizeHint(param.sizeHint()))
 
+	def remove_param(self, key):
+		print(key)
+
+		for i in range(self.count()):
+			item = self.item(i)
+			p = self.itemWidget(item)
+
+			if p.key == key:
+				self.takeItem(item)
+				item.deleteLater()
+
+	def clear_params(self):
+		self.clear()
+
+	def get_params(self):
+		values = {}
+
+		for i in range(self.count()):
+			item = self.item(i)
+			p = self.itemWidget(item)
+			values.update(p.get_params())
+
+		return {self.key: values}
+
+	def set_params(self, params):
+		ps = params.get(self.key, {})
+
+		for i in range(self.count()):
+			item = self.item(i)
+			p = self.itemWidget(item)
+			p.set_params(ps)
 
 class CirchartParameterPanel(QWidget):
 	def __init__(self, key, parent=None):
@@ -2123,7 +2176,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.type_param.set_data(ptypes)
 
 	def _create_rule_panel(self):
-		self.rule_panel = self.create_panel('rules', ':/icons/rule.svg', "Track display rules")
+		self.rule_panel = self.create_list('rules', ':/icons/rule.svg', "Track display rules")
 		self.rule_params = CIRCOS_PARAMS['rules']
 		self.type_param.currentIndexChanged.connect(self.rule_panel.clear_params)
 
@@ -2133,7 +2186,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		menu.addAction(rule_act)
 
 		open_menu = lambda x: (menu.move(QCursor().pos()), (menu.show()))
-		self.rule_panel.setContextMenuPolicy(Qt.CustomContextMenu)
+		#self.rule_panel.setContextMenuPolicy(Qt.CustomContextMenu)
 		self.rule_panel.customContextMenuRequested.connect(open_menu)
 
 	def create_rule(self, key, ptype):
@@ -2162,7 +2215,8 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		param.set_tests(tests)
 		param.set_chroms(self.kwargs['chroms'])
 
-		self.rule_panel.add_param(rule, group=True)
+		#self.rule_panel.add_param(rule, group=True)
+		self.rule_panel.add_param(rule)
 
 	def add_rule(self):
 		self.rule_count += 1

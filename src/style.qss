@@ -376,3 +376,16 @@ CirchartDataFilterTree {
 CirchartRadialParameter {
 	border: 1px solid red;
 }
+
+CirchartSubparamPanel {
+	border: none;
+	padding: 5px;
+}
+
+CirchartSubparamPanel::item:hover,
+CirchartSubparamPanel::item:focus,
+CirchartSubparamPanel::item:selected {
+	border: none;
+	background: transparent;
+}
+
