@@ -1577,7 +1577,7 @@ class CirchartParameterAccordion(QWidget):
 
 		self.set_title(self.key.replace('_', ' ').title())
 
-		self._set_animation()
+		#self._set_animation()
 		self._set_layout()
 		self._init_panels()
 
@@ -1621,7 +1621,7 @@ class CirchartParameterAccordion(QWidget):
 		#if self.key in self.parent().params:
 		#	self.params
 
-		self.parent().remove_param(self.key)
+		#self.parent().remove_param(self.key)
 
 		try:
 			self.parent().remove_param(self.key)
@@ -1699,16 +1699,15 @@ class CirchartSubparamPanel(QListWidget):
 		self.setContextMenuPolicy(Qt.CustomContextMenu)
 		self.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
 
-	def add_param(self, param):
+	def add_param(self, param, size):
 		item = QListWidgetItem()
 		self.addItem(item)
 		self.setItemWidget(item, param)
-		item.setSizeHint(param.sizeHint())
+		#item.setSizeHint(param.sizeHint())
+		item.setSizeHint(size)
 		param.collapsed.connect(lambda : item.setSizeHint(param.sizeHint()))
 
 	def remove_param(self, key):
-		print(key)
-
 		for i in range(self.count()):
 			item = self.item(i)
 			p = self.itemWidget(item)
@@ -2215,8 +2214,10 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		param.set_tests(tests)
 		param.set_chroms(self.kwargs['chroms'])
 
+		size = param.sizeHint()
+
 		#self.rule_panel.add_param(rule, group=True)
-		self.rule_panel.add_param(rule)
+		self.rule_panel.add_param(rule, size)
 
 	def add_rule(self):
 		self.rule_count += 1
