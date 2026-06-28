@@ -1571,9 +1571,11 @@ class CirchartParameterAccordion(QWidget):
 		self.box.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
 		self.header = CirchartAccordionHeader(self, self._closable)
 		self.header.collapsed.connect(self.box.setVisible)
+		self.header.collapsed.connect(self.adjustSize)
 		#self.header.collapsed.connect(self._on_collapsed)
 		self.header.closed.connect(self._on_closed)
 		self.collapsed = self.header.collapsed
+		self.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
 
 		self.set_title(self.key.replace('_', ' ').title())
 
@@ -1699,13 +1701,17 @@ class CirchartSubparamPanel(QListWidget):
 		self.setContextMenuPolicy(Qt.CustomContextMenu)
 		self.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
 
-	def add_param(self, param, size):
+	def add_param(self, param):
+		print(param.sizeHint())
+
 		item = QListWidgetItem()
+		item.setSizeHint(param.sizeHint())
+		
 		self.addItem(item)
 		self.setItemWidget(item, param)
-		#item.setSizeHint(param.sizeHint())
-		item.setSizeHint(size)
-		param.collapsed.connect(lambda : item.setSizeHint(param.sizeHint()))
+
+		#item.setSizeHint(size)
+		#param.collapsed.connect(lambda : item.setSizeHint(param.sizeHint()))
 
 	def remove_param(self, key):
 		for i in range(self.count()):
@@ -1749,6 +1755,15 @@ class CirchartParameterPanel(QWidget):
 
 	def _init_widgets(self):
 		pass
+
+	def dragEnterEvent(self, e):
+		e.accept()
+
+	def dropEvent(self, e):
+		pos = e.position()
+		widget = e.source()
+
+		self.param_layout
 
 	def _set_layout(self):
 		self.param_layout = QFormLayout()
@@ -1968,6 +1983,13 @@ class CirchartParameterPanel(QWidget):
 class CirchartChildAccordion(CirchartParameterAccordion):
 	def _init_panels(self):
 		pass
+
+	def mouseMoveEvent(self, e):
+		if e.buttons() == Qt.MouseButton.LeftButton:
+			drag = QDrag(self)
+			mime = QMimeData()
+			drag.setMimeData(mime)
+			drag.exec(Qt.DropAction.MoveAction)
 
 class CirchartKaryotypeAccordion(CirchartChildAccordion):
 	_closable = False
@@ -2214,10 +2236,11 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		param.set_tests(tests)
 		param.set_chroms(self.kwargs['chroms'])
 
-		size = param.sizeHint()
+		#size = param.sizeHint()
 
 		#self.rule_panel.add_param(rule, group=True)
-		self.rule_panel.add_param(rule, size)
+		#self.rule_panel.add_param(rule, size)
+		self.rule_panel.add_param(rule)
 
 	def add_rule(self):
 		self.rule_count += 1
