@@ -1,35 +1,56 @@
-import sys
-from PySide6.QtGui import *
-from PySide6.QtCore import * 
-from PySide6.QtWidgets import * 
-
-class Window(QMainWindow):
-	def __init__(self):
-		super().__init__()
-		self.setWindowTitle("Python")
-
-		list_widget = QListWidget(self)
-		list_widget.setDragEnabled(True)
-		list_widget.setAcceptDrops(True)
-		list_widget.viewport().setAcceptDrops(True)
-		list_widget.setDragDropMode(QAbstractItemView.DragDropMode.InternalMove)
-		list_widget.setDefaultDropAction(Qt.DropAction.MoveAction)
-
-		self.setCentralWidget(list_widget)
-
-		list_widget.addItems(['A', 'B', 'C', 'D'])
-
-		for i in range(list_widget.count()):
-			item = list_widget.item(i)
-
-			item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
-
-			item.setCheckState(Qt.Unchecked)
-
-		self.show()
+from PySide6.QtCore import QMimeData, Qt
+from PySide6.QtGui import QDrag
+from PySide6.QtWidgets import QApplication, QHBoxLayout, QPushButton, QWidget
 
 
-App = QApplication(sys.argv)
-window = Window()
-window.show()
-sys.exit(App.exec())
+class DragButton(QPushButton):
+    def mouseMoveEvent(self, e):
+        if e.buttons() == Qt.MouseButton.LeftButton:
+            drag = QDrag(self)
+            mime = QMimeData()
+            drag.setMimeData(mime)
+            drag.exec(Qt.DropAction.MoveAction)
+
+
+class Window(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setAcceptDrops(True)
+
+        self.blayout = QHBoxLayout()
+        for l in ["A", "B", "C", "D"]:
+            btn = DragButton(l)
+            self.blayout.addWidget(btn)
+
+        self.setLayout(self.blayout)
+
+    def dragEnterEvent(self, e):
+        e.accept()
+
+    def dropEvent(self, e):
+        pos = e.position()
+        widget = e.source()
+        self.blayout.removeWidget(widget)
+
+        for n in range(self.blayout.count()):
+            # Get the widget at each index in turn.
+            w = self.blayout.itemAt(n).widget()
+            if pos.x() < w.x() + w.size().width() // 2:
+                # We didn't drag past this widget.
+                # insert to the left of it.
+                break
+        else:
+            # We aren't on the left hand side of any widget,
+            # so we're at the end. Increment 1 to insert after.
+            n += 1
+
+        self.blayout.insertWidget(n, widget)
+
+        e.accept()
+
+
+app = QApplication([])
+w = Window()
+w.show()
+
+app.exec()

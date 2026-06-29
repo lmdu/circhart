@@ -20,8 +20,15 @@ QMenu {
 	padding: 3px 0;
 }
 
+QMenu::icon {
+	margin-left: 10px;
+	height: 20px;
+	width: 20px;
+}
+
 QMenu::item {
-	padding: 3px 10px;
+	padding: 4px 40px 4px 10px;
+	spacing: 15px;
 }
 
 QMenu::item:selected {
@@ -33,6 +40,22 @@ QMenu::separator {
 	height: 1px;
 	background: #d6d6d6;
 	margin: 5px 0;
+}
+
+QMenu::indicator {
+	padding-left: 5px;
+}
+
+QMenu::indicator::non-exclusive:checked {
+	image: url(:/icons/check.svg);
+	width: 20px;
+	height: 20px;
+}
+
+QMenu::right-arrow {
+	image: url(:/icons/mright.svg);
+	width: 20px;
+	height: 20px;
 }
 
 QToolBar {
@@ -375,17 +398,5 @@ CirchartDataFilterTree {
 
 CirchartRadialParameter {
 	border: 1px solid red;
-}
-
-CirchartSubparamPanel {
-	border: none;
-	padding: 5px;
-}
-
-CirchartSubparamPanel::item:hover,
-CirchartSubparamPanel::item:focus,
-CirchartSubparamPanel::item:selected {
-	border: none;
-	background: transparent;
 }
 

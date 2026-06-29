@@ -206,7 +206,7 @@ class CirchartMainWindow(QMainWindow):
 		self.export_image_act = QAction(QIcon(":/icons/save.svg"), "&Export Image...", self,
 			triggered = self.do_export_image
 		)
-		self.export_image_act.setIconVisibleInMenu(False)
+		#self.export_image_act.setIconVisibleInMenu(False)
 
 		self.zoom_in_act = QAction(QIcon(":/icons/zoomin.svg"), "&Zoom In", self,
 			shortcut = QKeySequence.ZoomIn,
@@ -286,24 +286,24 @@ class CirchartMainWindow(QMainWindow):
 		self.new_circos_act = QAction(QIcon(':/icons/new.svg'), "&Create Circos Plot", self,
 			triggered = self.do_create_circos_plot
 		)
-		self.new_circos_act.setIconVisibleInMenu(False)
+		#self.new_circos_act.setIconVisibleInMenu(False)
 
 		self.add_track_act = QAction(QIcon(':/icons/track.svg'), "&Add Circos Track", self,
 			triggered = self.do_add_circos_track
 		)
-		self.add_track_act.setIconVisibleInMenu(False)
+		#self.add_track_act.setIconVisibleInMenu(False)
 
 		self.update_circos_act = QAction(QIcon(':/icons/refresh.svg'), "&Update Circos Plot", self,
 			triggered = self.do_update_circos_plot
 		)
-		self.update_circos_act.setIconVisibleInMenu(False)
+		#self.update_circos_act.setIconVisibleInMenu(False)
 
 		self.new_snail_act = QAction(QIcon(':/icons/spiral.svg'), "&Create Snail Plot", self,
 			triggered = self.do_create_snail_plot
 		)
-		self.new_snail_act.setIconVisibleInMenu(False)
+		#self.new_snail_act.setIconVisibleInMenu(False)
 
-		self.update_snail_act = QAction("&Update Snail Plot", self,
+		self.update_snail_act = QAction(QIcon(':/icons/refresh.svg'), "&Update Snail Plot", self,
 			triggered = self.do_update_snail_plot
 		)
 
@@ -322,7 +322,7 @@ class CirchartMainWindow(QMainWindow):
 		self.cite_act = QAction(QIcon(':/icons/citation.svg'), "&Citation", self,
 			triggered = self.go_to_citation
 		)
-		self.cite_act.setIconVisibleInMenu(False)
+		#self.cite_act.setIconVisibleInMenu(False)
 
 		self.issue_act = QAction("&Report Issues", self,
 			triggered = self.go_to_issues

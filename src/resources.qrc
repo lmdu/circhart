@@ -8,6 +8,7 @@
 	<file>icons/axis.svg</file>
 	<file>icons/bg.svg</file>
 	<file>icons/chart.svg</file>
+	<file>icons/check.svg</file>
 	<file>icons/citation.svg</file>
 	<file>icons/close.svg</file>
 	<file>icons/color.svg</file>
@@ -22,6 +23,7 @@
 	<file>icons/logo.svg</file>
 	<file>icons/mark.svg</file>
 	<file>icons/minus.svg</file>
+	<file>icons/mright.svg</file>
 	<file>icons/new.svg</file>
 	<file>icons/no.svg</file>
 	<file>icons/offset.svg</file>

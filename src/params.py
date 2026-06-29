@@ -1754,7 +1754,7 @@ class CirchartParameterPanel(QWidget):
 		self._init_widgets()
 
 	def _init_widgets(self):
-		pass
+		self.setAcceptDrops(True)
 
 	def dragEnterEvent(self, e):
 		e.accept()
@@ -1763,7 +1763,33 @@ class CirchartParameterPanel(QWidget):
 		pos = e.position()
 		widget = e.source()
 
-		self.param_layout
+		if widget.parent() != self:
+			return
+
+		if self.param_layout.rowCount() <= 1:
+			return
+
+		self.param_layout.takeRow(widget)
+		row_count = self.param_layout.rowCount()
+
+		if row_count <= 0:
+			return
+
+		for i in range(row_count):
+			item = self.param_layout.itemAt(i)
+
+			if not item:
+				continue
+
+			w = item.widget()
+
+			if pos.y() < w.geometry().center().y():
+				break
+		else:
+			i += 1
+
+		self.param_layout.insertRow(i, widget)
+		e.accept()
 
 	def _set_layout(self):
 		self.param_layout = QFormLayout()
@@ -1960,7 +1986,15 @@ class CirchartParameterPanel(QWidget):
 	def get_params(self):
 		values = {}
 
-		for k, p in self.params.items():
+		#for k, p in self.params.items():
+		for i in range(self.param_layout.rowCount()):
+			item = self.param_layout.itemAt(i)
+
+			if not item:
+				continue
+
+			p = item.widget()
+
 			if isinstance(p, CirchartParameterMixin):
 				values.update(p.get_param())
 
@@ -1989,6 +2023,22 @@ class CirchartChildAccordion(CirchartParameterAccordion):
 			drag = QDrag(self)
 			mime = QMimeData()
 			drag.setMimeData(mime)
+
+			pixmap = QPixmap(self.size())
+			pixmap.fill(QColor(204, 232, 255, 80))
+			
+			pen = QPen()
+			pen.setWidth(1)
+			pen.setColor(QColor(0, 120, 212))
+			pen.setStyle(Qt.SolidLine)
+
+			painter = QPainter(pixmap)
+			painter.setPen(pen)
+			painter.setRenderHint(QPainter.Antialiasing, True)
+			painter.drawRect(0, 0, pixmap.width(), pixmap.height())
+			painter.end()
+
+			drag.setPixmap(pixmap)
 			drag.exec(Qt.DropAction.MoveAction)
 
 class CirchartKaryotypeAccordion(CirchartChildAccordion):
@@ -2197,7 +2247,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		self.type_param.set_data(ptypes)
 
 	def _create_rule_panel(self):
-		self.rule_panel = self.create_list('rules', ':/icons/rule.svg', "Track display rules")
+		self.rule_panel = self.create_panel('rules', ':/icons/rule.svg', "Track display rules")
 		self.rule_params = CIRCOS_PARAMS['rules']
 		self.type_param.currentIndexChanged.connect(self.rule_panel.clear_params)
 
@@ -2207,7 +2257,7 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 		menu.addAction(rule_act)
 
 		open_menu = lambda x: (menu.move(QCursor().pos()), (menu.show()))
-		#self.rule_panel.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.rule_panel.setContextMenuPolicy(Qt.CustomContextMenu)
 		self.rule_panel.customContextMenuRequested.connect(open_menu)
 
 	def create_rule(self, key, ptype):
@@ -2238,9 +2288,9 @@ class CirchartPlotTrack(CirchartParameterAccordion):
 
 		#size = param.sizeHint()
 
-		#self.rule_panel.add_param(rule, group=True)
+		self.rule_panel.add_param(rule, group=True)
 		#self.rule_panel.add_param(rule, size)
-		self.rule_panel.add_param(rule)
+		#self.rule_panel.add_param(rule)
 
 	def add_rule(self):
 		self.rule_count += 1
