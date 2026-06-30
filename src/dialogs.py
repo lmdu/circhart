@@ -247,15 +247,14 @@ class CirchartKaryotypePrepareDialog(CirchartBaseDialog):
 
 	def _create_widgets(self):
 		self.name_input = QLineEdit(self)
-		self.name_input.setPlaceholderText("input name for generated karyotype data")
 		self.select = QComboBox(self)
 		self.select.currentIndexChanged.connect(self.change_genome)
 		self.table = CirchartCheckTableWidget(self)
 		self.table.setSortingEnabled(True)
 		self.prefix_input = QLineEdit(self)
-		self.prefix_input.setPlaceholderText("e.g. use hs for human, mm for mouse, or chr")
 		
 	def _init_layouts(self):
+		self.main_layout.addWidget(QLabel("Input data name:", self))
 		self.main_layout.addWidget(self.name_input)
 		self.main_layout.addWidget(QLabel("Select a genome:", self))
 		self.main_layout.addWidget(self.select)
@@ -263,6 +262,7 @@ class CirchartKaryotypePrepareDialog(CirchartBaseDialog):
 		self.main_layout.addWidget(self.table)
 		self.main_layout.addWidget(QLabel("Chromosome name prefix:", self))
 		self.main_layout.addWidget(self.prefix_input)
+		self.main_layout.addWidget(QLabel("<font color='grey'>e.g. use hs for human, mm for mouse, or chr</font>"))
 
 	def _init_widgets(self):
 		self.genome_ids = []
@@ -348,9 +348,9 @@ class CirchartBandPrepareDialog(CirchartBaseDialog):
 		self.select_karyotype = QComboBox(self)
 		self.select_bands = QComboBox(self)
 		self.name_input = QLineEdit(self)
-		self.name_input.setPlaceholderText("input name for generated band data")
 
 	def _init_layouts(self):
+		self.main_layout.addWidget(QLabel("Input data name:", self))
 		self.main_layout.addWidget(self.name_input)
 		self.main_layout.addWidget(QLabel("Select a karyotype:", self))
 		self.main_layout.addWidget(self.select_karyotype)
@@ -402,12 +402,12 @@ class CirchartGCContentPrepareDialog(CirchartBaseDialog):
 
 	def _create_widgets(self):
 		self.dataname_input = QLineEdit(self)
-		self.dataname_input.setPlaceholderText("input name for generated data")
 		self.select_genome = QComboBox(self)
 		self.select_karyotype = QComboBox(self)
 		self.window_size = CirchartGenomeWindowSize(self)
 
 	def _init_layouts(self):
+		self.main_layout.addWidget(QLabel("Input data name:", self))
 		self.main_layout.addWidget(self.dataname_input)
 		self.main_layout.addWidget(QLabel("Select a genome:", self))
 		self.main_layout.addWidget(self.select_genome)
@@ -469,17 +469,34 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 		return QSize(400, 0)
 
 	def _create_widgets(self):
+		self.features = {}
+		self.attributes = {}
+
 		self.dataname_input = QLineEdit(self)
-		self.dataname_input.setPlaceholderText("input name for generated data")
 		self.select_datatype = QComboBox(self)
 		self.select_annotation = QComboBox(self)
 		self.select_karyotype = QComboBox(self)
 		self.feature_label = QLabel("Select a feature:", self)
 		self.select_feature = QComboBox(self)
+		self.select_feature.setEditable(True)
+		self.filter_check = QCheckBox("Filter by attribute", self)
+		self.filter_check.checkStateChanged.connect(self._on_filter_checked)
+		self.attr_label = QLabel("Select an attribute:", self)
+		self.attr_select = QComboBox(self)
+		self.attr_select.setEditable(True)
+		self.match_label = QLabel("Matched attribute values:", self)
+		self.match_text = QLineEdit(self)
+		self.match_tips = QLabel("<font color='grey'>Use comma to separate multiple values</font>")
+		self.attr_label.setVisible(False)
+		self.attr_select.setVisible(False)
+		self.match_label.setVisible(False)
+		self.match_text.setVisible(False)
+		self.match_tips.setVisible(False)
+
 		self.window_size = CirchartGenomeWindowSize(self)
 
-		self.select_datatype.currentIndexChanged.connect(self._on_datatype_changed)
 		self.select_annotation.currentIndexChanged.connect(self._on_annotation_changed)
+		self.select_datatype.currentIndexChanged.connect(self._on_datatype_changed)
 
 	def _init_widgets(self):
 		formats = [
@@ -488,14 +505,15 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 			('Genome regions (bed)', 'bed')
 		]
 
-		for desc, fmt in formats:
-			self.select_datatype.addItem(desc, fmt)
-
 		ks = SqlControl.get_datas_by_type('karyotype')
 		for k in ks:
 			self.select_karyotype.addItem(k.name, k.id)
 
+		for desc, fmt in formats:
+			self.select_datatype.addItem(desc, fmt)
+
 	def _init_layouts(self):
+		self.main_layout.addWidget(QLabel("Input data name:", self))
 		self.main_layout.addWidget(self.dataname_input)
 		self.main_layout.addWidget(QLabel("Select a karyotype:", self))
 		self.main_layout.addWidget(self.select_karyotype)
@@ -505,17 +523,44 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 		self.main_layout.addWidget(self.select_annotation)
 		self.main_layout.addWidget(self.feature_label)
 		self.main_layout.addWidget(self.select_feature)
+		self.main_layout.addWidget(self.filter_check)
+
+		self.main_layout.addWidget(self.attr_label)
+		self.main_layout.addWidget(self.attr_select)
+		self.main_layout.addWidget(self.match_label)
+		self.main_layout.addWidget(self.match_text)
+		self.main_layout.addWidget(self.match_tips)
+
 		self.main_layout.addWidget(self.window_size)
+
+	def _on_filter_checked(self, state):
+		if state == Qt.Checked:
+			self.attr_label.setVisible(True)
+			self.attr_select.setVisible(True)
+			self.match_label.setVisible(True)
+			self.match_text.setVisible(True)
+			self.match_tips.setVisible(True)
+		else:
+			self.attr_label.setVisible(False)
+			self.attr_select.setVisible(False)
+			self.match_label.setVisible(False)
+			self.match_text.setVisible(False)
+			self.match_tips.setVisible(False)
+
+		self.adjustSize()
 
 	def _on_datatype_changed(self, index):
 		if index == 0:
 			self.feature_label.setVisible(True)
 			self.select_feature.setVisible(True)
-			self.adjustSize()
+			self.filter_check.setVisible(True)
 		else:
 			self.feature_label.setVisible(False)
 			self.select_feature.setVisible(False)
-			self.adjustSize()
+			self.filter_check.setVisible(False)
+			self.filter_check.setCheckState(Qt.Unchecked)
+		
+		self.adjustSize()
 
 		data_types = ['annotation', 'variants', 'regions']
 
@@ -526,10 +571,17 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 
 	def _on_annotation_changed(self, index):
 		if self.select_datatype.currentIndex() == 0:
+			if not self.features:
+				ans = SqlControl.get_datas_by_type('annotation')
+				for a in ans:
+					meta = str_to_dict(a.meta)
+					self.features[a.id] = meta['features']
+					self.attributes[a.id] = meta['attributes']
+
 			annot_id = self.select_annotation.currentData()
-			features = SqlControl.get_annotation_features(annot_id)
 			self.select_feature.clear()
-			self.select_feature.addItems(features)
+			self.select_feature.addItems(self.features[annot_id])
+			self.attr_select.addItems(self.attributes[annot_id])
 
 	def _on_accepted(self):
 		dn = self.dataname_input.text().strip()
@@ -545,10 +597,21 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 			return QMessageBox.critical(self, 'Error', "No source data selected")
 
 		if self.select_datatype.currentIndex() == 0:
-			fi = self.select_feature.currentText()
+			fi = self.select_feature.currentText().strip()
 
 			if not fi:
-				return QMessageBox.critical(self, 'Error', "No feature selected")
+				return QMessageBox.critical(self, 'Error', "No feature selected or input")
+
+			if self.match_check.isChecked():
+				ai = self.attr_select.currentText().strip()
+
+				if not ai:
+					return QMessageBox.critical(self, 'Error', "No attribute selected or input")
+
+				mt = self.match_text.text().strip()
+
+				if not mt:
+					return QMessageBox.critical(self, 'Error', "No attribute value input")
 
 		self.accept()
 
@@ -560,7 +623,10 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 			annotation_id = dlg.select_annotation.currentData()
 			karyotype_id = dlg.select_karyotype.currentData()
 			window_size = dlg.window_size.get_values()
-			feature = dlg.select_feature.currentText()
+			feature = dlg.select_feature.currentText().strip()
+			attrcheck = dlg.match_check.isChecked()
+			attribute = dlg.attr_select.currentText().strip()
+			attrvalue = dlg.match_text.text().strip()
 			dataname = dlg.dataname_input.text().strip()
 			datatype = dlg.select_datatype.currentData()
 
@@ -568,6 +634,9 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 				'annotation': annotation_id,
 				'karyotype': karyotype_id,
 				'feature': feature,
+				'attrcheck': attrcheck,
+				'attribute': attribute,
+				'attrvalue': attrvalue,
 				'dataname': dataname,
 				'datatype': datatype
 			}
@@ -580,11 +649,12 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 
 	def _create_widgets(self):
 		self.dataname_input = QLineEdit(self)
-		self.dataname_input.setPlaceholderText("input name for generated data")
 		self.annot_select = QComboBox(self)
 		self.select_karyotype = QComboBox(self)
 		self.feat_select = QComboBox(self)
+		self.feat_select.setEditable(True)
 		self.attr_select = QComboBox(self)
+		self.attr_select.setEditable(True)
 		self.match_text = QTextEdit(self)
 		self.match_text.setVisible(False)
 		self.match_text.setPlaceholderText("One attribute value per line")
@@ -610,6 +680,7 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 			self.annot_select.addItem(a.name, a.id)
 
 	def _init_layouts(self):
+		self.main_layout.addWidget(QLabel("Input data name:", self))
 		self.main_layout.addWidget(self.dataname_input)
 		self.main_layout.addWidget(QLabel("Select a karyotype:", self))
 		self.main_layout.addWidget(self.select_karyotype)
@@ -663,6 +734,7 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 
 		if self.match_check.isChecked():
 			mt = self.match_text.toPlainText().strip()
+
 			if not mt:
 				return QMessageBox.critical(self, 'Error', "No attribute value list input")
 
@@ -675,25 +747,23 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 		if dlg.exec() == QDialog.Accepted:
 			annotation_id = dlg.annot_select.currentData()
 			karyotype_id = dlg.select_karyotype.currentData()
-			feature = dlg.feat_select.currentText()
+			feature = dlg.feat_select.currentText().strip()
 			dataname = dlg.dataname_input.text().strip()
-			attribute = dlg.attr_select.currentText()
-			matches = dlg.match_text.toPlainText()
-			method = dlg.match_check.isChecked()
+			attribute = dlg.attr_select.currentText().strip()
+			attrvalue = dlg.match_text.toPlainText()
+			attrcheck = dlg.match_check.isChecked()
 
 			params = {
 				'annotation': annotation_id,
 				'karyotype': karyotype_id,
 				'feature': feature,
+				'attrcheck': attrcheck,
 				'attribute': attribute,
+				'attrvalue': attrvalue,
 				'dataname': dataname
 			}
 
-			if method:
-				params['matches'] = matches
-
 			return params
-
 
 class CirchartCreateCircosPlotDialog(QDialog):
 	def __init__(self, parent=None):
@@ -981,8 +1051,8 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 	def _create_widgets(self):
 		self.mapping_widgets = []
 
+		self.dataname_label = QLabel("Input data name:", self)
 		self.dataname_input = QLineEdit(self)
-		self.dataname_input.setPlaceholderText("input name for generated data")
 		
 		self.collinear_label = QLabel("Select collinearity data:", self)
 		self.collinear_select = QComboBox(self)
@@ -997,6 +1067,7 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 		self.subs_layout = QVBoxLayout()
 		self.subs_layout.setContentsMargins(0, 0, 0, 0)
 
+		self.base_layout.addWidget(self.dataname_label)
 		self.base_layout.addWidget(self.dataname_input)
 		self.base_layout.addWidget(self.collinear_label)
 		self.base_layout.addWidget(self.collinear_select)

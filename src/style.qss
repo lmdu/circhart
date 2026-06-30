@@ -85,6 +85,15 @@ QToolButton:pressed {
 	background: #b7b7b7;
 }
 
+QToolButton::menu-button {
+	background: transparent;
+	width: 16px;
+}
+
+QToolButton::menu-arrow {
+	image: url(':/icons/arrow.svg');
+}
+
 QPushButton {
 	background: #ffffff;
 	color: #374151;

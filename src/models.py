@@ -220,6 +220,24 @@ class CirchartBaseTableModel(QAbstractTableModel):
 	def get_table(self):
 		return self._table
 
+	def select_all(self):
+		sql = SqlQuery(self._table)\
+			.select('id')
+
+		self.beginResetModel()
+		self.selected = SqlBase.get_column(sql)
+		self.endResetModel()
+
+	def deselect_all(self):
+		self.beginResetModel()
+		self.selected = []
+		self.endResetModel()
+
+	def update_select(self, selected):
+		self.beginResetModel()
+		self.selected = selected
+		self.endResetModel()
+
 	def remove_row(self, index, parent=QModelIndex()):
 		row = index.row()
 		self.beginRemoveRows(parent, row, row)

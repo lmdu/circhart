@@ -380,6 +380,8 @@ class CirchartDataTableWidget(QTableView):
 		super().__init__(parent)
 		self.verticalHeader().hide()
 		#self.horizontalHeader().setStretchLastSection(True)
+		self.setSelectionMode(QAbstractItemView.ExtendedSelection)
+		self.setSelectionBehavior(QAbstractItemView.SelectRows)
 		self.setSortingEnabled(True)
 		self._model = None
 
@@ -438,6 +440,55 @@ class CirchartDataTableWidget(QTableView):
 				self._model.update_default_color()
 
 class CirchartCheckTableWidget(CirchartDataTableWidget):
+	def contextMenuEvent(self, event):
+		menu = QMenu(self)
+
+		guess_act = menu.addAction("Guess Chromosome")
+		guess_act.triggered.connect(self.guess_chromosome)
+		menu.addSeparator()
+		sel_act = menu.addAction("Select All")
+		sel_act.triggered.connect(self.select_all)
+		des_act = menu.addAction("Deselect All")
+		des_act.triggered.connect(self.deselect_all)
+		menu.exec(event.globalPos())
+
+	def select_all(self):
+		if self._model:
+			self._model.select_all()
+
+	def deselect_all(self):
+		if self._model:
+			self._model.deselect_all()
+
+	def guess_chromosome(self):
+		if not self._model:
+			return
+
+		sql = SqlQuery(self._model.get_table())\
+			.select()\
+			.orderby('length', asc=False)
+
+		chroms = []
+		csize = 1
+		for row in SqlBase.get_rows(sql):
+			chrom = row[1].lower()
+			ratio = row[2] / csize
+			csize = row[2]
+			
+			if chrom.startswith('chr'):
+				chrid = chrom.lstrip('chr')
+
+				if chrid.isdigit() or chrid in ['x', 'y', 'z', 'w']:
+					chroms.append(row[0])
+					continue
+
+			if ratio < 0.3:
+				break
+
+			chroms.append(row[0])
+
+		self._model.update_select(chroms)
+
 	def create_model(self, table):
 		self._model = CirchartDataTableModel(self, True, True)
 		self.setModel(self._model)

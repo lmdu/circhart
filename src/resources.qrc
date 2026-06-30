@@ -12,6 +12,7 @@
 	<file>icons/citation.svg</file>
 	<file>icons/close.svg</file>
 	<file>icons/color.svg</file>
+	<file>icons/data.svg</file>
 	<file>icons/delete.svg</file>
 	<file>icons/delrule.svg</file>
 	<file>icons/dna.svg</file>
@@ -29,6 +30,7 @@
 	<file>icons/offset.svg</file>
 	<file>icons/ok.svg</file>
 	<file>icons/plus.svg</file>
+	<file>icons/project.svg</file>
 	<file>icons/radius.svg</file>
 	<file>icons/refresh.svg</file>
 	<file>icons/right.svg</file>

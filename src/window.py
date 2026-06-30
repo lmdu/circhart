@@ -136,7 +136,7 @@ class CirchartMainWindow(QMainWindow):
 			self.setWindowTitle("{} v{} - {}".format(APP_NAME, APP_VERSION, pfile))
 
 	def create_actions(self):
-		self.open_project_act = QAction("&Open Project...", self,
+		self.open_project_act = QAction(QIcon(':/icons/project.svg'), "&Open Project...", self,
 			shortcut = QKeySequence.Open,
 			triggered = self.do_open_project
 		)
@@ -203,6 +203,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_text_data
 		)
 
+		self.export_data_act = QAction("&Export Data...", self,
+			triggered = self.do_export_data
+		)
+
 		self.export_image_act = QAction(QIcon(":/icons/save.svg"), "&Export Image...", self,
 			triggered = self.do_export_image
 		)
@@ -218,7 +222,7 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_zoom_out
 		)
 
-		self.quit_act = QAction("&Exit", self,
+		self.quit_act = QAction("&Quit", self,
 			shortcut = QKeySequence.Quit,
 			triggered = self.close
 		)
@@ -360,6 +364,7 @@ class CirchartMainWindow(QMainWindow):
 		self.import_menu.addAction(self.import_loci_act)
 		self.import_menu.addAction(self.import_text_act)
 		self.import_menu.addSeparator()
+		self.file_menu.addAction(self.export_data_act)
 		self.file_menu.addAction(self.export_image_act)
 
 		self.file_menu.addSeparator()
@@ -399,6 +404,7 @@ class CirchartMainWindow(QMainWindow):
 		self.prepare_menu.addAction(self.prepare_tdata_act)
 
 		self.plot_menu = self.menuBar().addMenu("&Plot")
+
 		self.circos_menu = self.plot_menu.addMenu("&Circos Plot")
 		self.circos_menu.addAction(self.new_circos_act)
 		self.circos_menu.addSeparator()
@@ -422,6 +428,12 @@ class CirchartMainWindow(QMainWindow):
 		self.help_menu.addAction(self.update_act)
 		self.help_menu.addAction(self.screen_act)
 
+		#remove shadow
+		menus = [self.file_menu, self.import_menu, self.edit_menu, self.kcolor_menu,
+			self.view_menu, self.tool_menu, self.prepare_menu, self.plot_menu,
+			self.circos_menu, self.snail_menu, self.help_menu]
+		for menu in menus:
+			menu.setWindowFlags(menu.windowFlags() | Qt.WindowType.NoDropShadowWindowHint)
 
 	def create_toolbar(self):
 		self.tool_bar = self.addToolBar('Show Tool Bar')
@@ -431,8 +443,24 @@ class CirchartMainWindow(QMainWindow):
 		self.tool_bar.setToolButtonStyle(Qt.ToolButtonTextUnderIcon)
 		
 		self.toolbar_act = self.tool_bar.toggleViewAction()
-		
-		#self.tool_bar.addSeparator()
+
+		prepare_menu = QMenu(self)
+		prepare_menu.setWindowFlags(prepare_menu.windowFlags() | Qt.WindowType.NoDropShadowWindowHint)
+		prepare_menu.addAction(self.prepare_kdata_act)
+		prepare_menu.addAction(self.prepare_band_act)
+		prepare_menu.addAction(self.prepare_gc_act)
+		prepare_menu.addAction(self.prepare_skew_act)
+		prepare_menu.addAction(self.prepare_pdata_act)
+		prepare_menu.addAction(self.prepare_ldata_act)
+		prepare_menu.addAction(self.prepare_tdata_act)
+		prepare_action = QAction(QIcon(':/icons/data.svg'), "Prepare Data", self)
+		prepare_action.setMenu(prepare_menu)
+
+		self.tool_bar.addAction(prepare_action)
+		self.tool_bar.addSeparator()
+
+		prepare_widget = self.tool_bar.widgetForAction(prepare_action)
+		prepare_action.triggered.connect(prepare_widget.showMenu)
 
 		self.tool_bar.addAction(self.new_circos_act)
 		self.tool_bar.addAction(self.add_track_act)
@@ -721,6 +749,14 @@ class CirchartMainWindow(QMainWindow):
 
 	def do_import_text_data(self):
 		self.import_plot_data('textdata', 4)
+
+	def do_export_data(self):
+		if self.stack_widget.currentIndex() != 1:
+			return
+
+		table = self.data_table.get_table()
+
+		print(table)
 
 	def do_export_image(self):
 		ifile, ext = QFileDialog.getSaveFileName(self,

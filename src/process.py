@@ -507,8 +507,40 @@ class CirchartGCSkewPrepareProcess(CirchartGCContentPrepareProcess):
 		return gc
 
 class CirchartDensityPrepareProcess(CirchartBaseProcess):
+	def parse_gtf(self, cols):
+		if cols[2].lower() != self.params.feature.lower():
+			return
+
+		attrs = {}
+		for attr in cols[8].split(';'):
+			k, v in attr.split('"')
+			attrs[k.strip().lower()] = v.strip().lower()
+
+		av = attrs.get(self.params.attribute, None)
+
+		if av in self.params.attrvalue:
+			start = int(cols[3])
+			end = int(cols[4])
+			return start, end
+
+	def parse_gff(self, cols):
+		if cols[2].lower() != self.params.feature.lower():
+			return
+
+		attrs = {}
+		for attr in cols[8].split(';'):
+			k, v in attr.split('=')
+			attrs[k.strip().lower()] = v.strip().lower()
+
+		av = attrs.get(self.params.attribute, None)
+
+		if av in self.params.attrvalue:
+			start = int(cols[3])
+			end = int(cols[4])
+			return start, end
+
 	def parse_gxf(self, cols):
-		if cols[2] != self.params.feature:
+		if cols[2].lower() != self.params.feature.lower():
 			return
 
 		start = int(cols[3])
