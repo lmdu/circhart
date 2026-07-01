@@ -715,17 +715,3 @@ class SqlControl:
 
 		return SqlBase.get_one(sql, pid)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-	

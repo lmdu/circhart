@@ -486,12 +486,11 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 		self.attr_select.setEditable(True)
 		self.match_label = QLabel("Matched attribute values:", self)
 		self.match_text = QLineEdit(self)
-		self.match_tips = QLabel("<font color='grey'>Use comma to separate multiple values</font>")
+		self.match_text.setPlaceholderText("Use , to separate multiple values")
 		self.attr_label.setVisible(False)
 		self.attr_select.setVisible(False)
 		self.match_label.setVisible(False)
 		self.match_text.setVisible(False)
-		self.match_tips.setVisible(False)
 
 		self.window_size = CirchartGenomeWindowSize(self)
 
@@ -521,15 +520,19 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 		self.main_layout.addWidget(self.select_datatype)
 		self.main_layout.addWidget(QLabel("Select source data:", self))
 		self.main_layout.addWidget(self.select_annotation)
-		self.main_layout.addWidget(self.feature_label)
-		self.main_layout.addWidget(self.select_feature)
-		self.main_layout.addWidget(self.filter_check)
 
-		self.main_layout.addWidget(self.attr_label)
-		self.main_layout.addWidget(self.attr_select)
-		self.main_layout.addWidget(self.match_label)
-		self.main_layout.addWidget(self.match_text)
-		self.main_layout.addWidget(self.match_tips)
+		sub1_layout = QGridLayout()
+		sub1_layout.setContentsMargins(0, 0, 0, 0)
+		sub1_layout.addWidget(self.feature_label, 0, 0)
+		sub1_layout.addWidget(self.select_feature, 1, 0)
+		sub1_layout.addWidget(self.filter_check, 1, 1)
+		self.main_layout.addLayout(sub1_layout)
+
+		sub1_layout.addWidget(self.attr_label, 2, 0)
+		sub1_layout.addWidget(self.attr_select, 3, 0)
+		sub1_layout.addWidget(self.match_label, 2, 1)
+		sub1_layout.addWidget(self.match_text, 3, 1)
+		#self.main_layout.addLayout(sub2_layout)
 
 		self.main_layout.addWidget(self.window_size)
 
@@ -539,13 +542,11 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 			self.attr_select.setVisible(True)
 			self.match_label.setVisible(True)
 			self.match_text.setVisible(True)
-			self.match_tips.setVisible(True)
 		else:
 			self.attr_label.setVisible(False)
 			self.attr_select.setVisible(False)
 			self.match_label.setVisible(False)
 			self.match_text.setVisible(False)
-			self.match_tips.setVisible(False)
 
 		self.adjustSize()
 

@@ -1,4 +1,5 @@
 import os
+import csv
 import time
 import traceback
 import multiprocessing
@@ -30,6 +31,7 @@ __all__ = [
 	'CirchartTextPrepareWorker',
 	'CirchartCircosPlotWorker',
 	'CirchartProjectSaveWorker',
+	'CirchartDataSaveWorker',
 	'CirchartCircosColorWorker',
 	'CirchartSnailPlotWorker',
 	'CirchartSvgRenderWorker',
@@ -563,7 +565,7 @@ class CirchartSnailPlotWorker(CirchartProcessWorker):
 		
 class CirchartProjectSaveWorker(CirchartBaseWorker):
 	def process(self):
-		self.signals.message.emit("Saving to {}".format(self.params['sfile']))
+		self.signals.message.emit("Saving project to {}".format(self.params['sfile']))
 		progress = 0
 		SqlBase.save()
 
@@ -577,6 +579,27 @@ class CirchartProjectSaveWorker(CirchartBaseWorker):
 					progress = p
 
 		self.signals.message.emit("Successfully saved project to {}".format(self.params['sfile']))
+
+class CirchartDataSaveWorker(CirchartBaseWorker):
+	def process(self):
+		self.signals.message.emit("Saving data to {}".format(self.params['efile']))
+
+		sql = SqlQuery(self.params['table'])\
+			.select()
+
+		rows = SqlBase.get_rows(sql)
+
+		sep = '\t'
+		if self.params['efile'].endswith('.csv'):
+			sep = ','
+
+		with open(self.params['efile'], 'w') as fw:
+			writer = csv.writer(fw, delimiter=sep)
+
+			for row in rows:
+				writer.writerow(row[1:])
+
+		self.signals.message.emit("Successfully saved data to {}".format(self.params['efile']))
 
 class CirchartCircosColorWorker(CirchartBaseWorker):
 	def process(self):

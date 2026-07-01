@@ -756,7 +756,19 @@ class CirchartMainWindow(QMainWindow):
 
 		table = self.data_table.get_table()
 
-		print(table)
+		efile, ext = QFileDialog.getSaveFileName(self,
+			filter = (
+				"TSV file (*.tsv);;"
+				"CSV file (*.csv);;"
+				"TXT file (*.txt)"
+			)
+		)
+
+		if not efile:
+			return
+
+		worker = CirchartDataSaveWorker({'table': table, 'efile': efile})
+		self.submit_new_worker(worker)
 
 	def do_export_image(self):
 		ifile, ext = QFileDialog.getSaveFileName(self,
