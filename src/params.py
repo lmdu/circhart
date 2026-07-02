@@ -1388,7 +1388,7 @@ class CirchartKaryotypeParameter(CirchartParameterMixin, QListWidget):
 	def _show_context_menu(self, pos):
 		menu = QMenu(self)
 
-		display_act = QAction("Display All", self)
+		display_act = QAction("Show All", self)
 		display_act.triggered.connect(self.display_all)
 
 		hide_act = QAction("Hide All", self)
@@ -1986,7 +1986,6 @@ class CirchartParameterPanel(QWidget):
 	def get_params(self):
 		values = {}
 
-		#for k, p in self.params.items():
 		for i in range(self.param_layout.rowCount()):
 			item = self.param_layout.itemAt(i)
 
@@ -1995,6 +1994,16 @@ class CirchartParameterPanel(QWidget):
 
 			p = item.widget()
 
+			if isinstance(p, CirchartParameterMixin):
+				values.update(p.get_param())
+
+			elif isinstance(p, CirchartParameterAccordion):
+				values.update(p.get_params())
+
+		for k, p in self.params.items():
+			if k in values:
+				continue
+				
 			if isinstance(p, CirchartParameterMixin):
 				values.update(p.get_param())
 

@@ -242,6 +242,9 @@ class CirchartDensityPrepareWorker(CirchartPrepareWorker):
 		ameta = SqlControl.get_data_meta(self.params.annotation)
 		self.params['annotation'] = ameta['path']
 
+		if 'format' in ameta:
+			self.params['annotformat'] = ameta['format']
+
 class CirchartLinkPrepareWorker(CirchartProcessWorker):
 	processor = CirchartLinkPrepareProcess
 	data_type = 'linkdata'
@@ -294,22 +297,26 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 
 			save_circos_data(workdir, outfile, rows)
 
-		bds = self.params['ideogram']['main']['band_data']
+		if self.params['ideogram']['main']['show_bands'] == 'yes':
+			bds = self.params['ideogram']['main']['band_data']
 
-		if bds:
-			for b in bds:
-				bdata = SqlControl.get_data_content('banddata', b)
+			if bds:
+				if isinstance(bds, int):
+					bds = [bds]
 
-				rows = []
-				for row in bdata:
-					rows.append(row)
+				for b in bds:
+					bdata = SqlControl.get_data_content('banddata', b)
 
-				ci = rows[0][1]
+					rows = []
+					for row in bdata:
+						rows.append(row)
 
-				if ci in kmapping:
-					ki = kmapping[ci]
-					outfile = "karyotype{}.txt".format(ki)
-					save_circos_data(workdir, outfile, rows)
+					ci = rows[0][1]
+
+					if ci in kmapping:
+						ki = kmapping[ci]
+						outfile = "karyotype{}.txt".format(ki)
+						save_circos_data(workdir, outfile, rows)
 
 		for k in self.params:
 			if k.startswith('track'):

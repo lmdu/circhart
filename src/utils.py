@@ -119,7 +119,7 @@ class GXFParser:
 			record = GXFRecord(cols)
 
 			for attr in cols[8].split(';'):
-				k, v  = self.split_attr(attr)
+				k, v = self.split_attr(attr)
 				record.attrs[k] = v
 
 			yield record

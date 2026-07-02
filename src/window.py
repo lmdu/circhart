@@ -931,6 +931,7 @@ class CirchartMainWindow(QMainWindow):
 			plot_id = params['plot_id']
 			params = {'general': {'global': params}}
 			params = self.circos_panel.new_circos_plot(params)
+
 			self.draw_circos_plot(params)
 			self.show_plot_params('circos', plot_id)
 

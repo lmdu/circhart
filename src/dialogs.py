@@ -603,7 +603,7 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 			if not fi:
 				return QMessageBox.critical(self, 'Error', "No feature selected or input")
 
-			if self.match_check.isChecked():
+			if self.filter_check.isChecked():
 				ai = self.attr_select.currentText().strip()
 
 				if not ai:
@@ -625,11 +625,12 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 			karyotype_id = dlg.select_karyotype.currentData()
 			window_size = dlg.window_size.get_values()
 			feature = dlg.select_feature.currentText().strip()
-			attrcheck = dlg.match_check.isChecked()
+			attrcheck = dlg.filter_check.isChecked()
 			attribute = dlg.attr_select.currentText().strip()
-			attrvalue = dlg.match_text.text().strip()
 			dataname = dlg.dataname_input.text().strip()
 			datatype = dlg.select_datatype.currentData()
+			attrvalue = dlg.match_text.text().strip()
+			attrvalue = list(map(lambda x: x.strip().lower(), attrvalue.split(',')))
 
 			params = {
 				'annotation': annotation_id,
@@ -659,7 +660,7 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 		self.match_text = QTextEdit(self)
 		self.match_text.setVisible(False)
 		self.match_text.setPlaceholderText("One attribute value per line")
-		self.match_check = QCheckBox("Only extract records whose attribute value in below list")
+		self.match_check = QCheckBox("Only extract records with attribute value in below list")
 		self.match_check.toggled.connect(self._on_method_changed)
 
 		self.annot_select.currentIndexChanged.connect(self._on_annotation_changed)
@@ -751,8 +752,13 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 			feature = dlg.feat_select.currentText().strip()
 			dataname = dlg.dataname_input.text().strip()
 			attribute = dlg.attr_select.currentText().strip()
-			attrvalue = dlg.match_text.toPlainText()
 			attrcheck = dlg.match_check.isChecked()
+			attrtext = dlg.match_text.toPlainText()
+
+			attrvalue = []
+			for line in attrtext.strip().split('\n'):
+				for item in line.strip().split(','):
+					attrvalue.append(item.strip())
 
 			params = {
 				'annotation': annotation_id,

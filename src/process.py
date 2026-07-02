@@ -199,7 +199,7 @@ class CirchartImportBandsProcess(CirchartBaseProcess):
 				if line.startswith('#'):
 					continue
 
-				cols = line.strip().split()
+				cols = line.strip().split('\t')
 
 				if len(cols) < 5:
 					ignore += 1
@@ -512,8 +512,8 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 			return
 
 		attrs = {}
-		for attr in cols[8].split(';'):
-			k, v in attr.split('"')
+		for attr in cols[8].strip(';').split(';'):
+			k, v = attr.strip('"').split('"')
 			attrs[k.strip().lower()] = v.strip().lower()
 
 		av = attrs.get(self.params.attribute, None)
@@ -528,8 +528,8 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 			return
 
 		attrs = {}
-		for attr in cols[8].split(';'):
-			k, v in attr.split('=')
+		for attr in cols[8].strip(';').split(';'):
+			k, v = attr.split('=')
 			attrs[k.strip().lower()] = v.strip().lower()
 
 		av = attrs.get(self.params.attribute, None)
@@ -592,7 +592,15 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 			counts_mapping[chrom] = counts
 
 		if self.params.datatype == 'gxf':
-			parse_func = self.parse_gxf
+			if self.params.attrcheck:
+				if self.params.annotformat == 'gff':
+					parse_func = self.parse_gff
+
+				elif self.params.annotformat == 'gtf':
+					parse_func = self.parse_gtf
+
+			else:
+				parse_func = self.parse_gxf
 
 		elif self.params.datatype == 'vcf':
 			parse_func = self.parse_vcf
