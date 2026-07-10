@@ -23,6 +23,7 @@ __all__ = [
 	'CirchartCheckTableWidget',
 	'CirchartGraphicsViewWidget',
 	'CirchartGenomeWindowSize',
+	'CirchartAttributeFilters',
 	'CirchartCircosColorTable',
 	'CirchartCollinearityIdmappingWidget',
 	'CirchartCustomColorTable',
@@ -676,18 +677,144 @@ class CirchartGraphicsViewWidget(QGraphicsView):
 
 			writer.write(image)
 
-class CirchartGenomeWindowSize(QWidget):
+class CirchartAttributeFilter(QWidget):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 
+		self._init_widget()
+		self._init_layout()
+
+	def _init_widget(self):
+		self.attr_select = QComboBox(self)
+		self.attr_select.setEditable(True)
+		self.attr_values = QPlainTextEdit(self)
+
+	def _init_layout(self):
+		main_layout = QVBoxLayout()
+		main_layout.setContentsMargins(5, 5, 5, 5)
+
+		main_layout.addWidget(QLabel("Select an attribute name and input values to match", self))
+		main_layout.addWidget(self.attr_select)
+		#main_layout.addWidget(QLabel("Input values to match:", self))
+		main_layout.addWidget(self.attr_values)
+		main_layout.addWidget(QLabel('<font color="grey">One value per line or multiple values separated by semicolon (;)</font>', self))
+
+		self.setLayout(main_layout)
+
+	def set_attrs(self, attrs):
+		self.attr_select.addItems(attrs)
+
+	def get_filter(self):
+		attr = self.attr_select.currentText().strip()
+		vals = self.attr_values.toPlainText().strip()
+
+		words = set()
+
+		if attr:
+			for line in vals.split('\n'):
+				for w in line.strip().strip(';').split(';'):
+					w = w.strip().lower()
+
+					if w not in words:
+						words.add(w)
+
+		return attr.lower(), words
+
+class CirchartAttributeFilters(QWidget):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		self.attr_candidates = []
+
+		self._init_widget()
+		self._init_layout()
+
+		self._on_add_filter()
+
+	def _init_widget(self):
+		self.add_btn = QPushButton(self)
+		self.add_btn.setIconSize(QSize(16, 16))
+		self.add_btn.setFixedSize(QSize(20, 20))
+		self.add_btn.setIcon(QIcon(':/icons/add.svg'))
+		self.add_btn.clicked.connect(self._on_add_filter)
+
+		self.del_btn = QPushButton(self)
+		self.del_btn.setIconSize(QSize(16, 16))
+		self.del_btn.setFixedSize(QSize(20, 20))
+		self.del_btn.setIcon(QIcon(':/icons/delete.svg'))
+		self.del_btn.clicked.connect(self._on_del_filter)
+
+		self.tab_box = QTabWidget(self)
+
+	def _init_layout(self):
+		button_layout = QHBoxLayout()
+		button_layout.setContentsMargins(0, 0, 0, 0)
+		button_layout.addWidget(QLabel("Attribute filters:", self))
+		button_layout.addSpacerItem(QSpacerItem(10, 10, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum))
+		button_layout.addWidget(self.add_btn)
+		button_layout.addWidget(self.del_btn)
+
+		main_layout = QVBoxLayout()
+		main_layout.setContentsMargins(0, 0, 0, 0)
+		main_layout.addLayout(button_layout)
+		main_layout.addWidget(self.tab_box)
+		self.setLayout(main_layout)
+
+	def _on_add_filter(self):
+		new_filter = CirchartAttributeFilter(self)
+		new_filter.set_attrs(self.attr_candidates)
+		filter_count = self.tab_box.count()
+		filter_name = "Filter{}".format(filter_count+1)
+		self.tab_box.addTab(new_filter, filter_name)
+
+	def _on_del_filter(self):
+		count = self.tab_box.count()
+
+		if count <= 1:
+			return
+
+		index = count - 1
+
+		widget = self.tab_box.widget(index)
+		self.tab_box.removeTab(index)
+		widget.deleteLater()
+
+	def set_attrs(self, attrs):
+		self.attr_candidates = attrs
+
+		for i in range(self.tab_box.count()):
+			widget = self.tab_box.widget(i)
+			widget.set_attrs(attrs)
+
+	def get_filters(self):
+		filters = {}
+
+		for i in range(self.tab_box.count()):
+			widget = self.tab_box.widget(i)
+			a, ws = widget.get_filter()
+
+			if a:
+				if a in filters:
+					filters[a] |= ws
+
+				else:
+					filters[a] = ws
+
+		return filters
+
+class CirchartGenomeWindowSize(QGroupBox):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+		self.setTitle("Statistics window")
+
 		self.win_spin = QSpinBox(self)
-		self.win_spin.setValue(5)
+		self.win_spin.setValue(2)
 		self.win_spin.setMinimum(1)
 		self.win_spin.setMaximum(1000000)
 		self.win_spin.setAlignment(Qt.AlignCenter)
 
 		self.step_spin = QSpinBox(self)
-		self.step_spin.setValue(3)
+		self.step_spin.setValue(1)
 		self.step_spin.setMinimum(1)
 		self.step_spin.setMaximum(1000000)
 		self.step_spin.setAlignment(Qt.AlignCenter)
@@ -706,15 +833,15 @@ class CirchartGenomeWindowSize(QWidget):
 		self.step_label = QLabel("Step size", self)
 		self.step_label.setVisible(False)
 
-		self.fixed_radio = QRadioButton("Use tumbling window", self)
+		self.fixed_radio = QRadioButton("Fixed window", self)
 		self.fixed_radio.setChecked(True)
-		self.slide_radio = QRadioButton("Use sliding window", self)
+		self.slide_radio = QRadioButton("Sliding window", self)
 		self.slide_radio.toggled.connect(self._on_slide_checked)
 
 		layout = QGridLayout()
 		layout.setColumnStretch(0, 1)
 		layout.setColumnStretch(2, 1)
-		layout.setContentsMargins(0, 0, 0, 0)
+		layout.setContentsMargins(5, 15, 5, 5)
 		layout.addWidget(self.fixed_radio, 0, 0, 1, 2)
 		layout.addWidget(self.slide_radio, 0, 2, 1, 2)
 		layout.addWidget(self.win_label, 1, 0)

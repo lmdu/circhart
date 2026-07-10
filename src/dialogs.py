@@ -479,18 +479,11 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 		self.feature_label = QLabel("Select a feature:", self)
 		self.select_feature = QComboBox(self)
 		self.select_feature.setEditable(True)
-		self.filter_check = QCheckBox("Filter by attribute", self)
+		self.filter_check = QCheckBox("Filter records by attributes", self)
 		self.filter_check.checkStateChanged.connect(self._on_filter_checked)
-		self.attr_label = QLabel("Select an attribute:", self)
-		self.attr_select = QComboBox(self)
-		self.attr_select.setEditable(True)
-		self.match_label = QLabel("Matched attribute values:", self)
-		self.match_text = QLineEdit(self)
-		self.match_text.setPlaceholderText("Use , to separate multiple values")
-		self.attr_label.setVisible(False)
-		self.attr_select.setVisible(False)
-		self.match_label.setVisible(False)
-		self.match_text.setVisible(False)
+		
+		self.filter_match = CirchartAttributeFilters(self)
+		self.filter_match.setVisible(False)
 
 		self.window_size = CirchartGenomeWindowSize(self)
 
@@ -521,32 +514,21 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 		self.main_layout.addWidget(QLabel("Select source data:", self))
 		self.main_layout.addWidget(self.select_annotation)
 
-		sub1_layout = QGridLayout()
-		sub1_layout.setContentsMargins(0, 0, 0, 0)
-		sub1_layout.addWidget(self.feature_label, 0, 0)
-		sub1_layout.addWidget(self.select_feature, 1, 0)
-		sub1_layout.addWidget(self.filter_check, 1, 1)
-		self.main_layout.addLayout(sub1_layout)
-
-		sub1_layout.addWidget(self.attr_label, 2, 0)
-		sub1_layout.addWidget(self.attr_select, 3, 0)
-		sub1_layout.addWidget(self.match_label, 2, 1)
-		sub1_layout.addWidget(self.match_text, 3, 1)
-		#self.main_layout.addLayout(sub2_layout)
-
+		sub_layout = QGridLayout()
+		sub_layout.setContentsMargins(0, 0, 0, 0)
+		sub_layout.addWidget(self.feature_label, 0, 0)
+		sub_layout.addWidget(self.select_feature, 1, 0)
+		sub_layout.addWidget(self.filter_check, 1, 1)
+		sub_layout.addWidget(self.filter_match, 2, 0, 1, 2)
+		
+		self.main_layout.addLayout(sub_layout)
 		self.main_layout.addWidget(self.window_size)
 
 	def _on_filter_checked(self, state):
 		if state == Qt.Checked:
-			self.attr_label.setVisible(True)
-			self.attr_select.setVisible(True)
-			self.match_label.setVisible(True)
-			self.match_text.setVisible(True)
+			self.filter_match.setVisible(True)
 		else:
-			self.attr_label.setVisible(False)
-			self.attr_select.setVisible(False)
-			self.match_label.setVisible(False)
-			self.match_text.setVisible(False)
+			self.filter_match.setVisible(False)
 
 		self.adjustSize()
 
@@ -574,6 +556,7 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 		if self.select_datatype.currentIndex() == 0:
 			if not self.features:
 				ans = SqlControl.get_datas_by_type('annotation')
+
 				for a in ans:
 					meta = str_to_dict(a.meta)
 					self.features[a.id] = meta['features']
@@ -582,7 +565,7 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 			annot_id = self.select_annotation.currentData()
 			self.select_feature.clear()
 			self.select_feature.addItems(self.features[annot_id])
-			self.attr_select.addItems(self.attributes[annot_id])
+			self.filter_match.set_attrs(self.attributes[annot_id])
 
 	def _on_accepted(self):
 		dn = self.dataname_input.text().strip()
@@ -604,15 +587,10 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 				return QMessageBox.critical(self, 'Error', "No feature selected or input")
 
 			if self.filter_check.isChecked():
-				ai = self.attr_select.currentText().strip()
+				fs = self.filter_match.get_filters()
 
-				if not ai:
-					return QMessageBox.critical(self, 'Error', "No attribute selected or input")
-
-				mt = self.match_text.text().strip()
-
-				if not mt:
-					return QMessageBox.critical(self, 'Error', "No attribute value input")
+				if not fs or not any(fs.values()):
+					return QMessageBox.critical(self, 'Error', "No filter input")
 
 		self.accept()
 
@@ -626,19 +604,16 @@ class CirchartDensityPrepareDialog(CirchartBaseDialog):
 			window_size = dlg.window_size.get_values()
 			feature = dlg.select_feature.currentText().strip()
 			attrcheck = dlg.filter_check.isChecked()
-			attribute = dlg.attr_select.currentText().strip()
+			attrfilter = dlg.filter_match.get_filters()
 			dataname = dlg.dataname_input.text().strip()
 			datatype = dlg.select_datatype.currentData()
-			attrvalue = dlg.match_text.text().strip()
-			attrvalue = list(map(lambda x: x.strip().lower(), attrvalue.split(',')))
 
 			params = {
 				'annotation': annotation_id,
 				'karyotype': karyotype_id,
 				'feature': feature,
 				'attrcheck': attrcheck,
-				'attribute': attribute,
-				'attrvalue': attrvalue,
+				'attrfilter': attrfilter,
 				'dataname': dataname,
 				'datatype': datatype
 			}
@@ -657,11 +632,10 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 		self.feat_select.setEditable(True)
 		self.attr_select = QComboBox(self)
 		self.attr_select.setEditable(True)
-		self.match_text = QTextEdit(self)
-		self.match_text.setVisible(False)
-		self.match_text.setPlaceholderText("One attribute value per line")
-		self.match_check = QCheckBox("Only extract records with attribute value in below list")
-		self.match_check.toggled.connect(self._on_method_changed)
+		self.filter_match = CirchartAttributeFilters(self)
+		self.filter_match.setVisible(False)
+		self.filter_check = QCheckBox("Filter records by attributes")
+		self.filter_check.toggled.connect(self.filter_match.setVisible)
 
 		self.annot_select.currentIndexChanged.connect(self._on_annotation_changed)
 
@@ -693,12 +667,12 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 		subs_layout.setContentsMargins(0, 0, 0, 0)
 		subs_layout.addWidget(QLabel("Select a feature:", self), 0, 0)
 		subs_layout.addWidget(self.feat_select, 1, 0)
-		subs_layout.addWidget(QLabel("Select an attribute:"), 0, 1)
+		subs_layout.addWidget(QLabel("Select an attribute as text:"), 0, 1)
 		subs_layout.addWidget(self.attr_select, 1, 1)
 		
 		self.main_layout.addLayout(subs_layout)
-		self.main_layout.addWidget(self.match_check)
-		self.main_layout.addWidget(self.match_text)
+		self.main_layout.addWidget(self.filter_check)
+		self.main_layout.addWidget(self.filter_match)
 
 	def _on_annotation_changed(self, index):
 		aid = self.annot_select.currentData()
@@ -708,10 +682,7 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 
 		self.attr_select.clear()
 		self.attr_select.addItems(self.attributes[aid])
-
-	def _on_method_changed(self, checked):
-		self.match_text.setVisible(checked)
-		self.adjustSize()
+		self.filter_match.set_attrs(self.attributes[aid])
 
 	def _on_accepted(self):
 		dn = self.dataname_input.text().strip()
@@ -734,11 +705,11 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 		if not at:
 			return QMessageBox.critical(self, 'Error', "No attribute selected")
 
-		if self.match_check.isChecked():
-			mt = self.match_text.toPlainText().strip()
+		if self.filter_check.isChecked():
+			fs = self.filter_match.get_filters()
 
-			if not mt:
-				return QMessageBox.critical(self, 'Error', "No attribute value list input")
+			if not fs:
+				return QMessageBox.critical(self, 'Error', "No filter input")
 
 		self.accept()
 
@@ -752,13 +723,8 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 			feature = dlg.feat_select.currentText().strip()
 			dataname = dlg.dataname_input.text().strip()
 			attribute = dlg.attr_select.currentText().strip()
-			attrcheck = dlg.match_check.isChecked()
-			attrtext = dlg.match_text.toPlainText()
-
-			attrvalue = []
-			for line in attrtext.strip().split('\n'):
-				for item in line.strip().split(','):
-					attrvalue.append(item.strip())
+			attrcheck = dlg.filter_check.isChecked()
+			attrfilter = dlg.filter_match.get_filters()
 
 			params = {
 				'annotation': annotation_id,
@@ -766,7 +732,7 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 				'feature': feature,
 				'attrcheck': attrcheck,
 				'attribute': attribute,
-				'attrvalue': attrvalue,
+				'attrfilter': attrfilter,
 				'dataname': dataname
 			}
 

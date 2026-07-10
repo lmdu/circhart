@@ -1554,6 +1554,9 @@ class CirchartAccordionHeader(QFrame):
 
 		self.collapsed.emit(checked)
 
+class CirchartParameterTab(QTabWidget):
+	pass
+
 class CirchartParameterAccordion(QWidget):
 	_visible = True
 	_closable = True
@@ -1565,7 +1568,7 @@ class CirchartParameterAccordion(QWidget):
 		self.kwargs = kwargs
 		self.setVisible(self._visible)
 
-		self.box = QTabWidget(self)
+		self.box = CirchartParameterTab(self)
 		self.box.setVisible(False)
 		self.box.setTabBarAutoHide(True)
 		self.box.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)

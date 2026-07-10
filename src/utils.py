@@ -158,13 +158,9 @@ class GXFParser:
 		return k, v
 
 	def split_gtf_attr(self, attr):
-		if '"' in attr:
-			ks = attr.split('"')
-		else:
-			ks = attr.split()
-
-		k = ks[0].strip()
-		v = ks[1].strip().strip('"')
+		ks = attr.strip('"').split('"')
+		k = ks[0].strip().lower()
+		v = ks[1].strip()
 		return k, v
 
 def color_rgb_valid(rgb):

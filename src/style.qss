@@ -169,8 +169,10 @@ QMainWindow::separator:pressed {
 	background: #a0a0a0;
 }
 
-QTextEdit {
+QTextEdit,
+QPlainTextEdit {
 	border: 1px solid #c2c2c2;
+	border-radius: 3px;
 }
 
 QLineEdit,
@@ -303,10 +305,10 @@ CirchartAccordionHeader {
 	border-right: none;
 	border-radius: none;
 }
-QTabWidget {
+CirchartParameterTab {
 	background-color: red;
 }
-QTabWidget::pane {
+CirchartParameterTab::pane {
 	background: white;
 	border: none;
 	border-top: 1px solid #eeeeee;
@@ -314,11 +316,11 @@ QTabWidget::pane {
 	margin-top: -1px;
 }
 
-QTabWidget::tab-bar {
+CirchartParameterTab::tab-bar {
 	alignment: left;
 }
 
-QTabBar::tab {
+CirchartParameterTab QTabBar::tab {
 	background: #fafafa;
 	border: none;
 	border-bottom: 1px solid #eeeeee;
@@ -327,14 +329,14 @@ QTabBar::tab {
 
 }
 
-QTabBar::tab:selected {
+CirchartParameterTab QTabBar::tab:selected {
 	background: white;
 	border-bottom: 1px solid white;
 	border-left: 1px solid #eeeeee;
 	border-right: 1px solid #eeeeee;
 }
 
-QTabBar::tab:first:selected {
+CirchartParameterTab QTabBar::tab:first:selected {
 	border-left: none;
 }
 

@@ -516,12 +516,15 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 			k, v = attr.strip('"').split('"')
 			attrs[k.strip().lower()] = v.strip().lower()
 
-		av = attrs.get(self.params.attribute, None)
+		for an, avs in self.params.attrfilter.items():
+			av = attrs.get(an, None)
 
-		if av in self.params.attrvalue:
-			start = int(cols[3])
-			end = int(cols[4])
-			return start, end
+			if av not in avs:
+				return
+
+		start = int(cols[3])
+		end = int(cols[4])
+		return start, end
 
 	def parse_gff(self, cols):
 		if cols[2].lower() != self.params.feature.lower():
@@ -532,12 +535,15 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 			k, v = attr.split('=')
 			attrs[k.strip().lower()] = v.strip().lower()
 
-		av = attrs.get(self.params.attribute, None)
+		for an, avs in self.params.attrfilter.items():
+			av = attrs.get(an, None)
 
-		if av in self.params.attrvalue:
-			start = int(cols[3])
-			end = int(cols[4])
-			return start, end
+			if av not in avs:
+				return
+
+		start = int(cols[3])
+		end = int(cols[4])
+		return start, end
 
 	def parse_gxf(self, cols):
 		if cols[2].lower() != self.params.feature.lower():
@@ -608,10 +614,10 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 		else:
 			parse_func = self.parse_bed
 
-		if self.params.annotation.endswith('.gz'):
-			fp = gzip.open(self.params.annotation, 'rt')
+		if self.params.annotfile.endswith('.gz'):
+			fp = gzip.open(self.params.annotfile, 'rt')
 		else:
-			fp = open(self.params.annotation)
+			fp = open(self.params.annotfile)
 
 		with fp:
 			for line in fp:
@@ -717,37 +723,107 @@ class CirchartLinkPrepareProcess(CirchartBaseProcess):
 			self.send('result', rows)
 
 class CirchartTextPrepareProcess(CirchartBaseProcess):
+	def parse_gtf(self, cols, attr):
+		if cols[2].lower() != self.params.feature.lower():
+			return
+
+		attrs = {}
+		for at in cols[8].strip(';').split(';'):
+			k, v = at.strip('"').split('"')
+			attrs[k.strip().lower()] = v.strip()
+
+		if attr not in attrs:
+			return
+
+		if self.params.attrcheck:
+			for an, avs in self.params.attrfilter.items():
+				av = attrs.get(an, '').lower()
+
+				if av not in avs:
+					return
+
+		start = int(cols[3])
+		end = int(cols[4])
+		attr = attrs[attr]
+		return start, end, attr
+
+	def parse_gff(self, cols, attr):
+		if cols[2].lower() != self.params.feature.lower():
+			return
+
+		attrs = {}
+		for at in cols[8].strip(';').split(';'):
+			k, v = at.split('=')
+			attrs[k.strip().lower()] = v.strip()
+
+		if attr not in attrs:
+			return
+
+		if self.params.attrcheck:
+			for an, avs in self.params.attrfilter.items():
+				av = attrs.get(an, '').lower()
+
+				if av not in avs:
+					return
+
+		start = int(cols[3])
+		end = int(cols[4])
+		attr = attrs[attr]
+		return start, end, attr
+
+	def parse_bed(self, cols, attr):
+		start = int(cols[1])
+		end = int(cols[2])
+		return start, end, attr
+
 	def do(self):
 		rows = []
+		attr = self.params.attribute.lower()
 
-		if 'matches' in self.params:
-			matches = {m.strip().lower() for m in self.params.matches.split('\n')}
+		if self.params.annotformat == 'gff':
+			parse_func = self.parse_gff
+
+		elif self.params.annotformat == 'gtf':
+			parse_func = self.parse_gtf
+
 		else:
-			matches = {}
+			parse_func = self.parse_bed
 
-		attr = self.params.attribute
+		if self.params.annotfile.endswith('.gz'):
+			fp = gzip.open(self.params.annotfile, 'rt')
+		else:
+			fp = open(self.params.annotfile)
 
-		for record in GXFParser(self.params.annotation):
-			if record.chrom not in self.params.axes:
-				continue
+		with fp:
+			for line in fp:
+				if line[0] == '#':
+					continue
 
-			if record.feature != self.params.feature:
-				continue
+				line = line.strip()
 
-			if attr not in record.attrs:
-				continue
+				if not line:
+					continue
 
-			a = record.attrs[attr]
+				cols = line.split('\t')
 
-			if matches and a.lower() not in matches:
-				continue
+				chrom = cols[0]
+				if chrom not in self.params.axes:
+					continue
 
-			chrom = self.params.axes[record.chrom][0]
-			rows.append((chrom, record.start, record.end, a, ''))
+				loci = parse_func(cols, attr)
 
-			if len(rows) == 200:
-				self.send('result', rows)
-				rows = []
+				if loci is None:
+					continue
+
+				chrid, _ = self.params.axes[chrom]
+				row = [chrid]
+				row.extend(loci)
+				row.append('')
+				rows.append(row)
+
+				if len(rows) == 200:
+					self.send('result', rows)
+					rows = []
 
 		if rows:
 			self.send('result', rows)

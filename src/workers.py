@@ -240,10 +240,8 @@ class CirchartDensityPrepareWorker(CirchartPrepareWorker):
 		super().preprocess()
 
 		ameta = SqlControl.get_data_meta(self.params.annotation)
-		self.params['annotation'] = ameta['path']
-
-		if 'format' in ameta:
-			self.params['annotformat'] = ameta['format']
+		self.params['annotfile'] = ameta['path']
+		self.params['annotformat'] = ameta.get('format', None)
 
 class CirchartLinkPrepareWorker(CirchartProcessWorker):
 	processor = CirchartLinkPrepareProcess
@@ -275,7 +273,8 @@ class CirchartTextPrepareWorker(CirchartPrepareWorker):
 		super().preprocess()
 
 		ameta = SqlControl.get_data_meta(self.params['annotation'])
-		self.params['annotation'] = ameta['path']
+		self.params['annotfile'] = ameta['path']
+		self.params['annotformat'] = ameta.get('format', None)
 
 class CirchartCircosPlotWorker(CirchartBaseWorker):
 	processor = CirchartCircosPlotProcess
