@@ -802,10 +802,10 @@ class CirchartAttributeFilters(QWidget):
 
 		return filters
 
-class CirchartGenomeWindowSize(QGroupBox):
+class CirchartGenomeWindowSize(QWidget):
 	def __init__(self, parent=None):
 		super().__init__(parent)
-		self.setTitle("Statistics window")
+		#self.setTitle("Statistics window")
 
 		self.win_spin = QSpinBox(self)
 		self.win_spin.setValue(2)
@@ -841,7 +841,7 @@ class CirchartGenomeWindowSize(QGroupBox):
 		layout = QGridLayout()
 		layout.setColumnStretch(0, 1)
 		layout.setColumnStretch(2, 1)
-		layout.setContentsMargins(5, 15, 5, 5)
+		layout.setContentsMargins(0, 0, 0, 0)
 		layout.addWidget(self.fixed_radio, 0, 0, 1, 2)
 		layout.addWidget(self.slide_radio, 0, 2, 1, 2)
 		layout.addWidget(self.win_label, 1, 0)

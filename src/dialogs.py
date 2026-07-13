@@ -636,6 +636,7 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 		self.filter_match.setVisible(False)
 		self.filter_check = QCheckBox("Filter records by attributes")
 		self.filter_check.toggled.connect(self.filter_match.setVisible)
+		self.filter_check.toggled.connect(self.adjustSize)
 
 		self.annot_select.currentIndexChanged.connect(self._on_annotation_changed)
 
