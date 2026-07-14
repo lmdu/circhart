@@ -67,6 +67,14 @@ ideogram:
     default: 'yes'
     parent: show_bands
   -
+    name: band_transparency
+    type: int
+    range:
+      - 0
+      - 5
+    default: 0
+    parent: show_bands
+  -
     name: band_stroke_thickness
     type: int
     range:

@@ -255,6 +255,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_replace_chrom_ids
 		)
 
+		self.extract_data_act = QAction("&Extract Data", self,
+			triggered = self.do_extract_data
+		)
+
 		self.prepare_kdata_act = QAction("&Prepare Karyotype Data", self,
 			triggered = self.do_prepare_karyotype_data
 		)
@@ -402,6 +406,8 @@ class CirchartMainWindow(QMainWindow):
 		self.prepare_menu.addAction(self.prepare_pdata_act)
 		self.prepare_menu.addAction(self.prepare_ldata_act)
 		self.prepare_menu.addAction(self.prepare_tdata_act)
+
+		self.tool_menu.addAction(self.extract_data_act)
 
 		self.plot_menu = self.menuBar().addMenu("&Plot")
 
@@ -855,6 +861,9 @@ class CirchartMainWindow(QMainWindow):
 			return
 
 		CirchartReplaceChridDialog.replace(self, table)
+
+	def do_extract_data(self):
+		CirchartExtractDataDialog.extract(self)
 
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.prepare(self)

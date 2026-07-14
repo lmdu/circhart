@@ -25,6 +25,7 @@ __all__ = [
 	'CirchartGenomeWindowSize',
 	'CirchartAttributeFilters',
 	'CirchartCircosColorTable',
+	'CirchartBrowseWidget',
 	'CirchartCollinearityIdmappingWidget',
 	'CirchartCustomColorTable',
 	'CirchartDataFilterTree',
@@ -187,8 +188,9 @@ class CirchartIOTreeWidget(QTreeView):
 		self.emit_signal(table, rowid)
 
 class CirchartBrowseWidget(QWidget):
-	def __init__(self, parent=None):
+	def __init__(self, parent=None, saver=False):
 		super().__init__(parent)
+		self.is_save = saver
 
 		self._init_widget()
 		self._init_layout()
@@ -211,7 +213,10 @@ class CirchartBrowseWidget(QWidget):
 		self.setLayout(self.main_layout)
 
 	def select_path(self):
-		path, _ = QFileDialog.getOpenFileName(self)
+		if self.is_save:
+			path, _ = QFileDialog.getSaveFileName(self)
+		else:
+			path, _ = QFileDialog.getOpenFileName(self)
 
 		if path:
 			self.set_path(path)

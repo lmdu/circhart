@@ -24,6 +24,7 @@ __all__ = [
 	'CirchartLinkPrepareDialog',
 	'CirchartCustomColorDialog',
 	'CirchartReplaceChridDialog',
+	'CirchartExtractDataDialog',
 ]
 
 class CirchartBaseDialog(QDialog):
@@ -738,6 +739,31 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 			}
 
 			return params
+
+class CirchartExtractDataDialog(CirchartBaseDialog):
+	_title = "Extract Data"
+
+	def _create_widgets(self):
+		self.file_browse = CirchartBrowseWidget(self)
+		self.column_select = QLineEdit(self)
+		self.ignore_select = QLineEdit(self)
+		self.ignore_select.setText('#')
+
+	def _init_widgets(self):
+		pass
+
+	def _init_layouts(self):
+		form_layout = QFormLayout()
+		form_layout.addRow("Table file:", self.file_browse)
+		form_layout.addRow("Ignore lines start with:", self.ignore_select)
+		form_layout.addRow("Select columns:", self.column_select)
+
+		self.main_layout.addLayout(form_layout)
+
+	@classmethod
+	def extract(cls, parent):
+		dlg = cls(parent)
+		dlg.exec()
 
 class CirchartCreateCircosPlotDialog(QDialog):
 	def __init__(self, parent=None):
