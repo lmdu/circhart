@@ -406,10 +406,14 @@ CirchartCustomColorTable {
 CirchartDataFilterTree,
 CirchartColumnFilterTree {
 	border: 1px solid #c2c2c2;
-	min-height: 120px;
+	min-height: 180px;
 }
 
 CirchartRadialParameter {
 	border: 1px solid red;
+}
+
+CirchartBrowseWidget QPushButton {
+	border-left: none;
 }
 

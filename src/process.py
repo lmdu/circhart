@@ -1,4 +1,5 @@
 import os
+import csv
 import gzip
 import time
 import traceback
@@ -834,12 +835,14 @@ class CirchartDataExtractProcess(CirchartBaseProcess):
 		for i in range(len(rows)):
 			rows[i][1] = int(rows[i][1])
 			rows[i][2] = int(rows[i][2])
+			rows[i].append('')
 
 	def format_text_data(self, rows):
 		for i in range(len(rows)):
 			rows[i][1] = int(rows[i][1])
 			rows[i][2] = int(rows[i][2])
 			rows[i][3] = str(rows[i][3])
+			rows[i].append('')
 
 	def format_link_data(self, rows):
 		for i in range(len(rows)):
@@ -847,28 +850,29 @@ class CirchartDataExtractProcess(CirchartBaseProcess):
 			rows[i][2] = int(rows[i][2])
 			rows[i][4] = int(rows[i][4])
 			rows[i][5] = int(rows[i][5])
+			rows[i].append('')
 
 	def format_empty(self, rows):
 		return rows
 
 	def get_format_func(self):
-		if self.params.outtype in ['plot data', 'loci data']:
+		if self.params.outtype in ['plotdata', 'locidata']:
 			return self.format_plot_data
 
-		elif self.params.outtype == 'text data':
+		elif self.params.outtype == 'textdata':
 			return self.format_text_data
 
-		elif self.params.outtype == 'link data':
+		elif self.params.outtype == 'linkdata':
 			return self.format_link_data
 
 		else:
 			return self.format_empty
 
-	def extract_with_filter(self, rows):
+	def extract_with_filter(self, reader):
 		rows = []
 		fvals = self.params.fvalues
 
-		for fcols in rows:
+		for fcols in reader:
 			if not eval(self.params.filters):
 				continue
 
@@ -884,10 +888,10 @@ class CirchartDataExtractProcess(CirchartBaseProcess):
 			self.format_func(rows)
 			self.send('result', rows)
 
-	def extract_without_filter(self, rows):
+	def extract_without_filter(self, reader):
 		rows = []
 
-		for fcols in rows:
+		for fcols in reader:
 			row = [fcols[i] for i in self.params.columns]
 			rows.append(row)
 
@@ -910,12 +914,6 @@ class CirchartDataExtractProcess(CirchartBaseProcess):
 		
 		self.format_func = self.get_format_func()
 
-		if self.params.filters is not None:
-			extract_func = self.extract_with_filter
-		
-		else:
-			extract_func = self.extract_without_filter
-
 		with fp:
 			for line in fp:
 				if not line.startswith(self.params.ignores):
@@ -926,7 +924,12 @@ class CirchartDataExtractProcess(CirchartBaseProcess):
 			dialect = csv.Sniffer().sniff(fp.read(2048))
 			fp.seek(real_start)
 			reader = csv.reader(fp, dialect)
-			extract_func(header)
+			
+			if self.params.filters is not None:
+				self.extract_with_filter(reader)
+			
+			else:
+				self.extract_without_filter(reader)
 
 class CirchartCircosPlotProcess(QProcess):
 	def __init__(self, parent, workdir):

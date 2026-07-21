@@ -765,6 +765,10 @@ class CirchartExtractDataDialog(CirchartBaseDialog):
 
 	def _init_layouts(self):
 		self.form_layout = QFormLayout()
+		self.form_layout.setRowWrapPolicy(QFormLayout.DontWrapRows)
+		self.form_layout.setFieldGrowthPolicy(QFormLayout.ExpandingFieldsGrow)
+		self.form_layout.setFormAlignment(Qt.AlignLeft | Qt.AlignTop)
+		self.form_layout.setLabelAlignment(Qt.AlignLeft)
 		self.form_layout.addRow("Table file:", self.file_browse)
 		self.form_layout.addRow("Ignore lines start with:", self.ignore_input)
 		self.form_layout.addRow("Select columns:", self.column_input)
@@ -799,9 +803,9 @@ class CirchartExtractDataDialog(CirchartBaseDialog):
 
 		return {
 			'tabfile': self.file_browse.get_path(),
-			'ignores': (i.strip() for i in self.ignore_input().strip().strip(',').split(',') if i.strip()),
-			'columns': (c.strip() for c in self.column_input.text().strip().strip(',').split(',')),
-			'outtype': self.output_select.currentText(),
+			'ignores': tuple(i.strip() for i in self.ignore_input.text().strip().strip(',').split(',') if i.strip()),
+			'columns': [c.strip() for c in self.column_input.text().strip().strip(',').split(',')],
+			'outtype': self.output_select.currentText().replace(' ', ''),
 			'outfile': self.output_browse.get_path(),
 			'outname': self.output_name.text().strip(),
 			'filters': fs,
@@ -836,8 +840,7 @@ class CirchartExtractDataDialog(CirchartBaseDialog):
 
 		if dlg.exec() == QDialog.Accepted:
 			vals = dlg.get_values()
-			vals['columns'] = [int(c) for c in vals['columns']]
-
+			vals['columns'] = [int(c)-1 for c in vals['columns']]
 			return vals
 
 class CirchartCreateCircosPlotDialog(QDialog):

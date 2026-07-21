@@ -202,8 +202,10 @@ class CirchartBrowseWidget(QWidget):
 	def _init_widget(self):
 		self.input = QLineEdit(self)
 		self.input.setReadOnly(True)
-		self.browse = QPushButton(self)
-		self.browse.setFlat(True)
+		self.browse = QToolButton(self)
+		#self.browse.setFixedSize(QSize(24, 24))
+		#self.browse.setIconSize(QSize(16, 16))
+		#self.browse.setFlat(True)
 		self.browse.setIcon(QIcon(':/icons/folder.svg'))
 		self.browse.clicked.connect(self.select_path)
 

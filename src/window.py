@@ -865,7 +865,13 @@ class CirchartMainWindow(QMainWindow):
 	def do_extract_data(self):
 		params = CirchartExtractDataDialog.extract(self)
 
-		print(params)
+		if params:
+			worker = CirchartDataExtractWorker(params)
+
+			if params['outtype'].endswith('data'):
+				worker.signals.success.connect(self.data_tree.update_tree)
+
+			self.submit_new_worker(worker)
 
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.prepare(self)

@@ -714,14 +714,35 @@ class CirchartSvgRenderWorker(CirchartBaseWorker):
 
 		self.signals.result.emit((plotid, svg_render))
 
-class CirchartDataExtractWorker(CirchartBaseWorker):
+class CirchartDataExtractWorker(CirchartProcessWorker):
 	processor = CirchartDataExtractProcess
 
 	def preprocess(self):
-		pass
+		if self.params.outtype.endswith('data'):
+			self.data_type = self.params.outtype
+			self.data_index = SqlControl.add_data(self.params.outname, self.params.outtype)
+			SqlControl.create_index_table(self.params.outtype, self.data_index)
 
-	def save_result(self):
-		pass
+		else:
+			self.open_handle = open(self.params.outfile, 'w')
+
+			if self.params.outtype == 'csvfile':
+				separator = ','
+			else:
+				separator = '\t'
+
+			self.file_writer = csv.writer(self.open_handle, delimiter=separator)
+
+	def save_result(self, res):
+		if self.params.outtype.endswith('data'):
+			SqlControl.add_index_data(self.data_type, self.data_index, res)
+
+		else:
+			self.file_writer.writerows(res)
+
+	def cleanup(self):
+		if self.params.outtype.endswith('file'):
+			self.open_handle.close()
 
 
 
