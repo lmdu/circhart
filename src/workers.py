@@ -35,6 +35,7 @@ __all__ = [
 	'CirchartCircosColorWorker',
 	'CirchartSnailPlotWorker',
 	'CirchartSvgRenderWorker',
+	'CirchartDataExtractWorker',
 ]
 
 class CirchartWorkerSignals(QObject):
@@ -712,5 +713,15 @@ class CirchartSvgRenderWorker(CirchartBaseWorker):
 		svg_render.load(svg_data)
 
 		self.signals.result.emit((plotid, svg_render))
+
+class CirchartDataExtractWorker(CirchartBaseWorker):
+	processor = CirchartDataExtractProcess
+
+	def preprocess(self):
+		pass
+
+	def save_result(self):
+		pass
+
 
 

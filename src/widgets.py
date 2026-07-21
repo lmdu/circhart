@@ -29,9 +29,13 @@ __all__ = [
 	'CirchartCollinearityIdmappingWidget',
 	'CirchartCustomColorTable',
 	'CirchartDataFilterTree',
+	'CirchartColumnFilterTree',
 ]
 
 class CirchartEmptyTreeWidget(QTreeWidget):
+	pass
+
+class CirchartEmptyTreeView(QTreeView):
 	pass
 
 class CirchartSpacerWidget(QWidget):
@@ -1029,16 +1033,52 @@ class CirchartCollinearityIdmappingWidget(QWidget):
 			'attribute': self.attr_select.currentText()
 		}
 
-class CirchartDataFilterTree(QTreeView):
+class CirchartDataFilterTree(QWidget):
 	def __init__(self, parent=None, table=None):
 		super().__init__(parent)
-
 		self.table = table
 
+		self._init_widget()
+		self._init_button()
+		self._init_layout()
+
+	def _init_widget(self):
+		self.tree = CirchartEmptyTreeView(self)
 		self._model = CirchartDataFilterModel(self)
 		self._delegate = CirchartDataFilterDelegate(self, self.table)
-		self.setModel(self._model)
-		self.setItemDelegate(self._delegate)
+		self.tree.setModel(self._model)
+		self.tree.setItemDelegate(self._delegate)
+
+	def _init_button(self):
+		self.add_btn = QPushButton(self)
+		self.add_btn.setIcon(QIcon(':/icons/add.svg'))
+		self.add_btn.setToolTip("Add filter")
+		self.add_btn.setFixedSize(24, 24)
+		self.add_btn.clicked.connect(self.add_filter)
+		self.del_btn = QPushButton(self)
+		self.del_btn.setFixedSize(24, 24)
+		self.del_btn.setToolTip("Delete filter")
+		self.del_btn.setIcon(QIcon(':/icons/delete.svg'))
+		self.del_btn.clicked.connect(self.delete_filter)
+		self.clr_btn = QPushButton(self)
+		self.clr_btn.setFixedSize(24, 24)
+		self.clr_btn.setToolTip("Clear filters")
+		self.clr_btn.setIcon(QIcon(':/icons/trash.svg'))
+		self.clr_btn.clicked.connect(self.clear_filters)
+
+	def _init_layout(self):
+		btn_layout = QHBoxLayout()
+		btn_layout.addStretch()
+		btn_layout.addWidget(self.add_btn)
+		btn_layout.addWidget(self.del_btn)
+		btn_layout.addWidget(self.clr_btn)
+
+		main_layout = QVBoxLayout()
+		main_layout.setContentsMargins(0, 0, 0, 0)
+		main_layout.addLayout(btn_layout)
+		main_layout.addWidget(self.tree)
+
+		self.setLayout(main_layout)
 
 	def add_filter(self):
 		self._model.add_filter()
@@ -1052,7 +1092,13 @@ class CirchartDataFilterTree(QTreeView):
 	def get_filters(self):
 		return self._model.get_filters()
 
-
+class CirchartColumnFilterTree(CirchartDataFilterTree):
+	def _init_widget(self):
+		self.tree = CirchartEmptyTreeView(self)
+		self._model = CirchartColumnFilterModel(self)
+		self._delegate = CirchartColumnFilterDelegate(self)
+		self.tree.setModel(self._model)
+		self.tree.setItemDelegate(self._delegate)
 
 
 

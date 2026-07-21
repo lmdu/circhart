@@ -295,6 +295,7 @@ CirchartCheckTableWidget {
 	border: 1px solid #c2c2c2;
 }
 
+CirchartEmptyTreeView,
 CirchartEmptyTreeWidget {
 	border: 1px solid #c2c2c2;
 }
@@ -402,7 +403,8 @@ CirchartCustomColorTable {
 	border: 1px solid #c2c2c2;
 }
 
-CirchartDataFilterTree {
+CirchartDataFilterTree,
+CirchartColumnFilterTree {
 	border: 1px solid #c2c2c2;
 	min-height: 120px;
 }

@@ -2671,22 +2671,6 @@ class CirchartDataFilterDialog(QDialog):
 	def _create_widgets(self):
 		self.tree = CirchartDataFilterTree(self, self.table)
 
-		self.add_btn = QPushButton(self)
-		self.add_btn.setIcon(QIcon(':/icons/add.svg'))
-		self.add_btn.setToolTip("Add filter")
-		self.add_btn.setFixedSize(24, 24)
-		self.add_btn.clicked.connect(self.tree.add_filter)
-		self.del_btn = QPushButton(self)
-		self.del_btn.setFixedSize(24, 24)
-		self.del_btn.setToolTip("Delete filter")
-		self.del_btn.setIcon(QIcon(':/icons/delete.svg'))
-		self.del_btn.clicked.connect(self.tree.delete_filter)
-		self.clr_btn = QPushButton(self)
-		self.clr_btn.setFixedSize(24, 24)
-		self.clr_btn.setToolTip("Clear filters")
-		self.clr_btn.setIcon(QIcon(':/icons/trash.svg'))
-		self.clr_btn.clicked.connect(self.tree.clear_filters)
-
 		self.styles = CirchartStyleParameter('options', self)
 		self.styles.style_changed.connect(self.adjustSize)
 
@@ -2718,9 +2702,6 @@ class CirchartDataFilterDialog(QDialog):
 	def _init_layouts(self):
 		btn_layout = QHBoxLayout()
 		btn_layout.addWidget(QLabel("Data filters:", self), 1)
-		btn_layout.addWidget(self.add_btn)
-		btn_layout.addWidget(self.del_btn)
-		btn_layout.addWidget(self.clr_btn)
 
 		sel_layout = QHBoxLayout()
 		sel_layout.addWidget(QLabel("Assign", self))

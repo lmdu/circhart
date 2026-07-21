@@ -635,7 +635,7 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 		self.attr_select.setEditable(True)
 		self.filter_match = CirchartAttributeFilters(self)
 		self.filter_match.setVisible(False)
-		self.filter_check = QCheckBox("Filter records by attributes")
+		self.filter_check = QCheckBox("Filter records by attributes", self)
 		self.filter_check.toggled.connect(self.filter_match.setVisible)
 		self.filter_check.toggled.connect(self.adjustSize)
 
@@ -743,27 +743,102 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 class CirchartExtractDataDialog(CirchartBaseDialog):
 	_title = "Extract Data"
 
+	def sizeHint(self):
+		return QSize(550, 100)
+
 	def _create_widgets(self):
 		self.file_browse = CirchartBrowseWidget(self)
-		self.column_select = QLineEdit(self)
-		self.ignore_select = QLineEdit(self)
-		self.ignore_select.setText('#')
+		self.column_input = QLineEdit(self)
+		self.ignore_input = QLineEdit(self)
+		self.ignore_input.setText('#')
+		self.output_select = QComboBox(self)
+		self.output_browse = CirchartBrowseWidget(self, saver=True)
+		self.output_name = QLineEdit(self)
+		self.filter_check = QCheckBox(self)
+		self.filter_tree = CirchartColumnFilterTree(self)
+		self.filter_tree.setVisible(False)
+		self.filter_check.toggled.connect(self._on_filter_checked)
 
 	def _init_widgets(self):
-		pass
+		self.output_select.addItems(['plot data', 'link data', 'loci data', 'text data', 'csv file', 'tsv file'])
+		self.output_select.currentTextChanged.connect(self._on_output_changed)
 
 	def _init_layouts(self):
-		form_layout = QFormLayout()
-		form_layout.addRow("Table file:", self.file_browse)
-		form_layout.addRow("Ignore lines start with:", self.ignore_select)
-		form_layout.addRow("Select columns:", self.column_select)
+		self.form_layout = QFormLayout()
+		self.form_layout.addRow("Table file:", self.file_browse)
+		self.form_layout.addRow("Ignore lines start with:", self.ignore_input)
+		self.form_layout.addRow("Select columns:", self.column_input)
+		self.form_layout.addRow("Extract as:", self.output_select)
+		self.form_layout.addRow("Data name:", self.output_name)
+		self.form_layout.addRow("Output file:", self.output_browse)
+		self.form_layout.setRowVisible(5, False)
+		self.form_layout.addRow("Filter rows by columns:", self.filter_check)
+		self.form_layout.addRow(self.filter_tree)
+		self.form_layout.setRowVisible(7, False)
 
-		self.main_layout.addLayout(form_layout)
+		self.main_layout.addLayout(self.form_layout)
+
+	def _on_filter_checked(self, flag):
+		self.form_layout.setRowVisible(7, flag)
+		self.adjustSize()
+
+	def _on_output_changed(self, otype):
+		if otype.endswith('file'):
+			self.form_layout.setRowVisible(4, False)
+			self.form_layout.setRowVisible(5, True)
+
+		else:
+			self.form_layout.setRowVisible(4, True)
+			self.form_layout.setRowVisible(5, False)
+
+	def get_values(self):
+		if self.filter_check.isChecked():
+			fs, fv = self.filter_tree.get_filters()
+		else:
+			fs, fv = None, None
+
+		return {
+			'tabfile': self.file_browse.get_path(),
+			'ignores': (i.strip() for i in self.ignore_input().strip().strip(',').split(',') if i.strip()),
+			'columns': (c.strip() for c in self.column_input.text().strip().strip(',').split(',')),
+			'outtype': self.output_select.currentText(),
+			'outfile': self.output_browse.get_path(),
+			'outname': self.output_name.text().strip(),
+			'filters': fs,
+			'fvalues': fv
+		}
+
+	def _on_accepted(self):
+		vals = AttrDict(self.get_values())
+
+		if not vals.tabfile:
+			return QMessageBox.critical(self, 'Error', "No input table file")
+
+		if not vals.columns:
+			return QMessageBox.critical(self, 'Error', "No input selected columns")
+		
+		if not all([v.isdigit() for v in vals.columns]):
+			return QMessageBox.critical(self, 'Error', "Column number input error")
+
+		if vals.outtype.endswith('file'):
+			if not vals.outfile:
+				return QMessageBox.critical(self, 'Error', "No output file")
+
+		else:
+			if not vals.outname:
+				return QMessageBox.critical(self, 'Error', "No input data name")
+
+		self.accept()
 
 	@classmethod
 	def extract(cls, parent):
 		dlg = cls(parent)
-		dlg.exec()
+
+		if dlg.exec() == QDialog.Accepted:
+			vals = dlg.get_values()
+			vals['columns'] = [int(c) for c in vals['columns']]
+
+			return vals
 
 class CirchartCreateCircosPlotDialog(QDialog):
 	def __init__(self, parent=None):

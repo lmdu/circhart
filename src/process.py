@@ -30,6 +30,7 @@ __all__ = [
 	'CirchartLinkPrepareProcess',
 	'CirchartTextPrepareProcess',
 	'CirchartGCSkewPrepareProcess',
+	'CirchartDataExtractProcess',
 ]
 
 class CirchartBaseProcess(multiprocessing.Process):
@@ -827,6 +828,105 @@ class CirchartTextPrepareProcess(CirchartBaseProcess):
 
 		if rows:
 			self.send('result', rows)
+
+class CirchartDataExtractProcess(CirchartBaseProcess):
+	def format_plot_data(self, rows):
+		for i in range(len(rows)):
+			rows[i][1] = int(rows[i][1])
+			rows[i][2] = int(rows[i][2])
+
+	def format_text_data(self, rows):
+		for i in range(len(rows)):
+			rows[i][1] = int(rows[i][1])
+			rows[i][2] = int(rows[i][2])
+			rows[i][3] = str(rows[i][3])
+
+	def format_link_data(self, rows):
+		for i in range(len(rows)):
+			rows[i][1] = int(rows[i][1])
+			rows[i][2] = int(rows[i][2])
+			rows[i][4] = int(rows[i][4])
+			rows[i][5] = int(rows[i][5])
+
+	def format_empty(self, rows):
+		return rows
+
+	def get_format_func(self):
+		if self.params.outtype in ['plot data', 'loci data']:
+			return self.format_plot_data
+
+		elif self.params.outtype == 'text data':
+			return self.format_text_data
+
+		elif self.params.outtype == 'link data':
+			return self.format_link_data
+
+		else:
+			return self.format_empty
+
+	def extract_with_filter(self, rows):
+		rows = []
+		fvals = self.params.fvalues
+
+		for fcols in rows:
+			if not eval(self.params.filters):
+				continue
+
+			row = [fcols[i] for i in self.params.columns]
+			rows.append(row)
+
+			if len(rows) == 200:
+				self.format_func(rows)
+				self.send('result', rows)
+				rows = []
+
+		if rows:
+			self.format_func(rows)
+			self.send('result', rows)
+
+	def extract_without_filter(self, rows):
+		rows = []
+
+		for fcols in rows:
+			row = [fcols[i] for i in self.params.columns]
+			rows.append(row)
+
+			if len(rows) == 200:
+				self.format_func(rows)
+				self.send('result', rows)
+				rows = []
+
+		if rows:
+			self.format_func(rows)
+			self.send('result', rows)
+
+	def do(self):
+		if self.params.tabfile.endswith('.gz'):
+			fp = gzip.open(self.params.tabfile, 'rt')
+		else:
+			fp = open(self.params.tabfile)
+
+		real_start = 0
+		
+		self.format_func = self.get_format_func()
+
+		if self.params.filters is not None:
+			extract_func = self.extract_with_filter
+		
+		else:
+			extract_func = self.extract_without_filter
+
+		with fp:
+			for line in fp:
+				if not line.startswith(self.params.ignores):
+					break
+
+				real_start = fp.tell()
+
+			dialect = csv.Sniffer().sniff(fp.read(2048))
+			fp.seek(real_start)
+			reader = csv.reader(fp, dialect)
+			extract_func(header)
 
 class CirchartCircosPlotProcess(QProcess):
 	def __init__(self, parent, workdir):

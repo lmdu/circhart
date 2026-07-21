@@ -16,7 +16,9 @@ __all__ = [
 	'CirchartCircosColorModel',
 	'CirchartCustomColorModel',
 	'CirchartDataFilterModel',
-	'CirchartDataFilterDelegate'
+	'CirchartDataFilterDelegate',
+	'CirchartColumnFilterModel',
+	'CirchartColumnFilterDelegate',
 ]
 
 class CirchartBaseTableModel(QAbstractTableModel):
@@ -598,17 +600,18 @@ class CirchartCircosColorModel(QAbstractTableModel):
 		return self._colors[row][col]
 
 class CirchartDataFilterModel(QAbstractTableModel):
+	_headers = ['And/Or', 'Field', 'Condition', 'Value']
+
 	def __init__(self, parent=None):
 		super().__init__(parent)
 
-		self._headers = ['And/Or', 'Field', 'Condition', 'Value']
 		self._filters = []
 
 	def rowCount(self, parent=QModelIndex()):
 		return len(self._filters)
 
 	def columnCount(self, parent=QModelIndex()):
-		return 4
+		return len(self._headers)
 
 	def data(self, index, role=Qt.DisplayRole):
 		if not index.isValid():
@@ -638,6 +641,9 @@ class CirchartDataFilterModel(QAbstractTableModel):
 			return self._headers[section]
 
 	def flags(self, index):
+		if index.row() == 0 and index.column() == 0:
+			return Qt.NoItemFlags
+
 		flags = Qt.ItemIsEnabled | Qt.ItemIsSelectable | Qt.ItemNeverHasChildren | Qt.ItemIsEditable
 
 		return flags
@@ -681,6 +687,60 @@ class CirchartDataFilterModel(QAbstractTableModel):
 			fs.append(' '.join(f))
 
 		return ' '.join(fs)
+
+class CirchartColumnFilterModel(CirchartDataFilterModel):
+	_headers = ['And/Or', 'Column', 'Type', 'Condition', 'Value']
+
+	def add_filter(self):
+		row_num = len(self._filters)
+		self.beginInsertRows(QModelIndex(), row_num, row_num)
+		if row_num:
+			self._filters.append(['And', 1, 'text', 'equal', ''])
+		else:
+			self._filters.append(['', 1, 'text', 'equal', ''])
+		self.endInsertRows()
+
+	def get_filters(self):
+		fs = []
+		fv = []
+
+		for f in self._filters:
+			findex = f[1] - 1
+			flogic = f[0].lower()
+
+			if f[2] == 'text':
+				vindex = len(fv)
+
+				match f[3]:
+					case 'equal':
+						fs.append("{} fcols[{}] == fvals[{}]".format(flogic, findex, vindex))
+
+					case 'contains':
+						fs.append("{} fvals[{}] in fcols[{}]".format(flogic, vindex, findex))
+
+					case 'in':
+						fs.append("{} fcols[{}] in fvals[{}]".format(flogic, findex, vindex))
+
+					case 'startswith':
+						fs.append("{} fcols[{}].startswith(fvals[{}])".format(flogic, findex, vindex))
+
+					case 'endswith':
+						fs.append("{} fcols[{}].endswith(fvals[{}])".format(flogic, findex, vindex))
+
+				if f[3] == 'in':
+					f[4]= {v.strip() for v in f[4].strip().split(',')}
+
+				fv.append(f[4])
+
+			else:
+				if f[3] == '=':
+					f[3] = '=='
+
+				fs.append("{} fcols[{}] {} {}".format(flogic, findex, f[3], f[4]))
+
+		fs = ' '.join(fs)
+
+		return fs, fv
 
 
 class CirchartDataFilterDelegate(QStyledItemDelegate):
@@ -763,5 +823,79 @@ class CirchartDataFilterDelegate(QStyledItemDelegate):
 	def setModelData(self, editor, model, index):
 		QStyledItemDelegate.setModelData(self, editor, model, index)
 
+class CirchartColumnFilterDelegate(QStyledItemDelegate):
+	def __init__(self, parent=None):
+		super().__init__(parent)
 
+	def paint(self, painter, option, index):
+		QStyledItemDelegate.paint(self, painter, option, index)
+
+	def createEditor(self, parent, option, index):
+		col = index.column()
+		row = index.row()
+		val = index.data()
+
+		editor = QStyledItemDelegate.createEditor(self, parent, option, index)
+		
+		if col == 0:
+			editor = QComboBox(parent)
+			editor.addItems(['And', 'Or'])
+
+		elif col == 1:
+			editor = QSpinBox(parent)
+			editor.setRange(1, 10000)
+
+		elif col == 2:
+			editor = QComboBox(parent)
+			editor.addItems(['text', 'number'])
+
+		elif col == 3:
+			editor = QComboBox(parent)
+			ftype = index.siblingAtColumn(2).data()
+
+			if ftype == 'text':
+				editor.addItems(['equal', 'contains', 'startswith', 'endswith', 'in'])
+
+			else:
+				editor.addItems(['=', '>', '>=', '<', '<=', '!='])
+
+		elif col == 4:
+			ftype = index.siblingAtColumn(2).data()
+			fcond = index.siblingAtColumn(3).data()
+
+			if ftype == 'number':
+				editor = QDoubleSpinBox(parent)
+				editor.setRange(-100000000, 100000000)
+				editor.setDecimals(5)
+
+			elif fcond == 'in':
+				editor = QPlainTextEdit(parent)
+
+		return editor
+
+	def setEditorData(self, editor, index):
+		col = index.column()
+		row = index.row()
+		val = index.data()
+
+		if col in [0, 2, 3]:
+			idx = editor.findText(val)
+			editor.setCurrentIndex(idx)
+
+		elif col == 1:
+			editor.setValue(val)
+
+		else:
+			if isinstance(editor, QPlainTextEdit):
+				editor.setPlainText(val)
+
+			elif isinstance(editor, QDoubleSpinBox):
+				if isinstance(val, float):
+					editor.setValue(val)
+
+			else:
+				editor.setText(str(val))
+
+	def setModelData(self, editor, model, index):
+		QStyledItemDelegate.setModelData(self, editor, model, index)
 

@@ -863,7 +863,9 @@ class CirchartMainWindow(QMainWindow):
 		CirchartReplaceChridDialog.replace(self, table)
 
 	def do_extract_data(self):
-		CirchartExtractDataDialog.extract(self)
+		params = CirchartExtractDataDialog.extract(self)
+
+		print(params)
 
 	def do_prepare_karyotype_data(self):
 		CirchartKaryotypePrepareDialog.prepare(self)
