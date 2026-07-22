@@ -175,7 +175,19 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_genome_regions
 		)
 
-		self.import_collinearity_act = QAction("&Import Collinearity File...", self,
+		self.import_blast_act = QAction("&Blast Alignment...", self,
+			triggered = self.do_import_blast_alignment
+		)
+
+		self.import_mummer_act = QAction("&MUMmer Coords...", self,
+			triggered = self.do_import_mummer_coords
+		)
+
+		self.import_jcvi_act = QAction("&JCVI Anchors...", self,
+			triggered = self.do_import_jcvi_anchors
+		)
+
+		self.import_collinearity_act = QAction("&MCScanX Collinearity...", self,
 			triggered = self.do_import_mcscanx_collinearity
 		)
 
@@ -359,7 +371,12 @@ class CirchartMainWindow(QMainWindow):
 		self.import_menu.addAction(self.import_gbands_act)
 		self.import_menu.addAction(self.import_variant_act)
 		self.import_menu.addAction(self.import_region_act)
-		self.import_menu.addAction(self.import_collinearity_act)
+
+		self.synteny_menu = self.import_menu.addMenu("&Import Genome Synteny")
+		self.synteny_menu.addAction(self.import_blast_act)
+		self.synteny_menu.addAction(self.import_mummer_act)
+		self.synteny_menu.addAction(self.import_jcvi_act)
+		self.synteny_menu.addAction(self.import_collinearity_act)
 		self.import_menu.addSeparator()
 		self.import_menu.addAction(self.import_kdata_act)
 		self.import_menu.addAction(self.import_band_act)
@@ -691,6 +708,15 @@ class CirchartMainWindow(QMainWindow):
 		worker = CirchartImportRegionsWorker({'path': rfile})
 		worker.signals.success.connect(self.data_tree.update_tree)
 		self.submit_new_worker(worker)
+
+	def do_import_blast_alignment(self):
+		pass
+
+	def do_import_mummer_coords(self):
+		pass
+
+	def do_import_jcvi_anchors(self):
+		pass
 
 	def do_import_mcscanx_collinearity(self):
 		cfile, _ = QFileDialog.getOpenFileName(self, "Select MCSCANX Collinearity File",
