@@ -95,7 +95,7 @@ class KaryotypeTable(SqlTable):
 	_index = True
 	type = str
 	parent = str
-	name = str
+	chrid = str
 	label = str
 	start = int
 	end = int

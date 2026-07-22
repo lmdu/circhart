@@ -251,7 +251,7 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_clear_plot_option
 		)
 
-		self.replace_chrom_act = QAction("Replace Chrom IDs", self,
+		self.replace_chrom_act = QAction("Replace Data Chrids", self,
 			triggered = self.do_replace_chrom_ids
 		)
 
@@ -379,7 +379,7 @@ class CirchartMainWindow(QMainWindow):
 		self.edit_menu.addAction(self.zoom_out_act)
 		self.edit_menu.addSeparator()
 
-		self.kcolor_menu = self.edit_menu.addMenu("&Karyotype Color")
+		self.kcolor_menu = self.edit_menu.addMenu("&Set Karyotype Color")
 		self.kcolor_menu.addAction(self.kcolor_default_act)
 		self.kcolor_menu.addAction(self.kcolor_random_act)
 		self.kcolor_menu.addAction(self.kcolor_pure_act)

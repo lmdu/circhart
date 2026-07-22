@@ -1002,6 +1002,10 @@ class CirchartCollinearityIdmappingWidget(QWidget):
 			layout.addWidget(self.feat_select, 0, 3)
 			layout.addWidget(self.attr_select, 0, 4)
 
+		for i in range(layout.columnCount()):
+			if i > 0:
+				layout.setColumnStretch(i, 1)
+
 	def _init_widgets(self):
 		ks = SqlControl.get_datas_by_type('karyotype')
 		for k in ks:
