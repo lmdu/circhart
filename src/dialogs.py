@@ -724,20 +724,21 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 			self.query_karyotype.addItem(k.name, k.id)
 			self.subject_karyotype.addItem(k.name, k.id)
 
-		#self.add_mapping("Species1", True)
-
 	def _on_type_changed(self, index):
 		if index > 1:
-			self.main_layout.setRowVisible(5, False)
-			self.main_layout.setRowVisible(6, False)
+			self.main_layout.setRowVisible(3, False)
+			self.main_layout.setRowVisible(4, False)
 			self.main_layout.setRowVisible(5, True)
 			self.main_layout.setRowVisible(6, True)
-			
+			self.clear_mapping()
+			self.add_mapping('Species1', label=True)
+
 		else:
-			self.main_layout.setRowVisible(5, True)
-			self.main_layout.setRowVisible(6, True)
+			self.main_layout.setRowVisible(3, True)
+			self.main_layout.setRowVisible(4, True)
 			self.main_layout.setRowVisible(5, False)
 			self.main_layout.setRowVisible(6, False)
+			self.clear_mapping()
 
 		self.source_data.clear()
 		stype = self.source_type.currentData()
@@ -745,6 +746,8 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 
 		for d in ds:
 			self.source_data.addItem(d.name, d.id)
+
+		self.adjustSize()
 
 	def add_mapping(self, title, label=False):
 		mapwdg = CirchartSpeciesMappingWidget(title, self, label)
@@ -757,6 +760,10 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 		mapwdg.deleteLater()
 
 		self.adjustSize()
+
+	def clear_mapping(self):
+		while self.mapping_widgets:
+			self.remove_mapping()
 
 	def _on_species_changed(self, num):
 		widget_num = len(self.mapping_widgets)
@@ -772,20 +779,34 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 
 	def get_params(self):
 		data = {'sp{}'.format(idx): wdg.get_values() for idx, wdg in enumerate(self.mapping_widgets)}
-		data['collinearity'] = self.collinear_select.currentData()
+		data['datatype'] = self.source_type.currentData()
+		data['dsynteny'] = self.source_data.currentData()
+		data['queryk'] = self.query_karyotype.currentData()
+		data['subjectk'] = self.subject_karyotype.currentData()
 		data['dataname'] = self.dataname_input.text().strip()
 		return data
 
 	def _valid_form(self):
-		data = self.get_params()
-		if not data['dataname']:
+		vals = AttrDict(self.get_params())
+
+		if not vals.dataname:
 			return QMessageBox.critical(self, 'Error', "No data name input")
 
-		if not data['collinearity']:
-			return QMessageBox.critical(self, 'Error', "No collinearity data selected")
+		if not vals.dsynteny:
+			return QMessageBox.critical(self, 'Error', "No synteny data selected")
 
-		for k, v in data.items():
-			if not k.startswith('sp'):
+		if vals.datatype in ['blast', 'mummer']:
+			if not vals.queryk:
+				return QMessageBox(self, 'Error', "No query karyotype selected")
+
+			if not vals.subjectk:
+				return QMessageBox(self, 'Error', "No subject karyotype selected")
+
+		else:
+			for k, v in vals.items():
+				if not k.startswith('sp'):
+					continue
+
 				if not all(v.values()):
 					return QMessageBox.critical(self, 'Error', "Species information is not completely filled out")
 

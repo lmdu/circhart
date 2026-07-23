@@ -687,6 +687,18 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 			self.send('result', rows)
 
 class CirchartLinkPrepareProcess(CirchartBaseProcess):
+	def parse_blast(self):
+		pass
+
+	def parse_mummer(self):
+		pass
+
+	def parse_mcscanx(self):
+		pass
+
+	def parse_jcvi(self):
+		pass
+
 	def do(self):
 		gene_mappings = {}
 

@@ -264,8 +264,8 @@ class CirchartLinkPrepareWorker(CirchartProcessWorker):
 	data_type = 'linkdata'
 
 	def preprocess(self):
-		cmeta = SqlControl.get_data_meta(self.params['collinearity'])
-		self.params['collinearity'] = cmeta['path']
+		cmeta = SqlControl.get_data_meta(self.params['dsynteny'])
+		self.params['dsynteny'] = cmeta['path']
 
 		for k in self.params:
 			if not k.startswith('sp'):
