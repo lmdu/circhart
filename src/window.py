@@ -176,15 +176,15 @@ class CirchartMainWindow(QMainWindow):
 		)
 
 		self.import_blast_act = QAction("&Blast Alignment...", self,
-			triggered = self.do_import_blast_alignment
+			triggered = self.do_import_blast_table
 		)
 
 		self.import_mummer_act = QAction("&MUMmer Coords...", self,
 			triggered = self.do_import_mummer_coords
 		)
 
-		self.import_jcvi_act = QAction("&JCVI Anchors...", self,
-			triggered = self.do_import_jcvi_anchors
+		self.import_jcvi_act = QAction("&JCVI Simple...", self,
+			triggered = self.do_import_jcvi_simple
 		)
 
 		self.import_collinearity_act = QAction("&MCScanX Collinearity...", self,
@@ -709,14 +709,50 @@ class CirchartMainWindow(QMainWindow):
 		worker.signals.success.connect(self.data_tree.update_tree)
 		self.submit_new_worker(worker)
 
-	def do_import_blast_alignment(self):
-		pass
+	def do_import_blast_table(self):
+		tfile, _ = QFileDialog.getOpenFileName(self, "Select Blast Tabular File",
+			filter = (
+				"Blast tabular file (*.txt *.tsv);;"
+				"All files (*.*)"
+			)
+		)
+
+		if not tfile:
+			return
+
+		worker = CirchartImportBlastWorker({'path': tfile})
+		worker.signals.success.connect(self.data_tree.update_tree)
+		self.submit_new_worker(worker)
 
 	def do_import_mummer_coords(self):
-		pass
+		cfile, _ = QFileDialog.getOpenFileName(self, "Select Mummer Coords File",
+			filter = (
+				"Mummer coords file (*.coords *.txt);;"
+				"All files (*.*)"
+			)
+		)
 
-	def do_import_jcvi_anchors(self):
-		pass
+		if not cfile:
+			return
+
+		worker = CirchartImportMummerWorker({'path': cfile})
+		worker.signals.success.connect(self.data_tree.update_tree)
+		self.submit_new_worker(worker)
+
+	def do_import_jcvi_simple(self):
+		sfile, _ = QFileDialog.getOpenFileName(self, "Select Jcvi Simple File",
+			filter = (
+				"Jcvi simple file (*.simple *.txt);;"
+				"All files (*.*)"
+			)
+		)
+
+		if not sfile:
+			return
+
+		worker = CirchartImportJcviWorker({'path': sfile})
+		worker.signals.success.connect(self.data_tree.update_tree)
+		self.submit_new_worker(worker)
 
 	def do_import_mcscanx_collinearity(self):
 		cfile, _ = QFileDialog.getOpenFileName(self, "Select MCSCANX Collinearity File",
@@ -729,7 +765,7 @@ class CirchartMainWindow(QMainWindow):
 		if not cfile:
 			return
 
-		worker = CirchartImportCollinearityWorker({'path': cfile})
+		worker = CirchartImportMcscanxWorker({'path': cfile})
 		worker.signals.success.connect(self.data_tree.update_tree)
 		self.submit_new_worker(worker)
 

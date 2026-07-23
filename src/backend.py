@@ -133,10 +133,48 @@ class RegionsTable(SqlTable):
 	end = int
 	extra = str
 
-class CollinearityTable(SqlTable):
+class BlastTable(SqlTable):
 	_index = True
-	source = str
-	target = str
+	qseqid = str
+	sseqid = str
+	pident = str
+	length = str
+	mismatch = str
+	gapopen = str
+	qstart = str
+	qend = str
+	sstart = str
+	send = str
+	evalue = str
+	bitscore = str
+
+class MummerTable(SqlTable):
+	_index = True
+	rstart = str
+	rend = str
+	qstart = str
+	qend = str
+	ralen = str
+	qalen = str
+	pident = str
+	rlen = str
+	qlen = str
+	rseqid = str
+	qseqid = str
+
+class JcviTable(SqlTable):
+	_index = True
+	startgene1 = str
+	stopgene1 = str
+	startgene2 = str
+	stopgene2 = str
+	score = str
+	orientation = str
+
+class McscanxTable(SqlTable):
+	_index = True
+	gene1 = str
+	gene2 = str
 
 class BuscoTable(SqlTable):
 	_index = True
@@ -487,7 +525,10 @@ class SqlControl:
 		'regions': RegionsTable,
 		'annotation': AnnotationTable,
 		'karyotype': KaryotypeTable,
-		'collinearity': CollinearityTable,
+		'mcscanx': McscanxTable,
+		'blast': BlastTable,
+		'mummer': MummerTable,
+		'jcvi': JcviTable,
 		'banddata': BandDataTable,
 		'plotdata': PlotDataTable,
 		'linkdata': LinkDataTable,

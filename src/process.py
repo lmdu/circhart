@@ -27,7 +27,8 @@ __all__ = [
 	'CirchartDensityPrepareProcess',
 	'CirchartCircosPlotProcess',
 	'CirchartSnailPlotProcess',
-	'CirchartImportCollinearityProcess',
+	'CirchartImportMcscanxProcess',
+	'CirchartImportTableProcess',
 	'CirchartLinkPrepareProcess',
 	'CirchartTextPrepareProcess',
 	'CirchartGCSkewPrepareProcess',
@@ -400,7 +401,7 @@ class CirchartImportLinkDataProcess(CirchartImportDataProcess):
 		if ignore > 0:
 			self.send('warning', "Ignored {} lines due to missing columns".format(ignore))
 
-class CirchartImportCollinearityProcess(CirchartBaseProcess):
+class CirchartImportMcscanxProcess(CirchartBaseProcess):
 	def do(self):
 		rows = []
 		with open(self.params.path) as fh:
@@ -408,10 +409,38 @@ class CirchartImportCollinearityProcess(CirchartBaseProcess):
 				if line[0] == '#':
 					continue
 
-				cols = line.strip().split()
+				line = line.strip()
+
+				if not line:
+					continue
+
+				cols = line.split()
 
 				if len(rows) < 1000:
 					rows.append((cols[2], cols[3]))
+				else:
+					break
+
+		self.send('result', rows)
+
+class CirchartImportTableProcess(CirchartBaseProcess):
+	def do(self):
+		rows = []
+
+		with open(self.params.path) as fh:
+			for line in fh:
+				if line[0] == '#':
+					continue
+
+				line = line.strip()
+
+				if not line:
+					continue
+
+				cols = line.split()
+
+				if len(rows) < 1000:
+					rows.append(cols)
 				else:
 					break
 

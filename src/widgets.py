@@ -26,7 +26,7 @@ __all__ = [
 	'CirchartAttributeFilters',
 	'CirchartCircosColorTable',
 	'CirchartBrowseWidget',
-	'CirchartCollinearityIdmappingWidget',
+	'CirchartSpeciesMappingWidget',
 	'CirchartCustomColorTable',
 	'CirchartDataFilterTree',
 	'CirchartColumnFilterTree',
@@ -948,7 +948,7 @@ class CirchartCircosColorTable(QTableView):
 		super().selectionChanged(selected, deselected)
 			
 
-class CirchartCollinearityIdmappingWidget(QWidget):
+class CirchartSpeciesMappingWidget(QWidget):
 	def __init__(self, title=None, parent=None, label=True):
 		super().__init__(parent)
 		self.title = title
@@ -971,9 +971,10 @@ class CirchartCollinearityIdmappingWidget(QWidget):
 
 		self.kary_select = QComboBox(self)
 		self.anno_select = QComboBox(self)
-		self.anno_select.currentIndexChanged.connect(self._on_annotation_changed)
 		self.feat_select = QComboBox(self)
+		self.feat_select.setEditable(True)
 		self.attr_select = QComboBox(self)
+		self.attr_select.setEditable(True)
 
 	def _init_layouts(self):
 		layout = QGridLayout()
@@ -1007,6 +1008,8 @@ class CirchartCollinearityIdmappingWidget(QWidget):
 				layout.setColumnStretch(i, 1)
 
 	def _init_widgets(self):
+		self.anno_select.currentIndexChanged.connect(self._on_annotation_changed)
+		
 		ks = SqlControl.get_datas_by_type('karyotype')
 		for k in ks:
 			self.kary_select.addItem(k.name, k.id)

@@ -17,12 +17,15 @@ from backend import *
 __all__ = [
 	'CirchartImportGenomeWorker',
 	'CirchartImportAnnotationWorker',
-	'CirchartImportCollinearityWorker',
 	'CirchartImportBandsWorker',
 	'CirchartImportDataWorker',
 	'CirchartImportLinkDataWorker',
 	'CirchartImportVariationsWorker',
 	'CirchartImportRegionsWorker',
+	'CirchartImportMcscanxWorker',
+	'CirchartImportBlastWorker',
+	'CirchartImportMummerWorker',
+	'CirchartImportJcviWorker',
 	'CirchartBandPrepareWorker',
 	'CirchartGCContentPrepareWorker',
 	'CirchartGCSkewPrepareWorker',
@@ -168,9 +171,21 @@ class CirchartImportAnnotationWorker(CirchartImportBaseWorker):
 		super().save_result(res['data'])
 		SqlControl.update_data_meta(self.data_index, res['meta'])
 
-class CirchartImportCollinearityWorker(CirchartImportBaseWorker):
-	processor = CirchartImportCollinearityProcess
-	data_type = 'collinearity'
+class CirchartImportMcscanxWorker(CirchartImportBaseWorker):
+	processor = CirchartImportMcscanxProcess
+	data_type = 'mcscanx'
+
+class CirchartImportBlastWorker(CirchartImportBaseWorker):
+	processor = CirchartImportTableProcess
+	data_type = 'blast'
+
+class CirchartImportMummerWorker(CirchartImportBaseWorker):
+	processor = CirchartImportTableProcess
+	data_type = 'mummer'
+
+class CirchartImportJcviWorker(CirchartImportBaseWorker):
+	processor = CirchartImportTableProcess
+	data_type = 'jcvi'
 
 class CirchartImportBandsWorker(CirchartImportBaseWorker):
 	processor = CirchartImportBandsProcess

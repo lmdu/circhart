@@ -686,30 +686,68 @@ class CirchartLinkPrepareDialog(CirchartBaseDialog):
 		self.mapping_widgets = []
 
 		self.dataname_input = QLineEdit(self)
-		self.collinear_select = QComboBox(self)
+		self.source_type = QComboBox(self)
+		self.source_data = QComboBox(self)
 		self.species_spin = QSpinBox(self)
 		self.species_spin.setRange(1, 10)
-		self.species_spin.valueChanged.connect(self._on_species_changed)
+		self.query_karyotype = QComboBox(self)
+		self.subject_karyotype = QComboBox(self)
 
 	def _init_layouts(self):
 		self.subs_layout = QVBoxLayout()
 		self.subs_layout.setContentsMargins(0, 10, 0, 0)
-
 		self.main_layout.addRow("Data name:", self.dataname_input)
-		self.main_layout.addRow("Synteny data:", self.collinear_select)
+		self.main_layout.addRow("Synteny type:", self.source_type)
+		self.main_layout.addRow("Synteny data:", self.source_data)
+		self.main_layout.addRow("Query karyotype:", self.query_karyotype)
+		self.main_layout.addRow("Subject karyotype:", self.subject_karyotype)
 		self.main_layout.addRow("Species number:", self.species_spin)
 		self.main_layout.addRow(self.subs_layout)
 
 	def _init_widgets(self):
-		cs = SqlControl.get_datas_by_type('collinearity')
+		self.source_type.currentIndexChanged.connect(self._on_type_changed)
+		self.species_spin.valueChanged.connect(self._on_species_changed)
 
-		for c in cs:
-			self.collinear_select.addItem(c.name, c.id)
+		synteny_types = {
+			'blast': "Blast tabular file",
+			'mummer': "Mummer coords file",
+			'mcscanx': "McscanX collinearity file",
+			'jcvi': "JCVI simple file",
+		}
 
-		self.add_mapping("Species1", True)
+		for k, t in synteny_types.items():
+			self.source_type.addItem(t, k)
+
+		ks = SqlControl.get_datas_by_type('karyotype')
+
+		for k in ks:
+			self.query_karyotype.addItem(k.name, k.id)
+			self.subject_karyotype.addItem(k.name, k.id)
+
+		#self.add_mapping("Species1", True)
+
+	def _on_type_changed(self, index):
+		if index > 1:
+			self.main_layout.setRowVisible(5, False)
+			self.main_layout.setRowVisible(6, False)
+			self.main_layout.setRowVisible(5, True)
+			self.main_layout.setRowVisible(6, True)
+			
+		else:
+			self.main_layout.setRowVisible(5, True)
+			self.main_layout.setRowVisible(6, True)
+			self.main_layout.setRowVisible(5, False)
+			self.main_layout.setRowVisible(6, False)
+
+		self.source_data.clear()
+		stype = self.source_type.currentData()
+		ds = SqlControl.get_datas_by_type(stype)
+
+		for d in ds:
+			self.source_data.addItem(d.name, d.id)
 
 	def add_mapping(self, title, label=False):
-		mapwdg = CirchartCollinearityIdmappingWidget(title, self, label)
+		mapwdg = CirchartSpeciesMappingWidget(title, self, label)
 		self.subs_layout.addWidget(mapwdg)
 		self.mapping_widgets.append(mapwdg)
 
