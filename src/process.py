@@ -687,19 +687,7 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 			self.send('result', rows)
 
 class CirchartLinkPrepareProcess(CirchartBaseProcess):
-	def parse_blast(self):
-		pass
-
-	def parse_mummer(self):
-		pass
-
-	def parse_mcscanx(self):
-		pass
-
-	def parse_jcvi(self):
-		pass
-
-	def do(self):
+	def get_gene_mappings(self):
 		gene_mappings = {}
 
 		for k in self.params:
@@ -745,17 +733,95 @@ class CirchartLinkPrepareProcess(CirchartBaseProcess):
 							val = split_attrs(attr)[1].strip().strip('"')
 							gene_mappings[val] = (chrid, start, end)
 
+		return gene_mappings
+
+	def parse_blast(self, cols, mappings=None):
+		if cols[0] not in self.params.queryk:
+			return
+
+		if cols[1] not in self.params.subjectk:
+			return
+
+		qseqid = self.params.queryk[cols[0]]
+		sseqid = self.params.subjectk[cols[1]]
+		qstart = int(cols[6])
+		qend = int(cols[7])
+		sstart = int(cols[8])
+		send = int(cols[9])
+
+		return [qseqid, qstart, qend, sseqid, sstart, send, '']
+
+	def parse_mummer(self, cols, mappings=None):
+		if cols[9] not in self.params.subjectk:
+			return
+
+		if cols[10] not in self.params.queryk:
+			return
+
+		rseqid = self.params.subjectk[cols[9]]
+		qseqid = self.params.queryk[cols[10]]
+		rstart = int(cols[0])
+		rend = int(cols[1])
+		qstart = int(cols[2])
+		qend = int(cols[3])
+
+		return [rseqid, rstart, rend, qseqid, qstart, qend, '']
+
+	def parse_mcscanx(self, cols, mappings={}):
+		tests = [col in mappings for col in [cols[2], cols[3]]]
+
+		if not all(tests):
+			return
+
+		row = []
+		row.extend(mappings[cols[2]])
+		row.extend(mappings[cols[3]])
+		row.append('')
+		return row
+
+	def parse_jcvi(self, mappings={}):
+		tests = [col in mappings for col in [cols[0], cols[1], cols[2], cols[3]]]
+
+		if not all(tests):
+			return
+
+		sg1 = gene_mappings[cols[0]]
+		eg1 = gene_mappings[cols[1]]
+		sg2 = gene_mappings[cols[2]]
+		eg2 = gene_mappings[cols[3]]
+
+		return [sg1[0], sg1[1], eg1[2], sg2[0], sg2[1], sg2[2], '']
+
+	def do(self):
+		if self.params.datatype in ['mcscanx', 'jcvi']:
+			mappings = self.get_gene_mappings()
+		else:
+			mappings = None
+
+		if self.params.datatype == 'blast':
+			parse_func = self.parse_blast
+
+		elif self.params.datatype == 'mummer':
+			parse_func = self.parse_mummer
+
+		elif self.params.datatype == 'mcscanx':
+			parse_func = self.parse_mcscanx
+
+		elif self.params.datatype == 'jcvi':
+			parse_func = self.parse_jcvi
+
 		rows = []
-		with open(self.params.collinearity) as fh:
+		with open(self.params.dsynteny) as fh:
 			for line in fh:
 				if line[0] == '#':
-					continue
+					continuea
 
 				cols = line.strip().split()
-				row = []
-				row.extend(gene_mappings[cols[2]])
-				row.extend(gene_mappings[cols[3]])
-				row.append('')
+				row = parse_func(cols, mappings)
+
+				if row is None:
+					continue
+
 				rows.append(row)
 
 				if len(rows) == 200:

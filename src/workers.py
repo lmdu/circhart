@@ -267,6 +267,14 @@ class CirchartLinkPrepareWorker(CirchartProcessWorker):
 		cmeta = SqlControl.get_data_meta(self.params['dsynteny'])
 		self.params['dsynteny'] = cmeta['path']
 
+		if self.params['queryk']:
+			rows = SqlControl.get_data_content('karyotype', self.params['queryk'])
+			self.params['queryk'] = {row[3]: row[2] for row in rows}
+
+		if self.params['subjectk']:
+			rows = SqlControl.get_data_content('karyotype', self.params['subjectk'])
+			self.params['subjectk'] = {row[3]: row[2] for row in rows}
+
 		for k in self.params:
 			if not k.startswith('sp'):
 				continue
