@@ -134,7 +134,7 @@ labels:
     type: choice
     source:
       - label
-      - name
+      - chrid
   -
     name: label_font
     type: choice

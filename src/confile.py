@@ -88,7 +88,7 @@ class CirchartCircosConfile(Confile):
 						self.option(k, v, 'p')
 
 					case 'label_format':
-						if v == 'name':
+						if v == 'chrid':
 							v = 'chr'
 						self.option(k, "eval(var({}))".format(v))
 					
