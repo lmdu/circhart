@@ -208,6 +208,7 @@ class CirchartBrowseWidget(QWidget):
 		#self.browse.setFlat(True)
 		self.browse.setIcon(QIcon(':/icons/folder.svg'))
 		self.browse.clicked.connect(self.select_path)
+		self.path_changed = self.input.textChanged
 
 	def _init_layout(self):
 		self.main_layout = QHBoxLayout()
@@ -232,6 +233,9 @@ class CirchartBrowseWidget(QWidget):
 
 	def get_path(self):
 		return self.input.text()
+
+	def clear_path(self):
+		self.input.clear()
 
 class CirchartFileBrowseDialog(QDialog):
 	def __init__(self, parent=None):
