@@ -876,7 +876,7 @@ class CirchartReplaceChridDialog(CirchartBaseDialog):
 
 	@classmethod
 	def replace(cls, parent, table):
-		dlg = cls(parent, table)
+		dlg = cls(parent, table=table)
 
 		if dlg.exec() == QDialog.Accepted:
 			dlg.perform_replace()

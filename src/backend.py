@@ -186,7 +186,7 @@ class BandDataTable(SqlTable):
 	_index = True
 	type = str
 	parent = str
-	name = str
+	chrid = str
 	label = str
 	start = int
 	end = int
@@ -202,10 +202,10 @@ class PlotDataTable(SqlTable):
 
 class LinkDataTable(SqlTable):
 	_index = True
-	chr1 = str
+	chrid1 = str
 	start1 = int
 	end1 = int
-	chr2 = str
+	chrid2 = str
 	start2 = int
 	end2 = int
 	options = str
@@ -608,13 +608,19 @@ class SqlControl:
 	@staticmethod
 	def update_data_options(table, filters, options):
 		sql = SqlQuery(table)\
-			.update('options')\
-			.where(filters)
+			.update('options')
+
+		if filters:
+			sql = sql.where(filters)
+
 		SqlBase.update_row(sql, options)
 
 		sql = SqlQuery(table)\
-			.select("COUNT(1)")\
-			.where(filters)
+			.select("COUNT(1)")
+
+		if filters:
+			sql = sql.where(filters)
+
 		return SqlBase.get_one(sql)
 
 	@staticmethod

@@ -678,9 +678,21 @@ class CirchartDataFilterModel(QAbstractTableModel):
 		fs = []
 
 		for f in self._filters:
-			if f[2] == 'contains':
+			if f[2] == 'equals':
+				f[2] = '='
+
+			elif f[2] == 'contains':
 				f[2] = 'like'
 				f[3] = "'%{}%'".format(f[3])
+
+			elif f[2] == 'startswith':
+				f[2] = 'like'
+				f[3] = "'{}%'".format(f[3])
+
+			elif f[2] == 'endswith':
+				f[2] = 'like'
+				f[3] = "'%{}'".format(f[3])
+
 			else:
 				f[3] = str(f[3])
 
@@ -778,10 +790,10 @@ class CirchartDataFilterDelegate(QStyledItemDelegate):
 
 			elif col == 2:
 				if self._ftypes[idx] in [int, float]:
-					editor.addItems(['>', '>=', '<', '<=', '='])
+					editor.addItems(['>', '>=', '<', '<=', '=', '!='])
 
 				else:
-					editor.addItems(['=', 'contains'])
+					editor.addItems(['equals', 'contains', 'startswith', 'endswith'])
 
 		else:
 			if self._ftypes[idx] == float:

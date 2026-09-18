@@ -13,6 +13,7 @@ __all__ = [
 	'get_gxf_format',
 	'GXFParser',
 	'color_rgb_valid',
+	'is_plot_data_table',
 ]
 
 class AttrDict(dict):
@@ -118,7 +119,7 @@ class GXFParser:
 			cols = line.split('\t')
 			record = GXFRecord(cols)
 
-			for attr in cols[8].split(';'):
+			for attr in cols[8].strip(';').split(';'):
 				k, v = self.split_attr(attr)
 				record.attrs[k] = v
 
@@ -158,7 +159,7 @@ class GXFParser:
 		return k, v
 
 	def split_gtf_attr(self, attr):
-		ks = attr.strip('"').split('"')
+		ks = attr.split('"')
 		k = ks[0].strip().lower()
 		v = ks[1].strip()
 		return k, v
@@ -172,4 +173,5 @@ def color_rgb_valid(rgb):
 
 	return all(0 <= v <= 255 for v in map(int, match.groups()))
 
-
+def is_plot_data_table(table):
+	return table.startswith(('plotdata', 'linkdata', 'locidata', 'textdata'))

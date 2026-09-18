@@ -6,6 +6,7 @@ from PySide6.QtCore import *
 from PySide6.QtWidgets import *
 from PySide6.QtSvg import *
 
+from utils import *
 from config import *
 from dialogs import *
 from widgets import *
@@ -900,7 +901,8 @@ class CirchartMainWindow(QMainWindow):
 		if not table:
 			return
 
-		CirchartDataFilterDialog.add_options(self, table)
+		if is_plot_data_table(table):
+			CirchartDataFilterDialog.add_options(self, table)
 
 	def do_clear_plot_option(self):
 		if self.stack_widget.currentIndex() != 1:
@@ -911,7 +913,8 @@ class CirchartMainWindow(QMainWindow):
 		if not table:
 			return
 
-		SqlControl.clear_data_options(table)
+		if is_plot_data_table(table):
+			SqlControl.clear_data_options(table)
 
 	def do_replace_chrom_ids(self):
 		if self.stack_widget.currentIndex() != 1:
@@ -922,7 +925,8 @@ class CirchartMainWindow(QMainWindow):
 		if not table:
 			return
 
-		CirchartReplaceChridDialog.replace(self, table)
+		if is_plot_data_table(table):
+			CirchartReplaceChridDialog.replace(self, table)
 
 	def do_extract_data(self):
 		params = CirchartExtractDataDialog.extract(self)

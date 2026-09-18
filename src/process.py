@@ -544,7 +544,7 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 
 		attrs = {}
 		for attr in cols[8].strip(';').split(';'):
-			k, v = attr.strip('"').split('"')
+			k, v, _ = attr.split('"')
 			attrs[k.strip().lower()] = v.strip().lower()
 
 		for an, avs in self.params.attrfilter.items():
