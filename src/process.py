@@ -1018,7 +1018,7 @@ class CirchartDataExtractProcess(CirchartBaseProcess):
 			fp = open(self.params.tabfile)
 
 		real_start = 0
-		
+
 		self.format_func = self.get_format_func()
 
 		with fp:

@@ -6,7 +6,7 @@ Prior to drawing circos plot, you should prepare or import data for plotting. Ci
 Karyotype Data
 --------------
 
-The karyotype data defines the chromosomes and cytogenetic bands. It has seven columns: type, parent, name, label, start, end, color.  The name column is an unique id for each chromosome or band. The name is very important, as the other data types must use this name to distinguish different chromosomes.
+The karyotype data defines the chromosomes and cytogenetic bands. It has seven columns: type, parent, chrid, label, start, end, color.  The chrid column is an unique id for each chromosome or band. The chrid is very important, as the other data types must use this name to distinguish different chromosomes.
 
 .. list-table:: The description of each column
 	:header-rows: 1
@@ -17,8 +17,8 @@ The karyotype data defines the chromosomes and cytogenetic bands. It has seven c
 	* - type
 	  - chr (for karyotype) or band (for band data)
 	* - parent
-	  - \- (for karyotype) or chromosome name (for band data)
-	* - name
+	  - \- (for karyotype) or chromosome id (for band data)
+	* - chrid
 	  - chromosome uniq id
 	* - label
 	  - chromosome or band label
@@ -38,7 +38,7 @@ The karyotype data example:
 	chr - hs3 NC_060927.1 0 201105948 chr3
 	...
 
-.. note::
+.. important::
 
 	Karyotype data is essential for creating circos plots. You must prepare or import karyotype data before drawing circos plots.
 
@@ -56,6 +56,8 @@ Prepare Karyotype Data
 
 If you don't have karyotype data, you can prepare karyotype data.
 
+#. Import genome fasta file (see :ref:`Here <import-genome-file>`).
+
 #. Go to **Tools** menu -> **Prepare Data** -> **Prepare Karyotype Data** to open karyotype data preparation dialog:
 
 	.. figure:: _static/prepare_kdata.png
@@ -68,11 +70,15 @@ If you don't have karyotype data, you can prepare karyotype data.
 
 #. Select a genome and select some chromosomes.
 
+	.. tip::
+
+		You can use right clicked menu to select or deselect all chromosomes.
+
 	.. note::
 
-		Generally, genome file may have many unplaced sequences that we don't want to be used for plotting. You can  select only the complete chromosomes or chromosomes you desired.
+		Generally, genome file may have many unplaced sequences that we don't want to be used for plotting. You can select only the complete chromosomes or chromosomes you desired. You can use right clicked menu to guess and select chromosomes.
 
-#. Input an uniq chromosome name prefix. e.g. ``hs`` for human, ``mm`` for mouse, or you can also simply use ``chr`` for single genome. The circhart will use the this prefix to generate new name for each chromosome. e.g. hs1, hs2, hs3.
+#. Input chrid prefix. e.g. ``hs`` for human, ``mm`` for mouse, or you can also simply use ``chr`` for single genome. The circhart will use the this prefix to generate new name for each chromosome. e.g. hs1, hs2, hs3.
 
 #. Click ``OK`` button to generate karyotype data based on selected chromosomes.
 
@@ -120,7 +126,7 @@ The band data example:
 Import Band Data
 ^^^^^^^^^^^^^^^^
 
-If you already have band data, you can import data directly into Circhart. Go to **File** menu -> **Import Data** -> **Import Band Data**, select a file to import band data. 
+If you already have band data, you can import data directly into Circhart. Go to **File** menu -> **Import Data** -> **Import Band Data**, select a file to import band data.
 
 .. note::
 
@@ -129,12 +135,14 @@ If you already have band data, you can import data directly into Circhart. Go to
 Prepare Band Data
 ^^^^^^^^^^^^^^^^^
 
-If you don't have band data, you can prepare band data. Before preparing band data, you should get genome cytobands.
+If you don't have band data, you can prepare band data. Before preparing band data, you should get genome bands.
+
+#. Import genome band file extracted from UCSC genome browser (see :ref:`Here <import-genome-bands>`)
 
 #. Go to **Tools** menu -> **Prepare Data** -> **Prepare Band Data** to open band data preparation dialog:
 
 	.. figure:: _static/prepare_band.png
-		:width: 400
+		:width: 500
 		:align: center
 
 		Band data preparation dialog
@@ -150,7 +158,7 @@ If you don't have band data, you can prepare band data. Before preparing band da
 Plot Data
 ---------
 
-The plot data has four required columns (chrom, start, end, value) and on optional column (options). The plot data is used to plot line, scatter, histogram and heatmap tracks.
+The plot data has four required columns (chrid, start, end, value) and one optional column (options). The plot data is used to plot line, scatter, histogram and heatmap tracks.
 
 .. list-table:: The description of columns in plot data
 	:header-rows: 1
@@ -158,8 +166,8 @@ The plot data has four required columns (chrom, start, end, value) and on option
 
 	* - Column
 	  - Description
-	* - chrom
-	  - chromosome name
+	* - chrid
+	  - chromosome id (same as the chrid in karyotype)
 	* - start
 	  - start position
 	* - end
@@ -197,12 +205,12 @@ Prepare GC Content Plot Data
 
 GC content preparator can help you to calculate GC content within windows.
 
-#. If no genome data, Go to **File** menu -> **Import Data** -> **Import Genome File** to import a genome.
+#. If no imported genome, import genome fasta file (see :ref:`Here <import-genome-file>`).
 
 #. Go to **Tools** -> **Prepare Data** -> **Prepare GC Content Data** to open GC content preparation dialog.
 
 	.. figure:: _static/prepare_gc.png
-		:width: 400
+		:width: 500
 		:align: center
 
 		GC content preparation dialog with tumbling window
@@ -216,7 +224,7 @@ GC content preparator can help you to calculate GC content within windows.
 #. Select tumbling window or sliding window.
 
 	.. figure:: _static/prepare_gc2.png
-		:width: 400
+		:width: 500
 		:align: center
 
 		GC content preparation dialog with sliding window
@@ -232,12 +240,12 @@ Prepare GC Skew Plot Data
 
 GC skew preparator can help you to calculate GC skew within windows.
 
-#. If no genome data, Go to **File** menu -> **Import Data** -> **Import Genome File** to import a genome.
+#. If no imported genome, import genome fasta file (see :ref:`Here <import-genome-file>`).
 
 #. Go to **Tools** -> **Prepare Data** -> **Prepare GC Skew Data** to open GC skew preparation dialog.
 
 	.. figure:: _static/prepare_gcskew.png
-		:width: 400
+		:width: 500
 		:align: center
 
 		GC skew preparation dialog
@@ -257,10 +265,12 @@ Prepare Density Plot Data
 
 Density preparator can help you to calculate the number of features from genome annotation file (gtf/gff), the number of variations from vcf file, or the number of regions from bed file winthin windows.
 
+#. Import :ref:`genome annotation <import-genome-annotation>`, :ref:`genome variantions <import-genome-variantions>` or :ref:`genome regions <import-genome-regions>`.
+
 #. Go to **Tools** menu -> **Prepare Data** -> **Prepare Density Data** to open density preparation dialog.
 
 	.. figure:: _static/prepare_density.png
-		:width: 400
+		:width: 500
 		:align: center
 
 		Density data preparation dialog
@@ -273,7 +283,19 @@ Density preparator can help you to calculate the number of features from genome 
 
 #. Select source data.
 
-#. If *Genome annotation (gtf or gff)* seleted, you should also select a feature.
+#. If *Genome annotation (gtf or gff)* seleted, you should also select or input a feature.
+
+	.. tip::
+
+		If select gtf/gff, Circhart allows you to filter records by attribute values.
+
+	.. figure:: _static/annot_filter.png
+		:width: 450
+		:align: center
+
+	By click **Filter records by attribute values**, you can open the filter panel where you can add multiple filters. In each filter tab, you can select or input an attribute name from gtf or gff, and then provide the values for matching (one value per line or multiple values separated by ;).
+
+	For example, you can use ``gene_biotype`` as attribute and ``protein_coding`` as value to calculate the density of protein coding genes.
 
 #. Click ``OK`` button to generate GC skew data.
 
@@ -305,12 +327,12 @@ Prepare Text Data
 
 Circhart allows you to extract features as text data from genome annotation file (gtf or gff).
 
-#. If no annotation data, Go to **File** menu -> **Import Genome Annotation** to select a gtf/gff annotation file to import.
+#. If no annotation data, import annotation file (see :ref:`Here <import-genome-annotation>`.
 
 #. Go to **Tools** menu -> **Prepare Data** -> **Prepare Text Data** to open text data preparation dialog.
 
 	.. figure:: _static/prepare_text.png
-		:width: 400
+		:width: 500
 		:align: center
 
 		Text data preparation dialog
@@ -319,22 +341,31 @@ Circhart allows you to extract features as text data from genome annotation file
 
 #. Select a karyotype data.
 
-#. Select a feature.
+#. Select an annotation.
 
-#. Setect an attribute you desired as text value.
+#. Select or input a feature.
 
-#. Optionally, you can check "Only extract records whose attribute value in below list" to input attribute values (one value per line) to extract matched features.
+#. Setect or input an attribute, its value will be used as text.
+
+#. Optionally, you can check "Filter records by attribute values" to open filter panel to filter records.
 
 	.. figure:: _static/prepare_text2.png
-		:width: 400
+		:width: 500
 		:align: center
+
+		Text data preparation dialog with filters
+
+
+	In each filter tab, you can select or input an attribute name from gtf or gff, and then provide the values for matching (one value per line or multiple values separated by ;).
+
+	For example, you can use ``gene_name`` as attribute and ``TP53;TNP;EGFR;APOE;IL6`` as value to extract this five genes as text data.
 
 #. Click ``OK`` button to generate text data.
 
 Loci Data
 ---------
 
-The loci data has three required columns: chrom, start, end and one optional column: options. Each row defines an interval in a chromosome. The loci data used to plot tile, connector and highlight tracks.
+The loci data has three required columns: chrid, start, end and one optional column: options. Each row defines an interval in a chromosome. The loci data used to plot tile, connector and highlight tracks.
 
 Loci data example:
 
@@ -357,7 +388,7 @@ If you already have loci data, you can import data directly into Circhart. Go to
 Link Data
 ---------
 
-The link data has six required columns: chrom1, start1, end1, chrom2, start2, end2 and one optional column: options. Each row has two intervals on the same or different chromosomes. The link data used to plot link track.
+The link data has six required columns: chrid1, start1, end1, chrid2, start2, end2 and one optional column: options. Each row has two intervals on the same or different chromosomes. The link data used to plot link track.
 
 Link data example:
 
@@ -377,7 +408,7 @@ If you already have link data, you can import data directly into Circhart. Go to
 
 	The imported or prepared link data will be assigned data type of ``linkdata``.
 
-Except for above format, circhart also supports importing two-line format file. Links are defined across two lines like:
+Except for above format, circhart also supports importing two-line format file. Links are defined across two lines like this:
 
 .. code::
 
@@ -396,22 +427,91 @@ Except for above format, circhart also supports importing two-line format file. 
 Prepare Link Data
 ^^^^^^^^^^^^^^^^^
 
-Circhart allows you to prepare link data using the collinearity file generated by MCScanX.
+Circhart allows you to prepare link data from whole-genome alignment file generated by Blast and MUMmer, the simple file generated by JCVI, and the collinearity file generated by MCScanX.
+
+#. Import genome synteny file (see :ref:`Here <import-genome-synteny>`)
 
 #. Go to **Tools** menu -> **Prepare Data** -> **Prepare Link Data** to open link data preparation dialog.
 
 	.. figure:: _static/prepare_link.png
-		:width: 400
+		:width: 500
 		:align: center
 
 		Link data preparation dialog
 
 #. Input a name for geneated link data.
 
-#. Select imported collinearity data.
+#. Select synteny data type.
 
-#. Input the number of species in collinearity data.
+#. Select imported synteny data.
 
-#. Select karyotype and annotation for each species, and select corresponding feature and attribute. Make sure the value of your selected attribute can match the IDs in collinearity file.
+#. For Blast and MUMmer, you should select karyotype data of query and subject genome.
+
+#. For JCVI and MCScanX
+
+	.. figure:: _static/prepare_link2.png
+		:width: 500
+		:align: center
+
+		Link data preparation dialog for jcvi simple and mcscanx collinearity
+
+#. Input the number of species in MCScanX collinearity or JCVI simple data
+
+#. Select karyotype and annotation for each species, and select corresponding feature and attribute. Make sure the value of your selected attribute can match the IDs in collinearity or simple file.
 
 #. Click ``OK`` button to generate link data.
+
+Extract Data
+------------
+
+In addition to preparing data using the methods above, Circhart also allows you to extract data from any table files with TSV or CSV format. You can extract data as plot, text, link, loci data. Of course, you can also extract data into new TSV and CSV files.
+
+
+.. figure:: _static/extract_data.png
+	:width: 500
+	:align: center
+
+	Data extraction dialog
+
+#. Go to **Tools** menu -> **Extract Data** to open data extraction dialog.
+
+#. Click |browse| to select a TSV or CSV table file (support gzip compressed file).
+
+#. Input the starting characters or words of lines to ignore. Multiple characters or words can be separated by comma, for example ``#,@,*``. Clear it if you don't need to ignore any lines.
+
+#. Input the number of columns to be extracted. Multiple column numbers can be separated by comma. For example, ``1,3,3,5`` means extracting column 1, 3, 3 and 5 from table file to generate new data with four columns.
+
+#. You can extract data as plot, link, text, loci data or extract data to TSV or CSV file.
+
+#. If you select extracting as plot, link, text, loci data, you should input data name. If you select extracting to file, you should click |browse| to select an output file.
+
+#. Additionally, you can check ``Filter rows by column values`` to open filter panel where you can add filters to filter rows according to the column value.
+
+	.. figure:: _static/extract_filter.png
+		:width: 500
+		:align: center
+
+		Table row filter panel
+
+	When filter added, you can specify the column type (text or number). If set to ``number``, you can use =, >, >=, <, <= and != (not equal) to set conditions. If set to ``text``, you can use equals, contains, startswith, endswith and in to set conditions. Multiple conditions can be joined with And/Or.
+
+	.. list-table:: The description of text conditions
+		:header-rows: 1
+		:align: center
+
+		* - Condition
+		  - Description
+		* - equals
+		  - column value exactly matches text
+		* - contains
+		  - column value includes the text
+		* - startswith
+		  - column value bengins with the text
+		* - endswith
+		  - column value ends with the text
+		* - in
+		  - column value matches any text in a list (separated by comma)
+
+
+.. |browse| image:: _static/folder.svg
+	:width: 24

@@ -1,6 +1,8 @@
 Import Data
 ===========
 
+.. _import-genome-file:
+
 Import Genome File
 ------------------
 
@@ -35,6 +37,8 @@ Go to **File** menu -> **Import Data** -> **Import Genome File...** to select a 
 
 	The imported genome data will be assigned data type of ``genome``.
 
+.. _import-genome-annotation:
+
 Import Genome Annotation
 ------------------------
 
@@ -51,6 +55,8 @@ Go to **File** menu -> **Import Data** -> **Import Genome Annotation** to select
 .. note::
 
 	The entire annotation file will not be loaded into circhart. It will read the first 1000 lines to get feature and attribution information. The imported data will be assigned data type of ``annotation``.
+
+.. _import-genome-bands:
 
 Import Genome Bands
 -------------------
@@ -102,6 +108,8 @@ The imported genome bands has five columns: chrom, start, end, name, stain.
 
 	View of genome bands
 
+.. _import-genome-variantions:
+
 Import Genome Variations
 ------------------------
 
@@ -118,6 +126,8 @@ Go to **File** menu -> **Import Data** -> **Import Genome Variations** to select
 .. note::
 
 	Similarly, Circhart will read the first 1000 lines. The imported data will be assigned data type of ``variations``.
+
+.. _import-genome-regions:
 
 Import Genome Regions
 ---------------------
@@ -136,6 +146,7 @@ Go to **File** menu -> **Import Data** -> **Import Genome Regions** to select a 
 
 		Similarly, Circhart will read the first 1000 lines. The imported data will be assigned data type of ``regions``.
 
+.. _import-genome-synteny:
 
 Import Genome Synteny
 ---------------------
@@ -166,6 +177,7 @@ The alignment file looks like this:
 	EMA01G02618.1	EMA04G00947.1	32.618	233	139	7	123	350	55	274	2.42e-26	110
 	EMA01G02618.1	EMA04G00947.1	43.662	71	38	1	131	201	526	594	4.32e-13	70.5
 	EMA01G02618.1	EMA03G01769.1	33.182	220	129	9	3	217	191	397	1.07e-29	118
+	...
 
 Go to **File** menu -> **Import Data** -> **Import Genome Synteny** -> **Blast Alignment** to select a blast alignment file to import.
 
@@ -193,6 +205,7 @@ The coord file looks like this:
 	1	210	9210	9426	210	217	87.33	4094	24388310	JANHFT010338110.1	Chr12
 	1	221	21116	21326	221	211	86.61	4094	24388310	JANHFT010338110.1	Chr12
 	1	239	8758	8997	239	240	85.83	4094	24388310	JANHFT010338110.1	Chr12
+	...
 
 Go to **File** menu -> **Import Data** -> **Import Genome Synteny** -> **MUMmer Coords** to select a MUMmer coord file to import.
 
@@ -208,6 +221,7 @@ The simple file looks like this:
 	VIT_201s0011g00070.1	VIT_201s0011g00910.1	Prupe.1G281700.1	Prupe.1G290900.1	149	-
 	VIT_201s0011g02000.1	VIT_201s0011g02280.2	Prupe.1G345900.1	Prupe.1G348100.1	53	-
 	VIT_201s0011g02300.1	VIT_201s0011g02530.1	Prupe.1G299800.1	Prupe.1G303200.1	39	+
+	...
 
 Go to **File** menu -> **Import Data** -> **Import Genome Synteny** -> **JCVI Simple** to select a simple file to import.
 
@@ -266,6 +280,7 @@ The collinearity file looks like this:
 	  3-  2:        EMA01G02966.1   EMA03G02066.1         0
 	  3-  3:        EMA01G02969.1   EMA03G02064.1         0
 	  3-  4:        EMA01G02972.1   EMA03G02058.1     3e-29
+	...
 
 Go to **File** menu -> **Import Data** -> **Import Genome Synteny** -> **MCScanX Collinearity** to select a collinearity file to import.
 

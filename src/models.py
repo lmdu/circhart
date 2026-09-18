@@ -695,9 +695,9 @@ class CirchartColumnFilterModel(CirchartDataFilterModel):
 		row_num = len(self._filters)
 		self.beginInsertRows(QModelIndex(), row_num, row_num)
 		if row_num:
-			self._filters.append(['And', 1, 'text', 'equal', ''])
+			self._filters.append(['And', 1, 'text', 'equals', ''])
 		else:
-			self._filters.append(['', 1, 'text', 'equal', ''])
+			self._filters.append(['', 1, 'text', 'equals', ''])
 		self.endInsertRows()
 
 	def get_filters(self):
@@ -712,7 +712,7 @@ class CirchartColumnFilterModel(CirchartDataFilterModel):
 				vindex = len(fv)
 
 				match f[3]:
-					case 'equal':
+					case 'equals':
 						fs.append("{} fcols[{}] == fvals[{}]".format(flogic, findex, vindex))
 
 					case 'contains':
@@ -854,7 +854,7 @@ class CirchartColumnFilterDelegate(QStyledItemDelegate):
 			ftype = index.siblingAtColumn(2).data()
 
 			if ftype == 'text':
-				editor.addItems(['equal', 'contains', 'startswith', 'endswith', 'in'])
+				editor.addItems(['equals', 'contains', 'startswith', 'endswith', 'in'])
 
 			else:
 				editor.addItems(['=', '>', '>=', '<', '<=', '!='])
