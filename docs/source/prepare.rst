@@ -512,6 +512,21 @@ In addition to preparing data using the methods above, Circhart also allows you 
 		* - in
 		  - column value matches any text in a list (separated by comma)
 
+Edit Data
+---------
+
+Assign Plot Options
+^^^^^^^^^^^^^^^^^^^
+
+
+Clear Plot Options
+^^^^^^^^^^^^^^^^^^
+
+
+Replace Data Chrids
+^^^^^^^^^^^^^^^^^^^
+
+
 
 .. |browse| image:: _static/folder.svg
 	:width: 24
