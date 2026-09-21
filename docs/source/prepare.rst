@@ -518,6 +518,11 @@ Edit Data
 Assign Plot Options
 ^^^^^^^^^^^^^^^^^^^
 
+The plot data, link data, loci data and text data have extra column ``options``. 
+
+.. note::
+
+	In addition to adding plot options to data, you can also go to the rule panel of each track and set rule parameters to adjust the visualization of plot.
 
 Clear Plot Options
 ^^^^^^^^^^^^^^^^^^
