@@ -2549,8 +2549,8 @@ class CirchartCircosParameterManager(CirchartParameterManager):
 
 			for row in rows:
 				if row.type == 'chr':
-					self.chroms.append(row.name)
-					self.karyotypes[(k, knames[k])].append(row.name)
+					self.chroms.append(row.chrid)
+					self.karyotypes[(k, knames[k])].append(row.chrid)
 
 		form = CirchartGeneralTrack('general', self)
 		form.set_params(params)

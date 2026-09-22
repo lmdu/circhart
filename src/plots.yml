@@ -350,6 +350,11 @@ tracks:
       default: 0,0,0
       tooltip: line color
     -
+      name: fill_color
+      type: color
+      default: 255,255,255
+      tooltip: fill color
+    -
       name: thickness
       type: int
       range:
@@ -907,6 +912,7 @@ rules:
       label: false
       attrs:
         - color
+        - fill_color
         - thickness
 
   histogram:

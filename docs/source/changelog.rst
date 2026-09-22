@@ -1,8 +1,8 @@
 Changelogs
 ==========
 
-Version 0.7.0
--------------
+Version 0.7.0 (2026-10-10)
+--------------------------
 
 - Added data extraction from table file
 - Added filter conditions for preparation

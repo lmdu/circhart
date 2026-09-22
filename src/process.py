@@ -29,6 +29,7 @@ __all__ = [
 	'CirchartSnailPlotProcess',
 	'CirchartImportMcscanxProcess',
 	'CirchartImportTableProcess',
+	'CirchartLociPrepareProcess',
 	'CirchartLinkPrepareProcess',
 	'CirchartTextPrepareProcess',
 	'CirchartGCSkewPrepareProcess',
@@ -814,7 +815,7 @@ class CirchartLinkPrepareProcess(CirchartBaseProcess):
 		with open(self.params.dsynteny) as fh:
 			for line in fh:
 				if line[0] == '#':
-					continuea
+					continue
 
 				cols = line.strip().split()
 				row = parse_func(cols, mappings)
@@ -936,6 +937,9 @@ class CirchartTextPrepareProcess(CirchartBaseProcess):
 
 		if rows:
 			self.send('result', rows)
+
+class CirchartLociPrepareProcess(CirchartBaseProcess):
+	pass
 
 class CirchartDataExtractProcess(CirchartBaseProcess):
 	def format_plot_data(self, rows):

@@ -30,6 +30,7 @@ __all__ = [
 	'CirchartGCContentPrepareWorker',
 	'CirchartGCSkewPrepareWorker',
 	'CirchartDensityPrepareWorker',
+	'CirchartLociPrepareWorker',
 	'CirchartLinkPrepareWorker',
 	'CirchartTextPrepareWorker',
 	'CirchartCircosPlotWorker',
@@ -217,7 +218,7 @@ class CirchartPrepareWorker(CirchartProcessWorker):
 		objs = SqlControl.get_data_objects('karyotype', self.params.karyotype)
 
 		self.params.axes = {
-			obj.label: (obj.name, obj.end)
+			obj.label: (obj.chrid, obj.end)
 			for obj in objs if obj.type == 'chr'
 		}
 
@@ -259,7 +260,18 @@ class CirchartDensityPrepareWorker(CirchartPrepareWorker):
 		self.params['annotfile'] = ameta['path']
 		self.params['annotformat'] = ameta.get('format', None)
 
-class CirchartLinkPrepareWorker(CirchartProcessWorker):
+class CirchartLociPrepareWorker(CirchartPrepareWorker):
+	processor = CirchartLociPrepareProcess
+	data_type = 'locidata'
+
+	def preprocess(self):
+		super().preprocess()
+
+		ameta = SqlControl.get_data_meta(self.params.annotation)
+		self.params['annotfile'] = ameta['path']
+		self.params['annotformat'] = ameta.get('format', None)
+
+class CirchartLinkPrepareWorker(CirchartPrepareWorker):
 	processor = CirchartLinkPrepareProcess
 	data_type = 'linkdata'
 

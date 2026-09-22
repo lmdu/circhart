@@ -518,7 +518,21 @@ Edit Data
 Assign Plot Options
 ^^^^^^^^^^^^^^^^^^^
 
-The plot data, link data, loci data and text data have extra column ``options``. 
+The plot data, link data, loci data and text data have extra column ``options``. You can assign plot options to each row in the data according to the filters. These options will control the visualization of data point in the track such as show or hide, color, and point style.
+
+#. Go to **Data List** -> **Click the data** you want to add options.
+#. Go to **Edit** menu -> **Assign Plot Options** to open the dialog.
+
+	.. figure:: _static/assign_options.png
+		:width: 500
+		:align: center
+
+		Assign plot options dialog
+
+#. Add filters to select data rows.
+#. Select track type, e.g. line or histogram
+#. Add track display styles
+#. Click ``OK`` button to add options
 
 .. note::
 
@@ -527,10 +541,25 @@ The plot data, link data, loci data and text data have extra column ``options``.
 Clear Plot Options
 ^^^^^^^^^^^^^^^^^^
 
+#. Go to **Data List** -> **Click the data** you want to delete options.
+#. Go to **Edit** menu -> **Clear Plot Options** to delete all options.
 
 Replace Data Chrids
 ^^^^^^^^^^^^^^^^^^^
 
+Sometimes, the chrids in your imported plot data are chromosome names from genome file and may not match the chrids in your karyotype data. Circhart can help you to replace these chromosome names with the chrids in selected karyotype data.
+
+#. Go to **Data List** -> **Click the data** you want to replace chrids.
+#. Go to **Edit** menu -> **Replace Data Chrids** to open the dialog.
+
+	.. figure:: _static/replace_chrids.png
+		:width: 500
+		:align: center
+
+		Replace data chrids dialog
+
+#. Select a karyotype data.
+#. Click ``OK`` button to replace chrids.
 
 
 .. |browse| image:: _static/folder.svg
