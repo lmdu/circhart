@@ -544,9 +544,11 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 			return
 
 		attrs = {}
-		for attr in cols[8].strip(';').split(';'):
-			k, v, _ = attr.split('"')
-			attrs[k.strip().lower()] = v.strip().lower()
+		for attr in cols[8].strip(';').split('";'):
+			kv = attr.split('"')
+			k = kv[0].strip().lower()
+			v = kv[1].strip().strip('"').lower()
+			attrs[k] = v
 
 		for an, avs in self.params.attrfilter.items():
 			av = attrs.get(an, None)
@@ -838,9 +840,11 @@ class CirchartTextPrepareProcess(CirchartBaseProcess):
 			return
 
 		attrs = {}
-		for at in cols[8].strip(';').split(';'):
-			k, v = at.strip('"').split('"')
-			attrs[k.strip().lower()] = v.strip()
+		for at in cols[8].strip(';').split('";'):
+			kv = at.split('"')
+			k = kv[0].strip().lower()
+			v = kv[1].strip().strip('"')
+			attrs[k] = v
 
 		if attr not in attrs:
 			return
@@ -939,7 +943,103 @@ class CirchartTextPrepareProcess(CirchartBaseProcess):
 			self.send('result', rows)
 
 class CirchartLociPrepareProcess(CirchartBaseProcess):
-	pass
+	def parse_gtf(self, cols):
+		if cols[2].lower() != self.params.feature.lower():
+			return
+
+		attrs = {}
+		for at in cols[8].strip(';').split(';'):
+			kv = at.split('"')
+			k = kv[0].strip().lower()
+			v = kv[1].strip().strip('"')
+			attrs[k] = v
+
+		if self.params.attrcheck:
+			for an, avs in self.params.attrfilter.items():
+				av = attrs.get(an, '').lower()
+
+				if av not in avs:
+					return
+
+		start = int(cols[3])
+		end = int(cols[4])
+		return start, end
+
+	def parse_gff(self, cols):
+		if cols[2].lower() != self.params.feature.lower():
+			return
+
+		attrs = {}
+		for at in cols[8].strip(';').split(';'):
+			k, v = at.split('=')
+			attrs[k.strip().lower()] = v.strip()
+
+		if self.params.attrcheck:
+			for an, avs in self.params.attrfilter.items():
+				av = attrs.get(an, '').lower()
+
+				if av not in avs:
+					return
+
+		start = int(cols[3])
+		end = int(cols[4])
+		return start, end
+
+	def parse_bed(self, cols):
+		start = int(cols[1])
+		end = int(cols[2])
+		return start, end
+
+	def do(self):
+		rows = []
+
+		if self.params.annotformat == 'gff':
+			parse_func = self.parse_gff
+
+		elif self.params.annotformat == 'gtf':
+			parse_func = self.parse_gtf
+
+		else:
+			parse_func = self.parse_bed
+
+		if self.params.annotfile.endswith('.gz'):
+			fp = gzip.open(self.params.annotfile, 'rt')
+		else:
+			fp = open(self.params.annotfile)
+
+		with fp:
+			for line in fp:
+				if line[0] == '#':
+					continue
+
+				line = line.strip()
+
+				if not line:
+					continue
+
+				cols = line.split('\t')
+
+				chrom = cols[0]
+				if chrom not in self.params.axes:
+					continue
+
+				loci = parse_func(cols)
+
+				if loci is None:
+					continue
+
+				chrid, _ = self.params.axes[chrom]
+				row = [chrid]
+				row.extend(loci)
+				row.append('')
+				rows.append(row)
+
+				if len(rows) == 200:
+					self.send('result', rows)
+					rows = []
+
+		if rows:
+			self.send('result', rows)
 
 class CirchartDataExtractProcess(CirchartBaseProcess):
 	def format_plot_data(self, rows):

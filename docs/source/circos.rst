@@ -119,6 +119,13 @@ You are allowed to set specific radius for selected ideograms. You can use right
 #. ``Chrom``: select a chromosome or ideogram.
 #. ``Radius``: the specific radius value.
 
+Ideogram Display and Order
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. figure:: _static/ideogram_order.png
+	:width: 400
+	:align: center
+
 Circos Tick Parameters
 ----------------------
 

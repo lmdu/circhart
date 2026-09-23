@@ -20,6 +20,7 @@ __all__ = [
 	'CirchartCreateCircosPlotDialog',
 	'CirchartCreateSnailPlotDialog',
 	'CirchartCircosColorSelectDialog',
+	'CirchartLociPrepareDialog',
 	'CirchartLinkPrepareDialog',
 	'CirchartCustomColorDialog',
 	'CirchartReplaceChridDialog',
@@ -677,6 +678,106 @@ class CirchartTextPrepareDialog(CirchartBaseDialog):
 
 			return params
 
+class CirchartLociPrepareDialog(CirchartBaseDialog):
+	_title = "Prepare Loci Data"
+	_wsize = QSize(450, 100)
+
+	def _create_widgets(self):
+		self.dataname_input = QLineEdit(self)
+		self.annot_select = QComboBox(self)
+		self.select_karyotype = QComboBox(self)
+		self.feat_select = QComboBox(self)
+		self.feat_select.setEditable(True)
+		self.filter_match = CirchartAttributeFilters(self)
+		self.filter_check = QCheckBox("Filter records by attribute values", self)
+		self.filter_check.toggled.connect(self._on_filter_checked)
+		self.annot_select.currentIndexChanged.connect(self._on_annotation_changed)
+
+	def _init_widgets(self):
+		self.features = {}
+		self.attributes = {}
+
+		ks = SqlControl.get_datas_by_type('karyotype')
+		for k in ks:
+			self.select_karyotype.addItem(k.name, k.id)
+
+		ans = SqlControl.get_datas_by_type('annotation')
+		for a in ans:
+			meta = str_to_dict(a.meta)
+			self.features[a.id] = meta['features']
+			self.attributes[a.id] = meta['attributes']
+
+			self.annot_select.addItem(a.name, a.id)
+
+	def _init_layouts(self):
+		self.main_layout.addRow("Data name:", self.dataname_input)
+		self.main_layout.addRow("Select karyotype:", self.select_karyotype)
+		self.main_layout.addRow("Select annotation:", self.annot_select)
+		self.main_layout.addRow("Select feature:", self.feat_select)
+		self.main_layout.addRow(self.filter_check)
+		self.main_layout.addRow(self.filter_match)
+
+		self.main_layout.setRowVisible(self.filter_match, False)
+
+	def _on_filter_checked(self, flag):
+		self.main_layout.setRowVisible(self.filter_match, flag)
+		self.adjustSize()
+
+	def _on_annotation_changed(self, index):
+		aid = self.annot_select.currentData()
+		
+		self.feat_select.clear()
+		self.feat_select.addItems(self.features[aid])
+
+		self.filter_match.set_attrs(self.attributes[aid])
+
+	def _valid_form(self):
+		dn = self.dataname_input.text().strip()
+		if not dn:
+			return QMessageBox.critical(self, 'Error', "No data name input")
+
+		ki = self.select_karyotype.currentData()
+		if not ki:
+			return QMessageBox.critical(self, 'Error', "No karyotype selected")
+
+		ai = self.annot_select.currentData()
+		if not ai:
+			return QMessageBox.critical(self, 'Error', "No annotation selected")
+
+		ft = self.feat_select.currentText()
+		if not ft:
+			return QMessageBox.critical(self, 'Error', "No feature selected")
+
+		if self.filter_check.isChecked():
+			fs = self.filter_match.get_filters()
+
+			if not fs:
+				return QMessageBox.critical(self, 'Error', "No filter input")
+
+		self.accept()
+
+	@classmethod
+	def prepare(cls, parent=None):
+		dlg = cls(parent)
+
+		if dlg.exec() == QDialog.Accepted:
+			annotation_id = dlg.annot_select.currentData()
+			karyotype_id = dlg.select_karyotype.currentData()
+			feature = dlg.feat_select.currentText().strip()
+			dataname = dlg.dataname_input.text().strip()
+			attrcheck = dlg.filter_check.isChecked()
+			attrfilter = dlg.filter_match.get_filters()
+
+			params = {
+				'annotation': annotation_id,
+				'karyotype': karyotype_id,
+				'feature': feature,
+				'attrcheck': attrcheck,
+				'attrfilter': attrfilter,
+				'dataname': dataname
+			}
+
+			return params
 
 class CirchartLinkPrepareDialog(CirchartBaseDialog):
 	_title = "Prepare Link Data"

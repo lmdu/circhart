@@ -300,6 +300,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_prepare_text_data
 		)
 
+		self.prepare_idata_act = QAction("&Prepare Loci Data", self,
+			triggered = self.do_prepare_loci_data
+		)
+
 		self.check_circos_act = QAction("&Check Circos Dependencies", self,
 			triggered = self.do_circos_dependency_check
 		)
@@ -424,6 +428,7 @@ class CirchartMainWindow(QMainWindow):
 		self.prepare_menu.addAction(self.prepare_pdata_act)
 		self.prepare_menu.addAction(self.prepare_ldata_act)
 		self.prepare_menu.addAction(self.prepare_tdata_act)
+		self.prepare_menu.addAction(self.prepare_idata_act)
 
 		self.tool_menu.addAction(self.extract_data_act)
 
@@ -477,6 +482,7 @@ class CirchartMainWindow(QMainWindow):
 		prepare_menu.addAction(self.prepare_pdata_act)
 		prepare_menu.addAction(self.prepare_ldata_act)
 		prepare_menu.addAction(self.prepare_tdata_act)
+		prepare_menu.addAction(self.prepare_idata_act)
 		prepare_action = QAction(QIcon(':/icons/data.svg'), "Prepare Data", self)
 		prepare_action.setMenu(prepare_menu)
 
@@ -987,6 +993,14 @@ class CirchartMainWindow(QMainWindow):
 
 		if params:
 			worker = CirchartTextPrepareWorker(params)
+			worker.signals.success.connect(self.data_tree.update_tree)
+			self.submit_new_worker(worker)
+
+	def do_prepare_loci_data(self):
+		params = CirchartLociPrepareDialog.prepare(self)
+
+		if params:
+			worker = CirchartLociPrepareWorker(params)
 			worker.signals.success.connect(self.data_tree.update_tree)
 			self.submit_new_worker(worker)
 
