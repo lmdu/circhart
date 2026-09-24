@@ -126,6 +126,21 @@ Ideogram Display and Order
 	:width: 400
 	:align: center
 
+	Ideogram display and order panel
+
+You are allowed to adjust the display and order of chromosomes.
+
+- Select the chromosomes to show them in ideogram
+- Deselect the chromosomes to hide them.
+- Go to **right-click menu** -> **Show All** or **Hide All** to control display of all chromosomes.
+- Go to **right-click menu** -> **Reverse Order** to reverse chromosomes.
+- Go to **right-click menu** -> **Move Up** or **Move Down** to adjust the chromosome order.
+- Go to **right-click menu** -> **Reset Order** to restore the sort order.
+
+.. tip::
+
+	You must ensure that at least one chromosome is selected, otherwise, an error will occur during plotting. You are also allowed to drag and drop chromosomes to adjust the order.
+
 Circos Tick Parameters
 ----------------------
 
