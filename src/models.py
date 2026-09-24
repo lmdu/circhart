@@ -521,10 +521,61 @@ class CirchartDataTreeModel(CirchartBaseTableModel):
 		self.dataChanged.emit(uindex, index)
 		self.update_cache(index.row())
 
+	def data(self, index, role=Qt.DisplayRole):
+		if not index.isValid():
+			return None
+
+		row = index.row()
+		col = index.column()
+
+		if role == Qt.DisplayRole:
+			return self.get_value(row, col)
+
+		elif role == Qt.CheckStateRole:
+			if col == 0 and self.checkable:
+				if self.displays[row] in self.selected:
+					return Qt.Checked
+
+				else:
+					return Qt.Unchecked
+
+		elif role == Qt.DecorationRole:
+			if col == 0:
+				dt = self.get_value(row, 1)
+
+				if dt.endswith('data'):
+					return QIcon(':/icons/pdata.svg')
+
+				else:
+					return QIcon(':/icons/file.svg')
+
 class CirchartPlotTreeModel(CirchartBaseTableModel):
 	_table = 'plot'
 	_fields = ['name', 'type']
 	_headers = ['Name', 'Type']
+
+	def data(self, index, role=Qt.DisplayRole):
+		if not index.isValid():
+			return None
+
+		row = index.row()
+		col = index.column()
+
+		if role == Qt.DisplayRole:
+			return self.get_value(row, col)
+
+		elif role == Qt.CheckStateRole:
+			if col == 0 and self.checkable:
+				if self.displays[row] in self.selected:
+					return Qt.Checked
+
+				else:
+					return Qt.Unchecked
+
+		elif role == Qt.DecorationRole:
+			if col == 0:
+				pt = self.get_value(row, 1)
+				return QIcon(':/icons/{}.svg'.format(pt))
 
 class CirchartCustomColorModel(CirchartBaseTableModel):
 	_table = 'color'

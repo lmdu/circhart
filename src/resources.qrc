@@ -12,11 +12,13 @@
 	<file>icons/citation.svg</file>
 	<file>icons/close.svg</file>
 	<file>icons/color.svg</file>
+	<file>icons/circos.svg</file>
 	<file>icons/data.svg</file>
 	<file>icons/delete.svg</file>
 	<file>icons/delrule.svg</file>
 	<file>icons/dna.svg</file>
 	<file>icons/down.svg</file>
+	<file>icons/file.svg</file>
 	<file>icons/folder.svg</file>
 	<file>icons/grid.svg</file>
 	<file>icons/karyotype.svg</file>
@@ -29,6 +31,7 @@
 	<file>icons/no.svg</file>
 	<file>icons/offset.svg</file>
 	<file>icons/ok.svg</file>
+	<file>icons/pdata.svg</file>
 	<file>icons/plus.svg</file>
 	<file>icons/project.svg</file>
 	<file>icons/radius.svg</file>
@@ -38,6 +41,7 @@
 	<file>icons/save.svg</file>
 	<file>icons/space.svg</file>
 	<file>icons/spiral.svg</file>
+	<file>icons/snail.svg</file>
 	<file>icons/tick.svg</file>
 	<file>icons/track.svg</file>
 	<file>icons/trash.svg</file>
