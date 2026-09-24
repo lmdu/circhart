@@ -495,7 +495,7 @@ class CirchartGCContentPrepareProcess(CirchartBaseProcess):
 		c = seq.count('C', i, j)
 
 		if g or c:
-			gc = (g + c) / (a + t + g + c)
+			gc = round((g + c) / (a + t + g + c), 5)
 		else:
 			gc = 0
 
@@ -531,7 +531,7 @@ class CirchartGCSkewPrepareProcess(CirchartGCContentPrepareProcess):
 		c = seq.count('C', i, j)
 
 		if g or c:
-			gc = (g - c) / (g + c)
+			gc = round((g - c) / (g + c), 5)
 
 		else:
 			gc = 0
