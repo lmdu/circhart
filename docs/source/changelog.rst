@@ -1,7 +1,7 @@
 Changelogs
 ==========
 
-Version 0.7.0 (2026-09-24)
+Version 0.7.0 (2026-10-07)
 --------------------------
 
 - Added data extraction from table file
