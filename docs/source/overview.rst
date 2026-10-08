@@ -10,7 +10,7 @@ Overview
 Toolbar
 -------
 
-.. list-table:: The description of each icon
+.. list-table:: The description of each icon in the toolbar
 	:header-rows: 1
 	:align: center
 
@@ -69,25 +69,33 @@ You can adjust the plotting parameters in parameter panel.
 
 .. |newcircos| image:: _static/new.svg
 	:width: 24
+	:height: 24
 
 .. |addtrack| image:: _static/track.svg
 	:width: 24
+	:height: 24
 
 .. |newsnail| image:: _static/spiral.svg
 	:width: 24
+	:height: 24
 
 .. |zoomin| image:: _static/zoomin.svg
 	:width: 24
+	:height: 24
 
 .. |zoomout| image:: _static/zoomout.svg
 	:width: 24
+	:height: 24
 
 .. |export| image:: _static/save.svg
 	:width: 24
+	:height: 24
 
 .. |citation| image:: _static/citation.svg
 	:width: 24
+	:height: 24
 
 .. |update| image:: _static/refresh.svg
 	:width: 24
+	:height: 24
 

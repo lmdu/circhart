@@ -35,11 +35,15 @@ On MacOS
 		:width: 500
 		:align: center
 
+		Circhart installer dialog
+
 #. When you run Circhart for the first time, you will see a prompt dialog, click the **Done** button.
 
 	.. figure:: _static/macins2.png
 		:width: 300
 		:align: center
+
+		Circhart security warning
 
 #. To allow Circhart to run on your Mac, go to **System Settings** > **Privacy & Security**.
 
@@ -47,11 +51,15 @@ On MacOS
 		:width: 500
 		:align: center
 
-#. Scroll to **Security** section, you will see "Circhart" was blocked to protect you Mac. Click **Open Anyway**.
+		Privacy and security settings
+
+#. Scroll to **Security** section, you will see "Circhart" was blocked to protect your Mac. Click **Open Anyway**.
 
 	.. figure:: _static/macins4.png
 		:width: 500
 		:align: center
+
+		Circhart open anyway warning
 
 #. Then, you will see a prompt dialog, click the **Open Anyway** button.
 
@@ -59,12 +67,15 @@ On MacOS
 		:width: 300
 		:align: center
 
+		Circhart open warning
+
 #. Finally, you will be prompted to enter your password. The Circhart will be run successfully.
 
 	.. figure:: _static/macins6.png
 		:width: 500
 		:align: center
 
+		Circhart password allowed
 
 Circos dependencies
 -------------------
