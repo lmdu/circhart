@@ -1,6 +1,14 @@
 Changelogs
 ==========
 
+Version 0.8.0 (2026-10-08)
+--------------------------
+
+- Added plot rename feature
+- Added citation and acknowledgements
+- Fixed menu item disabled style
+- Improved right-click menu of data and plot
+
 Version 0.7.0 (2026-10-07)
 --------------------------
 
