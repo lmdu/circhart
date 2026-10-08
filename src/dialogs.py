@@ -25,6 +25,7 @@ __all__ = [
 	'CirchartCustomColorDialog',
 	'CirchartReplaceChridDialog',
 	'CirchartExtractDataDialog',
+	'CirchartThanksDialog',
 ]
 
 class CirchartBaseDialog(QDialog):
@@ -73,6 +74,44 @@ class CirchartBaseDialog(QDialog):
 
 	def _valid_form(self):
 		self.accept()
+
+class CirchartThanksDialog(CirchartBaseDialog):
+	_title = "Acknowledgements"
+	_wsize = QSize(500, 400)
+
+	def _create_widgets(self):
+		header = (
+			"We used the following tools and packages "
+			"to develop Circhart. We are grateful to the "
+			"authors and maintainers of these tools and "
+			"libraries that made this application possible."
+		)
+
+		self.header_label = QLabel(header, self)
+		self.header_label.setWordWrap(True)
+		self.thanks_info = QTextBrowser(self)
+		self.thanks_info.setOpenLinks(True)
+		self.thanks_info.setOpenExternalLinks(True)
+
+	def _create_buttons(self):
+		self.btn_box = QDialogButtonBox(
+			QDialogButtonBox.StandardButton.Ok
+		)
+		self.btn_box.accepted.connect(self.accept)
+		self.main_layout.addRow(self.btn_box)
+
+	def _init_layouts(self):
+		self.main_layout.addRow(self.header_label)
+		self.main_layout.addRow(self.thanks_info)
+
+	def set_message(self, text):
+		self.thanks_info.setHtml(text)
+
+	@classmethod
+	def thank(cls, parent, text):
+		dlg = cls(parent)
+		dlg.set_message(text)
+		dlg.exec()
 
 class CirchartCustomColorDialog(CirchartBaseDialog):
 	_title = "Show Custom Colors"

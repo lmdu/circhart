@@ -552,6 +552,14 @@ class SqlControl:
 		SqlBase.update_row(sql, name, did)
 
 	@staticmethod
+	def rename_plot(pid, name):
+		sql = SqlQuery('plot')\
+			.update('name')\
+			.where('id=?')
+
+		SqlBase.update_row(sql, name, pid)
+
+	@staticmethod
 	def get_data_meta(did):
 		sql = SqlQuery('data')\
 			.select('meta')\

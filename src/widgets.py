@@ -289,12 +289,21 @@ class CirchartDataTreeWidget(CirchartIOTreeWidget):
 		self.show_data.emit(table, rowid)
 
 	def _show_context_menu(self, pos):
+		current_index = self.indexAt(pos)
+
+		if not current_index.isValid():
+			return
+
 		path_action = QAction("Change Path")
 		path_action.triggered.connect(self.change_path)
 		rename_action = QAction("Rename")
 		rename_action.triggered.connect(self.rename_data)
 		delete_action = QAction("Delete")
 		delete_action.triggered.connect(self.delete_data)
+
+		dtype = current_index.siblingAtColumn(1).data()
+		if dtype.endswith(('data', 'karyotype')):
+			path_action.setDisabled(True)
 
 		menu = QMenu(self)
 		menu.addAction(rename_action)
@@ -368,12 +377,32 @@ class CirchartPlotTreeWidget(CirchartIOTreeWidget):
 		self.show_plot.emit(ptype, rowid)
 
 	def _show_context_menu(self, pos):
+		current_index = self.indexAt(pos)
+
+		if not current_index.isValid():
+			return
+
+		rename_action = QAction("Rename")
+		rename_action.triggered.connect(self.rename_plot)
 		delete_action = QAction("Delete")
 		delete_action.triggered.connect(self.delete_plot)
 
 		menu = QMenu(self)
+		menu.addAction(rename_action)
 		menu.addAction(delete_action)
 		menu.exec(self.mapToGlobal(pos))
+
+	def rename_plot(self):
+		index = self.currentIndex()
+
+		if not index.isValid():
+			return
+
+		new_name, ok = QInputDialog.getText(self, "Rename Plot", "Input new name:")
+		new_name = new_name.strip()
+
+		if ok and new_name:
+			self._model.rename_plot(index, new_name)
 
 	def delete_plot(self):
 		index = self.currentIndex()

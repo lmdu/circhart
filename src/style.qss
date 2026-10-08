@@ -31,6 +31,10 @@ QMenu::item {
 	spacing: 15px;
 }
 
+QMenu::item:disabled {
+	color: #aaaaaa;
+}
+
 QMenu::item:selected {
 	background: #bdd5f9;
 	color: black;

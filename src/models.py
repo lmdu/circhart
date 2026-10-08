@@ -333,14 +333,13 @@ class CirchartKaryotypeDelegate(QStyledItemDelegate):
 
 	def setEditorData(self, editor, index):
 		col = index.column()
-		
 
 		if col == 7:
-			value = index.model().data(index, Qt.BackgroundRole)
+			value = index.data(Qt.BackgroundRole)
 			editor.setCurrentColor(value)
 
 		elif col == 3:
-			value = index.model().data(index, Qt.DisplayRole)
+			value = index.data(Qt.DisplayRole)
 			editor.setText(value)
 
 	def setModelData(self, editor, model, index):
@@ -391,6 +390,7 @@ class CirchartKaryotypeTableModel(CirchartDataTableModel):
 					r, g, b = c.split(',')
 					c = QColor(int(r), int(g), int(b))
 					return c
+
 				elif c.count(',') == 3:
 					r, g, b, a = c.split(',')
 					c = QColor(int(r), int(g), int(b))
@@ -414,7 +414,7 @@ class CirchartKaryotypeTableModel(CirchartDataTableModel):
 
 			elif col == 7:
 				self.update_color(index, value)
-				
+
 			self.dataChanged.emit(index, index)
 			return True
 
@@ -519,7 +519,6 @@ class CirchartDataTreeModel(CirchartBaseTableModel):
 		SqlControl.rename_data(data_id, data_name)
 		uindex = index.siblingAtColumn(0)
 		self.dataChanged.emit(uindex, index)
-		self.update_cache(index.row())
 
 	def data(self, index, role=Qt.DisplayRole):
 		if not index.isValid():
@@ -543,7 +542,7 @@ class CirchartDataTreeModel(CirchartBaseTableModel):
 			if col == 0:
 				dt = self.get_value(row, 1)
 
-				if dt.endswith('data'):
+				if dt.endswith(('data', 'karyotype')):
 					return QIcon(':/icons/pdata.svg')
 
 				else:
@@ -553,6 +552,12 @@ class CirchartPlotTreeModel(CirchartBaseTableModel):
 	_table = 'plot'
 	_fields = ['name', 'type']
 	_headers = ['Name', 'Type']
+
+	def rename_plot(self, index, plot_name):
+		plot_id = self.get_id(index)
+		SqlControl.rename_plot(plot_id, plot_name)
+		uindex = index.siblingAtColumn(0)
+		self.dataChanged.emit(uindex, index)
 
 	def data(self, index, role=Qt.DisplayRole):
 		if not index.isValid():
