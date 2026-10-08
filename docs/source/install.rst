@@ -92,6 +92,8 @@ If you draw circos plots on Linux and MacOS, you must install missing perl modul
 		:width: 400
 		:align: center
 
+		Circos perl module dependencies
+
 #. You can view the cpan documentation for finding `How to install CPAN modules <https://www.cpan.org/modules/INSTALL.html>`_.
 
 #. First, install ``cpanm`` to make installing other modules easier. Open the Linux or MacOS terminal and type the command:
