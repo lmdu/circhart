@@ -53,6 +53,8 @@ The ``name`` and ``type`` of generated plots will be displayed in **Plot List**.
 
 #. You can click plot name to view the plot image.
 
+#. You can change the plot name using right click menu *Rename*.
+
 #. You can delete the plot from list using right click menu *Delete*.
 
 

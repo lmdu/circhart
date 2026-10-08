@@ -293,6 +293,8 @@ Density preparator can help you to calculate the number of features from genome 
 		:width: 450
 		:align: center
 
+		Annotation record filters
+
 	By click **Filter records by attribute values**, you can open the filter panel where you can add multiple filters. In each filter tab, you can select or input an attribute name from gtf or gff, and then provide the values for matching (one value per line or multiple values separated by ;).
 
 	For example, you can use ``gene_biotype`` as attribute and ``protein_coding`` as value to calculate the density of protein coding genes.

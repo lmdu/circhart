@@ -23,7 +23,8 @@ release = __version__
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-	'sphinx.ext.imgconverter',
+	#'sphinx.ext.imgconverter',
+	'sphinxcontrib.cairosvgconverter',
 ]
 
 templates_path = ['_templates']
