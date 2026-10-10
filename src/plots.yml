@@ -587,6 +587,7 @@ tracks:
         - bold
         - italic
         - bolditalic
+        - glyph
     -
       name: label_size
       type: int
@@ -594,6 +595,10 @@ tracks:
         - 0
         - 100
       default: 12
+    -
+      name: label_rotate
+      type: bool
+      default: 'yes'
     -
       name: color
       type: color
@@ -677,6 +682,49 @@ tracks:
         - 100
       default: 2
       parent: label_snuggle
+    -
+      name: glyph_symbol
+      type: choice
+      source:
+        - A
+        - a
+        - B
+        - b
+        - C
+        - c
+        - D
+        - d
+        - E
+        - e
+        - F
+        - f
+        - G
+        - g
+        - H
+        - h
+        - I
+        - i
+        - J
+        - j
+        - K
+        - k
+        - L
+        - l
+        - M
+        - m
+        - N
+        - n
+        - O
+        - o
+        - P
+        - p
+        - Q
+        - q
+        - R
+        - r
+        - S
+        - s
+      hide: true
 
   connector:
     -
