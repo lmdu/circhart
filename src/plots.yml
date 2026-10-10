@@ -1064,6 +1064,7 @@ rules:
       attrs:
         - color
         - label_size
+        - glyph_symbol
 
   link:
     -
