@@ -271,15 +271,64 @@ class CirchartCircosConfile(Confile):
 										else:
 											self.option('condition', c)
 
-									for a, s in v['main'].get('style', []):
+									ss = v['main'].get('style', [])
+									is_glyph = False
+									
+									if 'glyph_symbol' in {s[0] for s in ss}:
+										is_glyph = True
+										glyph_symbol = None
+										glyph_size = None
+										glyph_scale = None
+
+									for a, s in ss:
 										#if a == 'color':
 										#	self.option(a, self.get_color(s))
 
 										if a in ['radius1', 'radius2']:
 											self.option(a, s, 'r')
 
+										elif a == 'glyph_symbol':
+											glyph_symbol = s
+
+										elif a == 'label_size' and not is_glyph:
+											self.option(a, s)
+
+										elif a == 'symbol_size':
+											glyph_size = s
+
+										elif a == 'size_scale':
+											glyph_scale = s
+
 										else:
 											self.option(a, s)
+
+									if is_glyph:
+										self.option('value', glyph_symbol)
+
+										if glyph_size is not None:
+											dmin, dmax = glyph_size
+
+										else:
+											dmin, dmax = 1, 100
+
+										if glyph_scale is not None:
+											log  = glyph_scale.strip('log')
+
+											vmap = 'eval(remap_int(log(replace(var(label_size), "p", ""))/log({}), log(conf(.,dmin))/log({}), log(conf(.,dmax))/log({}), {}, {}))'.format(
+												log,
+												log,
+												log,
+												dmin,
+												dmax
+											)
+										else:
+											vmap = vmap = 'eval(remap_int(replace(var(label_size), "p", ""), conf(.,dmin), conf(.,dmax), {}, {}))'.format(
+												dmin,
+												dmax
+											)
+
+										self.option('label_size', vmap)
+
 
 					if axes_params:
 						with Tag('axes'):

@@ -306,6 +306,30 @@ class CirchartAnnulusParameter(CirchartParameterMixin, QWidget):
 	def get_value(self):
 		return (self.radius0.value(), self.radius1.value())
 
+class CirchartRangeParameter(CirchartParameterMixin, QWidget):
+	def _init_widget(self):
+		self.minval = QSpinBox(self)
+		self.minval.setRange(0, 1000)
+		self.minval.setToolTip("Min value")
+		self.maxval = QSpinBox(self)
+		self.maxval.setRange(0, 1000)
+		self.maxval.setToolTip("Max value")
+
+	def _set_layout(self):
+		layout = QHBoxLayout()
+		layout.setContentsMargins(0, 0, 0, 0)
+		layout.addWidget(self.minval)
+		layout.addWidget(QLabel("-", self))
+		layout.addWidget(self.maxval)
+		self.setLayout(layout)
+
+	def set_value(self, value):
+		self.minval.setValue(value[0])
+		self.maxval.setValue(value[1])
+
+	def get_value(self):
+		return (self.minval.value(), self.maxval.value())
+
 class CirchartIntegerParameter(CirchartParameterMixin, QSpinBox):
 	def _init_widget(self):
 		self.adjustSize()
@@ -1027,6 +1051,7 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 			self.field_widget.addItem(f.name, f)
 
 		self.field_widget.addItem('flow', AttrDict(type='flow'))
+		self.field_widget.addItem('true', AttrDict(type='true'))
 
 	def _on_field_changed(self, index):
 		f = self.field_widget.itemData(index)
@@ -1060,6 +1085,9 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 			case 'flow':
 				w = CirchartRuleFlowWidget(self)
 
+			case 'true':
+				w = CirchartRuleEmptyWidget(self)
+
 			case _:
 				w = CirchartRuleEmptyWidget(self)
 
@@ -1082,6 +1110,9 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 
 		elif field == 'flow':
 			return "flow={}".format(rule)
+
+		elif field == 'true':
+			return "1"
 
 		else:
 			return "var({}) {}".format(field, rule)
@@ -1148,6 +1179,9 @@ class CirchartRuleStyleWidget(CirchartRuleWidget):
 
 			case 'choice':
 				w = CirchartChoiceParameter(p.name, self)
+
+			case 'range':
+				w = CirchartRangeParameter(p.name, self)
 
 		for k in p:
 			match k:

@@ -30,6 +30,9 @@ if __name__ == "__main__":
 	win = CirchartMainWindow()
 	app.osx_open_with.connect(win.do_open_project)
 
+	font = str(CIRCOS_PATH / 'fonts' / 'symbols' / 'circossymbols.otf')
+	QFontDatabase.addApplicationFont(font)
+
 	args = app.arguments()
 	if len(args) > 1:
 		if os.path.isfile(args[1]):

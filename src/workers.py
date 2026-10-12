@@ -381,6 +381,38 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 					data = SqlControl.get_data_content(tag, kid)
 					save_circos_data(workdir, outfile, data)
 
+				if tag == 'textdata' and self.params[k]['main']['label_font'] == 'glyph':
+					dmin = None
+					dmax = None
+					
+					for kid in kids:
+						data = SqlControl.get_data_content(tag, kid)
+
+						for row in data:
+							if row[4] and 'label_size' in row[4]:
+								for av in row[4].strip().split():
+									if 'label_size' in av:
+										v = float(av.split('=')[1].strip().strip('p').strip())
+
+										if dmin is None:
+											dmin = dmax = v
+
+										else:
+											if v < dmin:
+												dmin = v
+
+											elif v > dmax:
+												dmax = v
+
+					if dmin is None:
+						dmin = 0
+
+					if dmax is None:
+						dmax = 0
+
+					self.params[k]['main']['dmin'] = dmin
+					self.params[k]['main']['dmax'] = dmax
+
 		confile = os.path.join(workdir, 'plot.conf')
 		configer = CirchartCircosConfile(self.params)
 		configer.save_to_file(confile)

@@ -725,6 +725,20 @@ tracks:
         - S
         - s
       hide: true
+    -
+      name: symbol_size
+      type: range
+      default:
+        - 1
+        - 100
+      hide: true
+    -
+      name: size_scale
+      type: choice
+      source:
+        - log2
+        - log10
+      hide: true
 
   connector:
     -
@@ -1065,6 +1079,8 @@ rules:
         - color
         - label_size
         - glyph_symbol
+        - symbol_size
+        - size_scale
 
   link:
     -
