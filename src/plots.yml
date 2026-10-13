@@ -1134,10 +1134,10 @@ rules:
           name: intrachr
           type: bool
         -
-          name: 'on'
+          name: on1
           type: chrom
         -
-          name: 'on'
+          name: on2
           type: position
         -
           name: from

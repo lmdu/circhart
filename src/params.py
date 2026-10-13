@@ -830,6 +830,54 @@ class CirchartRuleWidget(QWidget):
 class CirchartRuleEmptyWidget(CirchartRuleWidget):
 	pass
 
+class CirchartRuleCommonWidget(CirchartRuleWidget):
+	def _init_widget(self):
+		self.sign_widget = QComboBox(self)
+		self.sign_widget.setEditable(True)
+		self.sign_widget.addItems(['=', '>', '>=', '<', '<=', '!=', '=~', '!~'])
+		self.val_widget = QLineEdit(self)
+
+	def _set_layout(self):
+		super()._set_layout()
+
+		self.main_layout.addWidget(self.sign_widget)
+		self.main_layout.addWidget(self.val_widget, 1)
+
+	def get_value(self):
+		sign = self.sign_widget.currentText()
+
+		if sign == '=':
+			sign = 'eq'
+
+		val = self.val_widget.text().strip()
+
+		if sign == '=~' or sign == '!~':
+			ret = "{} /{}/i".format(sign, val)
+		
+		else:
+			ret = "{} {}".format(sign, val)
+
+		return ret
+
+	def set_value(self, value):
+		items = value.split()
+
+		if len(items) > 1:
+		 	sign, val = items
+
+		else:
+			sign = ''
+			val = items[0]
+
+		if sign == 'eq':
+			sign = '='
+
+		if sign == '=~' or sign == '!~':
+			val = value.split('/')[1]
+
+		self.sign_widget.setCurrentText(sign)
+		self.val_widget.setText(val)
+
 class CirchartRuleValueWidget(CirchartRuleWidget):
 	_number = True
 	_unit = False
@@ -840,7 +888,7 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 		if self._number:
 			self.sign_widget.addItems(['=', '>', '>=', '<', '<='])
 		else:
-			self.sign_widget.addItems(['=', '!=', '=~'])
+			self.sign_widget.addItems(['=', '!=', '=~', '!~'])
 
 		self.val_widget = QLineEdit(self)
 
@@ -873,7 +921,7 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 			unit = self.unit_widget.currentText().replace('bp', '')
 			ret = "{} {}{}".format(sign, val, unit)
 
-		elif sign == '=~':
+		elif sign == '=~' or sign == '!~':
 			ret = "{} /{}/i".format(sign, val)
 		
 		else:
@@ -1033,7 +1081,9 @@ class CirchartRuleFlowWidget(CirchartRuleWidget):
 class CirchartRuleFieldWidget(CirchartRuleWidget):
 	def _init_widget(self):
 		self.field_widget = QComboBox(self)
+		self.field_widget.setEditable(True)
 		self.field_widget.currentIndexChanged.connect(self._on_field_changed)
+		self.field_widget.editTextChanged.connect(self._on_text_changed)
 		self.rule_widget = QWidget(self)
 
 		self.chroms = []
@@ -1052,6 +1102,21 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 
 		self.field_widget.addItem('flow', AttrDict(type='flow'))
 		self.field_widget.addItem('true', AttrDict(type='true'))
+
+	def _on_text_changed(self, text):
+		print(text)
+
+		index = self.field_widget.findText(text)
+
+		if index >= 0:
+			if isinstance(self.rule_widget, CirchartRuleCommonWidget):
+				self._on_field_changed(index)
+
+		else:
+			w = CirchartRuleCommonWidget(self)
+			self.main_layout.replaceWidget(self.rule_widget, w)
+			self.rule_widget.deleteLater()
+			self.rule_widget = w
 
 	def _on_field_changed(self, index):
 		f = self.field_widget.itemData(index)
@@ -1089,7 +1154,7 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 				w = CirchartRuleEmptyWidget(self)
 
 			case _:
-				w = CirchartRuleEmptyWidget(self)
+				w = CirchartRuleCommonWidget(self)
 
 		self.main_layout.replaceWidget(self.rule_widget, w)
 		self.rule_widget.deleteLater()
@@ -1098,6 +1163,9 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 	def get_value(self):
 		field = self.field_widget.currentText()
 		rule = self.rule_widget.get_value()
+
+		if field in ['on1', 'on2']:
+			field = 'on'
 
 		funcs = {'on', 'from', 'to', 'between', 'fromto', 'tofrom', 'within'}
 		noval = {'interchr', 'intrachr', 'rev1', 'rev2', 'inv'}
@@ -1124,16 +1192,33 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 			field, rule = value.split('(')
 			rule = rule.strip(')')
 
+			if field == 'on':
+				if ',' in rule:
+					field = 'on2'
+
+				else:
+					field = 'on1'
+
 		elif value.startswith('flow'):
 			field = 'flow'
 			rule = value.split('=')[1]
+
+		elif value == '1':
+			field = 'true'
+			rule = None
 
 		else:
 			field, rule = value.split(')')
 			field = field.split('(')[1]
 			rule = rule.strip()
 
-		self.field_widget.setCurrentText(field)
+		index = self.field_widget.findText(field)
+
+		if index >= 0:
+			self.field_widget.setCurrentIndex(index)
+		else:
+			self.field_widget.setCurrentText(field)
+
 		self.rule_widget.set_value(rule)
 
 class CirchartRuleStyleWidget(CirchartRuleWidget):
