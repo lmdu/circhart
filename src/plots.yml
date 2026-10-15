@@ -738,6 +738,8 @@ tracks:
       source:
         - log2
         - log10
+        - -log2
+        - -log10
       hide: true
 
   connector:

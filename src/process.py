@@ -223,21 +223,10 @@ class CirchartImportBandsProcess(CirchartBaseProcess):
 
 class CirchartImportDataProcess(CirchartBaseProcess):
 		def file_reader(self, fh):
-			if self.params.format == 'csv':
-				reader = csv.reader(fh)
-			else:
-				for line in fh:
-					line = line.strip()
-
-					if not line:
-						continue
-
-					if line.startswith('#'):
-						continue
-
-					cols = line.strip().split()
-
-					yield cols
+			dialect = csv.Sniffer().sniff(fh.read(2048))
+			fh.seek(0)
+			reader = csv.reader(fh, dialect)
+			return reader
 
 		def prerun(self):
 			brewer_file = str(CIRCOS_PATH / 'etc' / 'colors.brewer.conf')

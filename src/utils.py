@@ -30,7 +30,7 @@ def save_circos_data(workdir, filename, data):
 	outfile = os.path.join(workdir, filename)
 
 	with open(outfile, 'a', newline='', encoding='utf-8') as fw:
-		writer = csv.writer(fw, delimiter=' ', quoting=csv.QUOTE_NONE)
+		writer = csv.writer(fw, delimiter='\t', quoting=csv.QUOTE_NONE)
 		writer.writerows(data)
 
 def save_snail_data(workdir, filename, data):

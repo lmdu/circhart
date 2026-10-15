@@ -309,18 +309,35 @@ class CirchartCircosConfile(Confile):
 											dmin, dmax = glyph_size
 
 										else:
-											dmin, dmax = 1, 100
+											dmin, dmax = 12, 100
 
 										if glyph_scale is not None:
-											log  = glyph_scale.strip('log')
+											if glyph_scale.startswith('-'):
+												sign = '-'
+												logv = glyph_scale.strip('-log')
 
-											vmap = 'eval(remap_int(log(replace(var(label_size), "p", ""))/log({}), log(conf(.,dmin))/log({}), log(conf(.,dmax))/log({}), {}, {}))'.format(
-												log,
-												log,
-												log,
-												dmin,
-												dmax
-											)
+												vmap = 'eval(remap_int({}log(replace(var(label_size), "p", ""))/log({}), {}log(conf(.,dmax))/log({}), {}log(conf(.,dmin))/log({}), {}, {}))'.format(
+													sign,
+													logv,
+													sign,
+													logv,
+													sign,
+													logv,
+													dmin,
+													dmax
+												)
+
+											else:
+												logv = glyph_scale.strip('log')
+												vmap = 'eval(remap_int(log(replace(var(label_size), "p", ""))/log({}), log(conf(.,dmin))/log({}), log(conf(.,dmax))/log({}), {}, {}))'.format(
+													logv,
+													logv,
+													logv,
+													dmin,
+													dmax
+												)
+
+											
 										else:
 											vmap = vmap = 'eval(remap_int(replace(var(label_size), "p", ""), conf(.,dmin), conf(.,dmax), {}, {}))'.format(
 												dmin,
@@ -354,6 +371,8 @@ class CirchartCircosConfile(Confile):
 	def parse(self):
 		Confile._blocks = []
 		self.custom_colors = []
+
+		self.option('file_delim*', '\\t')
 
 		#karyotype
 		kfiles = ['karyotype{}.txt'.format(i) \
