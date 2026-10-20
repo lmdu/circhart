@@ -49,6 +49,7 @@ class CirchartCircosConfile(Confile):
 		label_params = params['label']
 		space_params = params['spaces']
 		radius_params = params['radiuses']
+		rule_params = params['rules']
 		karyotype_params = params['karyotypes']
 
 		with Tag('ideogram'):
@@ -94,6 +95,28 @@ class CirchartCircosConfile(Confile):
 					
 					case _:
 						self.option(k, v)
+
+			if rule_params:
+				with Tag('rules'):
+					for k, v in rule_params.items():
+						with Tag('rule'):
+							for c in v['main'].get('condition', []):
+								if c.startswith('var(chr'):
+									cl = c.split(' eq ')
+									cl[1] = '"{}"'.format(cl[1])
+									c = ' eq '.join(cl)
+
+								if c.startswith('flow'):
+									self.option('flow', c.split('=')[1])
+
+								else:
+									self.option('condition', c)
+
+							ss = v['main'].get('style', [])
+
+							for a, s in ss:		
+								self.option(a, s)
+
 
 		order_list = []
 		display_list = []

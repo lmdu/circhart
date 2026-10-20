@@ -729,7 +729,7 @@ tracks:
       name: symbol_size
       type: range
       default:
-        - 1
+        - 20
         - 100
       hide: true
     -
@@ -944,6 +944,9 @@ rules:
           name: value
           type: number
         -
+          name: chr
+          type: text
+        -
           name: 'on'
           type: chrom
     -
@@ -967,6 +970,9 @@ rules:
           name: value
           type: number
         -
+          name: chr
+          type: text
+        -
           name: 'on'
           type: chrom
 
@@ -989,6 +995,9 @@ rules:
           name: value
           type: number
         -
+          name: chr
+          type: text
+        -
           name: 'on'
           type: chrom
 
@@ -1007,6 +1016,9 @@ rules:
       type: condition
       label: false
       tests:
+        -
+          name: chr
+          type: text
         -
           name: 'on'
           type: chrom
@@ -1028,6 +1040,9 @@ rules:
           name: value
           type: number
         -
+          name: chr
+          type: text
+        -
           name: 'on'
           type: chrom
 
@@ -1044,6 +1059,9 @@ rules:
       type: condition
       label: false
       tests:
+        -
+          name: chr
+          type: text
         -
           name: 'on'
           type: chrom
@@ -1068,6 +1086,9 @@ rules:
       tests:
         -
           name: value
+          type: text
+        - 
+          name: chr
           type: text
         -
           name: 'on'
@@ -1172,6 +1193,22 @@ rules:
         - bezier_radius_purity
         - radius1
         - radius2
+
+  labels:
+    -
+      name: condition
+      type: condition
+      label: false
+      tests:
+        - 
+          name: chr
+          type: text
+    -
+      name: style
+      type: style
+      label: false
+      attrs:
+        - show_label
 
 axes:
   -

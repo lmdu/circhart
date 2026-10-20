@@ -372,9 +372,20 @@ class CirchartChoiceParameter(CirchartParameterMixin, QComboBox):
 
 	def showPopup(self):
 		if self.dynamic:
+			dataids = set()
 			for row in SqlControl.get_datas_by_type(self.dynamic):
 				if self.findData(row.id) < 0:
 					self.addItem(row.name, row.id)
+
+				dataids.add(row.id)
+
+			rmids = []
+			for i in range(self.count()):
+				if self.itemData(i) not in dataids:
+					rmids.append(i)
+
+			for i in rmids:
+				self.removeItem(i)
 
 		super().showPopup()
 
@@ -399,12 +410,21 @@ class CirchartChoicesParameter(CirchartParameterMixin, CirchartCheckableComboBox
 			self.dynamic = data
 
 	def showPopup(self):
-		datas = self.get_datas()
-
 		if self.dynamic:
+			dataids = set()
 			for row in SqlControl.get_datas_by_type(self.dynamic):
-				if row.id not in datas:
+				if self.findData(row.id) < 0:
 					self.addItem(row.name, row.id)
+
+				dataids.add(row.id)
+
+			rmids = []
+			for i in range(self.count()):
+				if self.itemData(i) not in dataids:
+					rmids.append(i)
+
+			for i in rmids:
+				self.removeItem(i)
 
 		super().showPopup()
 
@@ -2192,8 +2212,10 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 		self._create_karyotype_panel()
 		self._create_space_panel()
 		self._create_radius_panel()
+		self._create_rule_panel()
 		self.space_count = 0
 		self.radius_count = 0
+		self.rule_count = 0
 
 	def _create_main_panel(self):
 		main_params = CIRCOS_PARAMS['ideogram']
@@ -2201,9 +2223,9 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 		ideogram_panel.create_params(main_params)
 
 	def _create_label_panel(self):
-		label_params = CIRCOS_PARAMS['labels']
+		self.label_params = CIRCOS_PARAMS['labels']
 		label_panel = self.create_panel('label', ':/icons/label.svg', "Show ideogram labels")
-		label_panel.create_params(label_params)
+		label_panel.create_params(self.label_params)
 
 	def _create_karyotype_panel(self):
 		self.karyotype_panel = self.create_panel('karyotypes', ':/icons/karyotype.svg', "Karyotype display and order")
@@ -2268,6 +2290,52 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 		self.radius_count += 1
 		key = 'radius{}'.format(self.radius_count)
 		self.create_radius(key)
+
+	def _create_rule_panel(self):
+		self.rule_panel = self.create_panel('rules', ':/icons/rule.svg', "Ideogram display rules")
+		self.rule_params = CIRCOS_PARAMS['rules']
+
+		menu = QMenu(self.rule_panel)
+		rule_act = QAction("Add Rule", self.rule_panel)
+		rule_act.triggered.connect(self.add_rule)
+		menu.addAction(rule_act)
+
+		open_menu = lambda x: (menu.move(QCursor().pos()), (menu.show()))
+		self.rule_panel.setContextMenuPolicy(Qt.CustomContextMenu)
+		self.rule_panel.customContextMenuRequested.connect(open_menu)
+
+	def create_rule(self, key):
+		attr_params = self.label_params
+		rule_params = self.rule_params.get('labels', [])
+
+		if not rule_params:
+			return
+
+		tests = [AttrDict(p) for p in rule_params[0]['tests']]
+		attrs = []
+
+		for p in attr_params:
+			p = AttrDict(p)
+
+			if p.name in rule_params[1]['attrs']:
+				attrs.append(p)
+
+		rule = CirchartChildAccordion(key, self.rule_panel)
+		panel = rule.create_panel('main')
+		panel.set_spacing(20)
+		panel.create_params(rule_params)
+		param = panel.get_widget('style')
+		param.set_attrs(attrs)
+		param = panel.get_widget('condition')
+		param.set_tests(tests)
+		param.set_chroms(self.kwargs['chroms'])
+
+		self.rule_panel.add_param(rule, group=True)
+
+	def add_rule(self):
+		self.rule_count += 1
+		key = 'rule{}'.format(self.rule_count)
+		self.create_rule(key)
 
 	def set_params(self, params):
 		if 'ideogram' in params:
