@@ -1124,8 +1124,6 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 		self.field_widget.addItem('true', AttrDict(type='true'))
 
 	def _on_text_changed(self, text):
-		print(text)
-
 		index = self.field_widget.findText(text)
 
 		if index >= 0:
@@ -1844,8 +1842,6 @@ class CirchartSubparamPanel(QListWidget):
 		self.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
 
 	def add_param(self, param):
-		print(param.sizeHint())
-
 		item = QListWidgetItem()
 		item.setSizeHint(param.sizeHint())
 		
@@ -2364,6 +2360,20 @@ class CirchartIdeogramTrack(CirchartParameterAccordion):
 					self.radius_count = rid
 
 				self.create_radius(r)
+
+
+			rules = params['ideogram']['rules']
+
+			self.rule_panel.clear_params()
+			self.rule_count = 0
+
+			for r in rules:
+				rid = int(r.lstrip('rule'))
+
+				if rid > self.rule_count:
+					self.rule_count = rid
+
+				self.create_rule(r)
 
 		super().set_params(params)
 

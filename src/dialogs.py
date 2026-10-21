@@ -1249,7 +1249,9 @@ class CirchartCircosColorSelectDialog(QDialog):
 		main_layout = QVBoxLayout()
 		self.color_layout = QHBoxLayout()
 		main_layout.addWidget(self.color_table)
+		main_layout.addSpacing(10)
 		main_layout.addLayout(self.color_layout)
+		main_layout.addSpacing(10)
 		main_layout.addWidget(self.btn_box)
 		self.setLayout(main_layout)
 
@@ -1262,7 +1264,7 @@ class CirchartCircosColorSelectDialog(QDialog):
 		self.show_colors()
 
 	def sizeHint(self):
-		return QSize(500, 300)
+		return QSize(550, 400)
 
 	def show_colors(self):
 		if not self.selected_colors:
@@ -1285,11 +1287,13 @@ class CirchartCircosColorSelectDialog(QDialog):
 
 		if not self.multiple:
 			c = self.selected_colors[0]
+			chex = ''
 
 			if c.count(',') == 3:
 				vs = c.split(',')
 				c = ','.join(vs[0:3])
 				self.color_opacity = float(vs[3].strip())
+				chex = color_rgb_to_hex(c)
 
 			opacity_widget = QDoubleSpinBox(self)
 			opacity_widget.setRange(0, 1)
@@ -1301,12 +1305,18 @@ class CirchartCircosColorSelectDialog(QDialog):
 			self.rgb_widget = QLineEdit(self)
 			self.rgb_widget.setText(c)
 			self.rgb_widget.textChanged.connect(self.on_rgb_changed)
+			
+			self.hex_widget = QLineEdit(self)
+			self.hex_widget.setText(chex)
+			self.hex_widget.textChanged.connect(self.on_hex_changed)
 
 			self.color_layout.addSpacing(20)
 			self.color_layout.addWidget(QLabel("RGB:", self))
-			self.color_layout.addWidget(self.rgb_widget)
+			self.color_layout.addWidget(self.rgb_widget, 3)
+			self.color_layout.addWidget(QLabel("HEX:", self))
+			self.color_layout.addWidget(self.hex_widget, 2)
 			self.color_layout.addWidget(QLabel("Transparency:", self))
-			self.color_layout.addWidget(opacity_widget)
+			self.color_layout.addWidget(opacity_widget, 1)
 
 		self.color_layout.addWidget(CirchartSpacerWidget(self))
 
@@ -1315,6 +1325,14 @@ class CirchartCircosColorSelectDialog(QDialog):
 			rgb = rgb.replace(' ', '')
 			self.selected_colors = [rgb]
 			self.change_color(rgb)
+			self.change_hex(rgb)
+
+	def on_hex_changed(self, hex):
+		if color_hex_valid(hex):
+			rgb = color_hex_to_rgb(hex)
+			self.selected_colors = [rgb]
+			self.change_color(rgb)
+			self.change_rgb(rgb)
 
 	def on_opacity_changed(self, opacity):
 		self.color_opacity = opacity
@@ -1331,11 +1349,24 @@ class CirchartCircosColorSelectDialog(QDialog):
 
 		if self.multiple:
 			self.show_colors()
+
 		else:
 			if self.selected_colors:
 				c = self.selected_colors[0]
-				self.rgb_widget.setText(c)
+				self.change_rgb(c)
+				self.change_hex(c)
 				self.change_color(c)
+
+	def change_rgb(self, rgb):
+		self.rgb_widget.blockSignals(True)
+		self.rgb_widget.setText(rgb)
+		self.rgb_widget.blockSignals(False)
+
+	def change_hex(self, rgb):
+		hex = color_rgb_to_hex(rgb)
+		self.hex_widget.blockSignals(True)
+		self.hex_widget.setText(hex)
+		self.hex_widget.blockSignals(False)
 
 	def change_color(self, c):
 		item = self.color_layout.itemAt(1)
@@ -1354,8 +1385,9 @@ class CirchartCircosColorSelectDialog(QDialog):
 				self.selected_colors.append(c)
 				self.show_colors()
 			else:
-				self.rgb_widget.setText(c)
 				self.selected_colors = [c]
+				self.change_rgb(c)
+				self.change_hex(c)
 				self.change_color(c)
 
 	@classmethod
@@ -1365,6 +1397,7 @@ class CirchartCircosColorSelectDialog(QDialog):
 		if dlg.exec() == QDialog.Accepted:
 			if multiple:
 				return dlg.selected_colors
+
 			else:
 				if dlg.selected_colors:
 					c = dlg.selected_colors[0]

@@ -11,6 +11,26 @@ general:
   -
     name: karyotype
     type: hidden
+  -
+    name: radius
+    type: int
+    range:
+      - 1
+      - 5000
+    step: 50
+    default: 1500
+  -
+    name: angle_offset
+    type: int
+    range:
+      - -360
+      - 360
+    step: 5
+    default: -90
+  -
+    name: background
+    type: color
+    default: 255,255,255
 
 ideogram:
   - name: show
@@ -607,14 +627,14 @@ tracks:
       name: padding
       type: int
       range:
-        - 0
+        - -100
         - 100
       default: 0
     -
       name: rpadding
       type: int
       range:
-        - 0
+        - -100
         - 100
       default: 0
     -
@@ -682,6 +702,10 @@ tracks:
         - 100
       default: 2
       parent: label_snuggle
+    -
+      name: word_wrap
+      type: bool
+      default: 'no'
     -
       name: glyph_symbol
       type: choice
@@ -1101,9 +1125,32 @@ rules:
       attrs:
         - color
         - label_size
+        - rpadding
         - glyph_symbol
         - symbol_size
         - size_scale
+
+  highlight:
+    -
+      name: condition
+      type: condition
+      label: false
+      tests:
+        -
+          name: chr
+          type: text
+        -
+          name: 'on'
+          type: chrom
+    -
+      name: style
+      type: style
+      label: false
+      attrs:
+        - fill_color
+        - stroke_color
+        - stroke_thickness
+        - z
 
   link:
     -
@@ -1209,6 +1256,8 @@ rules:
       label: false
       attrs:
         - show_label
+        - label_size
+        - label_color
 
 axes:
   -

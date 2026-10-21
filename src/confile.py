@@ -265,6 +265,17 @@ class CirchartCircosConfile(Confile):
 							case 'max_snuggle_distance' | 'snuggle_tolerance':
 								self.option(k, v, 'r')
 
+							case 'word_wrap':
+								if v == 'yes':
+									rule_params['rule0'] = {
+										'main': {
+											'condition': ["var(value) =~ /\\|/", "flow = continue"],
+											'style': [
+												['value', "eval( my $x = var(value); $x =~ s/\\|/\\n/g; $x)"]
+											]
+										}
+									}
+
 							case 'topmost':
 								pass
 
@@ -402,6 +413,13 @@ class CirchartCircosConfile(Confile):
 			for i in self.params['general']['global']['karyotype']]
 		self.option('karyotype', ','.join(kfiles))
 
+		imgps = {}
+		imgkeys = ['radius', 'angle_offset', 'background']
+
+		for k, v in self.params['general']['global'].items():
+			if k in imgkeys:
+				imgps[k] = v
+
 		#ideogram
 		ps = self.params['ideogram']
 		self.parse_ideogram(ps)
@@ -442,6 +460,13 @@ class CirchartCircosConfile(Confile):
 
 		with Tag('image'):
 			self.include('etc/image.conf')
+
+			for k, v in imgps.items():
+				if k == 'radius':
+					self.option("{}*".format(k), v, 'p')
+
+				else:
+					self.option("{}*".format(k), v)
 
 		self.include('etc/colors_fonts_patterns.conf')
 		self.include('etc/housekeeping.conf')

@@ -13,6 +13,9 @@ __all__ = [
 	'get_gxf_format',
 	'GXFParser',
 	'color_rgb_valid',
+	'color_rgb_to_hex',
+	'color_hex_valid',
+	'color_hex_to_rgb',
 	'is_plot_data_table',
 ]
 
@@ -172,6 +175,26 @@ def color_rgb_valid(rgb):
 		return False
 
 	return all(0 <= v <= 255 for v in map(int, match.groups()))
+
+def color_hex_valid(hex):
+	if len(hex) != 7:
+		return False
+
+	if not hex.startswith('#'):
+		return False
+
+	for c in hex[1:]:
+		if c.lower() not in '0123456789abcdef':
+			return False
+
+	return True
+
+def color_rgb_to_hex(rgb):
+	r, g, b = rgb.split(',')
+	return "#{:02x}{:02x}{:02x}".format(int(r.strip()), int(g.strip()), int(b.strip()))
+
+def color_hex_to_rgb(hex):
+	return ','.join(str(int(hex[i:i+2], 16)) for i in range(1, 6, 2))
 
 def is_plot_data_table(table):
 	return table.startswith(('plotdata', 'linkdata', 'locidata', 'textdata'))
