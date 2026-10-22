@@ -703,10 +703,6 @@ tracks:
       default: 2
       parent: label_snuggle
     -
-      name: word_wrap
-      type: bool
-      default: 'no'
-    -
       name: glyph_symbol
       type: choice
       source:

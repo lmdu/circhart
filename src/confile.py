@@ -265,17 +265,6 @@ class CirchartCircosConfile(Confile):
 							case 'max_snuggle_distance' | 'snuggle_tolerance':
 								self.option(k, v, 'r')
 
-							case 'word_wrap':
-								if v == 'yes':
-									rule_params['rule0'] = {
-										'main': {
-											'condition': ["var(value) =~ /\\|/", "flow = continue"],
-											'style': [
-												['value', "eval( my $x = var(value); $x =~ s/\\|/\\n/g; $x)"]
-											]
-										}
-									}
-
 							case 'topmost':
 								pass
 
@@ -320,6 +309,9 @@ class CirchartCircosConfile(Confile):
 
 										if a in ['radius1', 'radius2']:
 											self.option(a, s, 'r')
+
+										elif a == 'rpadding':
+											self.option(a, s, 'p')
 
 										elif a == 'glyph_symbol':
 											glyph_symbol = s
