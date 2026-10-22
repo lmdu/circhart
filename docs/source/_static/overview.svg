@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_图层_1" data-name="图层_1" xmlns="http://www.w3.org/2000/svg" baseProfile="tiny" version="1.2" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1411 845">
+  <!-- Generator: Adobe Illustrator 30.0.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 123)  -->
+  <defs>
+    <image id="image" width="20" height="20" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAVCAYAAABG1c6oAAAACXBIWXMAABYlAAAWJQFJUiTwAAABnElEQVQ4jd3Uv0/bQBjG8e972NAQdaCoLPxKESMLqoNQsiBBVUAsDFnZu3Tu1IF/p1tVqSyIVFWCwFlQq04UFaIsXSFIgOOXhZQjuTND1aXv5rPfj9/TPTb866pUKgN/02/siyhaXPl1enZULBYnH2ucL5WmiwuLh1EUzdnrYmNi9COQA07QdCmO46YPC5JOFSgAvzXtLDcaje8PJhTDuzsMYAYxVdekPRjAmJhgu2/Lg+HAJmjd6u1DHRjA1/bwk62+LQOUy+Wn1zc3OyAla/kETZeSMDRuLLf+o1q9cIJ+VM5ADTCRhTnBjEntcmJesIteJcmeKC/tdVUOL/O5ZRcGPTm061L1mag875tAGMu32yO+Pid4f5o65bhd8EXKCbqjIXUVDqzHvDl9AGbk7PVQELx6LKdgHYofuz/NrJx2P1MDMDu7NhQkyW4WBlCr1c4Hw3C1d1IV86lrGYDj489XAu+BxIf5UIELUfMWSAH+/Ptarda3ifHxn6iMtvO5DV/OAJrN5vWLQuFDp5NGYN7E8f4X37N3L/2f6xYAlcuopnYsMgAAAABJRU5ErkJggg=="/>
+    <image id="image1" width="20" height="20" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAVCAYAAABG1c6oAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAU0lEQVQ4jWNkIABMzcz/E1KDDJhIUTw8DGQhVuHpUycZ8cnDwprqLsSwldRYhbmcZi4c/AbiDENiYxUdDFw6xAXQfTL4I4V+YUhqjoEBqrtwBAIAxAcVCwTGXO4AAAAASUVORK5CYII="/>
+    <image id="image2" width="42" height="40" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAApCAYAAABDV7v1AAAACXBIWXMAABYlAAAWJQFJUiTwAAAAHUlEQVRYhe3BAQ0AAADCoPdPbQ8HFAAAAAAAABwbGxEAAYMiiy4AAAAASUVORK5CYII="/>
+  </defs>
+  <g>
+    <rect y="0" width="1411" height="107" fill="#f0f0f0"/>
+    <rect x="200" y="107" width="1211" height="25" fill="#f0f0f0"/>
+    <rect y="132" width="1411" height="346" fill="#f0f0f0"/>
+    <rect x="200" y="478" width="1211" height="25" fill="#f0f0f0"/>
+    <rect y="503" width="1411" height="342" fill="#f0f0f0"/>
+    <rect x="200" y="84" width="1" height="741" fill="#d6d6d6"/>
+    <rect y="454" width="200" height="1" fill="#d6d6d6"/>
+    <rect x="1160" y="84" width="1" height="741" fill="#d6d6d6"/>
+    <rect x="201" y="84" width="959" height="741" fill="#fff"/>
+    <rect y="85" width="199" height="19" fill="#dadada" stroke="#b9b9b9" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <text transform="translate(5 100.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Data</tspan></text>
+    <use image-rendering="optimizeQuality" transform="translate(156 86) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(161 91) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(178 86) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(183 91) scale(.5)" xlink:href="#image" isolation="isolate"/>
+    <rect y="132" width="200" height="322" fill="#fff"/>
+    <rect y="107" width="200" height="25" fill="#f0f0f0"/>
+    <rect y="107" width="163" height="25" fill="#fff"/>
+    <rect y="131" width="163" height="1" fill="#d6d6d6"/>
+    <text transform="translate(0 123.56)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Name</tspan></text>
+    <rect x="163" y="107" width="37" height="25" fill="#fff"/>
+    <rect x="163" y="131" width="37" height="1" fill="#d6d6d6"/>
+    <text transform="translate(163 123.56)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Type</tspan></text>
+    <rect y="456" width="199" height="19" fill="#dadada" stroke="#b9b9b9" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <text transform="translate(5 471.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Plot</tspan></text>
+    <use image-rendering="optimizeQuality" transform="translate(156 457) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(161 462) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(178 457) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(183 462) scale(.5)" xlink:href="#image" isolation="isolate"/>
+    <rect y="503" width="200" height="322" fill="#fff"/>
+    <rect y="478" width="200" height="25" fill="#f0f0f0"/>
+    <rect y="478" width="163" height="25" fill="#fff"/>
+    <rect y="502" width="163" height="1" fill="#d6d6d6"/>
+    <text transform="translate(0 494.56)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Name</tspan></text>
+    <rect x="163" y="478" width="37" height="25" fill="#fff"/>
+    <rect x="163" y="502" width="37" height="1" fill="#d6d6d6"/>
+    <text transform="translate(163 494.56)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Type</tspan></text>
+    <rect x="1161" y="85" width="249" height="19" fill="#dadada" stroke="#b9b9b9" stroke-linecap="square" stroke-linejoin="bevel"/>
+    <text transform="translate(1166 100.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Paramter</tspan></text>
+    <use image-rendering="optimizeQuality" transform="translate(1367 86) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(1372 91) scale(.5)" xlink:href="#image1" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(1389 86) scale(.5)" xlink:href="#image2" isolation="isolate"/>
+    <use image-rendering="optimizeQuality" transform="translate(1394 91) scale(.5)" xlink:href="#image" isolation="isolate"/>
+    <rect x="1161" y="107" width="250" height="718" fill="#fafafa"/>
+    <rect x="1161" y="107" width="250" height="718" fill="#fafafa"/>
+    <rect y="27" width="1411" height="57" fill="#ebebeb"/>
+    <rect y="83" width="1411" height="1" fill="#d5d5d5"/>
+    <rect y="27" width="1411" height="1" fill="#cecece"/>
+    <g>
+      <image width="48" height="48" image-rendering="optimizeQuality" transform="translate(36 34) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAxCAYAAACcXioiAAAACXBIWXMAABYlAAAWJQFJUiTwAAACOklEQVRoge2XTWrjQBBGn8YYpIUP4FU2vodhdpNdzCySC8wiOUFuYAiT3fxcYOI5h8kmuwk43pvkBE7AYAiZhUpgl9rdkqxW26AHBVarqvWVXN1dgpaWFt/EwAi4A+bAUmwuYyPxOTgi4AJYAB8OW4hvFESpgQT4i1u4tonEBiUB7ikvPrN7AiYRYX7zj8A3YAB0xQYy9mjwnxConC4MYq6BjiWmIz467tyrUgMx+QV7XSJeJ7Gg4d1pRL5sbG9e0yFfTmeuoE+lZe7mq7r+AbyXiH+XGNucXpmz/fYGFeYYqDmealNXgKV6eLfCHF01x9IVUGcJBaHOBF7U9UmFOXTMsyugzgT+qevPFebQMXpOrwTZRuvk6A8yOPJWAtIGbGIQczTNHBx5O52RYP4nXHaHB/F9YAzMgLXYTMb6lriItI6LflKeU3PZRMAV8GZ58Jv42B4ck26Hf0h7m+yj/knGzvCw20TArUW4tltHEo1zRfn6vQyi1ECffNk8AEPSvzqW3w/K5xX7mmiMMXnxpoOoQz6JcUMarczYFjW0+A6V78y7ugKs2RZl2yFi5bv2rk4R6oPmFJgCK7GpjNWCzxJKgN8qZtN+UcNJ7HMR28RvJrEXvrbR0wLiM9u7nHwcZFPlfwP0xG7Uvem+CZRtJb7jbiVWKqa3ca+n7q32TSBL4pK0NHYJfxWfIn1Q4wlkVG2nNY2WkA/KLOIvgTQ6aWQb9UlCKnCX+J8cwPdwEUytxMGWTUtLi0f+A1MXpv4SOtonAAAAAElFTkSuQmCC" isolation="isolate"/>
+      <text transform="translate(10.88 73.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Prepare Data</tspan></text>
+    </g>
+    <rect x="75" y="32" width="16" height="47" fill-opacity="0"/>
+    <image width="32" height="32" image-rendering="optimizeQuality" transform="translate(75 47) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAhCAYAAAC4JqlRAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAbUlEQVRYhe2UwQ3AIAwDPUtnYCL2n6Hth0gIAaIuJB+f5KdzFg8AIYQQc1JJSD8BuEsy0c9VnxphAx5ihMmtS79Ce2hlBNPZdnC7/MvhY/IVwXH5TOQm742o4yIfjXCVtyNC5MaFf1+1EEKIeF56qkEd74dfcAAAAABJRU5ErkJggg==" isolation="isolate"/>
+    <rect x="99" y="37" width="1" height="37" fill="#d6d6d6"/>
+    <g>
+      <image width="48" height="48" image-rendering="optimizeQuality" transform="translate(152 34) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAxCAYAAACcXioiAAAACXBIWXMAABYlAAAWJQFJUiTwAAADH0lEQVRoge3Yz4tWVRzH8dfMaP5qahYK/UBEiVY1EJEbV+IiEqFS3AiGG5MkiKgEWwgRlIR/QCS4kFZuFLduXAUDMTkmFeFqBHNAZWbI1KapFud56HrueR7vvXOeO4vmDQfugXM/5/O9955z7vfLCiv8vxnKqPUMdmIHtmAzNmEBDzCLH/EDvsMU/sk4fyNGcRRXBDN12i84IQTaOhvwBeYrmu3XHuAkxtoy/yamK5q7h8WKY29jzyCND+OrPgZu4Rvsxzas69w31Ll+BUdwTnjqvXQ+x0hu8+txvseE13AQT9TQG8N7uNFD81vhgWVhRNr8HziG1UvQXodPcD+h/7VMu+SphPg0Xsoh3mFc2JXieT5dqvBbCdGreG6pwgmexkQ01wJeayr4pPJuM20w5ruMYTKa81f/bQi1+FL5m385i83+bFM+Xz6sKzKaEPk4n8fHciiae0b4IipzNBKYwqqsFvszLKy1oocP6gh0f7S67UBmg1XYF3mYqHrjs9GNv6l3SOViNe5GXrbGg1Kn3c6ofxF/5nZXgYXO3EXeiAelAtgR9S/lctSAy1F/PB6QCmBL1J/M5aYBP0X9UgAp4uRkbWZTddgYebkZD0i9gU2F63vCr+9y8TDqr4kHpAIoLti18ubNdVmM+qXdMBVA8YmPaPgfkomH+L3Qn48HpAKYi/ov5nRUk0W8L3zKcyqexqc9unAOD8pdDVbpkWam3sBU1N+V3U59/lJeDz151aNv4D6eGoyvwTAkJBHFIN5tcf69wu/zTOe6ESeUM7G2DrSZwrwzTUWeV64UtJXQxDl4Y04qr4U2UspsAYwJ5b6i2M8Gv6CzBQC78XckOGGwhdisAcBnCdFJoXqwFLq7Ta8aaa9We3cawdmE0Dze0byG2cR8491pWKhVpsSu4G31a6StBkA44I4Lx3pK9A7OCDWd7UIyMipUtlNvqbVPKGY7rtecdE710kz2RZxivXCwxdtsvzarWnLUSgBdRvERvk9MHLfbBhBAznTxBbwuVA7GherGmk6bFRKTCxV0YtPLmdI2IsvP3HKS5Xd6hRUq8i9XhqD4sTJzPAAAAABJRU5ErkJggg==" isolation="isolate"/>
+      <text transform="translate(113.73 73.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Create Circos Plot</tspan></text>
+    </g>
+    <g>
+      <image width="48" height="48" image-rendering="optimizeQuality" transform="translate(265 34) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAxCAYAAACcXioiAAAACXBIWXMAABYlAAAWJQFJUiTwAAADMUlEQVRoge2Yv2sUQRTHP2ckgSMXiAE5DN5B0NZaiSaQKhgL4/0TijaxyY8iXJsupX9BiNUpllFbLZNOuEbERC+KBhQLT3IWb5fbfbt7O3M3u4reFwZ2due9ebPz5s17XxhiiP8bhQx1LwOPgCJwBBx67TXwDHiX4dzGmAI2gW1gRn1rAZ0e7QCoA6WcbA2hCKwDJwGD3gIjgTFpC/DbTl5G+1hCXCHOmHJg3DJmi2jmZXgB2ABOEwx5SfyZGgcuATeAB8Ae0A7I1TO2GxCXeUy84Z+AFWDMQt8kUAMWCC96EWgAW96czrBF1PCfuD2EVcI7s4vDKNkgbHwLmHWl3MM80Z+05kr5It2/sw9cdKU4gFFPd3ABp8BNVxNUkb806kphDCpEI9d7HJ+HrDGLnK/gIlZtlZSQC6aJHNQsU4441Akv4AQ4N4iChT6MuIO4Q8t7tsEE8FnZsGmj4EAJ1ywNgLAvt/qQf6hs2DYVrCrBNnLx2EKHRFuMIbe7n2fpZDER99XEe31MDoMvAOTslQkniSGcjXl3VfWf9jm5C3SAj70GnIl5N636B87MyQAmC/iQosOPNmkuo7+bRic/LW95z6n4piYaTxlvWrjENZPo1DOaxe3Aj8DzMfDdYJKsUALOB/pGKYXtliW5kMnfT3Ohy0rmjckCXMFFGJ1TOl7oAXEu9Dfhiuof6QG9FjCCXCJ5J3JB3Fb9V6aCM8j17RfrNvWuj0FdaBL4pXRUTIW3leBKHwYMmszVlA37cYOSXOiL6m9gX7zfQ8Lwsfdsi6+q/8RGeIow69YhJ/4mgII3ZxMprqzZjzWiNIprJiJTFIlSiC0sDlIfGEWIg6orhUtEqcR9smEmKnRplTZC5TjBOtGQOO9KuYfrRNORhivlBcK8aBt3WzyBHFRNo3QQOtMZip7CBuGtLSCMRQ27unkMKdo18+C3XXIis+qEd+Y5QqHPIZlkXOgr0C3WdTtFol9u6UszwRAduYJpeTlh3CEOeVBT7CQY06vyGqGbZ3WQC3OVP8R/lhA30qxyWuk4g+Rbm1hShhoufa0C3AKuARcQcmAaKVHv4jAsDjHEEP8QfgPDWHFqWmYA4AAAAABJRU5ErkJggg==" isolation="isolate"/>
+      <text transform="translate(229.91 73.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Add Circos Track</tspan></text>
+    </g>
+    <rect x="339" y="37" width="1" height="37" fill="#d6d6d6"/>
+    <g>
+      <image width="48" height="48" image-rendering="optimizeQuality" transform="translate(389 34) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAxCAYAAACcXioiAAAACXBIWXMAABYlAAAWJQFJUiTwAAAEkklEQVRoge3ZW6hVRRgH8N/Wo2kXb2VaPZjak2lCpRkVRkVJaj5Y0QW6PUhFUERBREUSUdGVLkQFRRE9BBVkUNmFCikz0yI0KzWFUiuPknnpmOfsHmbvzqxZa5+zj2elL/sPA7P2f+abby7fZWbTQgsttHAwUSlBxkTMxqRaGY9/sAc7sQIf4RNsLWG8UjAUC7AE1T6UtzD1IOj7HyqYjw36pnhaXsOIA6s6Y/FBE8rtbqJNFT9h8oFSfgo2NlBkJW7HaRhVaz8QI3EmFmJ5g747MeP/Vn4mdhQM/iWmNymjgrPxaYGc3zGhVI0jjEd7MmAnbsaAXhRu9PutgpeKZa4WHEOpOBTfJAPtxpyCtlNwH5YJrrITmwX3eaO8wZ6HjkT23WVP4GH57U6VPwFvFLRLyxZclPSdL78448pSfqy8N3moQIEi22hUOnFNIuOlpM0TZU3g8UTwOgyK+CsaKLkPP2I9ugr4vbKGP1rwRLFBx+PsF9rkV/a6iD9V3gj34V4cEbU7CvfUlI7brpA18lcTfnZ/JzAjEbhZ96oMwBcJ345pPcg7CduTPrMifl7C3d/fCdyZCHwx4tLJVXFZEzKvTPo8G3ETEu7N/qnPe4nAyyPuwYRbpLmMtk3Wba5MuNheVid9zxDc87JavVd8nSgZu7bPEm5eMwIxXLCTer8NETc0kZlOYEODfiiOpmlEbI/qoxLuw6h+lmCgy2v1GLOF/KhI5pFJ27+i+gjZBTy6QN8c1uuecZfsEVkXcbuSfnGyt0nwQjAGa2VX+dGo3yUJtzjipup5dwp3YG9U7xLOaKxkHUNxSPQdpwvHCNv9dm3QiRHXiRei7wuT8ZdE9YkJ93OqbNEEVkX1gUJCV8cPUb0iG5QeSOQchrnyx24B1tTqo3Fxwr8f1c9NuDWawELZbZsbcXMS7pWIG6TnvGiXkMXGeCxps0m3rVTkb34XNDOB9Ew+GXGDsS3iuoT7Qh1tuAu/Rm224ynBFmKcL59uLIj4mQm3G0OamcBw2USuXfas35EI3iak0zEqwvEYq/iYni67EHUDje1tccL3KcC9nHSOo+0QwZhifieubqBsjIG4Hn8n/XcITzJ1TE/4Kk7uywTS7duIwyN+mvDukw7yLW4SDL/ufis4FjfIX5CqQmIYJ3CDhetqGvH7hEqBkEeSNpfKZ6Vx2YNfBONt1GarcFeOkabyVT0niw1xiqyRdcnmRXCO/Flutnwsf5lPHUgVT++P8nU8kwhLtxuOw/NCgGpG8RWCO06TwKtk86UqPheO1H5jhBA8YqEduKVAgXHCBX6RYORbhWO0Fu8Kl/5J8qjgNvmJ/iYsTr9xvBBg0gHeKWGAE4VH31T2FuEIl4ap+LNgoA48J5+z9IYpQnArcgJrZNOX0jBZyIWKznUXvhJeLmYJbnOY4PfbhOeX2UIQXNlARlXYjTR3KhXD8HoPChSVZoz7D1yr90BYCipCZF7Vx4kUlQ7BTY48EIqnGCA8bi1V/AbUU1kqROZ+H5cy/mKi+yl9ppCojan9tk+IxN/ju1pZJvw30EILLbTQwsHHv1z1YW0T3WJYAAAAAElFTkSuQmCC" isolation="isolate"/>
+      <text transform="translate(353.98 73.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Create Snail Plot</tspan></text>
+    </g>
+    <rect x="462" y="37" width="1" height="37" fill="#d6d6d6"/>
+    <g>
+      <image width="48" height="48" image-rendering="optimizeQuality" transform="translate(489 34) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAxCAYAAACcXioiAAAACXBIWXMAABYlAAAWJQFJUiTwAAACW0lEQVRoge2Yv24aQRDGfwcFEqJM4cKle5chtZPC7kKRyjJ13oHaoLR5gfgF0qTyn8oiRSpkKTxAlHMkKOkTUtw4gbk9dvduj4PkPmkkltv9Zj7t7L+BGjX+b0QFxjaA50APOAYOxQBisQfgI/AF+FXAV1C0gQHwA1g62qOMaVcQ7x9EQF+CcQ1cWwxcUGzmc6EFXBUIXNsH4dwKngHjjECmwBA4AY6AjtiR/DeUPqaxY+EuFS3gs8H5BDjFLRUi6Tsx8IwpcSYizGlzCTRz8DVJZkTzXVHSmugbnPVL4r0IwLuGNund5tIypgfMxHqWvnomYgJvsQPSOW9Lm9lK/5mlb5P0mhgUiHcNDdKH1KnDOJ0WNpyp/o/iuzBeKOKvuC0yXwER6S226xusSbHO30+OAfliKdybfFthEnCs2ne+pB64tfi2wiTgULW/qfbTbmNLGf3dtDtpbu07FxbKcUd9NwXvanp36qjvC99gg6z6KmESEKv2gWq/BeY5fM1l7Cbu7zl4U7hhfVpPHMf5bqMI9+qYa69IMc/Ag2q/9CX1wCuL71zQB9mUHT7ITGiQvsjt1VUC9vwyB//AdRrKe9C8N/AGf9BA9pNySP4n5cjAd0+JZZYW5orEhGQRuj7qzzA/6pfAT+A8dOCrsJVVRmSXVUZkl1W2KiJ0Yetegt6qiIhkscUFAl8tLZ5XIQL+Fnd9aqRZxd3KREByanaBdySXsCnJfX4hv6/lW5fNJ2ylIkKhFrErqEXsCrJEvKkyKF+YROR5i1cKLWLvBECSNnOx1xXHUqNGjdD4DRs6rIPH7K/9AAAAAElFTkSuQmCC" isolation="isolate"/>
+      <text transform="translate(476.81 73.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Zoom In</tspan></text>
+    </g>
+    <g>
+      <image width="48" height="48" image-rendering="optimizeQuality" transform="translate(557 34) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAxCAYAAACcXioiAAAACXBIWXMAABYlAAAWJQFJUiTwAAACRUlEQVRoge2YsW4aQRCGv4MCCVGmcOHSvcvgmqSwu1Ckskydd6A2yK1fIH6BNKnspLJIkQpZCg8Q+WzJlPQ2Lm6UHHN73O3eHgfJfdJKLMf+M8Pu3u4M1NT83wQFxjaAt0AfOAT2pQGE0u6AL8BP4KWALa+0gSHwCCxztgcZ067A3z8EwECcyeu4biFwRrGZd6IFXBVwXLfPorkR3gCTFEdmwAjoAQdAR9qBfDeS35jGTkS7VFrAD4PxKXBMvqUQyG+nBp0JJc5EgHnZnANNB70m0YxovStK2hMDg7FBSbpnHnRXaJN825x71NczEeL5FTskueZdlk0aTZJ7YuhLvEHykDr2JR7jRNl4ENuFOVLCvyhnkwUkX7FdWxFTxH3V/yrivlmK9jrbmZgCOFT977aiFnzLsJ2JKYB91f+t+n3gCfvrwxPJf1hra9tOLJThjnru4nw8iDgd9Xxh66yXXV8lpgBC1d9T/U/A3MHWXMau07530E1ww+q09nyIptBTtq5tBUwzcKf67+z9ys37DNtO6INsxhYfZCYaJC9yO3WVgB2/zME/cJ2G8hKaS4Ou94QG0lPKEe4p5digd0uJZZYW5orElGgT5k3qTzAn9UvgGTj17XicrLLKmPSyypj0sspGg/Bd2LoVpzcaREC02cICjsdLi6dVBAF/i7s2NdK04m5lQUB0anaBC6JL2IzoPr+Qz9fyrMv6E7bSIHxRB7Et1EFsC2lBfKzSKVtMQbjk4pWig9i5ACBaNnNpHyr2paamxjevmy2QB1sA4U4AAAAASUVORK5CYII=" isolation="isolate"/>
+      <text transform="translate(539.95 73.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Zoom Out</tspan></text>
+    </g>
+    <g>
+      <image width="48" height="48" image-rendering="optimizeQuality" transform="translate(640 34) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAxCAYAAACcXioiAAAACXBIWXMAABYlAAAWJQFJUiTwAAACSUlEQVRoge2Zv04bQRDGfw6NRZUO0UUKj0Adl6kB4YqCNuFF3ATlIYICLQ9AT+8iTR7AlpIUQVFkZEPhdXKZm93bPe8sOLpPGul8nt39vr3dmf0DHTp0aMIuMALGwAx4MLaZa2vk2m6NHnAG3BUg7bM7x6HXhvz5ExKXdp4q4uwZkJb2Ppb8LvVhcwsMgH5KL7RE37V1Kzj8JHJOjKiT37Jg2oAt6iJGMQXHotDAiGAMBoLLOKaQDJUlho0PfcFlJh20mf0Q4VMSQT4vChIxwVMIOAQmwBQ4tmhAxt/cmFTq/kFzJwb5bPwQ0mD9BVKHUJBPrii0Dbx2z1+BXxFlYpHMJ+UL7ACf+Dd3zNy7nVSmGfgkFTgCviv+K/vmfNaFiYATYK74Sps733WQXYCP/BVwqbwPiXgJvAHeAq9KCNDIL4DTis+p4iNF7AGfgd/C74L6JM0mQCPv692Q7zHLtb1v2O1bCEghHxKxcBaaN3uinmrmnrQR0IZ8SIS0a+AG+AK8U+pYJb6Je04W0JZ8kwg5d7LBIiyeKHUtgGEGvjVYxfSPSp3TtZh6YJWQoD6cNAHJY17CivwKQ5bEp8CB8n9y1JHQolBJJMX957ipT2p/43dk/6WAe/Hb6mDrgL+TOSYfNE3+Pyh1tDhFj3Qxa7Fg/ih1uFsVUBURsxYLCih1vD5UiGlrJs2nccjlvuDwZdXYrWlyUrW4YvJlVbP9dY/ltU5o95RDQIyItZYzOa5ZYxZmPhG512Km8EWhjcIHlr0+d88dOljiEdmUd7nW0cK4AAAAAElFTkSuQmCC" isolation="isolate"/>
+      <text transform="translate(613.61 73.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Export Image</tspan></text>
+    </g>
+    <rect x="704" y="37" width="1" height="37" fill="#d6d6d6"/>
+    <g>
+      <image width="48" height="48" image-rendering="optimizeQuality" transform="translate(729 34) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAxCAYAAACcXioiAAAACXBIWXMAABYlAAAWJQFJUiTwAAAA7ElEQVRoge2VMRKCMBBF39ip48UsuZYdNJ6HE3gNWywotYAqEzIs7g6C/82kgb/hh/xNQAghhNgxV6AFeuAJVM76MI7AHXgn4+mkDydnpmTIqg/lWjCTi4RVX43vcjWlMTuSbVJ4Ay6O+iXmTTvaJ0UlM0v04QtIi7z14RFKCzugBk5O+nCm/sBjwpRVH05pGxsHfTglQ52D3pVD5tnLOIdVH97ETWGS2kEffoyeGRpwblNa9eELYPxwzZDhOceiRR8eISFEnqXN5zW+buI1zU8eo7mbeLdsPkJC/Dubb2LdA2uz+QgJIYQQP8cHFX7bIrQcdeEAAAAASUVORK5CYII=" isolation="isolate"/>
+      <text transform="translate(718.52 73.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Citation</tspan></text>
+    </g>
+    <rect x="777" y="37" width="1" height="37" fill="#d6d6d6"/>
+    <g>
+      <image width="48" height="48" image-rendering="optimizeQuality" transform="translate(814 34) scale(.5)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAxCAYAAACcXioiAAAACXBIWXMAABYlAAAWJQFJUiTwAAACq0lEQVRoge3ZPWsUURTG8V8S0WhjYYyVghpQiyAKvqCNopXamCK1n0CrgNhp/AAi2Ara+IJWaqGiSQRFRQs/gFhvBMEmiSESi5vF3ZuZmJm5m7WYP1zYnYXnnDN37r1znqWmpqamm/Qk1NqEUziNIezENvzCDL7jA97jNaYTxq7EYTzGLBZXOeZxHyekvYltjKCxNEYyft+PFwWSzhvPhRlLTqMlSKPl+jpcEe5i1eSbYw5jEs9GHAQ2YzIniVk8xUUcw3ZsxBbswllcFdZAXiF3sKFTBWzF54zrPzGOwQLa+3ALCxl6E+jvRAFfMq69Eu50WYZlz8h99FbQJUM0HjdTBBHu9t0M/fGqwislf0PaBdeD21GM3zhQRTQv+Un0VRHOYT2molgfq8Ra7RaYd06UYbewpbbqj5YVK7KPN3I0yjAeaU+VFWo9yNaygEHLD8nhMkIjVp98qkeoycMoxuXE+h3ngvYCnnQ1mxLs1V7Aj+6mU5xeoX9oFvDf9A5FOC8kPr30ee0Fus20v1P4XZr3njXlh/aFtKe76WSz0l19F30/2slEyrJSAW+j72cSx2723Ks5LEsdlMORyLzQlaViTV5V3kRC1yql3E6RAhbLBhmNROaEBj0FRR6h0gX0CU1F/Hq7vkLiK8WKG5rKBcBBob1rFbstfUt5QwdmoEncZCwKjXgKD6dXMAg68gi1BnmQIfpeyWZjiR2C0RvrZlk4lekXTKdYeEEwqfYV0BrEdcEUi/U+YaATBRAemSwPp3VGruGcsFsNCPbiDhzHJTyT72RPCPalThVAWHBjlrsHVca80Da2Wih55nIyhgRrvGryzwWrPuZf9n4SeoQ/Ke4pZrfP4hEOpUggFYM4Kby1HhHemzYJ66aBb/iKl8LOM5Mwdk1NTU1NOf4AfbnJ3K1/YE4AAAAASUVORK5CYII=" isolation="isolate"/>
+      <text transform="translate(791.88 73.06)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Update Plot</tspan></text>
+    </g>
+    <rect y="0" width="1411" height="27" fill="#fff"/>
+    <text transform="translate(10.22 17.56)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">File</tspan></text>
+    <text transform="translate(50.03 17.56)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Edit</tspan></text>
+    <text transform="translate(92.22 17.56)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">View</tspan></text>
+    <text transform="translate(140.23 17.56)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Tools</tspan></text>
+    <text transform="translate(190.19 17.56)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Plot</tspan></text>
+    <text transform="translate(233.03 17.56)" font-family="MicrosoftYaHeiUI, &apos;Microsoft YaHei UI&apos;" font-size="12" isolation="isolate"><tspan x="0" y="0">Help</tspan></text>
+    <rect y="825" width="1411" height="20" fill="#fafafa"/>
+    <rect y="825" width="1411" height="1" fill="#e8e8e8"/>
+    <image width="42" height="40" image-rendering="optimizeQuality" transform="translate(1394 829) scale(.38)" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACsAAAAoCAYAAABnyQNuAAAACXBIWXMAAB0QAAAdEAGxhstDAAAAUElEQVRYhe3UsQ2AMAwEwITNPLlHg5I0KQIEydJd58rf/LcGAHDrux9k5jneEfH45/E+zn+EpZrP1mDWemtQQamw7LLczNXWW4MKSoUFABhdp/0YFlOKzGgAAAAASUVORK5CYII=" isolation="isolate"/>
+  </g>
+  <text transform="translate(969.3 63)" fill="#e60012" font-family="ArialMT, Arial" font-size="20"><tspan x="0" y="0">Toolbar</tspan></text>
+  <text transform="translate(51.2 232.2)" fill="#e60012" font-family="ArialMT, Arial" font-size="20"><tspan x="0" y="0">Data List</tspan></text>
+  <text transform="translate(48 604.32)" fill="#e60012" font-family="ArialMT, Arial" font-size="20"><tspan x="0" y="0">Plot List</tspan></text>
+  <text transform="translate(598.76 454.5)" fill="#e60012" font-family="ArialMT, Arial" font-size="20"><tspan x="0" y="0">Data and Plot Viewer</tspan></text>
+  <text transform="translate(1192.82 461.47)" fill="#e60012" font-family="ArialMT, Arial" font-size="20"><tspan x="0" y="0">Parameter Panel</tspan></text>
+  <rect y="0" width="1411" height="845" fill="none" stroke="#ccc" stroke-miterlimit="10"/>
+</svg>

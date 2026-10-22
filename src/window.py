@@ -98,6 +98,7 @@ class CirchartMainWindow(QMainWindow):
 		g.setFileName('circhart_screen.svg')
 		g.setSize(self.size())
 		g.setViewBox(self.rect())
+		g.setResolution(96)
 		#g.setTitle('circhart')
 		#g.setDescription('bypy')
 		self.render(g)
@@ -362,7 +363,8 @@ class CirchartMainWindow(QMainWindow):
 		)
 
 		self.screen_act = QAction("Screenshot", self,
-			triggered = self.render_to_svg
+			triggered = self.render_to_svg,
+			shortcut = QKeySequence.StandardKey.Print
 		)
 
 

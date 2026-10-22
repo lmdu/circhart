@@ -1,7 +1,7 @@
 Overview
 ========
 
-.. figure:: _static/circhart_gui.png
+.. figure:: _static/overview.svg
 	:width: 700
 	:align: center
 
@@ -16,6 +16,8 @@ Toolbar
 
 	* - Icon
 	  - Function
+	* - |prepdata|
+	  - menus for preparing plotting data
 	* - |newcircos|
 	  - open circos plot creation dialog
 	* - |addtrack|
@@ -46,6 +48,19 @@ The ``name`` and ``type`` of imported or prepared data will be displayed in **Da
 
 #. For data imported from file, you can change the file path of data using right click menu *Change Path*.
 
+We use two icons to distinguish between different data types:
+
+.. list-table:: The description of each icon in the data list
+	:header-rows: 1
+	:align: center
+
+	* - Icon
+	  - Description
+	* - |pdata|
+	  - imported or generated data that can be used directly for plotting is stored entirely within ``Circhart``, with no dependency on external files
+	* - |dfile|
+	  - imported file, only the first few rows are imported for preview, relies on external file path during use, When using the same project file on different operating systems
+
 Plot List
 ---------
 
@@ -57,6 +72,18 @@ The ``name`` and ``type`` of generated plots will be displayed in **Plot List**.
 
 #. You can delete the plot from list using right click menu *Delete*.
 
+We also use two icons to represent different plot types:
+
+.. list-table:: The description of each icon in the plot list
+	:header-rows: 1
+	:align: center
+
+	* - Icon
+	  - Description
+	* - |circos|
+	  - circos plot
+	* - |snail|
+	  - snail plot
 
 Data and Plot Viewer
 --------------------
@@ -68,6 +95,10 @@ Parameter Panel
 
 You can adjust the plotting parameters in parameter panel.
 
+
+.. |prepdata| image:: _static/data.svg
+	:width: 24
+	:height: 24
 
 .. |newcircos| image:: _static/new.svg
 	:width: 24
@@ -101,3 +132,18 @@ You can adjust the plotting parameters in parameter panel.
 	:width: 24
 	:height: 24
 
+.. |pdata| image:: _static/pdata.svg
+	:width: 24
+	:height: 24
+
+.. |dfile| image:: _static/file.svg
+	:width: 24
+	:height: 24
+
+.. |circos| image:: _static/circos.svg
+	:width: 24
+	:height: 24
+
+.. |snail| image:: _static/snail.svg
+	:width: 24
+	:height: 24

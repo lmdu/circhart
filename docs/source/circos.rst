@@ -141,6 +141,16 @@ You are allowed to adjust the display and order of chromosomes.
 
 	You must ensure that at least one chromosome is selected, otherwise, an error will occur during plotting. You are also allowed to drag and drop chromosomes to adjust the order.
 
+Ideogram Label rules
+^^^^^^^^^^^^^^^^^^^^
+
+You are allowed to hide or show label for specific ideograms. You can also change the color or size of label for specific ideograms. Go to the ideogram rule panel to add rules.
+
+.. figure:: _static/ideogram_rules.svg
+	:align: center
+
+	Label display, color and size of specific ideogram
+
 Circos Tick Parameters
 ----------------------
 
@@ -352,6 +362,16 @@ If you select plot type of **text**, you are only allowed to select data from ty
 	Text plot parameters
 
 You can toggle ``Show Links`` to show label links. You can toggle ``Label Snuggle`` to set parameters for lable snuggle.
+
+Glyph Plot Track
+^^^^^^^^^^^^^^^^
+
+The text plot track can be used to draw glyph plot by setting ``label font`` to ``glyph``. Then you can go to the rule panel, and set the value for ``glyph_symbol`` to change the symbol (e.g. O reprensts solid circle). The correspondence between different values and symbols is as follows:
+
+.. figure:: _static/circossymbols.png
+	:align: center
+
+	Circos glyph symbols
 
 Connector Plot Track
 ^^^^^^^^^^^^^^^^^^^^
