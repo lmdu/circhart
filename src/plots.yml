@@ -744,6 +744,16 @@ tracks:
         - r
         - S
         - s
+        - U
+        - u
+        - W
+        - w
+        - X
+        - x
+        - Y
+        - y
+        - Z
+        - z
       hide: true
     -
       name: symbol_size

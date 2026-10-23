@@ -866,10 +866,11 @@ class CirchartRuleCommonWidget(CirchartRuleWidget):
 	def get_value(self):
 		sign = self.sign_widget.currentText()
 
+		val = self.val_widget.text().strip()
+
 		if sign == '=':
 			sign = 'eq'
-
-		val = self.val_widget.text().strip()
+			val = '"{}"'.format(val)
 
 		if sign == '=~' or sign == '!~':
 			ret = "{} /{}/i".format(sign, val)
@@ -891,6 +892,7 @@ class CirchartRuleCommonWidget(CirchartRuleWidget):
 
 		if sign == 'eq':
 			sign = '='
+			val = val.strip('"')
 
 		if sign == '=~' or sign == '!~':
 			val = value.split('/')[1]
@@ -906,7 +908,7 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 		self.sign_widget = QComboBox(self)
 
 		if self._number:
-			self.sign_widget.addItems(['=', '>', '>=', '<', '<='])
+			self.sign_widget.addItems(['=', '!=', '>', '>=', '<', '<='])
 		else:
 			self.sign_widget.addItems(['=', '!=', '=~', '!~'])
 

@@ -246,6 +246,38 @@ In the rule panel, you can control the display of plot according to specified co
 
 	Display rules of plot track
 
+In rule panel, you can use =, >, <, >=, <=, != (not equal) to test number to create conditions. For text, you can use =, !=, =~, !~ to create conditions.
+
+.. list-table:: Text test condition
+	:header-rows: 1
+	:align: center
+
+	* - Sign
+	  - Description
+	* - =
+	  - text equal
+	* - !=
+	  - text not equal
+	* - =~
+	  - text contain
+	* - !~
+	  - text not contain
+
+When setting conditions, there are two special conditions: ``true`` and ``flow``. The ``true`` means the condition always holds. By default, if a rule’s condition is true, Circos applies that rule’s formatting and stops checking further rules in the block. The ``flow`` parameter can override this default behavior.
+
+.. list-table:: Description of flow parameter
+	:header-rows: 1
+	:align: center
+
+	* - Flow
+	  - Description
+	* - continue
+	  -  If the rule condition is true, Circos applies the formatting, does not stop, and continues testing subsequent rules
+	* - restart
+	  -  Stops further evaluation of the current rule chain and restarts testing from the very first rule at the top of the rule chain
+	* - stop
+	  -  If the rule condition is true, immediately stops testing any further rules (default)
+
 **Track Axes**
 
 In the axes panel, you can add the axis grids for the plot track.
@@ -366,12 +398,45 @@ You can toggle ``Show Links`` to show label links. You can toggle ``Label Snuggl
 Glyph Plot Track
 ^^^^^^^^^^^^^^^^
 
-The text plot track can be used to draw glyph plot by setting ``label font`` to ``glyph``. Then you can go to the rule panel, and set the value for ``glyph_symbol`` to change the symbol (e.g. O reprensts solid circle). The correspondence between different values and symbols is as follows:
+The text plot track can be used to draw glyph plot by setting ``label font`` to ``glyph``. Then you can go to the rule panel, and set the value for ``glyph_symbol`` to specify or change the symbol (e.g. O reprensts solid circle). The correspondence between different values and symbols is as follows:
 
 .. figure:: _static/circossymbols.png
 	:align: center
 
 	Circos glyph symbols
+
+.. note::
+
+	In order to draw glyph plot, you must set label font to glyph and add at least one rule to specify a value for glyph_symol in rule panel.
+
+The glyph size can be controlled by adding ``label_size`` option to text data. For example:
+
+.. code::
+
+	hs1 3000000 3000000 cancer label_size=1
+	hs1 6000000 6000000 cancer label_size=2
+	hs1 17000000 17000000 cancer label_size=2
+	hs1 19000000 19000000 cancer label_size=1
+	hs1 33000000 33000000 cancer label_size=2
+	hs19 1000000 1000000 other label_size=20
+	hs19 2000000 2000000 other label_size=15
+	hs19 3000000 3000000 other label_size=14
+	hs19 4000000 4000000 other label_size=25
+	hs19 5000000 5000000 other label_size=10
+	...
+
+In the rule panel, you can set the minimum and maximum size of glyph symbol by changing the value of ``symbol_size``. For example, if symbol_size is set to 30-100, the label_size will be remapped to range [30, 100]. 30 corresponds to the minimum label_size value and 100 corresponds to the maximum label_size value.
+
+Certainly, the label_size can be decimals. For example:
+
+.. code::
+
+	hs1 46000000 46000000 cancer label_size=0.000494941
+	hs1 47000000 47000000 cancer label_size=4.71e-7
+	hs1 52000000 52000000 cancer label_size=0.021367445
+	hs1 86000000 86000000 cancer label_size=0.000132104
+
+You can set the ``size_scale`` to log2, log10, -log2, -log10 in rule panel to scale the label_size value before remapping.
 
 Connector Plot Track
 ^^^^^^^^^^^^^^^^^^^^

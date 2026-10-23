@@ -404,14 +404,9 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 											elif v > dmax:
 												dmax = v
 
-					if dmin is None:
-						dmin = 0
-
-					if dmax is None:
-						dmax = 0
-
-					self.params[k]['main']['dmin'] = dmin
-					self.params[k]['main']['dmax'] = dmax
+					if dmin is not None:
+						self.params[k]['main']['dmin'] = dmin
+						self.params[k]['main']['dmax'] = dmax
 
 		confile = os.path.join(workdir, 'plot.conf')
 		configer = CirchartCircosConfile(self.params)

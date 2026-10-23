@@ -30,8 +30,18 @@ if __name__ == "__main__":
 	win = CirchartMainWindow()
 	app.osx_open_with.connect(win.do_open_project)
 
-	font = str(CIRCOS_PATH / 'fonts' / 'symbols' / 'circossymbols.otf')
-	QFontDatabase.addApplicationFont(font)
+	fonts = QDirIterator(
+		str(CIRCOS_PATH / 'fonts'),
+		QDir.Files | QDir.NoDotAndDotDot,
+		QDirIterator.Subdirectories
+	)
+
+	while fonts.hasNext():
+		fonts.next()
+		font = fonts.filePath()
+
+		if font.endswith('.otf'):
+			QFontDatabase.addApplicationFont(font)
 
 	args = app.arguments()
 	if len(args) > 1:
