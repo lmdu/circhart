@@ -31,7 +31,7 @@ __all__ = [
 ROOT_PATH = Path(__file__).parent
 
 APP_NAME = "Circhart"
-APP_BUILD = "20261008"
+APP_BUILD = "20261025"
 APP_VERSION = "0.8.0"
 
 APP_DEBUG = True
@@ -42,10 +42,12 @@ APP_UPDATE_URL = "https://github.com/lmdu/circhart/releases"
 
 APP_DESCRIPTION = """
 <h2>Circhart</h2>
+<p><b>System</b> {} </p>
+<p><b>Architecture</b> {}</p>
 <p><b>Version</b> {} <b>Build</b> {}</p>
 <p>Circhart is a user-friendly and flexible graphical tool for facilitating the creation of circos
 and snail plots.</p>
-""".format(APP_VERSION, APP_BUILD)
+""".format(QSysInfo.prettyProductName(), QSysInfo.currentCpuArchitecture(), APP_VERSION, APP_BUILD)
 
 APP_CITATION = """
 <p>If you use the following features in this application, please cite the corresponding papers.</p>

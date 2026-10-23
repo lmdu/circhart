@@ -15,7 +15,7 @@ __all__ = [
 ]
 
 #from https://gis.stackexchange.com/questions/350148/qcombobox-multiple-selection-pyqt5
-class CirchartCheckableComboBox(QComboBox):
+class CirchartCheckableComboBox(CirchartComboBox):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 
@@ -28,7 +28,7 @@ class CirchartCheckableComboBox(QComboBox):
 		self.close_popup = False
 
 		self.view().viewport().installEventFilter(self)
-		self.setMinimumWidth(120)
+		#self.setMinimumWidth(120)
 
 	def resizeEvent(self, event):
 		self.update_text()
@@ -347,7 +347,7 @@ class CirchartStringParameter(CirchartParameterMixin, QLineEdit):
 	def set_value(self, value):
 		self.setText(value)
 
-class CirchartChoiceParameter(CirchartParameterMixin, QComboBox):
+class CirchartChoiceParameter(CirchartParameterMixin, CirchartComboBox):
 	def get_value(self):
 		return self.currentData()
 
@@ -720,7 +720,7 @@ class CirchartGroupParameter(CirchartParameterMixin, QWidget):
 
 class CirchartRadiusParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
-		self.location = QComboBox(self)
+		self.location = CirchartComboBox(self)
 		self.location.addItems(['outer ideogram', 'inside ideogram', 'inner ideogram'])
 		self.location.currentIndexChanged.connect(self._on_location_changed)
 		self.offset = QSpinBox(self)
@@ -791,8 +791,8 @@ class CirchartRadiusParameter(CirchartParameterMixin, QWidget):
 
 class CirchartChromsParameter(CirchartParameterMixin, QWidget):
 	def _init_widget(self):
-		self.chr1_widget = QComboBox(self)
-		self.chr2_widget = QComboBox(self)
+		self.chr1_widget = CirchartComboBox(self)
+		self.chr2_widget = CirchartComboBox(self)
 
 	def _set_layout(self):
 		main_layout = QHBoxLayout()
@@ -852,7 +852,7 @@ class CirchartRuleEmptyWidget(CirchartRuleWidget):
 
 class CirchartRuleCommonWidget(CirchartRuleWidget):
 	def _init_widget(self):
-		self.sign_widget = QComboBox(self)
+		self.sign_widget = CirchartComboBox(self)
 		self.sign_widget.setEditable(True)
 		self.sign_widget.addItems(['=', '>', '>=', '<', '<=', '!=', '=~', '!~'])
 		self.val_widget = QLineEdit(self)
@@ -905,7 +905,7 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 	_unit = False
 
 	def _init_widget(self):
-		self.sign_widget = QComboBox(self)
+		self.sign_widget = CirchartComboBox(self)
 
 		if self._number:
 			self.sign_widget.addItems(['=', '!=', '>', '>=', '<', '<='])
@@ -915,7 +915,7 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 		self.val_widget = QLineEdit(self)
 
 		if self._unit:
-			self.unit_widget = QComboBox(self)
+			self.unit_widget = CirchartComboBox(self)
 			self.unit_widget.addItems(['bp', 'kb', 'mb', 'gb'])
 			self.unit_widget.setCurrentIndex(2)
 
@@ -988,10 +988,10 @@ class CirchartRuleChromWidget(CirchartRuleWidget):
 	_equal = False
 
 	def _init_widget(self):
-		self.chr1_widget = QComboBox(self)
+		self.chr1_widget = CirchartComboBox(self)
 
 		if self._count > 1:
-			self.chr2_widget = QComboBox(self)
+			self.chr2_widget = CirchartComboBox(self)
 
 	def _set_layout(self):
 		super()._set_layout()
@@ -1042,10 +1042,10 @@ class CirchartRuleChromsWidget(CirchartRuleChromWidget):
 
 class CirchartRulePositionWidget(CirchartRuleWidget):
 	def _init_widget(self):
-		self.chr_widget = QComboBox(self)
+		self.chr_widget = CirchartComboBox(self)
 		self.start_widget = QLineEdit(self)
 		self.end_widget = QLineEdit(self)
-		self.unit_widget = QComboBox(self)
+		self.unit_widget = CirchartComboBox(self)
 		self.unit_widget.addItems(['bp', 'kb', 'mb', 'gb'])
 		self.unit_widget.setCurrentIndex(2)
 
@@ -1087,7 +1087,7 @@ class CirchartRulePositionWidget(CirchartRuleWidget):
 
 class CirchartRuleFlowWidget(CirchartRuleWidget):
 	def _init_widget(self):
-		self.flow_widget = QComboBox(self)
+		self.flow_widget = CirchartComboBox(self)
 		self.flow_widget.addItems(['stop', 'continue', 'restart'])
 
 	def _set_layout(self):
@@ -1102,7 +1102,7 @@ class CirchartRuleFlowWidget(CirchartRuleWidget):
 
 class CirchartRuleFieldWidget(CirchartRuleWidget):
 	def _init_widget(self):
-		self.field_widget = QComboBox(self)
+		self.field_widget = CirchartComboBox(self)
 		self.field_widget.setEditable(True)
 		self.field_widget.currentIndexChanged.connect(self._on_field_changed)
 		self.field_widget.editTextChanged.connect(self._on_text_changed)
@@ -1243,7 +1243,7 @@ class CirchartRuleFieldWidget(CirchartRuleWidget):
 
 class CirchartRuleStyleWidget(CirchartRuleWidget):
 	def _init_widget(self):
-		self.style_widget = QComboBox(self)
+		self.style_widget = CirchartComboBox(self)
 		self.style_widget.currentIndexChanged.connect(self._on_style_changed)
 		self.value_widget = QWidget(self)
 
@@ -2873,7 +2873,7 @@ class CirchartDataFilterDialog(QDialog):
 		self.styles = CirchartStyleParameter('options', self)
 		self.styles.style_changed.connect(self.adjustSize)
 
-		self.select = QComboBox(self)
+		self.select = CirchartComboBox(self)
 		self.select.currentTextChanged.connect(self._on_plot_changed)
 
 		self.btn_box = QDialogButtonBox(

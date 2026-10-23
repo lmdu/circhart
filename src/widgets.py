@@ -30,6 +30,7 @@ __all__ = [
 	'CirchartCustomColorTable',
 	'CirchartDataFilterTree',
 	'CirchartColumnFilterTree',
+	'CirchartComboBox',
 ]
 
 class CirchartEmptyTreeWidget(QTreeWidget):
@@ -42,6 +43,14 @@ class CirchartSpacerWidget(QWidget):
 	def __init__(self, parent=None):
 		super().__init__(parent)
 		self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+
+class CirchartComboBox(QComboBox):
+	def __init__(self, parent=None):
+		super().__init__(parent)
+
+		if QSysInfo.kernelType() == 'darwin':
+			self.setSizeAdjustPolicy(QComboBox.AdjustToContentsOnFirstShow)
+			self.view().setMinimumWidth(self.minimumSizeHint().width())
 
 #from https://github.com/z3ntu/QtWaitingSpinner
 class CirchartSpinnerWidget(QWidget):

@@ -291,8 +291,6 @@ class CirchartImportDataProcess(CirchartBaseProcess):
 
 			alphas = {'a1': 0.83, 'a2': 0.67, 'a3': 0.5, 'a4': 0.33, 'a5': 0.17}
 
-			print(self.params.colors)
-
 			with open(self.params.path, encoding='utf-8', newline='') as fh:
 				reader = self.file_reader(fh)
 
