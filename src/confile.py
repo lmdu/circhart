@@ -101,11 +101,6 @@ class CirchartCircosConfile(Confile):
 					for k, v in rule_params.items():
 						with Tag('rule'):
 							for c in v['main'].get('condition', []):
-								if c.startswith('var(chr'):
-									cl = c.split(' eq ')
-									cl[1] = '"{}"'.format(cl[1])
-									c = ' eq '.join(cl)
-
 								if c.startswith('flow'):
 									self.option('flow', c.split('=')[1])
 
@@ -283,11 +278,6 @@ class CirchartCircosConfile(Confile):
 							for k, v in rule_params.items():
 								with Tag('rule'):
 									for c in v['main'].get('condition', []):
-										if c.startswith('var(chr'):
-											cl = c.split(' eq ')
-											cl[1] = '"{}"'.format(cl[1])
-											c = ' eq '.join(cl)
-
 										if c.startswith('flow'):
 											self.option('flow', c.split('=')[1])
 

@@ -26,7 +26,9 @@ class CirchartApplication(QApplication):
 		super().__init__(argv)
 
 		self.load_style()
-		self.setStyle(QStyleFactory.create('windowsvista'))
+
+		if QSysInfo.kernelType() == 'winnt':
+			 self.setStyle(QStyleFactory.create('windowsvista'))
 
 	def event(self, event):
 		if sys.platform == 'darwin':
@@ -38,11 +40,9 @@ class CirchartApplication(QApplication):
 	def load_style(self):
 		file = QFile(':/style.qss')
 
-		if file.open(QIODevice.ReadOnly | QIODevice.Text):
+		if file.open(QFile.ReadOnly | QFile.Text):
 			stream = QTextStream(file)
-
-		self.setStyleSheet(stream.readAll())
-
+			self.setStyleSheet(stream.readAll())
 
 class CirchartMainWindow(QMainWindow):
 	def __init__(self):

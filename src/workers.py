@@ -770,6 +770,11 @@ class CirchartSvgRenderWorker(CirchartBaseWorker):
 		plotid = self.params['plotid']
 
 		svg_str = SqlControl.get_svg(plotid)
+
+		if not svg_str:
+			self.signals.warning.emit("An error may have occurred, resulting in no plot being generated")
+			return
+
 		svg_data = QByteArray(svg_str.encode())
 		svg_render = QSvgRenderer()
 		svg_render.load(svg_data)

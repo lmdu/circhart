@@ -865,12 +865,13 @@ class CirchartRuleCommonWidget(CirchartRuleWidget):
 
 	def get_value(self):
 		sign = self.sign_widget.currentText()
-
 		val = self.val_widget.text().strip()
 
 		if sign == '=':
 			sign = 'eq'
-			val = '"{}"'.format(val)
+
+			if not val.isdigit():
+				val = '"{}"'.format(val)
 
 		if sign == '=~' or sign == '!~':
 			ret = "{} /{}/i".format(sign, val)
@@ -930,14 +931,13 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 
 	def get_value(self):
 		sign = self.sign_widget.currentText()
+		val = self.val_widget.text().strip()
 
 		if sign == '=':
 			sign = 'eq'
 
-		elif sign == '!=':
-			sign = 'ne'
-
-		val = self.val_widget.text().strip()
+			if not self._number:
+				val = '"{}"'.format(val)
 
 		if self._unit:
 			unit = self.unit_widget.currentText().replace('bp', '')
@@ -956,9 +956,7 @@ class CirchartRuleValueWidget(CirchartRuleWidget):
 
 		if sign == 'eq':
 			sign = '='
-
-		elif sign == 'ne':
-			sign = '!='
+			val = val.strip('"')
 
 		if sign == '=~':
 			val = value.split('/')[1]
