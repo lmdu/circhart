@@ -149,8 +149,8 @@ class CirchartImportVariationsProcess(CirchartBaseProcess):
 
 				cols = line.split('\t')
 				cols[1] = int(cols[1])
-				row = cols[0:9]
-				row.append('\t'.join(cols[9:]))
+				row = cols[0:6]
+				row.append('\t'.join(cols[6:]))
 				rows.append(row)
 
 				if len(rows) >= 1000:
@@ -576,11 +576,11 @@ class CirchartDensityPrepareProcess(CirchartBaseProcess):
 		end = int(cols[4])
 		return start, end
 
-	def parse_vcf(self):
+	def parse_vcf(self, cols):
 		pos = int(cols[1])
 		return pos, pos
 
-	def parse_bed(self):
+	def parse_bed(self, cols):
 		start = int(cols[1])
 		end = int(cols[2])
 		return start, end

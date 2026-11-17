@@ -121,10 +121,7 @@ class VariantsTable(SqlTable):
 	ref = str
 	alt = str
 	qual = str
-	filters = str
-	info = str
-	formats = str
-	samples = str
+	extra = str
 
 class RegionsTable(SqlTable):
 	_index = True

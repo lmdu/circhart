@@ -423,7 +423,7 @@ class CirchartKaryotypeTableModel(CirchartDataTableModel):
 	def update_name(self, index, name):
 		kid = self.get_id(index)
 		sql = SqlQuery(self._table)\
-			.update('name')\
+			.update('chrid')\
 			.where('id=?')
 
 		SqlBase.update_row(sql, name, kid)
