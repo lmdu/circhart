@@ -603,6 +603,8 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 		for c in self._colors:
 			self.add_widget(row, col, c)
 
+
+
 			col += 1
 
 			if col >= self.max_column:
@@ -624,7 +626,7 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 		cw.setContextMenuPolicy(Qt.CustomContextMenu)
 		cw.customContextMenuRequested.connect(self._on_right_menu)
 		cw.setProperty('cindex', row*self.max_column+col)
-		self.main_layout.addWidget(cw, row, col)
+		self.main_layout.addWidget(cw, row, col, Qt.AlignLeft | Qt.AlignVCenter)
 
 	def add_button(self, row, col):
 		btn = QPushButton(self)
@@ -632,7 +634,7 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 		btn.setIcon(QIcon(':/icons/color.svg'))
 		btn.setStyleSheet("border: 1px solid black;border-radius:none;")
 		btn.clicked.connect(self._on_add_color)
-		self.main_layout.addWidget(btn, row, col)
+		self.main_layout.addWidget(btn, row, col, Qt.AlignLeft | Qt.AlignVCenter)
 
 	def _on_add_color(self, color):
 		colors = CirchartCircosColorSelectDialog.get_color(parent=self, multiple=True)
