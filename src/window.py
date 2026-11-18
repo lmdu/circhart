@@ -305,6 +305,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_prepare_loci_data
 		)
 
+		self.prepare_stack_act = QAction("&Prepare Stack Data", self,
+			triggered = self.do_prepare_stack_data
+		)
+
 		self.check_circos_act = QAction("&Check Circos Dependencies", self,
 			triggered = self.do_circos_dependency_check
 		)
@@ -435,6 +439,7 @@ class CirchartMainWindow(QMainWindow):
 		self.prepare_menu.addAction(self.prepare_ldata_act)
 		self.prepare_menu.addAction(self.prepare_tdata_act)
 		self.prepare_menu.addAction(self.prepare_idata_act)
+		self.prepare_menu.addAction(self.prepare_stack_act)
 
 		self.tool_menu.addAction(self.extract_data_act)
 
@@ -1008,6 +1013,14 @@ class CirchartMainWindow(QMainWindow):
 
 		if params:
 			worker = CirchartLociPrepareWorker(params)
+			worker.signals.success.connect(self.data_tree.update_tree)
+			self.submit_new_worker(worker)
+
+	def do_prepare_stack_data(self):
+		params = CirchartStackPrepareDialog.prepare(self)
+
+		if params:
+			worker = CirchartStackPrepareWorker(params)
 			worker.signals.success.connect(self.data_tree.update_tree)
 			self.submit_new_worker(worker)
 

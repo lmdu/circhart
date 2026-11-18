@@ -350,6 +350,20 @@ tracks:
       source:
         - out
         - in
+    -
+      name: value_limit
+      type: group
+      default: 'no'
+    -
+      name: min
+      type: str
+      parent: value_limit
+      tooltip: minimum value
+    -
+      name: max
+      type: str
+      parent: value_limit
+      tooltip: maximum value
 
   line:
     -
@@ -388,6 +402,21 @@ tracks:
       source:
         - out
         - in
+        -
+    - 
+      name: value_limit
+      type: group
+      default: 'no'
+    -
+      name: min
+      type: str
+      parent: value_limit
+      tooltip: minimum value
+    -
+      name: max
+      type: str
+      parent: value_limit
+      tooltip: maximum value
 
   histogram:
     -
@@ -408,7 +437,7 @@ tracks:
       default: 0,0,0
       tooltip: line color
     -
-      name: stroke_thickness
+      name: thickness
       type: int
       range:
         - 0
@@ -432,6 +461,22 @@ tracks:
         - out
         - in
 
+        -
+    -
+      name: value_limit
+      type: group
+      default: 'no'
+    -
+      name: min
+      type: str
+      parent: value_limit
+      tooltip: minimum value
+    -
+      name: max
+      type: str
+      parent: value_limit
+      tooltip: maximum value
+
   stacked:
     -
       name: data
@@ -447,11 +492,10 @@ tracks:
       tooltip: the outer radius of the plot track
     -
       name: color
-      type: color
-      default: 0,0,0
+      type: colors
       tooltip: line color
     -
-      name: stroke_thickness
+      name: thickness
       type: int
       range:
         - 0
@@ -512,6 +556,20 @@ tracks:
       name: color
       type: colors
       label: colors
+    -
+      name: value_limit
+      type: group
+      default: 'no'
+    -
+      name: min
+      type: str
+      parent: value_limit
+      tooltip: minimum value
+    -
+      name: max
+      type: str
+      parent: value_limit
+      tooltip: maximum value
 
   tile:
     -

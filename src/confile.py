@@ -263,6 +263,14 @@ class CirchartCircosConfile(Confile):
 							case 'topmost':
 								pass
 
+							case 'value_limit':
+								pass
+
+							case 'min' | 'max':
+								if main_params['value_limit'] == 'yes':
+									if v.strip():
+										self.option(k, v.strip())
+
 							case 'ideogram':
 								if main_params['topmost'] == 'yes':
 									pass

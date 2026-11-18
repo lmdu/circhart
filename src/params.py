@@ -615,7 +615,12 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 		cw = QPushButton(self)
 		cw.setFixedSize(16, 16)
 		cw.clicked.connect(self._on_color_clicked)
-		cw.setStyleSheet("background-color:rgb({});border: 1px solid black;border-radius:none;".format(color))
+
+		if color.count(',') > 2:
+			cw.setStyleSheet("background-color:rgba({});border: 1px solid black;border-radius:none;".format(color))
+		else:
+			cw.setStyleSheet("background-color:rgb({});border: 1px solid black;border-radius:none;".format(color))
+
 		cw.setContextMenuPolicy(Qt.CustomContextMenu)
 		cw.customContextMenuRequested.connect(self._on_right_menu)
 		cw.setProperty('cindex', row*self.max_column+col)
@@ -654,7 +659,11 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 		
 		if new_color:
 			self._colors[cidx] = new_color
-			btn.setStyleSheet("background-color:rgb({});border: 1px solid black;border-radius:none;".format(new_color))
+
+			if new_color.count(',') > 2:
+				btn.setStyleSheet("background-color:rgba({});border: 1px solid black;border-radius:none;".format(new_color))
+			else:
+				btn.setStyleSheet("background-color:rgb({});border: 1px solid black;border-radius:none;".format(new_color))
 
 	def _on_right_menu(self, pos):
 		cindex = self.sender().property('cindex')

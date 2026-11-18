@@ -25,6 +25,7 @@ __all__ = [
 	'CirchartBandPrepareProcess',
 	'CirchartGCContentPrepareProcess',
 	'CirchartDensityPrepareProcess',
+	'CirchartStackPrepareProcess',
 	'CirchartCircosPlotProcess',
 	'CirchartSnailPlotProcess',
 	'CirchartImportMcscanxProcess',
@@ -340,7 +341,7 @@ class CirchartImportLinkDataProcess(CirchartImportDataProcess):
 		mappings = {}
 		ignore = 0
 
-		with open(self.params.path) as fh:
+		with open(self.params.path, newline='') as fh:
 			reader = self.file_reader(fh)
 
 			for row in reader:
@@ -1030,6 +1031,115 @@ class CirchartLociPrepareProcess(CirchartBaseProcess):
 		if rows:
 			self.send('result', rows)
 
+class CirchartStackPrepareProcess(CirchartBaseProcess):
+	def percent_value(self, counts):
+		total = sum(counts)
+
+		if total > 0:
+			vals = [str(round(c/total*100, 5)) for c in counts]
+
+		else:
+			vals = map(str, counts)
+
+		return ','.join(vals)
+
+	def count_value(self, counts):
+		return ','.join(map(str, counts))
+
+	def do(self):
+		wsize = self.params.window
+		step = self.params.step
+
+		interval_mapping = {}
+		location_mapping = {}
+		counts_mapping = {}
+		
+		for chrom in self.params.axes:
+			ranges = pygros.Ranges()
+			locus = []
+			counts = []
+
+			chrid, size = self.params.axes[chrom]
+
+			for i in range(0, size, step):
+				j = i + wsize
+				i += 1
+
+				if j > size:
+					j = size
+
+				index = len(locus)
+				locus.append([chrid, i, j])
+				counts.append([0]*len(self.params.catorder))
+				ranges.add(chrom, i, j, index)
+
+				if j == size:
+					break
+
+			ranges.index()
+			interval_mapping[chrom] = ranges
+			location_mapping[chrom] = locus
+			counts_mapping[chrom] = counts
+
+		if self.params.tabfile.endswith('.gz'):
+			fp = gzip.open(self.params.tabfile, 'rt', newline='')
+		else:
+			fp = open(self.params.tabfile, newline='')
+
+		real_start = 0
+		chrcol = self.params.chromcol - 1
+		scol = self.params.startcol - 1
+		ecol = self.params.endcol - 1
+		ccol = self.params.catcol - 1
+
+		with fp:
+			for line in fp:
+				if not line.startswith(self.params.ignores):
+					break
+
+				real_start = fp.tell()
+
+			dialect = csv.Sniffer().sniff(fp.read(2048))
+			fp.seek(real_start)
+			reader = csv.reader(fp, dialect)
+			
+			for row in reader:
+				chrom = row[chrcol]
+				start = int(row[scol])
+				end = int(row[ecol])
+				cat = row[ccol]
+
+				if chrom not in self.params.axes:
+					continue
+
+				if cat not in self.params.catorder:
+					continue
+
+				cidx = self.params.catorder.index(cat)
+				ilist = interval_mapping[chrom].overlap(chrom, start, end)
+
+				for _, _, index in ilist:
+					counts_mapping[chrom][index][cidx] += 1
+
+		if self.params.calctype == 1:
+			value_func = self.percent_value
+
+		else:
+			value_func = self.count_value
+
+		for chrom, locus in location_mapping.items():
+			counts = counts_mapping[chrom]
+			rows = []
+
+			for idx, loci in enumerate(locus):
+				valstr = value_func(counts[idx])
+				loci.append(valstr)
+				loci.append('')
+				rows.append(loci)
+
+			self.send('result', rows)
+
+
 class CirchartDataExtractProcess(CirchartBaseProcess):
 	def format_plot_data(self, rows):
 		for i in range(len(rows)):
@@ -1106,9 +1216,9 @@ class CirchartDataExtractProcess(CirchartBaseProcess):
 
 	def do(self):
 		if self.params.tabfile.endswith('.gz'):
-			fp = gzip.open(self.params.tabfile, 'rt')
+			fp = gzip.open(self.params.tabfile, 'rt', newline='')
 		else:
-			fp = open(self.params.tabfile)
+			fp = open(self.params.tabfile, newline='')
 
 		real_start = 0
 

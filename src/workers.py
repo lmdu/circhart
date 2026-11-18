@@ -33,6 +33,7 @@ __all__ = [
 	'CirchartLociPrepareWorker',
 	'CirchartLinkPrepareWorker',
 	'CirchartTextPrepareWorker',
+	'CirchartStackPrepareWorker',
 	'CirchartCircosPlotWorker',
 	'CirchartProjectSaveWorker',
 	'CirchartDataSaveWorker',
@@ -312,6 +313,10 @@ class CirchartLociPrepareWorker(CirchartPrepareWorker):
 		self.params['annotfile'] = ameta['path']
 		self.params['annotformat'] = ameta.get('format', None)
 
+class CirchartStackPrepareWorker(CirchartPrepareWorker):
+	processor = CirchartStackPrepareProcess
+	data_type = 'textdata'
+
 class CirchartCircosPlotWorker(CirchartBaseWorker):
 	processor = CirchartCircosPlotProcess
 
@@ -381,7 +386,7 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 					data = SqlControl.get_data_content(tag, kid)
 					save_circos_data(workdir, outfile, data)
 
-				if tag == 'textdata' and self.params[k]['main']['label_font'] == 'glyph':
+				if tag == 'textdata' and 'label_font' in self.params[k]['main'] and self.params[k]['main']['label_font'] == 'glyph':
 					dmin = None
 					dmax = None
 					

@@ -22,6 +22,7 @@ __all__ = [
 	'CirchartCircosColorSelectDialog',
 	'CirchartLociPrepareDialog',
 	'CirchartLinkPrepareDialog',
+	'CirchartStackPrepareDialog',
 	'CirchartCustomColorDialog',
 	'CirchartReplaceChridDialog',
 	'CirchartExtractDataDialog',
@@ -816,6 +817,89 @@ class CirchartLociPrepareDialog(CirchartBaseDialog):
 				'dataname': dataname
 			}
 
+			return params
+
+class CirchartStackPrepareDialog(CirchartBaseDialog):
+	_title = "Prepare Stack Data"
+	_wsize = QSize(500, 100)
+
+	def _create_widgets(self):
+		self.data_name = QLineEdit(self)
+		self.select_karyotype = QComboBox(self)
+		self.input_file = CirchartBrowseWidget(self)
+		self.ignore_input = QLineEdit(self)
+		self.ignore_input.setText('#')
+		self.chrom_column = QSpinBox(self)
+		self.start_column = QSpinBox(self)
+		self.end_column = QSpinBox(self)
+		self.category_column = QSpinBox(self)
+		self.category_order = QLineEdit(self)
+		self.value_type = QComboBox(self)
+		self.window_size = CirchartGenomeWindowSize(self)
+
+	def _init_widgets(self):
+		self.chrom_column.setRange(1, 1000)
+		self.start_column.setRange(1, 1000)
+		self.end_column.setRange(1, 1000)
+		self.value_type.addItems(['counts', 'percent'])
+
+		ks = SqlControl.get_datas_by_type('karyotype')
+		for k in ks:
+			self.select_karyotype.addItem(k.name, k.id)
+
+	def _init_layouts(self):
+		self.main_layout.addRow("Data name:", self.data_name)
+		self.main_layout.addRow("Select karyotype:", self.select_karyotype)
+		self.main_layout.addRow("Table file:", self.input_file)
+		self.main_layout.addRow("Ignore lines start with:", self.ignore_input)
+		self.main_layout.addRow("Chrom column:", self.chrom_column)
+		self.main_layout.addRow("Start column:", self.start_column)
+		self.main_layout.addRow("End column:", self.end_column)
+		self.main_layout.addRow("Category column:", self.category_column)
+		self.main_layout.addRow("Category order:", self.category_order)
+		self.main_layout.addRow("Calculate value:", self.value_type)
+		self.main_layout.addRow(self.window_size)
+
+	def get_params(self):
+		params = {
+			'dataname': self.data_name.text().strip(),
+			'tabfile': self.input_file.get_path(),
+			'ignores': tuple(i.strip() for i in self.ignore_input.text().strip().strip(',').split(',') if i.strip()),
+			'chromcol': self.chrom_column.value(),
+			'startcol': self.start_column.value(),
+			'endcol': self.end_column.value(),
+			'catcol': self.category_column.value(),
+			'catorder': [c.strip() for c in self.category_order.text().strip().strip(',').split(',')],
+			'calctype': self.value_type.currentIndex(),
+			'karyotype': self.select_karyotype.currentData(),
+		}
+
+		params.update(self.window_size.get_values())
+		return params
+
+	def _valid_form(self):
+		vals = AttrDict(self.get_params())
+
+		if not vals.dataname:
+			return QMessageBox.critical(self, 'Error', "No data name input")
+
+		if not vals.tabfile:
+			return QMessageBox.critical(self, 'Error', "No table file input")
+
+		if not vals.catorder:
+			return QMessageBox.critical(self, 'Error', "No category order input")
+
+		if not vals.karyotype:
+			return QMessageBox.critical(self, 'Error', "No karyotype selected")
+
+		self.accept()
+
+	@classmethod
+	def prepare(cls, parent):
+		dlg = cls(parent)
+
+		if dlg.exec() == QDialog.Accepted:
+			params = dlg.get_params()
 			return params
 
 class CirchartLinkPrepareDialog(CirchartBaseDialog):
