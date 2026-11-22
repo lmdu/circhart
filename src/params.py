@@ -603,8 +603,6 @@ class CirchartColorsParameter(CirchartParameterMixin, QWidget):
 		for c in self._colors:
 			self.add_widget(row, col, c)
 
-
-
 			col += 1
 
 			if col >= self.max_column:

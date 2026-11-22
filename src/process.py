@@ -1036,15 +1036,12 @@ class CirchartStackPrepareProcess(CirchartBaseProcess):
 		total = sum(counts)
 
 		if total > 0:
-			vals = [str(round(c/total*100, 5)) for c in counts]
+			vals = [round(c/total*100, 5) for c in counts]
 
-		else:
-			vals = map(str, counts)
-
-		return ','.join(vals)
+		return vals
 
 	def count_value(self, counts):
-		return ','.join(map(str, counts))
+		return counts
 
 	def do(self):
 		wsize = self.params.window
@@ -1132,9 +1129,8 @@ class CirchartStackPrepareProcess(CirchartBaseProcess):
 			rows = []
 
 			for idx, loci in enumerate(locus):
-				valstr = value_func(counts[idx])
-				loci.append(valstr)
-				loci.append('')
+				vals = value_func(counts[idx])
+				loci.extend(vals)
 				rows.append(loci)
 
 			self.send('result', rows)

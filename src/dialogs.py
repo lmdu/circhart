@@ -269,13 +269,17 @@ class CirchartKaryotypePrepareDialog(CirchartBaseDialog):
 		self.table = CirchartCheckTableWidget(self)
 		self.table.setSortingEnabled(True)
 		self.prefix_input = QLineEdit(self)
+		self.custom_chrid = QCheckBox("Custom chrid", self)
+		self.custom_chrid.toggled.connect(lambda x: self.main_layout.setRowVisible(self.prefix_input, x))
 		
 	def _init_layouts(self):
 		self.main_layout.addRow("Data name:", self.name_input)
 		self.main_layout.addRow("Select genome:", self.select)
 		self.main_layout.addRow(QLabel("Select chromosomes:", self))
 		self.main_layout.addRow(self.table)
+		self.main_layout.addRow(self.custom_chrid)
 		self.main_layout.addRow("Chrid prefix:", self.prefix_input)
+		self.main_layout.setRowVisible(self.prefix_input, False)
 
 	def _init_widgets(self):
 		self.genome_ids = []
@@ -297,9 +301,10 @@ class CirchartKaryotypePrepareDialog(CirchartBaseDialog):
 		if not selected:
 			return QMessageBox.critical(self, "Error", "No chromosome selected")
 
+		
 		px = self.prefix_input.text().strip()
-		if not px:
-			return QMessageBox.critical(self, "Error", "No chromosome name prefix input")
+		if not px and self.custom_chrid.isChecked():
+			return QMessageBox.critical(self, "Error", "No chrid prefix input")
 
 		self.accept()
 
@@ -311,6 +316,9 @@ class CirchartKaryotypePrepareDialog(CirchartBaseDialog):
 		dlg = cls(parent)
 
 		if dlg.exec() == QDialog.Accepted:
+			custom_chrid = dlg.custom_chrid.isChecked()
+			prefix = dlg.prefix_input.text().strip()
+
 			#get chr colors from circos
 			color_file = CIRCOS_PATH / 'etc' / 'colors.ucsc.conf'
 
@@ -322,16 +330,32 @@ class CirchartKaryotypePrepareDialog(CirchartBaseDialog):
 						if ',' in cols[1]:
 							circos_colors[cols[0].strip()] = cols[1].strip()
 
-			prefix = dlg.prefix_input.text().strip()
-
 			items = []
 			num = 0
 			for rows in dlg.table.get_selected():
 				for row in rows:
-					num += 1
-					chrid = '{}{}'.format(prefix, num)
 					label = row[1]
 					lenght = row[2]
+					num += 1
+
+					if custom_chrid:
+						if label.lower().startswith('chr'):
+							code = label[3:]
+
+						else:
+							code = label
+
+						if code.isdigit():
+							chrid = '{}{}'.format(prefix, int(code))
+
+						elif code in ['x', 'X', 'y', 'Y', 'z', 'Z', 'w', 'W']:
+							chrid = '{}{}'.format(prefix, code)
+
+						else:
+							chrid = '{}{}'.format(prefix, num)
+
+					else:
+						chrid = label
 
 					if label.lower() in circos_colors:
 						color = circos_colors[label.lower()]

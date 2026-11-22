@@ -463,6 +463,32 @@ Circhart allows you to prepare link data from whole-genome alignment file genera
 
 #. Click ``OK`` button to generate link data.
 
+Stack Data
+----------
+
+The link data has six required columns: chrid, start, end, cat1, cat2, ..., catn and one optional column: options. Each row has two intervals on the same or different chromosomes. The link data used to plot link track.
+
+Link data example:
+
+.. code::
+
+	hs1 1000 3000 hs10 2500 3800
+	hs3 7000 9500 hs8 4000 7000
+	hs7 500 1500 hs12 5000 6000
+	...
+
+Import Stack Data
+^^^^^^^^^^^^^^^^^
+
+If you already have stack data, you can import data directly into Circhart. Go to **File** menu -> **Import Data** -> **Import Stack Data**, select a file to import stack data.
+
+.. note::
+
+	The imported or prepared stack data will be assigned data type of ``stackdata``.
+
+Prepare Stack Data
+^^^^^^^^^^^^^^^^^^
+
 Extract Data
 ------------
 

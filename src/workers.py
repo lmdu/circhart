@@ -20,6 +20,7 @@ __all__ = [
 	'CirchartImportBandsWorker',
 	'CirchartImportDataWorker',
 	'CirchartImportLinkDataWorker',
+	'CirchartImportStackDataWorker',
 	'CirchartImportVariationsWorker',
 	'CirchartImportRegionsWorker',
 	'CirchartImportMcscanxWorker',
@@ -209,6 +210,23 @@ class CirchartImportDataWorker(CirchartImportBaseWorker):
 		self.data_type = self.params['type']
 		super().preprocess()
 
+class CirchartImportStackDataWorker(CirchartImportDataWorker):
+	def preprocess(self):
+		qf = QFileInfo(self.params['path'])
+		name = qf.completeBaseName()
+		meta = dict_to_str(self.params)
+		self.data_index = SqlControl.add_data(name, self.data_type, meta)
+		self.table_created = False
+
+	def save_result(self, res):
+		if not table_created:
+			vcount = len(res[0]) - 2
+			cats = ['cat{} REAL'.format(i) for i in range(1, vcount)]
+			SqlControl.create_custom_table(self.data_type, self.data_index, cats)
+			self.table_created = True
+
+		SqlControl.add_index_data(self.data_type, self.data_index, res)
+
 class CirchartImportLinkDataWorker(CirchartImportDataWorker):
 	processor = CirchartImportLinkDataProcess
 
@@ -315,7 +333,27 @@ class CirchartLociPrepareWorker(CirchartPrepareWorker):
 
 class CirchartStackPrepareWorker(CirchartPrepareWorker):
 	processor = CirchartStackPrepareProcess
-	data_type = 'textdata'
+	data_type = 'stackdata'
+
+	def preprocess(self):
+		objs = SqlControl.get_data_objects('karyotype', self.params.karyotype)
+
+		self.params.axes = {
+			obj.label: (obj.chrid, obj.end)
+			for obj in objs if obj.type == 'chr'
+		}
+
+		self.data_index = SqlControl.add_data(self.params.dataname, self.data_type)
+		self.table_created = False
+
+	def save_result(self, res):
+		if not self.table_created:
+			vcount = len(res[0]) - 2
+			cats = ['cat{} REAL'.format(i) for i in range(1, vcount)]
+			SqlControl.create_custom_table(self.data_type, self.data_index, cats)
+			self.table_created = True
+
+		SqlControl.add_custom_data(self.data_type, self.data_index, res)
 
 class CirchartCircosPlotWorker(CirchartBaseWorker):
 	processor = CirchartCircosPlotProcess
@@ -373,8 +411,11 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 				if ptype == 'link':
 					tag = 'linkdata'
 
-				elif ptype in ['text', 'stacked']:
+				elif ptype == 'text':
 					tag = 'textdata'
+
+				elif ptype == 'stacked':
+					tag = 'stackdata'
 
 				elif ptype in ['tile', 'connector', 'highlight']:
 					tag = 'locidata'
@@ -384,7 +425,11 @@ class CirchartCircosPlotWorker(CirchartBaseWorker):
 
 				for kid in kids:
 					data = SqlControl.get_data_content(tag, kid)
-					save_circos_data(workdir, outfile, data)
+
+					if tag == 'stackdata':
+						save_circos_data(workdir, outfile, map(lambda x: [*x[0:3], ','.join(map(str,x[3:]))], data))
+					else:
+						save_circos_data(workdir, outfile, data)
 
 				if tag == 'textdata' and 'label_font' in self.params[k]['main'] and self.params[k]['main']['label_font'] == 'glyph':
 					dmin = None

@@ -222,6 +222,12 @@ class LociDataTable(SqlTable):
 	end = int
 	options = str
 
+class StackDataTable(SqlTable):
+	_index = True
+	chrid = str
+	start = int
+	end = int
+
 class SqlQuery:
 	def __init__(self, table):
 		self._table = table
@@ -531,6 +537,7 @@ class SqlControl:
 		'linkdata': LinkDataTable,
 		'locidata': LociDataTable,
 		'textdata': TextDataTable,
+		'stackdata': StackDataTable,
 	}
 
 	@staticmethod
@@ -603,12 +610,27 @@ class SqlControl:
 		SqlBase.create_table(table, fields)
 
 	@staticmethod
+	def create_custom_table(table, index, extra):
+		model = SqlControl._models.get(table)
+		table, fields = model.table(index)
+		fields.extend(extra)
+		SqlBase.create_table(table, fields)
+
+	@staticmethod
 	def add_index_data(table, index, data):
 		model = SqlControl._models.get(table)
 		table, _ = model.table(index)
 		sql = SqlQuery(table)\
 			.insert(*model.fields())
 		SqlBase.insert_rows(sql, data)
+
+	@staticmethod
+	def add_custom_data(table, index, data):
+		model = SqlControl._models.get(table)
+		table, _ = model.table(index)
+		sql = SqlQuery(table)\
+			.insert(len(data[0])+1)
+		SqlBase.insert_rows(sql, map(lambda x: [None, *x], data))
 
 	@staticmethod
 	def update_data_options(table, filters, options):

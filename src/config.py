@@ -31,7 +31,7 @@ __all__ = [
 ROOT_PATH = Path(__file__).parent
 
 APP_NAME = "Circhart"
-APP_BUILD = "20261025"
+APP_BUILD = "20261122"
 APP_VERSION = "0.8.0"
 
 APP_DEBUG = True
@@ -84,7 +84,7 @@ APP_ACKNOWLEDGE = """
 	</tr>
 	<tr>
 		<td>
-			<a href="https://doc.qt.io/qtforpython-6/index.html">PySide6</a>
+			<a href="https://doc.qt.io/qtforpython-6/index.html">PySide</a>
 		</td>
 		<td>v{pyside}</td>
 		<td>Qt for Python offers the official Python bindings for Qt</td>

@@ -481,7 +481,7 @@ tracks:
     -
       name: data
       type: choices
-      source: textdata
+      source: stackdata
     -
       name: r0
       type: radial

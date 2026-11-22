@@ -217,6 +217,10 @@ class CirchartMainWindow(QMainWindow):
 			triggered = self.do_import_text_data
 		)
 
+		self.import_stack_act = QAction("&Import Stack Data...", self,
+			triggered = self.do_import_stack_data
+		)
+
 		self.export_data_act = QAction("&Export Data...", self,
 			triggered = self.do_export_data
 		)
@@ -377,7 +381,6 @@ class CirchartMainWindow(QMainWindow):
 		self.file_menu.addAction(self.open_project_act)
 		self.file_menu.addAction(self.save_project_act)
 		self.file_menu.addAction(self.saveas_project_act)
-		self.file_menu.addSeparator()
 		self.file_menu.addAction(self.close_project_act)
 		self.file_menu.addSeparator()
 		self.import_menu = self.file_menu.addMenu("&Import Data")
@@ -399,7 +402,9 @@ class CirchartMainWindow(QMainWindow):
 		self.import_menu.addAction(self.import_link_act)
 		self.import_menu.addAction(self.import_loci_act)
 		self.import_menu.addAction(self.import_text_act)
+		self.import_menu.addAction(self.import_stack_act)
 		self.import_menu.addSeparator()
+		self.file_menu.addSeparator()
 		self.file_menu.addAction(self.export_data_act)
 		self.file_menu.addAction(self.export_image_act)
 
@@ -495,6 +500,7 @@ class CirchartMainWindow(QMainWindow):
 		prepare_menu.addAction(self.prepare_ldata_act)
 		prepare_menu.addAction(self.prepare_tdata_act)
 		prepare_menu.addAction(self.prepare_idata_act)
+		prepare_menu.addAction(self.prepare_stack_act)
 		prepare_action = QAction(QIcon(':/icons/data.svg'), "Prepare Data", self)
 		prepare_action.setMenu(prepare_menu)
 
@@ -813,6 +819,10 @@ class CirchartMainWindow(QMainWindow):
 
 		if dtype == 'linkdata':
 			worker = CirchartImportLinkDataWorker(params)
+
+		elif dtype == 'stackdata':
+			worker = CirchartImportStackDataWorker(params)
+
 		else:
 			worker = CirchartImportDataWorker(params)
 
@@ -836,6 +846,9 @@ class CirchartMainWindow(QMainWindow):
 
 	def do_import_text_data(self):
 		self.import_plot_data('textdata', 4)
+
+	def do_import_stack_data(self):
+		self.import_plot_data('stackdata', 0)
 
 	def do_export_data(self):
 		if self.stack_widget.currentIndex() != 1:
