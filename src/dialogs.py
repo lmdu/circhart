@@ -865,6 +865,7 @@ class CirchartStackPrepareDialog(CirchartBaseDialog):
 		self.chrom_column.setRange(1, 1000)
 		self.start_column.setRange(1, 1000)
 		self.end_column.setRange(1, 1000)
+		self.category_column.setRange(1, 1000)
 		self.value_type.addItems(['counts', 'percent'])
 
 		ks = SqlControl.get_datas_by_type('karyotype')

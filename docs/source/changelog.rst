@@ -1,13 +1,18 @@
 Changelogs
 ==========
 
-Version 0.8.0 (2026-10-08)
+Version 0.8.0 (2026-11-23)
 --------------------------
 
+- Added support for stack data 
 - Added plot rename feature
+- Added value limit for plotting
 - Added citation and acknowledgements
-- Fixed menu item disabled style
+- Changed karyotype data preparation
 - Improved right-click menu of data and plot
+- Fixed menu item disabled style
+- Fixed vcf parse error
+- Fixed glyph track error
 
 Version 0.7.0 (2026-10-07)
 --------------------------

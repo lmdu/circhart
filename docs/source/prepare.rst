@@ -78,7 +78,13 @@ If you don't have karyotype data, you can prepare karyotype data.
 
 		Generally, genome file may have many unplaced sequences that we don't want to be used for plotting. You can select only the complete chromosomes or chromosomes you desired. You can use right clicked menu to guess and select chromosomes.
 
-#. Input chrid prefix. e.g. ``hs`` for human, ``mm`` for mouse, or you can also simply use ``chr`` for single genome. The circhart will use the this prefix to generate new name for each chromosome. e.g. hs1, hs2, hs3.
+#. By default, circhart use chromosome name as chrid. If you want to custom chrid, you can click ``custom chrid``, and then input chrid prefix, e.g. ``hs`` for human, ``mm`` for mouse, or you can also simply use ``chr`` for single genome. The circhart will use this prefix to generate new name for each chromosome. e.g. hs1, hs2, hs3.
+
+	.. figure:: _static/prepare_kdata2.png
+		:width: 500
+		:align: center
+
+		Custom chrid for karyotype data preparation
 
 #. Click ``OK`` button to generate karyotype data based on selected chromosomes.
 
@@ -466,16 +472,22 @@ Circhart allows you to prepare link data from whole-genome alignment file genera
 Stack Data
 ----------
 
-The link data has six required columns: chrid, start, end, cat1, cat2, ..., catn and one optional column: options. Each row has two intervals on the same or different chromosomes. The link data used to plot link track.
+The stack data has variable columns: chrid, start, end, cat1, cat2, ..., catn. The chrid, start and end are required columns. Each row can contain multiple category values.
 
-Link data example:
+Stack data example:
 
 .. code::
 
-	hs1 1000 3000 hs10 2500 3800
-	hs3 7000 9500 hs8 4000 7000
-	hs7 500 1500 hs12 5000 6000
-	...
+	chr1	1	2000000	509.0	96.0	32.0	92.0	56.0	23.0
+	chr1	2000001	4000000	244.0	69.0	27.0	146.0	22.0	6.0
+	chr1	4000001	6000000	265.0	154.0	47.0	195.0	36.0	6.0
+	chr1	6000001	8000000	635.0	129.0	79.0	173.0	33.0	6.0
+	chr1	8000001	10000000	972.0	137.0	86.0	251.0	41.0	9.0
+	chr1	10000001	12000000	871.0	137.0	79.0	253.0	49.0	16.0
+	chr1	12000001	14000000	642.0	97.0	65.0	248.0	46.0	13.0
+	chr1	14000001	16000000	705.0	113.0	47.0	183.0	38.0	4.0
+	chr1	16000001	18000000	654.0	83.0	84.0	230.0	55.0	10.0
+	chr1	18000001	20000000	483.0	125.0	86.0	267.0	37.0	14.0
 
 Import Stack Data
 ^^^^^^^^^^^^^^^^^
@@ -488,6 +500,40 @@ If you already have stack data, you can import data directly into Circhart. Go t
 
 Prepare Stack Data
 ^^^^^^^^^^^^^^^^^^
+
+Circhart allows you to calculate density from table files group by category to prepare stack data.
+
+#. Go to **Tools** menu -> **Prepare Data** -> **Prepare Stack Data** to open stack data preparation dialog.
+
+	.. figure:: _static/prepare_stack.png
+		:width: 500
+		:align: center
+
+		Stack data preparation dialog
+
+#. Input a name for generated stack data.
+
+#. Select a karyotype.
+
+#. Select a table file.
+
+#. Input the starting characters or words of lines to ignore. Multiple characters or words can be separated by comma, for example ``#,@,*``.
+
+#. Specify chromosome column.
+
+#. Specify start position column.
+
+#. Specify end position column.
+
+#. Specify category column.
+
+#. Input the category order separated by comma, for example, ``A, B, C``.
+
+#. Select value type (counts or percent), percent = catn/(cat1+cat2+...+catn)*100.
+
+#. Specify window type and size.
+
+#. Click ``OK`` button to prepare stack data.
 
 Extract Data
 ------------

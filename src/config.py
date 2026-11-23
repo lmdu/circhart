@@ -31,10 +31,10 @@ __all__ = [
 ROOT_PATH = Path(__file__).parent
 
 APP_NAME = "Circhart"
-APP_BUILD = "20261122"
+APP_BUILD = "20261123"
 APP_VERSION = "0.8.0"
 
-APP_DEBUG = True
+APP_DEBUG = False
 
 APP_ISSUE_URL = "https://github.com/lmdu/circhart/issues"
 APP_DOCUMENT_URL = "https://circhart.readthedocs.io"
