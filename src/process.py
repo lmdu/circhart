@@ -1158,6 +1158,14 @@ class CirchartDataExtractProcess(CirchartBaseProcess):
 			rows[i][5] = int(rows[i][5])
 			rows[i].append('')
 
+	def format_stack_data(self, rows):
+		for i in range(len(rows)):
+			rows[i][1] = int(rows[i][1])
+			rows[i][2] = int(rows[i][2])
+
+			for j in range(3, len(rows[i])):
+				rows[i][j] = float(rows[i][j])
+
 	def format_empty(self, rows):
 		return rows
 
@@ -1170,6 +1178,9 @@ class CirchartDataExtractProcess(CirchartBaseProcess):
 
 		elif self.params.outtype == 'linkdata':
 			return self.format_link_data
+
+		elif self.params.outtype == 'stackdata':
+			return self.format_stack_data
 
 		else:
 			return self.format_empty

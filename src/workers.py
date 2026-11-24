@@ -219,13 +219,13 @@ class CirchartImportStackDataWorker(CirchartImportDataWorker):
 		self.table_created = False
 
 	def save_result(self, res):
-		if not table_created:
+		if not self.table_created:
 			vcount = len(res[0]) - 2
 			cats = ['cat{} REAL'.format(i) for i in range(1, vcount)]
 			SqlControl.create_custom_table(self.data_type, self.data_index, cats)
 			self.table_created = True
 
-		SqlControl.add_index_data(self.data_type, self.data_index, res)
+		SqlControl.add_custom_data(self.data_type, self.data_index, res)
 
 class CirchartImportLinkDataWorker(CirchartImportDataWorker):
 	processor = CirchartImportLinkDataProcess
@@ -712,7 +712,7 @@ class CirchartDataSaveWorker(CirchartBaseWorker):
 		if self.params['efile'].endswith('.csv'):
 			sep = ','
 
-		with open(self.params['efile'], 'w') as fw:
+		with open(self.params['efile'], 'w', newline='') as fw:
 			writer = csv.writer(fw, delimiter=sep)
 
 			for row in rows:
@@ -838,10 +838,16 @@ class CirchartDataExtractWorker(CirchartProcessWorker):
 		if self.params.outtype.endswith('data'):
 			self.data_type = self.params.outtype
 			self.data_index = SqlControl.add_data(self.params.outname, self.params.outtype)
-			SqlControl.create_index_table(self.params.outtype, self.data_index)
+
+			if self.params.outtype == 'stackdata':
+				self.table_created = False
+
+			else:
+				SqlControl.create_index_table(self.data_type, self.data_index)
+				self.table_created = True
 
 		else:
-			self.open_handle = open(self.params.outfile, 'w')
+			self.open_handle = open(self.params.outfile, 'w', newline='')
 
 			if self.params.outtype == 'csvfile':
 				separator = ','
@@ -852,7 +858,13 @@ class CirchartDataExtractWorker(CirchartProcessWorker):
 
 	def save_result(self, res):
 		if self.params.outtype.endswith('data'):
-			SqlControl.add_index_data(self.data_type, self.data_index, res)
+			if self.data_type == 'stackdata' and not self.table_created:
+				vcount = len(res[0]) - 2
+				cats = ['cat{} REAL'.format(i) for i in range(1, vcount)]
+				SqlControl.create_custom_table(self.data_type, self.data_index, cats)
+				self.table_created = True
+
+			SqlControl.add_custom_data(self.data_type, self.data_index, res)
 
 		else:
 			self.file_writer.writerows(res)

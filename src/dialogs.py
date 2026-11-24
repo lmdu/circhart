@@ -1148,7 +1148,7 @@ class CirchartExtractDataDialog(CirchartBaseDialog):
 		self.filter_check.toggled.connect(self._on_filter_checked)
 
 	def _init_widgets(self):
-		self.output_select.addItems(['plot data', 'link data', 'loci data', 'text data', 'csv file', 'tsv file'])
+		self.output_select.addItems(['plot data', 'link data', 'loci data', 'text data', 'stack data', 'csv file', 'tsv file'])
 		self.output_select.currentTextChanged.connect(self._on_output_changed)
 
 	def _init_layouts(self):
